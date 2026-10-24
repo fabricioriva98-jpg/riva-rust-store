@@ -254,40 +254,30 @@ pub fn launch_installed_app(path: &str) -> Result<Option<std::process::Child>> {
 
     #[cfg(target_os = "windows")]
     {
+        // Sem `cmd /C start`: o cmd.exe interpreta & | ^ % no caminho (injeção de comando).
+        // Quando não dá para iniciar o processo diretamente, o Shell do Windows abre o arquivo
+        // (associação de tipo, pedido de elevação etc.) e não há processo para medir o tempo de jogo.
         let lower = path.to_lowercase();
-        if lower.ends_with(".jar") {
-            let child = std::process::Command::new("javaw")
+        let spawned = if lower.ends_with(".jar") {
+            std::process::Command::new("javaw")
                 .arg("-jar")
                 .arg(p)
                 .current_dir(&working_dir)
                 .spawn()
-                .or_else(|_| {
-                    std::process::Command::new("cmd")
-                        .args(["/C", "start", "", path])
-                        .current_dir(&working_dir)
-                        .spawn()
-                })?;
-            return Ok(Some(child));
-        }
-
-        if lower.ends_with(".exe") {
-            let child = std::process::Command::new(p)
+                .ok()
+        } else if lower.ends_with(".exe") {
+            std::process::Command::new(p)
                 .current_dir(&working_dir)
                 .spawn()
-                .or_else(|_| {
-                    std::process::Command::new("cmd")
-                        .args(["/C", "start", "", path])
-                        .current_dir(&working_dir)
-                        .spawn()
-                })?;
+                .ok()
+        } else {
+            None
+        };
+        if let Some(child) = spawned {
             return Ok(Some(child));
         }
-
-        let child = std::process::Command::new("cmd")
-            .args(["/C", "start", "", path])
-            .current_dir(&working_dir)
-            .spawn()?;
-        return Ok(Some(child));
+        shell_open(p.as_os_str(), Some(&working_dir))?;
+        return Ok(None);
     }
 
     #[cfg(target_os = "linux")]
@@ -309,12 +299,55 @@ pub fn launch_installed_app(path: &str) -> Result<Option<std::process::Child>> {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ScanVerdict {
+    Clean,
+    Threat,
+    /// A varredura não terminou com um resultado conhecido; nunca deve ser exibida como "limpo".
+    NotVerified,
+}
+
 #[derive(Debug, Clone)]
 pub struct DefenderScanResult {
-    pub is_clean: bool,
+    pub verdict: ScanVerdict,
     #[allow(dead_code)]
-    pub exit_code: i32,
+    pub exit_code: Option<i32>,
     pub message: String,
+}
+
+impl DefenderScanResult {
+    pub fn not_verified(reason: &str) -> Self {
+        Self {
+            verdict: ScanVerdict::NotVerified,
+            exit_code: None,
+            message: format!("⚠ Não verificado: {reason}"),
+        }
+    }
+}
+
+/// Traduz o código de saída do `MpCmdRun.exe`: 0 = sem ameaças, 2 = ameaça encontrada.
+/// Qualquer outro código (ou processo encerrado sem código) é erro da varredura, não arquivo limpo.
+pub fn interpret_defender_exit(code: Option<i32>) -> DefenderScanResult {
+    match code {
+        Some(0) => DefenderScanResult {
+            verdict: ScanVerdict::Clean,
+            exit_code: code,
+            message: "✔ Windows Defender: Nenhuma ameaça detectada (Arquivo Limpo)".into(),
+        },
+        Some(2) => DefenderScanResult {
+            verdict: ScanVerdict::Threat,
+            exit_code: code,
+            message: "✘ ALERTA: O Windows Defender identificou risco de segurança neste arquivo!".into(),
+        },
+        Some(c) => DefenderScanResult {
+            exit_code: code,
+            ..DefenderScanResult::not_verified(&format!(
+                "o Windows Defender terminou com o código {c} (0x{:08X}) sem concluir a varredura.",
+                c as u32
+            ))
+        },
+        None => DefenderScanResult::not_verified("a varredura do Windows Defender foi interrompida."),
+    }
 }
 
 /// Executa a varredura nativa do Windows Defender no arquivo baixado sem custos e sem limite de requisição.
@@ -333,39 +366,16 @@ pub fn scan_with_windows_defender(path: &str) -> Result<DefenderScanResult> {
             .output();
 
         match output {
-            Ok(out) => {
-                let code = out.status.code().unwrap_or(-1);
-                if code == 0 {
-                    Ok(DefenderScanResult {
-                        is_clean: true,
-                        exit_code: 0,
-                        message: "✔ Windows Defender: Nenhuma ameaça detectada (Arquivo Limpo)".into(),
-                    })
-                } else if code == 2 {
-                    Ok(DefenderScanResult {
-                        is_clean: false,
-                        exit_code: 2,
-                        message: "✘ ALERTA: O Windows Defender identificou risco de segurança neste arquivo!".into(),
-                    })
-                } else {
-                    Ok(DefenderScanResult {
-                        is_clean: true,
-                        exit_code: code,
-                        message: "✔ Verificação do Windows Defender concluída sem incidentes.".into(),
-                    })
-                }
-            }
+            Ok(out) => Ok(interpret_defender_exit(out.status.code())),
             Err(e) => bail!("Falha ao invocar Windows Defender: {e}"),
         }
     }
 
     #[cfg(not(target_os = "windows"))]
     {
-        Ok(DefenderScanResult {
-            is_clean: true,
-            exit_code: 0,
-            message: "Varredura do Windows Defender só é aplicável no Windows.".into(),
-        })
+        Ok(DefenderScanResult::not_verified(
+            "a varredura do Windows Defender só é aplicável no Windows.",
+        ))
     }
 }
 
@@ -432,20 +442,14 @@ pub fn launch_file(path: &str) -> Result<()> {
     }
     #[cfg(target_os = "windows")]
     {
-        if path.to_lowercase().ends_with(".jar") {
-            std::process::Command::new("javaw")
+        let java_started = path.to_lowercase().ends_with(".jar")
+            && std::process::Command::new("javaw")
                 .arg("-jar")
                 .arg(p)
                 .spawn()
-                .or_else(|_| {
-                    std::process::Command::new("cmd")
-                        .args(["/C", "start", "", path])
-                        .spawn()
-                })?;
-        } else {
-            std::process::Command::new("cmd")
-                .args(["/C", "start", "", path])
-                .spawn()?;
+                .is_ok();
+        if !java_started {
+            shell_open(p.as_os_str(), None)?;
         }
     }
     #[cfg(target_os = "linux")]
@@ -481,20 +485,144 @@ pub fn reveal_in_folder(path: &str) -> Result<()> {
     Ok(())
 }
 
+/// Só endereços `https://` sem espaços, aspas ou caracteres de controle podem ir para o navegador.
+/// Bloqueia `file:`, `javascript:`, caminhos locais e executáveis vindos do catálogo.
+pub fn is_safe_web_url(url: &str) -> bool {
+    let Some(prefix) = url.get(..8) else {
+        return false;
+    };
+    prefix.eq_ignore_ascii_case("https://")
+        && url.len() > 8
+        && !url
+            .chars()
+            .any(|c| c.is_whitespace() || c.is_control() || c == '"')
+}
+
 /// Abre uma URL no navegador padrão.
-pub fn open_url(url: &str) {
+pub fn open_url(url: &str) -> Result<()> {
+    if !is_safe_web_url(url) {
+        bail!("Endereço recusado (só https://): {url}");
+    }
     #[cfg(target_os = "windows")]
     {
-        let _ = std::process::Command::new("cmd")
-            .args(["/C", "start", "", url])
-            .spawn();
+        shell_open(std::ffi::OsStr::new(url), None)?;
     }
     #[cfg(target_os = "linux")]
     {
-        let _ = std::process::Command::new("xdg-open").arg(url).spawn();
+        std::process::Command::new("xdg-open").arg(url).spawn()?;
     }
     #[cfg(target_os = "macos")]
     {
-        let _ = std::process::Command::new("open").arg(url).spawn();
+        std::process::Command::new("open").arg(url).spawn()?;
+    }
+    Ok(())
+}
+
+/// Abre arquivo, pasta ou URL pelo Shell do Windows (`ShellExecuteW`), sem passar pelo `cmd.exe`.
+#[cfg(target_os = "windows")]
+fn shell_open(target: &std::ffi::OsStr, working_dir: Option<&Path>) -> Result<()> {
+    use std::os::windows::ffi::OsStrExt;
+
+    #[link(name = "shell32")]
+    extern "system" {
+        fn ShellExecuteW(
+            hwnd: *mut std::ffi::c_void,
+            operation: *const u16,
+            file: *const u16,
+            parameters: *const u16,
+            directory: *const u16,
+            show_cmd: i32,
+        ) -> isize;
+    }
+    const SW_SHOWNORMAL: i32 = 1;
+
+    let wide = |s: &std::ffi::OsStr| -> Vec<u16> { s.encode_wide().chain(std::iter::once(0)).collect() };
+    let operation = wide(std::ffi::OsStr::new("open"));
+    let file = wide(target);
+    let directory = working_dir.map(|d| wide(d.as_os_str()));
+
+    // Valores <= 32 são códigos de erro (documentação do ShellExecuteW).
+    let code = unsafe {
+        ShellExecuteW(
+            std::ptr::null_mut(),
+            operation.as_ptr(),
+            file.as_ptr(),
+            std::ptr::null(),
+            directory.as_ref().map_or(std::ptr::null(), |d| d.as_ptr()),
+            SW_SHOWNORMAL,
+        )
+    };
+    if code <= 32 {
+        bail!(
+            "o Windows não conseguiu abrir {} (código {code})",
+            target.to_string_lossy()
+        );
+    }
+    Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn defender_codigo_zero_e_limpo() {
+        assert_eq!(interpret_defender_exit(Some(0)).verdict, ScanVerdict::Clean);
+    }
+
+    #[test]
+    fn defender_codigo_dois_e_ameaca() {
+        assert_eq!(interpret_defender_exit(Some(2)).verdict, ScanVerdict::Threat);
+    }
+
+    #[test]
+    fn defender_outros_codigos_nao_sao_limpos() {
+        // 1, código negativo (HRESULT de erro), código alto e processo sem código de saída.
+        for code in [Some(1), Some(-2147024894), Some(0x8050_8023_u32 as i32), Some(3), None] {
+            let r = interpret_defender_exit(code);
+            assert_eq!(r.verdict, ScanVerdict::NotVerified, "código {code:?}");
+            assert!(r.message.contains("Não verificado"), "código {code:?}: {}", r.message);
+        }
+    }
+
+    #[test]
+    fn url_aceita_https() {
+        assert!(is_safe_web_url("https://github.com/HarbourMasters/Shipwright"));
+        assert!(is_safe_web_url("https://example.com/busca?q=a&b=c"));
+        assert!(is_safe_web_url("HTTPS://GITHUB.COM/dono/repo"));
+    }
+
+    #[test]
+    fn url_recusa_esquemas_e_textos_perigosos() {
+        for url in [
+            "",
+            "https://",
+            "http://github.com/dono/repo",
+            "file:///C:/Windows/System32/calc.exe",
+            "javascript:alert(1)",
+            "calc.exe",
+            "C:\\Windows\\System32\\calc.exe",
+            "https://github.com/a b",
+            "https://github.com/a\"&calc",
+            "https://github.com/a\r\ncalc",
+            "httpsé://x",
+        ] {
+            assert!(!is_safe_web_url(url), "deveria recusar {url:?}");
+            assert!(open_url(url).is_err(), "open_url deveria recusar {url:?}");
+        }
+    }
+
+    #[test]
+    fn nenhum_codigo_chama_cmd_exe() {
+        // Regressão do G3: `cmd /C start` interpreta & | ^ % vindos do catálogo.
+        let needle = ["Command::new(\"cm", "d\")"].concat();
+        for (name, src) in [
+            ("downloader.rs", include_str!("downloader.rs")),
+            ("gui.rs", include_str!("gui.rs")),
+            ("installer.rs", include_str!("installer.rs")),
+            ("main.rs", include_str!("main.rs")),
+        ] {
+            assert!(!src.contains(&needle), "{name} voltou a chamar cmd.exe");
+        }
     }
 }

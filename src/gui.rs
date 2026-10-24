@@ -1,7 +1,7 @@
 //! Interface gráfica estilo Steam / Microsoft Store / Google Play (egui / eframe).
 
 use crate::db::{self, App};
-use crate::downloader::{self, DownloadState, SharedDownloadState};
+use crate::downloader::{self, DownloadState, ScanVerdict, SharedDownloadState};
 use crate::github::{self, Github};
 use crate::translator::{self, TranslateMode};
 use crate::verify;
@@ -45,7 +45,7 @@ enum BgEvent {
     },
     SecurityScanResult {
         repo: String,
-        defender_clean: bool,
+        defender_verdict: ScanVerdict,
         defender_msg: String,
         authenticode: String,
     },
@@ -86,7 +86,7 @@ pub struct StoreGui {
     selected_asset_idx: usize,
 
     // Status de segurança local (Defender & Authenticode)
-    defender_scan_status: Option<(String, bool)>,
+    defender_scan_status: Option<(String, ScanVerdict)>,
     authenticode_status: Option<String>,
 
     // Adicionar repositório avulso
@@ -371,13 +371,17 @@ impl StoreGui {
                     };
                     self.status_is_error = false;
                 }
-                BgEvent::SecurityScanResult { repo, defender_clean, defender_msg, authenticode } => {
+                BgEvent::SecurityScanResult { repo, defender_verdict, defender_msg, authenticode } => {
                     if self.selected_repo.as_deref() == Some(repo.as_str()) {
-                        self.defender_scan_status = Some((defender_msg, defender_clean));
+                        self.defender_scan_status = Some((defender_msg, defender_verdict));
                         self.authenticode_status = Some(authenticode);
                     }
-                    self.status_msg = format!("Varredura de {} concluída!", friendly_title(&repo));
-                    self.status_is_error = !defender_clean;
+                    self.status_msg = if defender_verdict == ScanVerdict::NotVerified {
+                        format!("Varredura de {} não concluída: arquivo NÃO verificado.", friendly_title(&repo))
+                    } else {
+                        format!("Varredura de {} concluída!", friendly_title(&repo))
+                    };
+                    self.status_is_error = defender_verdict != ScanVerdict::Clean;
                     self.busy_task = None;
                 }
                 BgEvent::Error(e) => {
@@ -1726,7 +1730,10 @@ impl StoreGui {
             ));
             ui.separator();
             if ui.link("GitHub Oficial ↗").clicked() {
-                downloader::open_url(&app.url);
+                if let Err(e) = downloader::open_url(&app.url) {
+                    self.status_msg = format!("{e:#}");
+                    self.status_is_error = true;
+                }
             }
         });
 
@@ -1987,13 +1994,12 @@ impl StoreGui {
                             let events = Arc::clone(&self.bg_events);
                             self.busy_task = Some("Escaneando com Windows Defender...".into());
                             std::thread::spawn(move || {
-                                let def_res = downloader::scan_with_windows_defender(&path).unwrap_or(
-                                    downloader::DefenderScanResult {
-                                        is_clean: true,
-                                        exit_code: 0,
-                                        message: "Não foi possível acionar o Windows Defender.".into(),
-                                    },
-                                );
+                                let def_res = downloader::scan_with_windows_defender(&path)
+                                    .unwrap_or_else(|e| {
+                                        downloader::DefenderScanResult::not_verified(&format!(
+                                            "não foi possível acionar o Windows Defender ({e})."
+                                        ))
+                                    });
                                 let auth_res = downloader::check_authenticode_signature(&path).unwrap_or(
                                     downloader::AuthenticodeResult {
                                         status: "Não assinado".into(),
@@ -2006,7 +2012,7 @@ impl StoreGui {
                                 };
                                 events.lock().unwrap().push(BgEvent::SecurityScanResult {
                                     repo,
-                                    defender_clean: def_res.is_clean,
+                                    defender_verdict: def_res.verdict,
                                     defender_msg: def_res.message,
                                     authenticode: auth_text,
                                 });
@@ -2029,12 +2035,12 @@ impl StoreGui {
                         }
                     });
 
-                    if let Some((msg, is_clean)) = &self.defender_scan_status {
+                    if let Some((msg, verdict)) = &self.defender_scan_status {
                         ui.add_space(6.0);
-                        let col = if *is_clean {
-                            Color32::from_rgb(120, 230, 150)
-                        } else {
-                            Color32::from_rgb(255, 120, 120)
+                        let col = match verdict {
+                            ScanVerdict::Clean => Color32::from_rgb(120, 230, 150),
+                            ScanVerdict::Threat => Color32::from_rgb(255, 120, 120),
+                            ScanVerdict::NotVerified => Color32::from_rgb(235, 190, 85),
                         };
                         ui.label(RichText::new(msg).size(11.5).strong().color(col));
                     }

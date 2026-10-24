@@ -1,7 +1,24 @@
-use anyhow::{Context, Result};
+use anyhow::{bail, Context, Result};
 use eframe::egui::{self, Color32, CornerRadius, RichText, Stroke};
 use std::path::{Path, PathBuf};
 use std::process::Command;
+
+/// Marcador gravado na pasta pela instalação; a desinstalação só age em pastas que o tenham
+/// (ou o executável principal, em instalações anteriores ao marcador).
+pub const INSTALL_MARKER: &str = "rrs-install.json";
+const MAIN_EXE: &str = "RRS - Riva Rust Store.exe";
+
+/// Únicos arquivos que a desinstalação apaga. A pasta `downloads/` (apps e jogos baixados) é mantida.
+const INSTALLED_FILES: &[&str] = &[
+    MAIN_EXE,
+    "rrs.exe",
+    "catalog.json",
+    "gitstore.db",
+    "gitstore.db-journal",
+    "gitstore.db-wal",
+    "gitstore.db-shm",
+    INSTALL_MARKER,
+];
 
 /// Retorna a pasta padrão de instalação no Windows:
 /// `%LOCALAPPDATA%\Programs\RRS-RivaRustStore`
@@ -69,7 +86,7 @@ pub fn perform_install(opts: &InstallOptions) -> Result<PathBuf> {
     })?;
 
     let current_exe = std::env::current_exe().context("Falha ao localizar executável atual")?;
-    let target_gui_exe = opts.install_dir.join("RRS - Riva Rust Store.exe");
+    let target_gui_exe = opts.install_dir.join(MAIN_EXE);
     let target_cli_exe = opts.install_dir.join("rrs.exe");
 
     // Se não estivermos rodando de dentro do próprio arquivo de destino, copia o binário
@@ -84,6 +101,7 @@ pub fn perform_install(opts: &InstallOptions) -> Result<PathBuf> {
     if !same_file_path(&current_exe, &target_cli_exe) {
         let _ = std::fs::copy(&current_exe, &target_cli_exe);
     }
+    write_install_marker(&opts.install_dir)?;
 
     // Grava o catalog.json atualizado e prepara o banco SQLite na pasta instalada
     let catalog_path = opts.install_dir.join("catalog.json");
@@ -107,12 +125,66 @@ pub fn perform_install(opts: &InstallOptions) -> Result<PathBuf> {
     Ok(target_gui_exe)
 }
 
-pub fn perform_uninstall(install_dir: &Path) -> Result<()> {
-    remove_windows_shortcuts()?;
-    if install_dir.exists() {
-        let _ = std::fs::remove_dir_all(install_dir);
+fn write_install_marker(install_dir: &Path) -> Result<()> {
+    let marker = serde_json::json!({
+        "app": "RRS - Riva Rust Store",
+        "version": env!("CARGO_PKG_VERSION"),
+        "installed_at": chrono::Utc::now().to_rfc3339(),
+    });
+    std::fs::write(
+        install_dir.join(INSTALL_MARKER),
+        serde_json::to_string_pretty(&marker)?,
+    )
+    .context("Falha ao gravar o marcador da instalação")
+}
+
+/// `true` se a pasta é uma instalação da RRS (tem o marcador ou o executável principal).
+pub fn is_rrs_install_dir(dir: &Path) -> bool {
+    dir.join(INSTALL_MARKER).is_file() || dir.join(MAIN_EXE).is_file()
+}
+
+#[derive(Debug, Default)]
+pub struct UninstallReport {
+    pub removed: Vec<PathBuf>,
+    pub failed: Vec<(PathBuf, String)>,
+    /// A pasta ficou porque ainda tem outros arquivos (ex.: `downloads/`).
+    pub dir_kept: bool,
+}
+
+/// Apaga só os arquivos conhecidos da instalação e, se a pasta ficar vazia, a própria pasta.
+/// Recusa qualquer pasta que não seja uma instalação da RRS.
+pub fn remove_installed_files(install_dir: &Path) -> Result<UninstallReport> {
+    if !is_rrs_install_dir(install_dir) {
+        bail!(
+            "{} não é uma instalação da RRS (falta {INSTALL_MARKER} ou {MAIN_EXE}). Nada foi removido.",
+            install_dir.display()
+        );
     }
-    Ok(())
+    let mut report = UninstallReport::default();
+    for name in INSTALLED_FILES {
+        let path = install_dir.join(name);
+        if !path.is_file() {
+            continue;
+        }
+        match std::fs::remove_file(&path) {
+            Ok(()) => report.removed.push(path),
+            Err(e) => report.failed.push((path, e.to_string())),
+        }
+    }
+    // remove_dir só apaga pasta vazia: qualquer arquivo do usuário mantém a pasta.
+    report.dir_kept = std::fs::remove_dir(install_dir).is_err();
+    Ok(report)
+}
+
+pub fn perform_uninstall(install_dir: &Path) -> Result<UninstallReport> {
+    if !is_rrs_install_dir(install_dir) {
+        bail!(
+            "{} não é uma instalação da RRS. Nada foi removido.",
+            install_dir.display()
+        );
+    }
+    remove_windows_shortcuts()?;
+    remove_installed_files(install_dir)
 }
 
 fn same_file_path(a: &Path, b: &Path) -> bool {
@@ -220,6 +292,8 @@ struct InstallerWizard {
     launch_after_install: bool,
     status_msg: Option<(String, bool)>,
     installed_exe_path: Option<PathBuf>,
+    /// Pasta aguardando o segundo clique de confirmação da desinstalação.
+    confirm_uninstall: Option<PathBuf>,
 }
 
 impl InstallerWizard {
@@ -238,6 +312,7 @@ impl InstallerWizard {
             launch_after_install: def.launch_after_install,
             status_msg: None,
             installed_exe_path: None,
+            confirm_uninstall: None,
         }
     }
 }
@@ -412,10 +487,14 @@ impl eframe::App for InstallerWizard {
                     }
 
                     let target_dir = PathBuf::from(self.install_dir_input.trim());
-                    if target_dir.exists() {
+                    if self.confirm_uninstall.as_ref() != Some(&target_dir) {
+                        self.confirm_uninstall = None;
+                    }
+                    if is_rrs_install_dir(&target_dir) {
                         ui.add_space(6.0);
+                        let confirming = self.confirm_uninstall.is_some();
                         let uninst_btn = egui::Button::new(
-                            RichText::new("🗑 Desinstalar")
+                            RichText::new(if confirming { "⚠ Confirmar" } else { "🗑 Desinstalar" })
                                 .size(12.5)
                                 .color(Color32::from_rgb(255, 175, 175)),
                         )
@@ -424,17 +503,43 @@ impl eframe::App for InstallerWizard {
                         .corner_radius(CornerRadius::same(8));
 
                         if ui.add(uninst_btn).clicked() {
-                            match perform_uninstall(&target_dir) {
-                                Ok(_) => {
-                                    self.status_msg = Some((
-                                        "✔ Aplicativo e atalhos removidos com sucesso.".into(),
+                            if !confirming {
+                                self.confirm_uninstall = Some(target_dir.clone());
+                                self.status_msg = Some((
+                                    format!(
+                                        "Clique em '⚠ Confirmar' para remover a RRS de {}.\nSó os arquivos da RRS serão apagados; a pasta downloads (apps e jogos baixados) fica.",
+                                        target_dir.display()
+                                    ),
+                                    false,
+                                ));
+                            } else {
+                                self.confirm_uninstall = None;
+                                self.status_msg = Some(match perform_uninstall(&target_dir) {
+                                    Ok(rep) if rep.failed.is_empty() => (
+                                        if rep.dir_kept {
+                                            format!(
+                                                "✔ RRS e atalhos removidos ({} arquivos). A pasta ficou porque ainda tem outros arquivos (ex.: downloads).",
+                                                rep.removed.len()
+                                            )
+                                        } else {
+                                            "✔ RRS, atalhos e pasta de instalação removidos.".into()
+                                        },
                                         true,
-                                    ));
-                                }
-                                Err(e) => {
-                                    self.status_msg =
-                                        Some((format!("✘ Falha ao desinstalar: {e}"), false));
-                                }
+                                    ),
+                                    Ok(rep) => (
+                                        format!(
+                                            "✘ {} arquivo(s) não puderam ser removidos (feche a RRS e tente de novo): {}",
+                                            rep.failed.len(),
+                                            rep.failed
+                                                .iter()
+                                                .map(|(p, _)| p.display().to_string())
+                                                .collect::<Vec<_>>()
+                                                .join(", ")
+                                        ),
+                                        false,
+                                    ),
+                                    Err(e) => (format!("✘ Falha ao desinstalar: {e}"), false),
+                                });
                             }
                         }
                     }
@@ -462,5 +567,101 @@ impl eframe::App for InstallerWizard {
                         });
                 }
             });
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn temp_dir(tag: &str) -> PathBuf {
+        let nanos = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap()
+            .as_nanos();
+        let dir = std::env::temp_dir().join(format!("rrs-teste-{tag}-{}-{nanos}", std::process::id()));
+        std::fs::create_dir_all(&dir).unwrap();
+        dir
+    }
+
+    fn touch(path: &Path) {
+        if let Some(parent) = path.parent() {
+            std::fs::create_dir_all(parent).unwrap();
+        }
+        std::fs::write(path, b"x").unwrap();
+    }
+
+    #[test]
+    fn recusa_pasta_que_nao_e_instalacao() {
+        let dir = temp_dir("alheia");
+        touch(&dir.join("notas.md"));
+        touch(&dir.join("catalog.json"));
+        touch(&dir.join("docs").join("relatorio.txt"));
+
+        assert!(!is_rrs_install_dir(&dir));
+        assert!(remove_installed_files(&dir).is_err());
+        assert!(perform_uninstall(&dir).is_err());
+        assert!(dir.join("notas.md").exists());
+        assert!(dir.join("catalog.json").exists());
+        assert!(dir.join("docs").join("relatorio.txt").exists());
+
+        std::fs::remove_dir_all(&dir).unwrap();
+    }
+
+    #[test]
+    fn apaga_so_arquivos_da_rrs_e_mantem_downloads() {
+        let dir = temp_dir("com-downloads");
+        write_install_marker(&dir).unwrap();
+        for name in [MAIN_EXE, "rrs.exe", "catalog.json", "gitstore.db"] {
+            touch(&dir.join(name));
+        }
+        touch(&dir.join("meu-arquivo.txt"));
+        touch(&dir.join("downloads").join("dono_jogo").join("jogo.exe"));
+
+        let rep = remove_installed_files(&dir).unwrap();
+
+        assert_eq!(rep.removed.len(), 5);
+        assert!(rep.failed.is_empty());
+        assert!(rep.dir_kept);
+        for name in [MAIN_EXE, "rrs.exe", "catalog.json", "gitstore.db", INSTALL_MARKER] {
+            assert!(!dir.join(name).exists(), "{name} deveria ter sido removido");
+        }
+        assert!(dir.join("meu-arquivo.txt").exists());
+        assert!(dir.join("downloads").join("dono_jogo").join("jogo.exe").exists());
+
+        std::fs::remove_dir_all(&dir).unwrap();
+    }
+
+    #[test]
+    fn remove_a_pasta_quando_fica_vazia() {
+        let dir = temp_dir("vazia");
+        write_install_marker(&dir).unwrap();
+        touch(&dir.join(MAIN_EXE));
+        touch(&dir.join("gitstore.db"));
+
+        let rep = remove_installed_files(&dir).unwrap();
+
+        assert!(!rep.dir_kept);
+        assert!(!dir.exists());
+    }
+
+    #[test]
+    fn reconhece_instalacao_antiga_sem_marcador() {
+        let dir = temp_dir("antiga");
+        touch(&dir.join(MAIN_EXE));
+        assert!(is_rrs_install_dir(&dir));
+        assert!(remove_installed_files(&dir).is_ok());
+        assert!(!dir.exists());
+    }
+
+    #[test]
+    fn marcador_grava_json_valido() {
+        let dir = temp_dir("marcador");
+        write_install_marker(&dir).unwrap();
+        assert!(is_rrs_install_dir(&dir));
+        let raw = std::fs::read_to_string(dir.join(INSTALL_MARKER)).unwrap();
+        let v: serde_json::Value = serde_json::from_str(&raw).unwrap();
+        assert_eq!(v["version"], env!("CARGO_PKG_VERSION"));
+        std::fs::remove_dir_all(&dir).unwrap();
     }
 }
