@@ -24,6 +24,9 @@ pub struct Repo {
     pub topics: Vec<String>,
     #[serde(default)]
     pub has_issues: bool,
+    /// Linguagem principal detectada pelo GitHub (ex.: "Rust", "C++").
+    #[serde(default)]
+    pub language: Option<String>,
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq)]
@@ -38,12 +41,43 @@ pub struct Asset {
 #[derive(Debug, Deserialize, Clone)]
 pub struct Release {
     pub tag_name: String,
-    #[allow(dead_code)]
     pub published_at: Option<String>,
-    #[allow(dead_code)]
     #[serde(default)]
     pub prerelease: bool,
+    #[serde(default)]
+    pub draft: bool,
     pub assets: Vec<Asset>,
+}
+
+impl Release {
+    /// Só os arquivos reconhecidos como instaladores (descarta hashes, símbolos, código-fonte...).
+    pub fn installable_assets(&self) -> Vec<Asset> {
+        self.assets
+            .iter()
+            .filter(|a| platform_of(&a.name).is_some())
+            .cloned()
+            .collect()
+    }
+}
+
+/// Situação do atestado de build (artifact attestation) do GitHub para um arquivo.
+/// "presente" indica que o GitHub tem um atestado para aquele SHA-256; a assinatura não é conferida pela RRS.
+pub const ATTESTATION_PRESENT: &str = "presente";
+pub const ATTESTATION_ABSENT: &str = "ausente";
+
+pub fn is_rust_language(language: &str) -> bool {
+    language.trim().eq_ignore_ascii_case("rust")
+}
+
+#[derive(Deserialize)]
+struct AttestationList {
+    #[serde(default)]
+    attestations: Vec<serde_json::Value>,
+}
+
+/// Quantidade de atestados na resposta de `/repos/{repo}/attestations/{digest}`.
+pub fn count_attestations(body: &str) -> Result<usize> {
+    Ok(serde_json::from_str::<AttestationList>(body)?.attestations.len())
 }
 
 #[derive(Deserialize)]
@@ -121,6 +155,47 @@ impl Github {
             bail!("release falhou: HTTP {}", resp.status());
         }
         Ok(Some(resp.json().await?))
+    }
+
+    /// Releases publicadas (mais recentes primeiro), sem rascunhos.
+    pub async fn releases(&self, full_name: &str, per_page: u32) -> Result<Vec<Release>> {
+        let clean = normalize_repo_name(full_name);
+        let url = format!("https://api.github.com/repos/{clean}/releases?per_page={per_page}");
+        let resp = self.get(&url, "application/vnd.github+json").await?;
+        if !resp.status().is_success() {
+            bail!("lista de releases falhou: HTTP {}", resp.status());
+        }
+        let list: Vec<Release> = resp.json().await?;
+        Ok(list.into_iter().filter(|r| !r.draft).collect())
+    }
+
+    pub async fn release_by_tag(&self, full_name: &str, tag: &str) -> Result<Release> {
+        let clean = normalize_repo_name(full_name);
+        let url = format!(
+            "https://api.github.com/repos/{clean}/releases/tags/{}",
+            urlencode(tag)
+        );
+        let resp = self.get(&url, "application/vnd.github+json").await?;
+        if !resp.status().is_success() {
+            bail!("versão '{tag}' de {clean} não encontrada: HTTP {}", resp.status());
+        }
+        Ok(resp.json().await?)
+    }
+
+    /// Consulta se o GitHub tem atestado de build para o arquivo com esse digest (`sha256:HEX`).
+    /// `Ok(true)` = atestado presente; `Ok(false)` = nenhum (HTTP 404). Não confere a assinatura.
+    pub async fn has_attestation(&self, full_name: &str, digest: &str) -> Result<bool> {
+        let clean = normalize_repo_name(full_name);
+        let hex = digest.trim().trim_start_matches("sha256:");
+        let url = format!("https://api.github.com/repos/{clean}/attestations/sha256:{hex}?per_page=1");
+        let resp = self.get(&url, "application/vnd.github+json").await?;
+        if resp.status() == StatusCode::NOT_FOUND {
+            return Ok(false);
+        }
+        if !resp.status().is_success() {
+            bail!("consulta de atestado falhou: HTTP {}", resp.status());
+        }
+        Ok(count_attestations(&resp.text().await?)? > 0)
     }
 
     /// Número de contribuidores, lido da paginação (per_page=1).
@@ -321,4 +396,45 @@ pub fn pick_best_asset(assets: &[Asset]) -> Option<usize> {
         })
         .max_by_key(|&(_, score)| score)
         .map(|(idx, _)| idx)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn conta_atestados_da_resposta_do_github() {
+        let com = r#"{"attestations":[{"repository_id":212613049,"bundle_url":"https://x","initiator":"github","bundle":null}]}"#;
+        assert_eq!(count_attestations(com).unwrap(), 1);
+        assert_eq!(count_attestations(r#"{"attestations":[]}"#).unwrap(), 0);
+        assert_eq!(count_attestations("{}").unwrap(), 0);
+        assert!(count_attestations("não é json").is_err());
+    }
+
+    #[test]
+    fn reconhece_rust_como_linguagem() {
+        assert!(is_rust_language("Rust"));
+        assert!(is_rust_language(" rust "));
+        assert!(!is_rust_language("C++"));
+        assert!(!is_rust_language(""));
+    }
+
+    #[test]
+    fn releases_deserializam_e_filtram_instaladores() {
+        let raw = r#"[
+            {"tag_name":"v2.0","published_at":"2026-10-01T10:00:00Z","prerelease":false,"draft":false,
+             "assets":[{"name":"app-2.0-win64-setup.exe","size":10,"browser_download_url":"https://x/a","digest":"sha256:aa"},
+                       {"name":"app-2.0.tar.gz.sha256","size":1,"browser_download_url":"https://x/b","digest":null}]},
+            {"tag_name":"v2.1-rc1","published_at":"2026-10-10T10:00:00Z","prerelease":true,
+             "assets":[{"name":"app-2.1-linux-x86_64.AppImage","size":10,"browser_download_url":"https://x/c"}]}
+        ]"#;
+        let list: Vec<Release> = serde_json::from_str(raw).unwrap();
+        assert_eq!(list.len(), 2);
+        assert!(!list[0].draft);
+        assert!(list[1].prerelease);
+        let inst = list[0].installable_assets();
+        assert_eq!(inst.len(), 1);
+        assert_eq!(inst[0].name, "app-2.0-win64-setup.exe");
+        assert_eq!(list[1].installable_assets()[0].digest, None);
+    }
 }

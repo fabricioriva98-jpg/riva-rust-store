@@ -6,12 +6,14 @@
     "stars": 201501,
     "license": "Unlicense",
     "topics": "cli,downloader,python,sponsorblock,youtube-dl,youtube-downloader,yt-dlp",
+    "language": "Python",
     "created_at": "2020-10-26T04:22:55Z",
     "pushed_at": "2026-10-23T15:18:53Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "2026.10.21",
+    "released_at": "",
     "platforms": "linux,macos,windows",
     "assets": [
       {
@@ -97,7 +99,8 @@
       "🟢 Repositório verificado e oficial",
       "🟢 Código aberto e auditável",
       "🟢 Instaladores e executáveis disponíveis em Releases"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "ollama/ollama",
@@ -106,12 +109,14 @@
     "stars": 184652,
     "license": "MIT",
     "topics": "deepseek,gemma,gemma3,glm,go,golang,gpt-oss,llama,llama3,llm,llms,minimax,mistral,ollama,qwen",
+    "language": "Go",
     "created_at": "2023-06-26T19:39:32Z",
     "pushed_at": "2026-10-24T18:03:30Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v0.40.11",
+    "released_at": "",
     "platforms": "macos,windows",
     "assets": [
       {
@@ -175,7 +180,8 @@
       "🟢 184652 estrelas no GitHub",
       "🟢 Código aberto com licença MIT",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "rustdesk/rustdesk",
@@ -184,12 +190,14 @@
     "stars": 126818,
     "license": "AGPL-3.0",
     "topics": "android,anydesk,dart,flatpak,flutter,flutter-apps,ios,linux,macos,p2p,rdp,remote-control,remote-desktop,rust,rust-lang,teamviewer,vnc,wayland,windows",
+    "language": "Rust",
     "created_at": "2020-09-28T15:36:08Z",
     "pushed_at": "2026-10-24T09:28:24Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "1.5.0",
+    "released_at": "",
     "platforms": "android,linux,macos,windows",
     "assets": [
       {
@@ -355,7 +363,8 @@
       "🟢 126818 estrelas no GitHub",
       "🟢 Código aberto com licença AGPL-3.0",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "godotengine/godot",
@@ -364,12 +373,14 @@
     "stars": 119009,
     "license": "MIT",
     "topics": "game-development,game-engine,gamedev,godot,godotengine,multi-platform,open-source",
+    "language": "C++",
     "created_at": "2014-01-04T16:05:36Z",
     "pushed_at": "2026-10-23T15:25:04Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "4.7.2-stable",
+    "released_at": "",
     "platforms": "android,linux,macos,windows",
     "assets": [
       {
@@ -511,7 +522,8 @@
       "🟢 119009 estrelas no GitHub",
       "🟢 Código aberto com licença MIT",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "localsend/localsend",
@@ -520,12 +532,14 @@
     "stars": 95451,
     "license": "Apache-2.0",
     "topics": "dart,file-sharing,flutter,flutter-apps",
+    "language": "Dart",
     "created_at": "2022-12-16T00:46:07Z",
     "pushed_at": "2026-10-21T10:17:17Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v1.18.2",
+    "released_at": "",
     "platforms": "android,linux,macos,windows",
     "assets": [
       {
@@ -661,7 +675,8 @@
       "🟢 95451 estrelas no GitHub",
       "🟢 Código aberto com licença Apache-2.0",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "NationalSecurityAgency/ghidra",
@@ -670,12 +685,14 @@
     "stars": 93941,
     "license": "Apache-2.0",
     "topics": "disassembler,reverse-engineering,software-analysis",
+    "language": "Java",
     "created_at": "2019-03-01T03:27:48Z",
     "pushed_at": "2026-10-22T13:16:26Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "Ghidra_12.2_build",
+    "released_at": "",
     "platforms": "java",
     "assets": [
       {
@@ -697,7 +714,8 @@
       "🟢 93941 estrelas no GitHub",
       "🟢 Código aberto com licença Apache-2.0",
       "🟡 Release antiga sem hash SHA-256 pré-calculado pelo GitHub"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "syncthing/syncthing",
@@ -706,12 +724,14 @@
     "stars": 89702,
     "license": "MPL-2.0",
     "topics": "go,p2p,peer-to-peer,synchronization",
+    "language": "Go",
     "created_at": "2013-11-26T09:48:21Z",
     "pushed_at": "2026-10-24T01:17:48Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v2.1.7",
+    "released_at": "",
     "platforms": "linux,macos,windows",
     "assets": [
       {
@@ -859,7 +879,8 @@
       "🟢 89702 estrelas no GitHub",
       "🟢 Código aberto com licença MPL-2.0",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "obsproject/obs-studio",
@@ -868,12 +889,14 @@
     "stars": 78140,
     "license": "GPL-2.0",
     "topics": "c,c-plus-plus,directshow,facebook-live,ffmpeg,game-capture,live-streaming,screen-capture,twitch-tv,video-recording,youtube-live",
+    "language": "C",
     "created_at": "2013-10-01T02:40:31Z",
     "pushed_at": "2026-10-23T20:48:25Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "33.0.0",
+    "released_at": "",
     "platforms": "linux,macos,windows",
     "assets": [
       {
@@ -949,7 +972,8 @@
       "🟢 78140 estrelas no GitHub",
       "🟢 Código aberto com licença GPL-2.0",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "nomic-ai/gpt4all",
@@ -958,12 +982,14 @@
     "stars": 77355,
     "license": "MIT",
     "topics": "ai-chat,llm-inference",
+    "language": "C++",
     "created_at": "2023-03-27T18:49:32Z",
     "pushed_at": "2025-05-27T20:05:19Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v3.10.0",
+    "released_at": "",
     "platforms": "macos,windows",
     "assets": [
       {
@@ -995,7 +1021,60 @@
       "🟢 Repositório verificado e oficial",
       "🟢 Código aberto e auditável",
       "🟢 Instaladores e executáveis disponíveis em Releases"
-    ]
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "alacritty/alacritty",
+    "description": "A cross-platform, OpenGL terminal emulator.",
+    "url": "https://github.com/alacritty/alacritty",
+    "stars": 66036,
+    "license": "Apache-2.0",
+    "topics": "bsd,gpu,linux,macos,opengl,rust,terminal,terminal-emulators,vte,windows",
+    "language": "Rust",
+    "created_at": "2016-02-18T05:02:30Z",
+    "pushed_at": "2026-10-16T05:47:54Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v0.17.0",
+    "released_at": "2026-04-06T19:24:18Z",
+    "platforms": "macos,windows",
+    "assets": [
+      {
+        "name": "Alacritty-v0.17.0-installer.msi",
+        "size": 2396160,
+        "browser_download_url": "https://github.com/alacritty/alacritty/releases/download/v0.17.0/Alacritty-v0.17.0-installer.msi",
+        "digest": "sha256:acdb4d6e52bd23225497557fc19119ab1a2e6bf3439a7faf47ffe86804301132"
+      },
+      {
+        "name": "Alacritty-v0.17.0-portable.exe",
+        "size": 6003200,
+        "browser_download_url": "https://github.com/alacritty/alacritty/releases/download/v0.17.0/Alacritty-v0.17.0-portable.exe",
+        "digest": "sha256:5ad70ddc5c2a2bfe84084a2c4c73558e9360914f035a902d7a69277be7249f1f"
+      },
+      {
+        "name": "Alacritty-v0.17.0.dmg",
+        "size": 6136240,
+        "browser_download_url": "https://github.com/alacritty/alacritty/releases/download/v0.17.0/Alacritty-v0.17.0.dmg",
+        "digest": "sha256:ad8d7de35fb38e43184776cac6dfee05ca325caa0b6639a06a55e54e4b026620"
+      }
+    ],
+    "kind": "tool",
+    "category": "Ferramentas • Terminal",
+    "tags": "terminal,rust,gpu,desenvolvimento",
+    "summary": "Terminal rápido acelerado pela GPU, feito em Rust, com configuração simples em arquivo.",
+    "trust_score": 100,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório consolidado (10 anos de histórico)",
+      "🟢 Projeto ativo (atualizado há 8 dias)",
+      "🟢 66036 estrelas no GitHub",
+      "🟢 484 contribuidores públicos",
+      "🟢 Código aberto com licença Apache-2.0",
+      "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
+    ],
+    "attestation": "ausente"
   },
   {
     "full_name": "WerWolv/ImHex",
@@ -1004,12 +1083,14 @@
     "stars": 55551,
     "license": "GPL-2.0",
     "topics": "analyzer,binary-analysis,c-plus-plus,cpp,cybersecurity,dark-mode,dear-imgui,disassembler,forensics,hacking,hacktoberfest,hex-editor,ips,linux,macos,multi-platform,pattern-language,reverse-engineering,static-analysis,windows",
+    "language": "C++",
     "created_at": "2020-11-10T14:27:00Z",
     "pushed_at": "2026-10-09T00:56:24Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v1.38.1",
+    "released_at": "",
     "platforms": "linux,macos,windows",
     "assets": [
       {
@@ -1049,7 +1130,8 @@
       "🟢 55551 estrelas no GitHub",
       "🟢 Código aberto com licença GPL-2.0",
       "🟡 Release antiga sem hash SHA-256 pré-calculado pelo GitHub"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "upscayl/upscayl",
@@ -1058,12 +1140,14 @@
     "stars": 50947,
     "license": "AGPL-3.0",
     "topics": "ai,electron,esrgan,gigapixel,gigapixel-images,image,image-upscaling,topaz,upscale,upscalerimage,upscayl",
+    "language": "TypeScript",
     "created_at": "2022-07-30T17:19:20Z",
     "pushed_at": "2026-10-05T19:13:12Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v2.15.0",
+    "released_at": "",
     "platforms": "linux,macos,windows",
     "assets": [
       {
@@ -1097,7 +1181,8 @@
       "🟢 50947 estrelas no GitHub",
       "🟢 Código aberto com licença AGPL-3.0",
       "🟡 Release antiga sem hash SHA-256 pré-calculado pelo GitHub"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "x64dbg/x64dbg",
@@ -1106,12 +1191,14 @@
     "stars": 50014,
     "license": "NOASSERTION",
     "topics": "binary-analysis,ctf,cybersecurity,debugger,debugging,disassembler,dynamic-analysis,exploit-development,hacking,malware-analysis,offensive-security,oscp,program-analysis,reverse-engineering,security,security-tools,windows,x64,x86,x86-64",
+    "language": "C++",
     "created_at": "2015-04-11T20:48:23Z",
     "pushed_at": "2026-10-20T12:17:22Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "2026.05.27",
+    "released_at": "",
     "platforms": "windows",
     "assets": [
       {
@@ -1133,7 +1220,8 @@
       "🟢 50014 estrelas no GitHub",
       "🟡 Sem licença open-source padronizada",
       "🟡 Release antiga sem hash SHA-256 pré-calculado pelo GitHub"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "mifi/lossless-cut",
@@ -1142,12 +1230,14 @@
     "stars": 45179,
     "license": "GPL-2.0",
     "topics": "codec,cut,editor,ffmpeg,lossless,losslesscut,player,video,video-editor,video-files",
+    "language": "TypeScript",
     "created_at": "2016-10-30T10:49:56Z",
     "pushed_at": "2026-10-24T16:30:21Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v3.70.1",
+    "released_at": "",
     "platforms": "linux,macos,windows",
     "assets": [
       {
@@ -1199,7 +1289,8 @@
       "🟢 45179 estrelas no GitHub",
       "🟢 Código aberto com licença GPL-2.0",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "janhq/jan",
@@ -1208,12 +1299,14 @@
     "stars": 45063,
     "license": "NOASSERTION",
     "topics": "chatgpt,gpt,llamacpp,llm,localai,open-source,self-hosted,tauri",
+    "language": "Rust",
     "created_at": "2023-08-17T02:17:10Z",
     "pushed_at": "2026-10-24T15:19:58Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v0.8.7",
+    "released_at": "",
     "platforms": "linux,macos,windows",
     "assets": [
       {
@@ -1253,7 +1346,8 @@
       "🟢 45063 estrelas no GitHub",
       "🟡 Sem licença open-source padronizada",
       "🟡 Release antiga sem hash SHA-256 pré-calculado pelo GitHub"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "LizardByte/Sunshine",
@@ -1262,12 +1356,14 @@
     "stars": 42585,
     "license": "GPL-3.0",
     "topics": "cpm,cpp,docker,flathub-pkg,game-stream,game-streaming,game-streaming-server,geforce-experience,homebrew-pkg,moonlight,pacman-pkg,remote-desktop,replicator-custom-issues,replicator-release-notifications,rtd,winget-pkg",
+    "language": "C++",
     "created_at": "2021-12-15T23:38:57Z",
     "pushed_at": "2026-10-23T09:41:05Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v2026.914.233613",
+    "released_at": "",
     "platforms": "android,linux,macos,windows",
     "assets": [
       {
@@ -1493,7 +1589,8 @@
       "🟢 42585 estrelas no GitHub",
       "🟢 Código aberto com licença GPL-3.0",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "qbittorrent/qBittorrent",
@@ -1502,12 +1599,14 @@
     "stars": 41088,
     "license": "NOASSERTION",
     "topics": "bittorrent,bittorrent-client,c-plus-plus,crossplatform,torrent,torrent-client",
+    "language": "C++",
     "created_at": "2012-02-04T09:37:46Z",
     "pushed_at": "2026-10-20T12:41:43Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "release-5.3.0",
+    "released_at": "",
     "platforms": "linux,windows",
     "assets": [
       {
@@ -1545,7 +1644,8 @@
       "🟢 Repositório verificado e oficial",
       "🟢 Código aberto e auditável",
       "🟢 Instaladores e executáveis disponíveis em Releases"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "ShareX/ShareX",
@@ -1554,12 +1654,14 @@
     "stars": 40378,
     "license": "GPL-3.0",
     "topics": "avalonia,capture,color-picker,csharp,dropbox,file-sharing,file-upload,ftp,gif,gif-recorder,image-annotation,ocr,productivity,region-capture,screen-capture,screen-recorder,screenshot,share,sharex,url-shortener",
+    "language": "C#",
     "created_at": "2013-10-08T23:32:10Z",
     "pushed_at": "2026-10-24T12:19:25Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v21.0.0",
+    "released_at": "",
     "platforms": "windows",
     "assets": [
       {
@@ -1581,7 +1683,144 @@
       "🟢 40378 estrelas no GitHub",
       "🟢 Código aberto com licença GPL-3.0",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
-    ]
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "lapce/lapce",
+    "description": "Lightning-fast and Powerful Code Editor written in Rust",
+    "url": "https://github.com/lapce/lapce",
+    "stars": 38954,
+    "license": "Apache-2.0",
+    "topics": "code-editor,developer-tools,rust,text-editor,vim",
+    "language": "Rust",
+    "created_at": "2018-02-06T08:41:06Z",
+    "pushed_at": "2026-10-09T00:41:19Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v0.4.6",
+    "released_at": "2026-01-21T21:44:37Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "lapce-0.4.6-1.fedora41.x86_64.rpm",
+        "size": 16979411,
+        "browser_download_url": "https://github.com/lapce/lapce/releases/download/v0.4.6/lapce-0.4.6-1.fedora41.x86_64.rpm",
+        "digest": "sha256:2631115c3d44518c50fc5ef9f81a3b0c4c9340311cdfc1ddbaa48da1671b8134"
+      },
+      {
+        "name": "lapce-0.4.6-1.fedora42.x86_64.rpm",
+        "size": 16995639,
+        "browser_download_url": "https://github.com/lapce/lapce/releases/download/v0.4.6/lapce-0.4.6-1.fedora42.x86_64.rpm",
+        "digest": "sha256:fb2f1b1970f9426a9230035e7423d8b2ff21f42e0d1fe179b7f210b1d0d174e4"
+      },
+      {
+        "name": "lapce-linux-amd64.tar.gz",
+        "size": 23516158,
+        "browser_download_url": "https://github.com/lapce/lapce/releases/download/v0.4.6/lapce-linux-amd64.tar.gz",
+        "digest": "sha256:7a0945e6862bbe207316ba05ac5d634fc8a55069b61e4ec8989af632250d0984"
+      },
+      {
+        "name": "lapce-linux-arm64.tar.gz",
+        "size": 22702829,
+        "browser_download_url": "https://github.com/lapce/lapce/releases/download/v0.4.6/lapce-linux-arm64.tar.gz",
+        "digest": "sha256:7a249eb41bc9f8ddbd94abb51ccdc1d233e33927e6eb9c63e103ea1d9c1530ec"
+      },
+      {
+        "name": "Lapce-macos.dmg",
+        "size": 45483653,
+        "browser_download_url": "https://github.com/lapce/lapce/releases/download/v0.4.6/Lapce-macos.dmg",
+        "digest": "sha256:d4ba42218148446c265c6a823107a969b3b0dca5e14df834563f2859927228f5"
+      },
+      {
+        "name": "Lapce-windows-portable.zip",
+        "size": 19695035,
+        "browser_download_url": "https://github.com/lapce/lapce/releases/download/v0.4.6/Lapce-windows-portable.zip",
+        "digest": "sha256:23f6b30f6263cae25e933eabdfada6e50c462364a6310f671c02abd2acf1cade"
+      },
+      {
+        "name": "Lapce-windows.msi",
+        "size": 20393984,
+        "browser_download_url": "https://github.com/lapce/lapce/releases/download/v0.4.6/Lapce-windows.msi",
+        "digest": "sha256:1c80a3fbeaafa6577d01b9072ea043c3e1d98d2e7bad774d399fa711de8b736b"
+      },
+      {
+        "name": "lapce.debian.bookworm.amd64.deb",
+        "size": 15400652,
+        "browser_download_url": "https://github.com/lapce/lapce/releases/download/v0.4.6/lapce.debian.bookworm.amd64.deb",
+        "digest": "sha256:f189339ce80de069e3f2c9a27bdbccbe9265ea63efcdf78ebdac3a820fc2ab4a"
+      },
+      {
+        "name": "lapce.debian.bookworm.arm64.deb",
+        "size": 13773344,
+        "browser_download_url": "https://github.com/lapce/lapce/releases/download/v0.4.6/lapce.debian.bookworm.arm64.deb",
+        "digest": "sha256:258a841fb66acdbd793b62e1c8132274005c2d134723c29fa967110ed158ce38"
+      },
+      {
+        "name": "lapce.debian.bullseye.amd64.deb",
+        "size": 15410820,
+        "browser_download_url": "https://github.com/lapce/lapce/releases/download/v0.4.6/lapce.debian.bullseye.amd64.deb",
+        "digest": "sha256:640a2f12410b4aa34bb18faceb4600260a8c4f8d70e0c4e6e143915c478a4340"
+      },
+      {
+        "name": "lapce.debian.bullseye.arm64.deb",
+        "size": 13602888,
+        "browser_download_url": "https://github.com/lapce/lapce/releases/download/v0.4.6/lapce.debian.bullseye.arm64.deb",
+        "digest": "sha256:c9080bfb36a60ae5d5737432d49d73000d56a73a11a9e88884b066ce34a5704d"
+      },
+      {
+        "name": "lapce.ubuntu.jammy.amd64.deb",
+        "size": 16622812,
+        "browser_download_url": "https://github.com/lapce/lapce/releases/download/v0.4.6/lapce.ubuntu.jammy.amd64.deb",
+        "digest": "sha256:da33aee80ed8f5d7f40154f35c2c49f06ec0cd60844fa03dbdd92850296a8bbe"
+      },
+      {
+        "name": "lapce.ubuntu.jammy.arm64.deb",
+        "size": 16043982,
+        "browser_download_url": "https://github.com/lapce/lapce/releases/download/v0.4.6/lapce.ubuntu.jammy.arm64.deb",
+        "digest": "sha256:ce74e8f48399214005060c62ce4b0eda781a43638d47749d5bb2ad77556b0dc8"
+      },
+      {
+        "name": "lapce.ubuntu.noble.amd64.deb",
+        "size": 16554460,
+        "browser_download_url": "https://github.com/lapce/lapce/releases/download/v0.4.6/lapce.ubuntu.noble.amd64.deb",
+        "digest": "sha256:096621faa2f1fe3f43ab40ec5de2de11f3d609468ef914b8656178e55d11792a"
+      },
+      {
+        "name": "lapce.ubuntu.noble.arm64.deb",
+        "size": 16077440,
+        "browser_download_url": "https://github.com/lapce/lapce/releases/download/v0.4.6/lapce.ubuntu.noble.arm64.deb",
+        "digest": "sha256:9a4653d4552183f418df6de7f76e8292d70acda938d66f5082ea0f4342414a3a"
+      },
+      {
+        "name": "lapce.ubuntu.plucky.amd64.deb",
+        "size": 16482964,
+        "browser_download_url": "https://github.com/lapce/lapce/releases/download/v0.4.6/lapce.ubuntu.plucky.amd64.deb",
+        "digest": "sha256:e33ff6011dfa8670665a8a597e34d73f93b27e8b862989b55565f5f0ea38eabc"
+      },
+      {
+        "name": "lapce.ubuntu.plucky.arm64.deb",
+        "size": 15960384,
+        "browser_download_url": "https://github.com/lapce/lapce/releases/download/v0.4.6/lapce.ubuntu.plucky.arm64.deb",
+        "digest": "sha256:7b724a4229d88f51e109f2025c9c6c4afae26c99215af3ee8740d9edb447f253"
+      }
+    ],
+    "kind": "tool",
+    "category": "Ferramentas • Editor de Código",
+    "tags": "editor,ide,rust,programacao,lsp",
+    "summary": "Editor de código leve e rápido escrito em Rust, com suporte a várias linguagens e edição remota.",
+    "trust_score": 100,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório consolidado (8 anos de histórico)",
+      "🟢 Projeto ativo (atualizado há 15 dias)",
+      "🟢 38954 estrelas no GitHub",
+      "🟢 193 contribuidores públicos",
+      "🟢 Código aberto com licença Apache-2.0",
+      "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
+    ],
+    "attestation": "ausente"
   },
   {
     "full_name": "FreeCAD/FreeCAD",
@@ -1590,12 +1829,14 @@
     "stars": 34739,
     "license": "LGPL-2.1",
     "topics": "3d,3d-printing,architecture,bim,cad,cam,civil-engineering,coin,engineering,fem,freecad,linux,macos,mechanical-engineering,opencascade,windows",
+    "language": "C++",
     "created_at": "2012-09-09T08:25:02Z",
     "pushed_at": "2026-10-24T20:03:14Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "1.1.4",
+    "released_at": "",
     "platforms": "linux,macos,windows",
     "assets": [
       {
@@ -1645,7 +1886,8 @@
       "🟢 Repositório verificado e oficial",
       "🟢 Código aberto e auditável",
       "🟢 Instaladores e executáveis disponíveis em Releases"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "telegramdesktop/tdesktop",
@@ -1654,12 +1896,14 @@
     "stars": 33352,
     "license": "GPL-3.0",
     "topics": "messenger,multi-platform,telegram,telegram-desktop,telegram-solution",
+    "language": "C++",
     "created_at": "2014-05-02T12:36:31Z",
     "pushed_at": "2026-10-23T04:07:10Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v7.3.3",
+    "released_at": "",
     "platforms": "linux,macos,windows",
     "assets": [
       {
@@ -1721,7 +1965,8 @@
       "🟢 Repositório verificado e oficial",
       "🟢 Código aberto e auditável",
       "🟢 Instaladores e executáveis disponíveis em Releases"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "koreader/koreader",
@@ -1730,12 +1975,14 @@
     "stars": 30572,
     "license": "AGPL-3.0",
     "topics": "cbz,djvu,djvu-reflow,ebook,ebook-reader,eink,epub,ereader,fb2,kindle,kobo,luajit,opds,pdf,pdf-reflow,pocketbook,reader,reflow,remarkable-tablet,ubuntu-touch",
+    "language": "Lua",
     "created_at": "2013-03-24T13:09:42Z",
     "pushed_at": "2026-10-24T18:27:40Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v2026.07.1",
+    "released_at": "",
     "platforms": "android,linux",
     "assets": [
       {
@@ -1823,7 +2070,8 @@
       "🟢 30572 estrelas no GitHub",
       "🟢 Código aberto com licença AGPL-3.0",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "notepad-plus-plus/notepad-plus-plus",
@@ -1832,12 +2080,14 @@
     "stars": 29669,
     "license": "NOASSERTION",
     "topics": "editor,notepad,notepad-official,windows",
+    "language": "C++",
     "created_at": "2015-03-28T00:05:08Z",
     "pushed_at": "2026-10-23T22:19:55Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v8.9.8.1",
+    "released_at": "",
     "platforms": "windows",
     "assets": [
       {
@@ -1875,7 +2125,8 @@
       "🟢 Repositório verificado e oficial",
       "🟢 Código aberto e auditável",
       "🟢 Instaladores e executáveis disponíveis em Releases"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "Anuken/Mindustry",
@@ -1884,12 +2135,14 @@
     "stars": 29457,
     "license": "GPL-3.0",
     "topics": "android,desktop,game,java,mindustry,mobile-game,multiplatform,rts,sandbox-game,tower-defense",
+    "language": "Java",
     "created_at": "2017-04-30T00:00:00Z",
     "pushed_at": "2026-10-22T08:04:14Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v160.7",
+    "released_at": "",
     "platforms": "java",
     "assets": [
       {
@@ -1911,7 +2164,8 @@
       "🟢 29457 estrelas no GitHub",
       "🟢 Código aberto com licença GPL-3.0",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "keepassxreboot/keepassxc",
@@ -1920,12 +2174,14 @@
     "stars": 29453,
     "license": "NOASSERTION",
     "topics": "cross-platform,hacktoberfest,keepass,keepassxc,linux,macos,password,password-manager,privacy,security,windows,yubikey",
+    "language": "C++",
     "created_at": "2016-02-28T15:52:40Z",
     "pushed_at": "2026-10-23T23:14:20Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "2.8.0",
+    "released_at": "",
     "platforms": "linux,macos,windows",
     "assets": [
       {
@@ -2001,7 +2257,168 @@
       "🟢 29453 estrelas no GitHub",
       "🟡 Sem licença open-source padronizada",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
-    ]
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "wezterm/wezterm",
+    "description": "A GPU-accelerated cross-platform terminal emulator and multiplexer written by @wez and implemented in Rust",
+    "url": "https://github.com/wezterm/wezterm",
+    "stars": 29333,
+    "license": "NOASSERTION",
+    "topics": "rust,serial,serial-port,terminal,terminal-emulator,terminal-emulators",
+    "language": "Rust",
+    "created_at": "2018-02-07T05:35:46Z",
+    "pushed_at": "2026-10-19T05:16:10Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "20240203-110809-5046fc22",
+    "released_at": "2024-02-03T18:32:26Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "WezTerm-20240203-110809-5046fc22-setup.exe",
+        "size": 42321770,
+        "browser_download_url": "https://github.com/wezterm/wezterm/releases/download/20240203-110809-5046fc22/WezTerm-20240203-110809-5046fc22-setup.exe",
+        "digest": null
+      },
+      {
+        "name": "WezTerm-20240203-110809-5046fc22-Ubuntu20.04.AppImage",
+        "size": 49505472,
+        "browser_download_url": "https://github.com/wezterm/wezterm/releases/download/20240203-110809-5046fc22/WezTerm-20240203-110809-5046fc22-Ubuntu20.04.AppImage",
+        "digest": null
+      },
+      {
+        "name": "wezterm-20240203-110809-5046fc22.Debian10.deb",
+        "size": 30526688,
+        "browser_download_url": "https://github.com/wezterm/wezterm/releases/download/20240203-110809-5046fc22/wezterm-20240203-110809-5046fc22.Debian10.deb",
+        "digest": null
+      },
+      {
+        "name": "wezterm-20240203-110809-5046fc22.Debian10.tar.xz",
+        "size": 30440576,
+        "browser_download_url": "https://github.com/wezterm/wezterm/releases/download/20240203-110809-5046fc22/wezterm-20240203-110809-5046fc22.Debian10.tar.xz",
+        "digest": null
+      },
+      {
+        "name": "wezterm-20240203-110809-5046fc22.Debian11.deb",
+        "size": 30639140,
+        "browser_download_url": "https://github.com/wezterm/wezterm/releases/download/20240203-110809-5046fc22/wezterm-20240203-110809-5046fc22.Debian11.deb",
+        "digest": null
+      },
+      {
+        "name": "wezterm-20240203-110809-5046fc22.Debian11.tar.xz",
+        "size": 30445432,
+        "browser_download_url": "https://github.com/wezterm/wezterm/releases/download/20240203-110809-5046fc22/wezterm-20240203-110809-5046fc22.Debian11.tar.xz",
+        "digest": null
+      },
+      {
+        "name": "wezterm-20240203-110809-5046fc22.Debian12.arm64.deb",
+        "size": 28477484,
+        "browser_download_url": "https://github.com/wezterm/wezterm/releases/download/20240203-110809-5046fc22/wezterm-20240203-110809-5046fc22.Debian12.arm64.deb",
+        "digest": null
+      },
+      {
+        "name": "wezterm-20240203-110809-5046fc22.Debian12.deb",
+        "size": 30714456,
+        "browser_download_url": "https://github.com/wezterm/wezterm/releases/download/20240203-110809-5046fc22/wezterm-20240203-110809-5046fc22.Debian12.deb",
+        "digest": null
+      },
+      {
+        "name": "wezterm-20240203-110809-5046fc22.Debian12.tar.xz",
+        "size": 30433096,
+        "browser_download_url": "https://github.com/wezterm/wezterm/releases/download/20240203-110809-5046fc22/wezterm-20240203-110809-5046fc22.Debian12.tar.xz",
+        "digest": null
+      },
+      {
+        "name": "wezterm-20240203-110809-5046fc22.Ubuntu20.04.deb",
+        "size": 30703868,
+        "browser_download_url": "https://github.com/wezterm/wezterm/releases/download/20240203-110809-5046fc22/wezterm-20240203-110809-5046fc22.Ubuntu20.04.deb",
+        "digest": null
+      },
+      {
+        "name": "wezterm-20240203-110809-5046fc22.Ubuntu20.04.tar.xz",
+        "size": 30515256,
+        "browser_download_url": "https://github.com/wezterm/wezterm/releases/download/20240203-110809-5046fc22/wezterm-20240203-110809-5046fc22.Ubuntu20.04.tar.xz",
+        "digest": null
+      },
+      {
+        "name": "wezterm-20240203-110809-5046fc22.Ubuntu22.04.arm64.deb",
+        "size": 33303026,
+        "browser_download_url": "https://github.com/wezterm/wezterm/releases/download/20240203-110809-5046fc22/wezterm-20240203-110809-5046fc22.Ubuntu22.04.arm64.deb",
+        "digest": null
+      },
+      {
+        "name": "wezterm-20240203-110809-5046fc22.Ubuntu22.04.deb",
+        "size": 34300188,
+        "browser_download_url": "https://github.com/wezterm/wezterm/releases/download/20240203-110809-5046fc22/wezterm-20240203-110809-5046fc22.Ubuntu22.04.deb",
+        "digest": null
+      },
+      {
+        "name": "wezterm-20240203-110809-5046fc22.Ubuntu22.04.tar.xz",
+        "size": 30508792,
+        "browser_download_url": "https://github.com/wezterm/wezterm/releases/download/20240203-110809-5046fc22/wezterm-20240203-110809-5046fc22.Ubuntu22.04.tar.xz",
+        "digest": null
+      },
+      {
+        "name": "wezterm-20240203_110809_5046fc22-1.centos8.x86_64.rpm",
+        "size": 34561128,
+        "browser_download_url": "https://github.com/wezterm/wezterm/releases/download/20240203-110809-5046fc22/wezterm-20240203_110809_5046fc22-1.centos8.x86_64.rpm",
+        "digest": null
+      },
+      {
+        "name": "wezterm-20240203_110809_5046fc22-1.centos9.x86_64.rpm",
+        "size": 33867680,
+        "browser_download_url": "https://github.com/wezterm/wezterm/releases/download/20240203-110809-5046fc22/wezterm-20240203_110809_5046fc22-1.centos9.x86_64.rpm",
+        "digest": null
+      },
+      {
+        "name": "wezterm-20240203_110809_5046fc22-1.fedora37.x86_64.rpm",
+        "size": 34102597,
+        "browser_download_url": "https://github.com/wezterm/wezterm/releases/download/20240203-110809-5046fc22/wezterm-20240203_110809_5046fc22-1.fedora37.x86_64.rpm",
+        "digest": null
+      },
+      {
+        "name": "wezterm-20240203_110809_5046fc22-1.fedora38.x86_64.rpm",
+        "size": 34185663,
+        "browser_download_url": "https://github.com/wezterm/wezterm/releases/download/20240203-110809-5046fc22/wezterm-20240203_110809_5046fc22-1.fedora38.x86_64.rpm",
+        "digest": null
+      },
+      {
+        "name": "wezterm-20240203_110809_5046fc22-1.fedora39.x86_64.rpm",
+        "size": 34179903,
+        "browser_download_url": "https://github.com/wezterm/wezterm/releases/download/20240203-110809-5046fc22/wezterm-20240203_110809_5046fc22-1.fedora39.x86_64.rpm",
+        "digest": null
+      },
+      {
+        "name": "WezTerm-macos-20240203-110809-5046fc22.zip",
+        "size": 102967427,
+        "browser_download_url": "https://github.com/wezterm/wezterm/releases/download/20240203-110809-5046fc22/WezTerm-macos-20240203-110809-5046fc22.zip",
+        "digest": null
+      },
+      {
+        "name": "WezTerm-windows-20240203-110809-5046fc22.zip",
+        "size": 66162319,
+        "browser_download_url": "https://github.com/wezterm/wezterm/releases/download/20240203-110809-5046fc22/WezTerm-windows-20240203-110809-5046fc22.zip",
+        "digest": null
+      }
+    ],
+    "kind": "tool",
+    "category": "Ferramentas • Terminal",
+    "tags": "terminal,rust,gpu,abas,multiplexador",
+    "summary": "Terminal acelerado pela GPU, feito em Rust, com abas, painéis divididos e configuração em Lua.",
+    "trust_score": 80,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório consolidado (8 anos de histórico)",
+      "🟢 Projeto ativo (atualizado há 5 dias)",
+      "🟢 29333 estrelas no GitHub",
+      "🟢 461 contribuidores públicos",
+      "🟡 Sem licença open-source padronizada",
+      "🟡 Release antiga sem hash SHA-256 pré-calculado pelo GitHub"
+    ],
+    "attestation": ""
   },
   {
     "full_name": "4ian/GDevelop",
@@ -2010,12 +2427,14 @@
     "stars": 27990,
     "license": "NOASSERTION",
     "topics": "2d-game,2d-game-engine,3d,3d-game,3d-game-engine,game,game-development,game-engine,gamedev,gamemaker,gdevelop,hacktoberfest,html5,html5-game-engine,javascript,multiplayer,no-code,open-source,vibe-coding",
+    "language": "JavaScript",
     "created_at": "2014-06-01T00:00:00Z",
     "pushed_at": "2026-10-24T18:54:04Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v5.6.285",
+    "released_at": "",
     "platforms": "linux,macos,windows",
     "assets": [
       {
@@ -2073,7 +2492,8 @@
       "🟢 27990 estrelas no GitHub",
       "🟡 Sem licença open-source padronizada",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "icsharpcode/ILSpy",
@@ -2082,12 +2502,14 @@
     "stars": 26802,
     "license": "MIT",
     "topics": "c-sharp,decompile,decompiler,decompiler-engine,dotnet,dotnetcore,ilspy,mono,pdb,unity",
+    "language": "C#",
     "created_at": "2011-02-04T11:24:20Z",
     "pushed_at": "2026-10-24T19:32:32Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v11.1",
+    "released_at": "",
     "platforms": "linux,macos,windows",
     "assets": [
       {
@@ -2157,7 +2579,8 @@
       "🟢 26802 estrelas no GitHub",
       "🟢 Código aberto com licença MIT",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "Devolutions/UniGetUI",
@@ -2166,12 +2589,14 @@
     "stars": 26744,
     "license": "MIT",
     "topics": "chocolatey,cli,npm,package,package-manager,pip,scoop,unigetui,windows,windows-10,windows-11,winget",
+    "language": "C#",
     "created_at": "2021-06-15T12:57:58Z",
     "pushed_at": "2026-10-23T20:32:35Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v2026.3.2",
+    "released_at": "",
     "platforms": "linux,macos,windows",
     "assets": [
       {
@@ -2263,7 +2688,8 @@
       "🟢 Repositório verificado e oficial",
       "🟢 Código aberto e auditável",
       "🟢 Instaladores e executáveis disponíveis em Releases"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "mozilla-ai/llamafile",
@@ -2272,12 +2698,14 @@
     "stars": 26482,
     "license": "NOASSERTION",
     "topics": "cross-platform,gguf,llama-cpp,local-ai,local-inference,local-llm,open-source-ai,single-file-executable,speech-to-text",
+    "language": "C++",
     "created_at": "2023-09-10T21:12:32Z",
     "pushed_at": "2026-10-12T00:26:41Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "0.10.6",
+    "released_at": "",
     "platforms": "",
     "assets": [
       {
@@ -2333,7 +2761,8 @@
       "🟢 Repositório verificado e oficial",
       "🟢 Código aberto e auditável",
       "🟢 Instaladores e executáveis disponíveis em Releases"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "radareorg/radare2",
@@ -2342,12 +2771,14 @@
     "stars": 25141,
     "license": "NOASSERTION",
     "topics": "binary-analysis,c,commandline,disassembler,forensics,hacktoberfest,malware-analysis,radare2,reverse-engineering,security",
+    "language": "C",
     "created_at": "2012-07-03T07:42:26Z",
     "pushed_at": "2026-10-24T21:50:07Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "6.2.4",
+    "released_at": "",
     "platforms": "android,linux,macos",
     "assets": [
       {
@@ -2427,7 +2858,8 @@
       "🟢 Repositório verificado e oficial",
       "🟢 Código aberto e auditável",
       "🟢 Instaladores e executáveis disponíveis em Releases"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "HandBrake/HandBrake",
@@ -2436,12 +2868,14 @@
     "stars": 24777,
     "license": "NOASSERTION",
     "topics": "gplv2,multi-platform,video-transcoding",
+    "language": "C",
     "created_at": "2015-08-22T16:32:28Z",
     "pushed_at": "2026-10-23T14:27:10Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "1.11.2",
+    "released_at": "",
     "platforms": "linux,macos,windows",
     "assets": [
       {
@@ -2529,7 +2963,8 @@
       "🟢 24777 estrelas no GitHub",
       "🟡 Sem licença open-source padronizada",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "rizinorg/cutter",
@@ -2538,12 +2973,14 @@
     "stars": 20085,
     "license": "GPL-3.0",
     "topics": "cutter,debugger,gui,reverse-engineering,security",
+    "language": "C++",
     "created_at": "2017-09-25T09:50:51Z",
     "pushed_at": "2026-09-11T12:44:05Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v2.5.0",
+    "released_at": "",
     "platforms": "linux,macos,windows",
     "assets": [
       {
@@ -2589,7 +3026,8 @@
       "🟢 20085 estrelas no GitHub",
       "🟢 Código aberto com licença GPL-3.0",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "ppy/osu",
@@ -2598,12 +3036,14 @@
     "stars": 19319,
     "license": "MIT",
     "topics": "beatmap,catch,game,mania,osu,rhythm,taiko",
+    "language": "C#",
     "created_at": "2014-12-01T00:00:00Z",
     "pushed_at": "2026-10-24T05:23:34Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "2026.1005.0-lazer",
+    "released_at": "",
     "platforms": "android,linux,windows",
     "assets": [
       {
@@ -2637,7 +3077,8 @@
       "🟢 19319 estrelas no GitHub",
       "🟢 Código aberto com licença MIT",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "moonlight-stream/moonlight-qt",
@@ -2646,12 +3087,14 @@
     "stars": 19229,
     "license": "GPL-3.0",
     "topics": "gamestream,linux-app,macos-app,moonlight,nvidia,qt,sdl2,steam-link,windows-app",
+    "language": "C++",
     "created_at": "2018-04-28T22:41:42Z",
     "pushed_at": "2026-10-23T04:03:30Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v6.2.0",
+    "released_at": "",
     "platforms": "linux,macos,windows",
     "assets": [
       {
@@ -2685,7 +3128,8 @@
       "🟢 19229 estrelas no GitHub",
       "🟢 Código aberto com licença GPL-3.0",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "audacity/audacity",
@@ -2694,12 +3138,14 @@
     "stars": 18822,
     "license": "NOASSERTION",
     "topics": "audio,cross-platform,editor,gplv2,qt-application,qt-qml,wxwidgets-applications",
+    "language": "C++",
     "created_at": "2015-03-26T10:46:17Z",
     "pushed_at": "2026-10-23T13:36:39Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "Audacity-4.0.1",
+    "released_at": "",
     "platforms": "linux,macos,windows",
     "assets": [
       {
@@ -2769,7 +3215,8 @@
       "🟢 18822 estrelas no GitHub",
       "🟡 Sem licença open-source padronizada",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "OpenRA/OpenRA",
@@ -2778,12 +3225,14 @@
     "stars": 17640,
     "license": "GPL-3.0",
     "topics": "command-and-conquer,cross-platform,csharp,dotnet,dune-2000,engine,game,game-engine,hacktoberfest,openra,real-time-strategy,red-alert,rts,strategy-game-engine,tiberian-dawn",
+    "language": "C#",
     "created_at": "2010-06-01T00:00:00Z",
     "pushed_at": "2026-10-24T14:13:02Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "release-20250330",
+    "released_at": "",
     "platforms": "linux,macos,windows",
     "assets": [
       {
@@ -2847,7 +3296,8 @@
       "🟢 17640 estrelas no GitHub",
       "🟢 Código aberto com licença GPL-3.0",
       "🟡 Release antiga sem hash SHA-256 pré-calculado pelo GitHub"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "OpenRCT2/OpenRCT2",
@@ -2856,12 +3306,14 @@
     "stars": 16496,
     "license": "GPL-3.0",
     "topics": "c-plus-plus,cmake,cpp,discord,game,hacktoberfest,linux,msbuild,multiplayer,opengl,openrct2,roller-coaster,roller-coaster-tycoon,sdl2,server,simulation,visual-studio,windows",
+    "language": "C++",
     "created_at": "2014-04-01T00:00:00Z",
     "pushed_at": "2026-10-23T21:10:59Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v0.5.6",
+    "released_at": "",
     "platforms": "android,linux,macos,windows",
     "assets": [
       {
@@ -2955,7 +3407,8 @@
       "🟢 16496 estrelas no GitHub",
       "🟢 Código aberto com licença GPL-3.0",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "PCSX2/pcsx2",
@@ -2964,12 +3417,14 @@
     "stars": 15901,
     "license": "GPL-3.0",
     "topics": "cpp,emulation,emulator,pcsx2,ps2",
+    "language": "C++",
     "created_at": "2013-12-22T17:56:48Z",
     "pushed_at": "2026-10-24T14:03:58Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v2.8.2",
+    "released_at": "",
     "platforms": "linux,macos,windows",
     "assets": [
       {
@@ -3013,7 +3468,8 @@
       "🟢 Repositório verificado e oficial",
       "🟢 Código aberto e auditável",
       "🟢 Instaladores e executáveis disponíveis em Releases"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "Flow-Launcher/Flow.Launcher",
@@ -3022,12 +3478,14 @@
     "stars": 15866,
     "license": "MIT",
     "topics": "alfred,application-launcher,desktop,finder,flow-launcher,hacktoberfest,keyboard-launcher,launcher,launchy,listary,plugins,portable,productivity,productivity-tools,raycast,search,spotlight,windows,wox",
+    "language": "C#",
     "created_at": "2020-04-21T08:12:15Z",
     "pushed_at": "2026-10-24T12:08:13Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v2.1.4",
+    "released_at": "",
     "platforms": "windows",
     "assets": [
       {
@@ -3049,7 +3507,8 @@
       "🟢 15866 estrelas no GitHub",
       "🟢 Código aberto com licença MIT",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "mltframework/shotcut",
@@ -3058,12 +3517,14 @@
     "stars": 15490,
     "license": "GPL-3.0",
     "topics": "cross-platform,gplv3,mlt,shotcut,video-editor",
+    "language": "C++",
     "created_at": "2012-04-23T22:37:04Z",
     "pushed_at": "2026-10-24T17:18:49Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v26.9.27",
+    "released_at": "",
     "platforms": "linux,macos,windows",
     "assets": [
       {
@@ -3125,7 +3586,8 @@
       "🟢 Repositório verificado e oficial",
       "🟢 Código aberto e auditável",
       "🟢 Instaladores e executáveis disponíveis em Releases"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "transmission/transmission",
@@ -3134,12 +3596,14 @@
     "stars": 15343,
     "license": "NOASSERTION",
     "topics": "",
+    "language": "C++",
     "created_at": "2015-05-05T23:53:02Z",
     "pushed_at": "2026-10-23T02:01:16Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "4.1.4",
+    "released_at": "",
     "platforms": "macos,windows",
     "assets": [
       {
@@ -3183,7 +3647,66 @@
       "🟢 Repositório verificado e oficial",
       "🟢 Código aberto e auditável",
       "🟢 Instaladores e executáveis disponíveis em Releases"
-    ]
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "neovide/neovide",
+    "description": "No Nonsense Neovim Client in Rust",
+    "url": "https://github.com/neovide/neovide",
+    "stars": 15283,
+    "license": "MIT",
+    "topics": "gpu,neovim,neovim-guis,rust,skia",
+    "language": "Rust",
+    "created_at": "2019-12-06T20:51:39Z",
+    "pushed_at": "2026-10-24T05:19:57Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "0.16.2",
+    "released_at": "2026-04-14T19:42:12Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "Neovide-aarch64-apple-darwin.dmg",
+        "size": 12141993,
+        "browser_download_url": "https://github.com/neovide/neovide/releases/download/0.16.2/Neovide-aarch64-apple-darwin.dmg",
+        "digest": "sha256:5eb745ea7f20cf00491a8ffd8d793c6169ef1c6e1a0f75ae8be40571e65c6b26"
+      },
+      {
+        "name": "Neovide-x86_64-apple-darwin.dmg",
+        "size": 12537129,
+        "browser_download_url": "https://github.com/neovide/neovide/releases/download/0.16.2/Neovide-x86_64-apple-darwin.dmg",
+        "digest": "sha256:e84f7e585a688ac29073927fedeb1ff40419a558fffd9c021cb14a29db10bb41"
+      },
+      {
+        "name": "neovide.AppImage",
+        "size": 13003256,
+        "browser_download_url": "https://github.com/neovide/neovide/releases/download/0.16.2/neovide.AppImage",
+        "digest": "sha256:ef617c743d7425267ac3ae2f1761ac8fc801683bd3e013758eb68247a53c6812"
+      },
+      {
+        "name": "neovide.msi",
+        "size": 12914688,
+        "browser_download_url": "https://github.com/neovide/neovide/releases/download/0.16.2/neovide.msi",
+        "digest": "sha256:e44830297bb8eae67f4828265db2a7b813f9d9c022ceb5efa61271d0e6017532"
+      }
+    ],
+    "kind": "tool",
+    "category": "Ferramentas • Editor de Código",
+    "tags": "editor,neovim,rust,gpu,programacao",
+    "summary": "Interface gráfica para o Neovim feita em Rust, com animações suaves e renderização pela GPU.",
+    "trust_score": 100,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório consolidado (6 anos de histórico)",
+      "🟢 Projeto ativo (atualizado há 0 dias)",
+      "🟢 15283 estrelas no GitHub",
+      "🟢 242 contribuidores públicos",
+      "🟢 Código aberto com licença MIT",
+      "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
+    ],
+    "attestation": "ausente"
   },
   {
     "full_name": "hrydgard/ppsspp",
@@ -3192,12 +3715,14 @@
     "stars": 14744,
     "license": "NOASSERTION",
     "topics": "emulators,ppsspp,psp",
+    "language": "C++",
     "created_at": "2012-11-01T08:41:48Z",
     "pushed_at": "2026-10-24T20:15:49Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v1.20.4",
+    "released_at": "",
     "platforms": "linux,macos,windows",
     "assets": [
       {
@@ -3231,7 +3756,78 @@
       "🟢 14744 estrelas no GitHub",
       "🟡 Sem licença open-source padronizada",
       "🟡 Release antiga sem hash SHA-256 pré-calculado pelo GitHub"
-    ]
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "espanso/espanso",
+    "description": "A Privacy-first, Cross-platform Text Expander written in Rust",
+    "url": "https://github.com/espanso/espanso",
+    "stars": 14686,
+    "license": "GPL-3.0",
+    "topics": "espanso,linux,macos,productivity,productivity-tools,rust,text-expander,windows",
+    "language": "Rust",
+    "created_at": "2019-08-30T07:16:58Z",
+    "pushed_at": "2026-10-24T22:27:59Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v2.4.1",
+    "released_at": "2026-09-02T17:17:57Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "espanso-debian-wayland-amd64.deb",
+        "size": 4926172,
+        "browser_download_url": "https://github.com/espanso/espanso/releases/download/v2.4.1/espanso-debian-wayland-amd64.deb",
+        "digest": "sha256:d4b3b284c6fabf6f2a73dc269189fb5a06611547529853c87b58d07aa7d295ae"
+      },
+      {
+        "name": "espanso-debian-x11-amd64.deb",
+        "size": 4792712,
+        "browser_download_url": "https://github.com/espanso/espanso/releases/download/v2.4.1/espanso-debian-x11-amd64.deb",
+        "digest": "sha256:190305ea01b6fe24c87867532fb1786ad5622fd2d5deeefb0ecace26ef4078c7"
+      },
+      {
+        "name": "Espanso-Mac-Universal.dmg",
+        "size": 16716368,
+        "browser_download_url": "https://github.com/espanso/espanso/releases/download/v2.4.1/Espanso-Mac-Universal.dmg",
+        "digest": "sha256:e6aee2d9446d7625e57dafc6613add21fc7c9f709ba42f08b5ada844c6f7110a"
+      },
+      {
+        "name": "Espanso-Win-Installer-x86_64.exe",
+        "size": 7296664,
+        "browser_download_url": "https://github.com/espanso/espanso/releases/download/v2.4.1/Espanso-Win-Installer-x86_64.exe",
+        "digest": "sha256:995c9c8ae9df4b1c464caa2595e478ed35521e1433f95d0945eed8ecbfc7a1f2"
+      },
+      {
+        "name": "Espanso-Win-Portable-x86_64.zip",
+        "size": 7774565,
+        "browser_download_url": "https://github.com/espanso/espanso/releases/download/v2.4.1/Espanso-Win-Portable-x86_64.zip",
+        "digest": "sha256:ecc6924e2ffbe3663b9a9cedb49a4b90d221a4c23e7d462be32be8efc8e2a8a8"
+      },
+      {
+        "name": "Espanso-X11.AppImage",
+        "size": 20317376,
+        "browser_download_url": "https://github.com/espanso/espanso/releases/download/v2.4.1/Espanso-X11.AppImage",
+        "digest": "sha256:58b1b9c270c2416f3c6cb9069dfbcfb882d82de3369cf675861102936fc5f540"
+      }
+    ],
+    "kind": "app",
+    "category": "Produtividade • Texto",
+    "tags": "produtividade,atalhos,texto,rust,automacao",
+    "summary": "Expansor de texto feito em Rust: digite um atalho e ele vira uma frase, um e-mail ou um trecho de código.",
+    "trust_score": 100,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório consolidado (7 anos de histórico)",
+      "🟢 Projeto ativo (atualizado há 0 dias)",
+      "🟢 14686 estrelas no GitHub",
+      "🟢 69 contribuidores públicos",
+      "🟢 Código aberto com licença GPL-3.0",
+      "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
+    ],
+    "attestation": "ausente"
   },
   {
     "full_name": "luanti-org/luanti",
@@ -3240,12 +3836,14 @@
     "stars": 13769,
     "license": "NOASSERTION",
     "topics": "c-plus-plus,cpp17,game-engine,lua,luanti,minetest,voxel,voxel-engine",
+    "language": "C++",
     "created_at": "2011-08-07T13:48:36Z",
     "pushed_at": "2026-10-22T18:07:40Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "5.17.0",
+    "released_at": "",
     "platforms": "android,macos,windows",
     "assets": [
       {
@@ -3315,7 +3913,8 @@
       "🟢 13769 estrelas no GitHub",
       "🟡 Sem licença open-source padronizada",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "heroiclabs/nakama",
@@ -3324,12 +3923,14 @@
     "stars": 13578,
     "license": "Apache-2.0",
     "topics": "backend,cpp,csharp,dotnet,game,game-backend,game-framework,gamedev,go,godot,javascript,lua,multiplayer,nakama,server,typescript,unity,unity3d,unreal,unreal-engine",
+    "language": "Go",
     "created_at": "2017-01-15T00:00:00Z",
     "pushed_at": "2026-10-22T17:55:02Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v3.41.0",
+    "released_at": "",
     "platforms": "linux,windows",
     "assets": [
       {
@@ -3375,7 +3976,8 @@
       "🟢 13578 estrelas no GitHub",
       "🟢 Código aberto com licença Apache-2.0",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "CleverRaven/Cataclysm-DDA",
@@ -3384,12 +3986,14 @@
     "stars": 13405,
     "license": "NOASSERTION",
     "topics": "c-plus-plus,cataclysm,game,hacktoberfest,zombies",
+    "language": "C++",
     "created_at": "2013-03-01T00:00:00Z",
     "pushed_at": "2026-10-24T19:25:58Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "0.I-1",
+    "released_at": "",
     "platforms": "android,linux,macos,windows",
     "assets": [
       {
@@ -3459,7 +4063,8 @@
       "🟢 13405 estrelas no GitHub",
       "🟡 Sem licença open-source padronizada",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "mapeditor/tiled",
@@ -3468,12 +4073,14 @@
     "stars": 12994,
     "license": "NOASSERTION",
     "topics": "c-plus-plus,editor,game,game-development,hacktoberfest,java,level,level-editor,map-editor,qbs,qt,qt-framework,tile,tilesets",
+    "language": "C++",
     "created_at": "2008-09-01T00:00:00Z",
     "pushed_at": "2026-10-24T08:41:52Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v1.12.2",
+    "released_at": "",
     "platforms": "linux,macos,windows",
     "assets": [
       {
@@ -3519,7 +4126,8 @@
       "🟢 12994 estrelas no GitHub",
       "🟡 Sem licença open-source padronizada",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "Heroic-Games-Launcher/HeroicGamesLauncher",
@@ -3528,12 +4136,14 @@
     "stars": 12508,
     "license": "GPL-3.0",
     "topics": "amazon-prime,electron,epic-games-launcher,epic-games-store,epic-store,gaming,gog,gog-galaxy,heroic-games-launcher,linux,play-games,proton,steam,wine",
+    "language": "TypeScript",
     "created_at": "2020-12-30T12:51:57Z",
     "pushed_at": "2026-10-24T19:29:50Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v2.22.4",
+    "released_at": "",
     "platforms": "linux,macos,windows",
     "assets": [
       {
@@ -3645,7 +4255,8 @@
       "🟢 12508 estrelas no GitHub",
       "🟢 Código aberto com licença GPL-3.0",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "LostRuins/koboldcpp",
@@ -3654,12 +4265,14 @@
     "stars": 12057,
     "license": "AGPL-3.0",
     "topics": "gemma,ggml,gguf,koboldai,koboldcpp,language-model,llama,llamacpp,llm,mistral",
+    "language": "C++",
     "created_at": "2023-03-16T02:07:02Z",
     "pushed_at": "2026-10-24T10:52:29Z",
     "fork": true,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v1.123.1",
+    "released_at": "",
     "platforms": "windows",
     "assets": [
       {
@@ -3691,7 +4304,8 @@
       "🟢 Repositório verificado e oficial",
       "🟢 Código aberto e auditável",
       "🟢 Instaladores e executáveis disponíveis em Releases"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "yairm210/Unciv",
@@ -3700,12 +4314,14 @@
     "stars": 11484,
     "license": "MPL-2.0",
     "topics": "4x,4x-strategy-game,android,civ,civilization,civilization-v,game,itch,libgdx,strategy-game",
+    "language": "Kotlin",
     "created_at": "2018-05-01T00:00:00Z",
     "pushed_at": "2026-10-24T19:16:46Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "4.22.13-patch1",
+    "released_at": "",
     "platforms": "android,java,linux,windows",
     "assets": [
       {
@@ -3757,7 +4373,8 @@
       "🟢 11484 estrelas no GitHub",
       "🟢 Código aberto com licença MPL-2.0",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "dnSpyEx/dnSpy",
@@ -3766,12 +4383,14 @@
     "stars": 11326,
     "license": "GPL-3.0",
     "topics": "baml,csharp,debug,debugger,decompile,decompiler,dotnet,dotnetcore,dotnetframework,malware-analysis,mono,reverse-engineering,unity,vbnet,xaml",
+    "language": "C#",
     "created_at": "2021-05-27T12:04:22Z",
     "pushed_at": "2026-10-17T20:34:07Z",
     "fork": true,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v6.6.0",
+    "released_at": "",
     "platforms": "windows",
     "assets": [
       {
@@ -3797,7 +4416,8 @@
       "🟢 Repositório verificado e oficial",
       "🟢 Código aberto e auditável",
       "🟢 Instaladores e executáveis disponíveis em Releases"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "PrismLauncher/PrismLauncher",
@@ -3806,12 +4426,14 @@
     "stars": 10892,
     "license": "GPL-3.0",
     "topics": "cpp,cpp20,fabricmc,forge,linux,minecraft,minecraft-launcher,modrinth,multimc,prismlauncher,qt,qt6,quiltmc",
+    "language": "C++",
     "created_at": "2022-10-17T19:18:14Z",
     "pushed_at": "2026-10-24T17:06:09Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "11.1.1",
+    "released_at": "",
     "platforms": "linux,macos,windows",
     "assets": [
       {
@@ -3935,7 +4557,8 @@
       "🟢 10892 estrelas no GitHub",
       "🟢 Código aberto com licença GPL-3.0",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "cemu-project/Cemu",
@@ -3944,12 +4567,14 @@
     "stars": 10023,
     "license": "MPL-2.0",
     "topics": "cemu,cemu-emulator,cpp,emulation,emulator,nintendo,wiiu",
+    "language": "C++",
     "created_at": "2022-08-22T20:19:02Z",
     "pushed_at": "2026-10-22T21:38:58Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v2.6",
+    "released_at": "",
     "platforms": "linux,macos,windows",
     "assets": [
       {
@@ -3989,7 +4614,8 @@
       "🟢 10023 estrelas no GitHub",
       "🟢 Código aberto com licença MPL-2.0",
       "🟡 Parte dos instaladores possui hash SHA-256 oficial"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "diasurgical/DevilutionX",
@@ -3998,12 +4624,14 @@
     "stars": 9934,
     "license": "NOASSERTION",
     "topics": "debian,devilution,diablo,game,hacktober,hacktoberfest,homebrew",
+    "language": "C++",
     "created_at": "2018-08-02T17:19:01Z",
     "pushed_at": "2026-10-24T14:36:54Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "1.5.5",
+    "released_at": "",
     "platforms": "android,linux,macos,windows",
     "assets": [
       {
@@ -4043,7 +4671,78 @@
       "🟢 9934 estrelas no GitHub",
       "🟡 Sem licença open-source padronizada",
       "🟡 Release antiga sem hash SHA-256 pré-calculado pelo GitHub"
-    ]
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "gyroflow/gyroflow",
+    "description": "Video stabilization using gyroscope data",
+    "url": "https://github.com/gyroflow/gyroflow",
+    "stars": 9631,
+    "license": "GPL-3.0",
+    "topics": "fpv,gopro,gpu,gpu-computing,gyroscope,insta360,rolling-shutter-undistortion,rust,sony-alpha-cameras,stabilization,video,video-processing",
+    "language": "Rust",
+    "created_at": "2021-11-11T22:55:00Z",
+    "pushed_at": "2026-10-24T18:27:29Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v1.6.3",
+    "released_at": "2025-09-04T14:41:37Z",
+    "platforms": "android,linux,macos,windows",
+    "assets": [
+      {
+        "name": "Gyroflow-linux64.AppImage",
+        "size": 124791288,
+        "browser_download_url": "https://github.com/gyroflow/gyroflow/releases/download/v1.6.3/Gyroflow-linux64.AppImage",
+        "digest": "sha256:c4c2e15dd264cbdaba7a1824036718c7f604161236bf571132be0564c96535a5"
+      },
+      {
+        "name": "Gyroflow-linux64.tar.gz",
+        "size": 62979603,
+        "browser_download_url": "https://github.com/gyroflow/gyroflow/releases/download/v1.6.3/Gyroflow-linux64.tar.gz",
+        "digest": "sha256:98625e3ce318964d49d3c66f2dc302a9e6c4c138233d9aa6cbd986f687c421c3"
+      },
+      {
+        "name": "Gyroflow-mac-universal.dmg",
+        "size": 88593266,
+        "browser_download_url": "https://github.com/gyroflow/gyroflow/releases/download/v1.6.3/Gyroflow-mac-universal.dmg",
+        "digest": "sha256:fbe26793c639f1410d8995debad188721587108cb6a74224e879f79e4bb8a1c0"
+      },
+      {
+        "name": "Gyroflow-windows-arm64.zip",
+        "size": 39442127,
+        "browser_download_url": "https://github.com/gyroflow/gyroflow/releases/download/v1.6.3/Gyroflow-windows-arm64.zip",
+        "digest": "sha256:6011bf616a9bb5eacf4c3d80675cfba774debf824dd9f792eddf85ed7d0f85a3"
+      },
+      {
+        "name": "Gyroflow-windows64.zip",
+        "size": 47470947,
+        "browser_download_url": "https://github.com/gyroflow/gyroflow/releases/download/v1.6.3/Gyroflow-windows64.zip",
+        "digest": "sha256:37ef4064adb6991ae2251e283e5888a02ea00024d0a6f1353501892bb5367e21"
+      },
+      {
+        "name": "Gyroflow.apk",
+        "size": 46101794,
+        "browser_download_url": "https://github.com/gyroflow/gyroflow/releases/download/v1.6.3/Gyroflow.apk",
+        "digest": "sha256:21300df1a575eeffc6f8d42cbc58a6a8bb445046b4ae2a12811ada8e30e7fb35"
+      }
+    ],
+    "kind": "app",
+    "category": "Mídia & Vídeo",
+    "tags": "video,estabilizacao,giroscopio,rust,gopro",
+    "summary": "Estabiliza vídeos usando os dados do giroscópio da câmera (GoPro, drones, celulares); feito em Rust.",
+    "trust_score": 100,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório consolidado (4 anos de histórico)",
+      "🟢 Projeto ativo (atualizado há 0 dias)",
+      "🟢 9631 estrelas no GitHub",
+      "🟢 44 contribuidores públicos",
+      "🟢 Código aberto com licença GPL-3.0",
+      "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
+    ],
+    "attestation": "ausente"
   },
   {
     "full_name": "Open-Shell/Open-Shell-Menu",
@@ -4052,12 +4751,14 @@
     "stars": 9433,
     "license": "MIT",
     "topics": "classic-menu,classic-shell,classic-start,microsoft-windows,open-shell,open-shell-menu,start-menu,startme,windows,windows-10,windows10",
+    "language": "C++",
     "created_at": "2018-02-07T04:32:27Z",
     "pushed_at": "2026-10-17T10:14:33Z",
     "fork": true,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v4.4.198",
+    "released_at": "",
     "platforms": "windows",
     "assets": [
       {
@@ -4083,7 +4784,8 @@
       "🟢 Repositório verificado e oficial",
       "🟢 Código aberto e auditável",
       "🟢 Instaladores e executáveis disponíveis em Releases"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "azahar-emu/azahar",
@@ -4092,12 +4794,14 @@
     "stars": 8460,
     "license": "GPL-3.0",
     "topics": "",
+    "language": "C++",
     "created_at": "2024-03-04T21:08:59Z",
     "pushed_at": "2026-10-24T10:05:51Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "2126.2",
+    "released_at": "",
     "platforms": "android,linux,macos,windows",
     "assets": [
       {
@@ -4143,7 +4847,60 @@
       "🟢 8460 estrelas no GitHub",
       "🟢 Código aberto com licença GPL-3.0",
       "🟡 Release antiga sem hash SHA-256 pré-calculado pelo GitHub"
-    ]
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "a-b-street/abstreet",
+    "description": "Transportation planning and traffic simulation software for creating cities friendlier to walking, biking, and public transit",
+    "url": "https://github.com/a-b-street/abstreet",
+    "stars": 8187,
+    "license": "Apache-2.0",
+    "topics": "game,openstreetmap,seattle,simulation,traffic-simulation",
+    "language": "Rust",
+    "created_at": "2018-06-04T00:44:43Z",
+    "pushed_at": "2025-09-10T09:20:24Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v0.3.49",
+    "released_at": "2024-01-09T22:13:00Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "abstreet_linux_v0_3_49.zip",
+        "size": 109626691,
+        "browser_download_url": "https://github.com/a-b-street/abstreet/releases/download/v0.3.49/abstreet_linux_v0_3_49.zip",
+        "digest": null
+      },
+      {
+        "name": "abstreet_mac_v0_3_49.zip",
+        "size": 89745011,
+        "browser_download_url": "https://github.com/a-b-street/abstreet/releases/download/v0.3.49/abstreet_mac_v0_3_49.zip",
+        "digest": null
+      },
+      {
+        "name": "abstreet_windows_v0_3_49.zip",
+        "size": 83660202,
+        "browser_download_url": "https://github.com/a-b-street/abstreet/releases/download/v0.3.49/abstreet_windows_v0_3_49.zip",
+        "digest": null
+      }
+    ],
+    "kind": "game",
+    "category": "Simulação • Cidade e Trânsito",
+    "tags": "simulacao,transito,cidade,rust,estrategia",
+    "summary": "Jogo de simulação de trânsito com mapas de cidades reais: mude ruas e veja o efeito no tráfego; feito em Rust.",
+    "trust_score": 83,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório consolidado (8 anos de histórico)",
+      "🟡 Última atualização há 409 dias",
+      "🟢 8187 estrelas no GitHub",
+      "🟢 52 contribuidores públicos",
+      "🟢 Código aberto com licença Apache-2.0",
+      "🟡 Release antiga sem hash SHA-256 pré-calculado pelo GitHub"
+    ],
+    "attestation": ""
   },
   {
     "full_name": "endless-sky/endless-sky",
@@ -4152,12 +4909,14 @@
     "stars": 7658,
     "license": "GPL-3.0",
     "topics": "2d-game,adventure-game,arcade-game,c-plus-plus,cpp,endless-sky,exploration,free,game,game-development,gamedev,indie,modding,multiplatform,open-source,opengl,opensource,rpg,space,top-down",
+    "language": "C++",
     "created_at": "2015-03-14T20:44:39Z",
     "pushed_at": "2026-10-24T04:17:32Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v0.11.2",
+    "released_at": "",
     "platforms": "linux,macos,windows",
     "assets": [
       {
@@ -4209,7 +4968,8 @@
       "🟢 7658 estrelas no GitHub",
       "🟢 Código aberto com licença GPL-3.0",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "veloren/veloren",
@@ -4218,12 +4978,14 @@
     "stars": 7643,
     "license": "GPL-3.0",
     "topics": "3d,cube,cubeworld,game,gfx-rs,multiplayer,procedural-generation,rpg,rust,terrain,voxel",
+    "language": "Rust",
     "created_at": "2018-05-29T00:49:57Z",
     "pushed_at": "2026-10-23T23:12:56Z",
     "fork": false,
     "archived": false,
     "has_issues": false,
     "latest_tag": "nightly",
+    "released_at": "",
     "platforms": "linux,macos,windows",
     "assets": [
       {
@@ -4276,7 +5038,8 @@
       "🟢 Código aberto com licença GPL-3.0",
       "🟡 Aba de Issues desativada no repositório",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "mgba-emu/mgba",
@@ -4285,12 +5048,14 @@
     "stars": 7523,
     "license": "MPL-2.0",
     "topics": "emulator,game-boy,game-boy-advance,game-boy-color,game-boy-emulator,gameboy,gameboy-advance,gameboy-advance-emulator,gameboy-color-emulator,gameboy-emulator,gba,mgba",
+    "language": "C",
     "created_at": "2014-12-09T21:37:23Z",
     "pushed_at": "2026-10-19T01:59:40Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "0.10.5",
+    "released_at": "",
     "platforms": "linux,macos,windows",
     "assets": [
       {
@@ -4382,7 +5147,8 @@
       "🟢 Repositório verificado e oficial",
       "🟢 Código aberto e auditável",
       "🟢 Instaladores e executáveis disponíveis em Releases"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "Zelda64Recomp/Zelda64Recomp",
@@ -4391,12 +5157,14 @@
     "stars": 7515,
     "license": "GPL-3.0",
     "topics": "",
+    "language": "C",
     "created_at": "2023-10-23T19:54:50Z",
     "pushed_at": "2026-09-25T18:57:57Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v1.2.2",
+    "released_at": "",
     "platforms": "linux,macos,windows",
     "assets": [
       {
@@ -4430,7 +5198,8 @@
       "🟢 7515 estrelas no GitHub",
       "🟢 Código aberto com licença GPL-3.0",
       "🟡 Release antiga sem hash SHA-256 pré-calculado pelo GitHub"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "bleachbit/bleachbit",
@@ -4439,12 +5208,14 @@
     "stars": 7230,
     "license": "GPL-3.0",
     "topics": "antiforensics,bleachbit,ccleaner-alternative,cleaner,cross-platform,desktop-app,disk-cleaner,free,gplv3,gui,linux,linux-desktop,open-source,privacy,python,security,system-cleaner,tui,windows,windows-desktop",
+    "language": "Python",
     "created_at": "2014-03-10T01:40:31Z",
     "pushed_at": "2026-10-24T19:23:57Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v6.0.6",
+    "released_at": "",
     "platforms": "linux,windows",
     "assets": [
       {
@@ -4524,7 +5295,8 @@
       "🟢 Repositório verificado e oficial",
       "🟢 Código aberto e auditável",
       "🟢 Instaladores e executáveis disponíveis em Releases"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "OpenMW/openmw",
@@ -4533,12 +5305,14 @@
     "stars": 6675,
     "license": "GPL-3.0",
     "topics": "c-plus-plus,foss,morrowind,open-source,openmw,rpg-engine,tes",
+    "language": "C++",
     "created_at": "2009-08-23T14:46:21Z",
     "pushed_at": "2026-10-23T22:54:29Z",
     "fork": false,
     "archived": false,
     "has_issues": false,
     "latest_tag": "openmw-0.51.0",
+    "released_at": "",
     "platforms": "linux,macos,windows",
     "assets": [
       {
@@ -4573,7 +5347,8 @@
       "🟢 Código aberto com licença GPL-3.0",
       "🟡 Aba de Issues desativada no repositório",
       "🟡 Release antiga sem hash SHA-256 pré-calculado pelo GitHub"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "vcmi/vcmi",
@@ -4582,12 +5357,14 @@
     "stars": 5981,
     "license": "GPL-2.0",
     "topics": "android,c-plus-plus,cmake,cpp,game,ios,linux,macos,sdl2,windows",
+    "language": "C++",
     "created_at": "2014-04-06T13:42:23Z",
     "pushed_at": "2026-10-24T16:20:18Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "1.7.5",
+    "released_at": "",
     "platforms": "android,linux,macos,windows",
     "assets": [
       {
@@ -4627,7 +5404,8 @@
       "🟢 5981 estrelas no GitHub",
       "🟢 Código aberto com licença GPL-2.0",
       "🟡 Release antiga sem hash SHA-256 pré-calculado pelo GitHub"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "HarbourMasters/Shipwright",
@@ -4636,12 +5414,14 @@
     "stars": 5745,
     "license": "",
     "topics": "",
+    "language": "C",
     "created_at": "2022-03-22T01:42:52Z",
     "pushed_at": "2026-10-24T13:40:22Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "9.3.1",
+    "released_at": "",
     "platforms": "linux,macos,windows",
     "assets": [
       {
@@ -4675,7 +5455,8 @@
       "🟢 5745 estrelas no GitHub",
       "🟡 Sem licença open-source padronizada",
       "🟡 Release antiga sem hash SHA-256 pré-calculado pelo GitHub"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "supertuxkart/stk-code",
@@ -4684,12 +5465,14 @@
     "stars": 5449,
     "license": "NOASSERTION",
     "topics": "",
+    "language": "C++",
     "created_at": "2014-01-15T00:28:54Z",
     "pushed_at": "2026-10-24T15:45:23Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "1.5",
+    "released_at": "",
     "platforms": "android,linux,macos,windows",
     "assets": [
       {
@@ -4771,7 +5554,8 @@
       "🟢 5449 estrelas no GitHub",
       "🟡 Sem licença open-source padronizada",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "The-Powder-Toy/The-Powder-Toy",
@@ -4780,12 +5564,14 @@
     "stars": 5378,
     "license": "GPL-3.0",
     "topics": "cellular-automata,game,powder,powder-toy,sandbox,simulation",
+    "language": "C++",
     "created_at": "2010-07-25T13:47:06Z",
     "pushed_at": "2026-10-20T14:41:25Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v100.1.400",
+    "released_at": "",
     "platforms": "android,macos,windows",
     "assets": [
       {
@@ -4865,7 +5651,8 @@
       "🟢 Repositório verificado e oficial",
       "🟢 Código aberto e auditável",
       "🟢 Instaladores e executáveis disponíveis em Releases"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "melonDS-emu/melonDS",
@@ -4874,12 +5661,14 @@
     "stars": 5144,
     "license": "GPL-3.0",
     "topics": "dsi,emulator,nds",
+    "language": "C++",
     "created_at": "2016-05-16T01:34:13Z",
     "pushed_at": "2026-10-21T21:16:04Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "1.1",
+    "released_at": "",
     "platforms": "linux,macos,windows",
     "assets": [
       {
@@ -4923,7 +5712,8 @@
       "🟢 Repositório verificado e oficial",
       "🟢 Código aberto e auditável",
       "🟢 Instaladores e executáveis disponíveis em Releases"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "CorsixTH/CorsixTH",
@@ -4932,12 +5722,14 @@
     "stars": 4615,
     "license": "NOASSERTION",
     "topics": "game,opensource,remake,strategy-game,theme-hospital",
+    "language": "Lua",
     "created_at": "2013-08-25T18:16:56Z",
     "pushed_at": "2026-10-24T02:30:33Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v0.70.1",
+    "released_at": "",
     "platforms": "linux,macos,windows",
     "assets": [
       {
@@ -4975,7 +5767,8 @@
       "🟢 Repositório verificado e oficial",
       "🟢 Código aberto e auditável",
       "🟢 Instaladores e executáveis disponíveis em Releases"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "Warzone2100/warzone2100",
@@ -4984,12 +5777,14 @@
     "stars": 4010,
     "license": "GPL-2.0",
     "topics": "c-plus-plus,campaign,cheats,cmake,freebsd,game,games,internet,javascript,linux,mac,macos,multiplayer,open-source,real-time-strategy,rts,strategy-game,windows",
+    "language": "C++",
     "created_at": "2010-11-16T04:36:26Z",
     "pushed_at": "2026-10-23T18:15:14Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "4.7.0",
+    "released_at": "",
     "platforms": "linux,macos,windows",
     "assets": [
       {
@@ -5063,7 +5858,8 @@
       "🟢 Repositório verificado e oficial",
       "🟢 Código aberto e auditável",
       "🟢 Instaladores e executáveis disponíveis em Releases"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "space-wizards/space-station-14",
@@ -5072,12 +5868,14 @@
     "stars": 3883,
     "license": "MIT",
     "topics": "c-sharp,game,space-station-13,space-station-14,ss13,ss14",
+    "language": "C#",
     "created_at": "2017-05-22T01:57:51Z",
     "pushed_at": "2026-10-24T21:47:35Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v2026.07.27.1",
+    "released_at": "",
     "platforms": "linux,macos,windows",
     "assets": [
       {
@@ -5127,7 +5925,8 @@
       "🟢 Repositório verificado e oficial",
       "🟢 Código aberto e auditável",
       "🟢 Instaladores e executáveis disponíveis em Releases"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "ihhub/fheroes2",
@@ -5136,12 +5935,14 @@
     "stars": 3515,
     "license": "GPL-2.0",
     "topics": "cpp,game,game-development,game-engine,heroes-2,heroes-of-might-and-magic-2,heroes-of-might-and-magic-ii,homm-ii,homm2,strategy-game,turn-based-strategy",
+    "language": "C++",
     "created_at": "2019-08-30T15:05:31Z",
     "pushed_at": "2026-10-23T22:46:30Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "1.1.17",
+    "released_at": "",
     "platforms": "android,linux,macos,windows",
     "assets": [
       {
@@ -5187,7 +5988,8 @@
       "🟢 3515 estrelas no GitHub",
       "🟢 Código aberto com licença GPL-2.0",
       "🟡 Release antiga sem hash SHA-256 pré-calculado pelo GitHub"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "bvschaik/julius",
@@ -5196,12 +5998,14 @@
     "stars": 3416,
     "license": "AGPL-3.0",
     "topics": "citybuilder,clone,game",
+    "language": "C",
     "created_at": "2017-08-19T20:48:43Z",
     "pushed_at": "2026-09-12T12:22:23Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v1.8.0",
+    "released_at": "",
     "platforms": "android,linux,macos,windows",
     "assets": [
       {
@@ -5253,7 +6057,8 @@
       "🟢 3416 estrelas no GitHub",
       "🟢 Código aberto com licença AGPL-3.0",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "SuperTux/supertux",
@@ -5262,12 +6067,14 @@
     "stars": 3178,
     "license": "GPL-3.0",
     "topics": "c-plus-plus,game,games,opengl,sdl,sdl3,supertux",
+    "language": "C++",
     "created_at": "2013-11-23T21:40:12Z",
     "pushed_at": "2026-10-24T17:42:07Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v0.7.0",
+    "released_at": "",
     "platforms": "android,linux,macos,windows",
     "assets": [
       {
@@ -5355,7 +6162,8 @@
       "🟢 3178 estrelas no GitHub",
       "🟢 Código aberto com licença GPL-3.0",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "ZDoom/gzdoom",
@@ -5364,12 +6172,14 @@
     "stars": 3117,
     "license": "GPL-3.0",
     "topics": "",
+    "language": "C++",
     "created_at": "2013-06-23T06:38:12Z",
     "pushed_at": "2026-08-10T17:23:39Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "g4.14.2",
+    "released_at": "",
     "platforms": "linux,macos,windows",
     "assets": [
       {
@@ -5413,7 +6223,8 @@
       "🟢 Repositório verificado e oficial",
       "🟢 Código aberto e auditável",
       "🟢 Instaladores e executáveis disponíveis em Releases"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "2ship2harkinian/2ship2harkinian",
@@ -5422,12 +6233,14 @@
     "stars": 2370,
     "license": "CC0-1.0",
     "topics": "",
+    "language": "C",
     "created_at": "2023-11-15T03:06:29Z",
     "pushed_at": "2026-10-24T14:42:15Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "5.0.1",
+    "released_at": "",
     "platforms": "linux,macos,windows",
     "assets": [
       {
@@ -5459,7 +6272,8 @@
       "🟢 Repositório verificado e oficial",
       "🟢 Código aberto e auditável",
       "🟢 Instaladores e executáveis disponíveis em Releases"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "Keriew/augustus",
@@ -5468,12 +6282,14 @@
     "stars": 2128,
     "license": "AGPL-3.0",
     "topics": "",
+    "language": "C",
     "created_at": "2020-01-16T13:55:09Z",
     "pushed_at": "2026-10-24T10:47:59Z",
     "fork": true,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v4.0.0",
+    "released_at": "",
     "platforms": "android,linux,macos,windows",
     "assets": [
       {
@@ -5511,7 +6327,8 @@
       "🟢 Repositório verificado e oficial",
       "🟢 Código aberto e auditável",
       "🟢 Instaladores e executáveis disponíveis em Releases"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "OpenLoco/OpenLoco",
@@ -5520,12 +6337,14 @@
     "stars": 1953,
     "license": "MIT",
     "topics": "c-plus-plus,cmake,game,hacktoberfest,help-wanted,linux,locomotion,macos,sdl2,simulation,trains,transport,transport-tycoon,windows",
+    "language": "C++",
     "created_at": "2018-01-06T23:35:23Z",
     "pushed_at": "2026-10-14T22:04:07Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v26.09",
+    "released_at": "",
     "platforms": "linux,macos,windows",
     "assets": [
       {
@@ -5563,7 +6382,8 @@
       "🟢 Repositório verificado e oficial",
       "🟢 Código aberto e auditável",
       "🟢 Instaladores e executáveis disponíveis em Releases"
-    ]
+    ],
+    "attestation": ""
   },
   {
     "full_name": "taisei-project/taisei",
@@ -5572,12 +6392,14 @@
     "stars": 1659,
     "license": "NOASSERTION",
     "topics": "c,danmaku,game,glsl,opengl,sdl,shmup,touhou",
+    "language": "C",
     "created_at": "2010-10-11T07:31:32Z",
     "pushed_at": "2026-10-23T15:24:50Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v1.4.6",
+    "released_at": "",
     "platforms": "linux,macos,windows",
     "assets": [
       {
@@ -5615,6 +6437,7 @@
       "🟢 Repositório verificado e oficial",
       "🟢 Código aberto e auditável",
       "🟢 Instaladores e executáveis disponíveis em Releases"
-    ]
+    ],
+    "attestation": ""
   }
 ]

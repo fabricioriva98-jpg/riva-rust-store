@@ -302,6 +302,7 @@ impl InstallerWizard {
         visuals.panel_fill = Color32::from_rgb(13, 16, 23);
         visuals.window_fill = Color32::from_rgb(18, 22, 32);
         cc.egui_ctx.set_visuals(visuals);
+        crate::gui::configure_fonts(&cc.egui_ctx);
 
         let def = InstallOptions::default();
         Self {

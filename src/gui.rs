@@ -6,12 +6,14 @@ use crate::github::{self, Github};
 use crate::translator::{self, TranslateMode};
 use crate::verify;
 use eframe::egui::{self, Color32, CornerRadius, RichText, Stroke, Vec2};
+use std::collections::HashMap;
 use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
 
 #[derive(PartialEq, Clone, Copy)]
 enum NavSection {
     Discover,
+    MadeInRust,
     ReverseEngineering,
     Games,
     Emulators,
@@ -49,8 +51,65 @@ enum BgEvent {
         defender_msg: String,
         authenticode: String,
     },
+    ReleasesLoaded {
+        repo: String,
+        releases: Vec<github::Release>,
+    },
     Error(String),
 }
+
+/// Coleções curadas da vitrine (todos os repositórios precisam existir no catálogo embutido; há teste).
+const COLLECTIONS: &[(&str, &str, &[&str])] = &[
+    (
+        "🏛 Clássicos dos anos 90, recriados",
+        "Motores refeitos pela comunidade para jogar os originais em PCs atuais.",
+        &[
+            "OpenRCT2/OpenRCT2",
+            "OpenRA/OpenRA",
+            "diasurgical/DevilutionX",
+            "ihhub/fheroes2",
+            "vcmi/vcmi",
+            "Keriew/augustus",
+            "CorsixTH/CorsixTH",
+            "OpenMW/openmw",
+        ],
+    ),
+    (
+        "🧠 IA no seu PC, sem nuvem",
+        "Modelos e ferramentas de IA que rodam localmente.",
+        &[
+            "ollama/ollama",
+            "janhq/jan",
+            "nomic-ai/gpt4all",
+            "LostRuins/koboldcpp",
+            "mozilla-ai/llamafile",
+            "upscayl/upscayl",
+        ],
+    ),
+    (
+        "🎬 Kit do criador de conteúdo",
+        "Gravar, editar, converter e publicar vídeo e áudio.",
+        &[
+            "obsproject/obs-studio",
+            "mltframework/shotcut",
+            "mifi/lossless-cut",
+            "HandBrake/HandBrake",
+            "audacity/audacity",
+            "ShareX/ShareX",
+        ],
+    ),
+    (
+        "🔐 Privacidade e controle dos seus dados",
+        "Senhas, sincronização e acesso remoto sem depender de serviços fechados.",
+        &[
+            "keepassxreboot/keepassxc",
+            "syncthing/syncthing",
+            "localsend/localsend",
+            "rustdesk/rustdesk",
+            "bleachbit/bleachbit",
+        ],
+    ),
+];
 
 const FEATURED_REPOS: &[&str] = &[
     "HarbourMasters/Shipwright",
@@ -69,6 +128,12 @@ pub struct StoreGui {
 
     apps: Vec<App>,
     categories: Vec<String>,
+    /// Apps da lista "Para reinstalar" (biblioteca importada).
+    wishlist: Vec<String>,
+    /// Releases carregadas no painel "Versões anteriores", por repositório.
+    releases_cache: HashMap<String, Vec<github::Release>>,
+    versions_open: bool,
+    library_path: String,
 
     // Navegação e filtros
     section: NavSection,
@@ -122,6 +187,13 @@ impl StoreGui {
     ) -> Self {
         egui_extras::install_image_loaders(&cc.egui_ctx);
         configure_theme(&cc.egui_ctx);
+        configure_fonts(&cc.egui_ctx);
+        let library_path = catalog_path
+            .parent()
+            .unwrap_or_else(|| std::path::Path::new("."))
+            .join(db::LIBRARY_FILE_NAME)
+            .to_string_lossy()
+            .to_string();
 
         let mut github_token_input = std::env::var("GITHUB_TOKEN").unwrap_or_default();
         let mut vt_key_input = std::env::var("VIRUSTOTAL_API_KEY").unwrap_or_default();
@@ -148,6 +220,10 @@ impl StoreGui {
             rt,
             apps: Vec::new(),
             categories: Vec::new(),
+            wishlist: Vec::new(),
+            releases_cache: HashMap::new(),
+            versions_open: false,
+            library_path,
             section: NavSection::Discover,
             grid_view: true,
             featured_idx: 0,
@@ -190,10 +266,29 @@ impl StoreGui {
         gui
     }
 
+    /// Pasta da RRS (catálogo, banco e `downloads/`).
+    fn base_dir(&self) -> PathBuf {
+        self.catalog_path
+            .parent()
+            .filter(|p| !p.as_os_str().is_empty())
+            .map(|p| p.to_path_buf())
+            .unwrap_or_else(|| PathBuf::from("."))
+    }
+
+    /// Caminho real de um app instalado (o banco guarda relativo à pasta da RRS no modo portátil).
+    fn installed_path(&self, stored: &str) -> String {
+        db::resolve_stored_path(&self.base_dir(), stored)
+            .to_string_lossy()
+            .to_string()
+    }
+
     fn reload_from_db(&mut self) {
         if let Ok(conn) = db::open(&self.db_path) {
             if let Ok(list) = db::list_all(&conn) {
                 self.apps = list;
+            }
+            if let Ok(w) = db::wishlist(&conn) {
+                self.wishlist = w;
             }
         }
         let mut cats: Vec<String> = self
@@ -208,6 +303,9 @@ impl StoreGui {
     }
 
     fn select_app(&mut self, full_name: &str) {
+        if self.selected_repo.as_deref() != Some(full_name) {
+            self.versions_open = false;
+        }
         self.selected_repo = Some(full_name.to_string());
         self.defender_scan_status = None;
         self.authenticode_status = None;
@@ -263,6 +361,7 @@ impl StoreGui {
                 let k = a.kind.as_deref().unwrap_or("");
                 let section_ok = match self.section {
                     NavSection::Discover => true,
+                    NavSection::MadeInRust => a.is_rust(),
                     NavSection::ReverseEngineering => {
                         if self.re_subfilter == "re-game" {
                             k == "re-game"
@@ -319,7 +418,8 @@ impl StoreGui {
                 message,
             } => {
                 if let Ok(conn) = db::open(&self.db_path) {
-                    let _ = db::mark_installed(&conn, &repo, &tag, &file_path, &sha256, verified_digest);
+                    let stored = db::to_stored_path(&self.base_dir(), std::path::Path::new(&file_path));
+                    let _ = db::mark_installed(&conn, &repo, &tag, &stored, &sha256, verified_digest);
                 }
                 *self.download_state.lock().unwrap() = DownloadState::Idle;
                 self.reload_from_db();
@@ -383,6 +483,16 @@ impl StoreGui {
                     };
                     self.status_is_error = defender_verdict != ScanVerdict::Clean;
                     self.busy_task = None;
+                }
+                BgEvent::ReleasesLoaded { repo, releases } => {
+                    self.busy_task = None;
+                    self.status_msg = format!(
+                        "{} versões de {} carregadas do GitHub.",
+                        releases.len(),
+                        friendly_title(&repo)
+                    );
+                    self.status_is_error = false;
+                    self.releases_cache.insert(repo, releases);
                 }
                 BgEvent::Error(e) => {
                     self.busy_task = None;
@@ -474,7 +584,20 @@ impl StoreGui {
                     }
                 }
 
+                // Atestado de build do GitHub para o instalador recomendado (presença, sem conferir assinatura)
+                let attestation = match github::pick_best_asset(&assets).and_then(|i| assets[i].digest.clone()) {
+                    Some(digest) => match gh.has_attestation(&repo.full_name, &digest).await {
+                        Ok(true) => github::ATTESTATION_PRESENT.to_string(),
+                        Ok(false) => github::ATTESTATION_ABSENT.to_string(),
+                        Err(_) => String::new(),
+                    },
+                    None => String::new(),
+                };
+
                 let rep = verify::evaluate(&repo, release.as_ref(), contributors, &vt_results);
+                let (latest_tag, released_at) = release
+                    .map(|r| (r.tag_name, r.published_at.unwrap_or_default()))
+                    .unwrap_or_default();
                 let app = App {
                     full_name: repo.full_name.clone(),
                     description: repo.description.unwrap_or_default(),
@@ -482,12 +605,14 @@ impl StoreGui {
                     stars: repo.stargazers_count,
                     license: repo.license.and_then(|l| l.spdx_id).unwrap_or_default(),
                     topics: repo.topics.join(","),
+                    language: repo.language.unwrap_or_default(),
                     created_at: repo.created_at,
                     pushed_at: repo.pushed_at.unwrap_or_default(),
                     fork: repo.fork,
                     archived: repo.archived,
                     has_issues: repo.has_issues,
-                    latest_tag: release.map(|r| r.tag_name).unwrap_or_default(),
+                    latest_tag,
+                    released_at,
                     platforms: plats.join(","),
                     assets,
                     kind: existing.as_ref().and_then(|e| e.kind.clone()),
@@ -497,6 +622,7 @@ impl StoreGui {
                     trust_score: rep.score,
                     trust_level: rep.level.to_string(),
                     trust_notes: rep.notes,
+                    attestation,
                     installed: existing.and_then(|e| e.installed),
                 };
                 let msg = if check_vt {
@@ -567,7 +693,11 @@ impl StoreGui {
                             .cloned()
                             .collect();
                         if !assets.is_empty() {
+                            if app.latest_tag != rel.tag_name {
+                                app.attestation.clear();
+                            }
                             app.latest_tag = rel.tag_name;
+                            app.released_at = rel.published_at.unwrap_or_default();
                             app.assets = assets;
                             app.recompute_trust(None, &[]);
                             db::upsert(&conn, &app)?;
@@ -620,6 +750,40 @@ impl StoreGui {
             });
         });
     }
+
+    /// Busca no GitHub as releases do repositório para o bloco "Versões anteriores".
+    fn spawn_load_releases(&mut self, repo: String) {
+        if self.busy_task.is_some() {
+            return;
+        }
+        self.busy_task = Some(format!("Carregando versões de {}...", friendly_title(&repo)));
+        let gh_token = self.github_token_input.clone();
+        let events = Arc::clone(&self.bg_events);
+        self.rt.spawn(async move {
+            let res = async { Github::new(Some(&gh_token))?.releases(&repo, 15).await }.await;
+            let ev = match res {
+                Ok(releases) => BgEvent::ReleasesLoaded { repo, releases },
+                Err(e) => BgEvent::Error(format!("Não foi possível carregar as versões: {e:#}")),
+            };
+            events.lock().unwrap().push(ev);
+        });
+    }
+
+    /// Baixa um instalador (de qualquer versão), confere o SHA-256 e registra como instalado ao terminar.
+    fn start_download(&mut self, repo: String, tag: String, asset: github::Asset) {
+        let base_dir = self.base_dir();
+        let st = Arc::clone(&self.download_state);
+        self.rt.spawn(async move {
+            if let Err(e) =
+                downloader::download_and_verify(&repo, &tag, &asset, &base_dir, Some(st.clone())).await
+            {
+                *st.lock().unwrap() = DownloadState::Failed {
+                    repo,
+                    error: format!("{e:#}"),
+                };
+            }
+        });
+    }
 }
 
 impl eframe::App for StoreGui {
@@ -653,6 +817,7 @@ impl eframe::App for StoreGui {
             .iter()
             .filter(|a| matches!(a.kind.as_deref(), Some("tool" | "re-app")))
             .count();
+        let rust_count = self.apps.iter().filter(|a| a.is_rust()).count();
 
         // ─── BARRA LATERAL ESQUERDA (Estilo Steam / Microsoft Store) ───────
         egui::SidePanel::left("left_nav")
@@ -704,6 +869,12 @@ impl eframe::App for StoreGui {
                 nav_button(
                     ui,
                     &mut self.section,
+                    NavSection::MadeInRust,
+                    &format!("🦀  Feito em Rust ({rust_count})"),
+                );
+                nav_button(
+                    ui,
+                    &mut self.section,
                     NavSection::ReverseEngineering,
                     &format!("🧬  Engenharia Reversa ({re_count})"),
                 );
@@ -743,6 +914,8 @@ impl eframe::App for StoreGui {
 
                 let lib_label = if updates_count > 0 {
                     format!("📦  Biblioteca ({installed_count})  ⬆{updates_count}")
+                } else if !self.wishlist.is_empty() {
+                    format!("📦  Biblioteca ({installed_count})  🔁{}", self.wishlist.len())
                 } else {
                     format!("📦  Minha Biblioteca ({installed_count})")
                 };
@@ -842,12 +1015,13 @@ impl eframe::App for StoreGui {
                     .inner_margin(egui::Margin::symmetric(16, 10)),
             )
             .show(ctx, |ui| {
-                ui.horizontal(|ui| {
+                // Quebra em duas linhas em janelas estreitas (antes o campo de adicionar repo ficava cortado)
+                ui.horizontal_wrapped(|ui| {
                     ui.label("🔎");
                     ui.add(
                         egui::TextEdit::singleline(&mut self.search)
                             .hint_text("Buscar jogos, ports de engenharia reversa, emuladores, IA, apps...")
-                            .desired_width(300.0),
+                            .desired_width(260.0),
                     );
                     if !self.search.is_empty() && ui.small_button("✖").clicked() {
                         self.search.clear();
@@ -885,24 +1059,23 @@ impl eframe::App for StoreGui {
                     ui.selectable_value(&mut self.grid_view, true, "⊞ Grade");
                     ui.selectable_value(&mut self.grid_view, false, "☰ Lista");
 
-                    ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-                        if ui
-                            .add_enabled(
-                                self.busy_task.is_none() && !self.add_repo_input.trim().is_empty(),
-                                egui::Button::new("+ Verificar Repo"),
-                            )
-                            .clicked()
-                        {
-                            let target = self.add_repo_input.trim().to_string();
-                            self.add_repo_input.clear();
-                            self.spawn_fetch_or_verify(target, false);
-                        }
-                        ui.add(
-                            egui::TextEdit::singleline(&mut self.add_repo_input)
-                                .hint_text("Adicionar dono/repo do GitHub")
-                                .desired_width(185.0),
-                        );
-                    });
+                    ui.separator();
+                    ui.add(
+                        egui::TextEdit::singleline(&mut self.add_repo_input)
+                            .hint_text("Adicionar dono/repo do GitHub")
+                            .desired_width(185.0),
+                    );
+                    if ui
+                        .add_enabled(
+                            self.busy_task.is_none() && !self.add_repo_input.trim().is_empty(),
+                            egui::Button::new("+ Verificar Repo"),
+                        )
+                        .clicked()
+                    {
+                        let target = self.add_repo_input.trim().to_string();
+                        self.add_repo_input.clear();
+                        self.spawn_fetch_or_verify(target, false);
+                    }
                 });
 
                 if self.show_settings {
@@ -936,6 +1109,56 @@ impl eframe::App for StoreGui {
                                             self.status_msg = "Chaves de API salvas localmente no SQLite.".into();
                                             self.status_is_error = false;
                                         }
+                                    }
+                                });
+
+                                ui.add_space(6.0);
+                                ui.separator();
+                                ui.add_space(6.0);
+
+                                ui.horizontal_wrapped(|ui| {
+                                    ui.label(RichText::new("📚 Biblioteca:").strong());
+                                    ui.add(
+                                        egui::TextEdit::singleline(&mut self.library_path)
+                                            .hint_text("Arquivo rrs-biblioteca.json")
+                                            .desired_width(280.0),
+                                    );
+                                    if ui
+                                        .button("📤 Exportar biblioteca")
+                                        .on_hover_text("Salva a lista de apps instalados e o tempo de jogo, para reinstalar em outro PC")
+                                        .clicked()
+                                    {
+                                        let path = PathBuf::from(self.library_path.trim());
+                                        let res = db::open(&self.db_path).and_then(|c| db::export_library(&c, &path));
+                                        (self.status_msg, self.status_is_error) = match res {
+                                            Ok(n) => (format!("✔ Biblioteca com {n} app(s) salva em {}", path.display()), false),
+                                            Err(e) => (format!("Erro ao exportar a biblioteca: {e:#}"), true),
+                                        };
+                                    }
+                                    if ui
+                                        .button("📥 Importar biblioteca")
+                                        .on_hover_text("Lê um rrs-biblioteca.json de outro PC: os apps entram em Biblioteca › Para reinstalar")
+                                        .clicked()
+                                    {
+                                        let path = PathBuf::from(self.library_path.trim());
+                                        let res = db::open(&self.db_path).and_then(|c| db::import_library(&c, &path));
+                                        (self.status_msg, self.status_is_error) = match res {
+                                            Ok(rep) => (
+                                                format!(
+                                                    "✔ {} app(s) em Biblioteca › Para reinstalar; {} já instalado(s) aqui{}",
+                                                    rep.to_reinstall,
+                                                    rep.merged,
+                                                    if rep.not_in_catalog.is_empty() {
+                                                        String::new()
+                                                    } else {
+                                                        format!("; {} fora do catálogo", rep.not_in_catalog.len())
+                                                    }
+                                                ),
+                                                false,
+                                            ),
+                                            Err(e) => (format!("Erro ao importar a biblioteca: {e:#}"), true),
+                                        };
+                                        self.reload_from_db();
                                     }
                                 });
 
@@ -1134,29 +1357,19 @@ impl StoreGui {
                 .inner_margin(egui::Margin::symmetric(20, 16))
                 .show(ui, |ui| {
                     ui.set_min_width(ui.available_width());
-                    ui.horizontal(|ui| {
-                        draw_pill(ui, "★ DESTAQUE VERIFICADO", accent);
+                    // Selos quebram linha em janelas estreitas (antes se sobrepunham aos botões de navegação)
+                    ui.horizontal_wrapped(|ui| {
+                        draw_pill(ui, "★ DESTAQUE", accent);
                         let (k_label, k_col) = kind_badge(hero.kind.as_deref());
                         draw_pill(ui, k_label, k_col);
                         if let Some(cat) = &hero.category {
                             draw_pill(ui, cat, Color32::from_rgb(48, 58, 78));
                         }
+                        if hero.is_rust() {
+                            draw_pill(ui, "🦀 Rust", RUST_ORANGE);
+                        }
                         let (t_label, t_col) = trust_badge(hero.trust_score, &hero.trust_level);
                         draw_pill(ui, &t_label, t_col);
-
-                        ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-                            if ui.small_button("Próximo ▶").clicked() {
-                                self.featured_idx = (idx + 1) % featured_apps.len();
-                            }
-                            ui.label(
-                                RichText::new(format!("{}/{}", idx + 1, featured_apps.len()))
-                                    .size(12.0)
-                                    .color(Color32::GRAY),
-                            );
-                            if ui.small_button("◀ Anterior").clicked() {
-                                self.featured_idx = (idx + featured_apps.len() - 1) % featured_apps.len();
-                            }
-                        });
                     });
 
                     ui.add_space(8.0);
@@ -1172,8 +1385,20 @@ impl StoreGui {
                             .color(Color32::from_rgb(205, 215, 232)),
                     );
 
+                    ui.add_space(6.0);
+                    ui.label(
+                        RichText::new(format!(
+                            "★ {} estrelas   •   Versão {}   •   Plataformas: {}",
+                            format_stars(hero.stars),
+                            hero.latest_tag,
+                            short_platforms(&hero.platforms)
+                        ))
+                        .size(12.5)
+                        .color(Color32::from_rgb(165, 175, 195)),
+                    );
+
                     ui.add_space(10.0);
-                    ui.horizontal(|ui| {
+                    ui.horizontal_wrapped(|ui| {
                         if ui
                             .add(
                                 egui::Button::new(
@@ -1191,20 +1416,49 @@ impl StoreGui {
                         }
 
                         ui.add_space(10.0);
+                        if ui.button("◀ Anterior").clicked() {
+                            self.featured_idx = (idx + featured_apps.len() - 1) % featured_apps.len();
+                        }
                         ui.label(
-                            RichText::new(format!(
-                                "★ {} estrelas   •   Versão {}   •   Plataformas: {}",
-                                format_stars(hero.stars),
-                                hero.latest_tag,
-                                hero.platforms
-                            ))
-                            .size(12.5)
-                            .color(Color32::from_rgb(165, 175, 195)),
+                            RichText::new(format!("{}/{}", idx + 1, featured_apps.len()))
+                                .size(12.0)
+                                .color(Color32::GRAY),
                         );
+                        if ui.button("Próximo ▶").clicked() {
+                            self.featured_idx = (idx + 1) % featured_apps.len();
+                        }
                     });
                 });
 
             ui.add_space(18.0);
+        }
+
+        let only_trusted = self.only_trusted;
+        let trusted = move |a: &&App| !only_trusted || a.trust_score >= 70;
+
+        // FEITO EM RUST
+        let rust_apps: Vec<App> = self.apps.iter().filter(|a| a.is_rust()).filter(trusted).cloned().collect();
+        self.render_showcase_section(
+            ui,
+            "🦀 Feito em Rust",
+            "Apps e jogos escritos em Rust, a linguagem que dá nome à loja.",
+            &rust_apps,
+            Some(NavSection::MadeInRust),
+        );
+
+        // LANÇADOS (OU ATUALIZADOS) RECENTEMENTE
+        let (recent_title, recent_sub, recent) = recent_apps(&self.apps, self.only_trusted, 8);
+        self.render_showcase_section(ui, recent_title, recent_sub, &recent, None);
+
+        // COLEÇÕES CURADAS
+        for (title, subtitle, repos) in COLLECTIONS {
+            let items: Vec<App> = repos
+                .iter()
+                .filter_map(|r| self.apps.iter().find(|a| a.full_name.eq_ignore_ascii_case(r)))
+                .filter(trusted)
+                .cloned()
+                .collect();
+            self.render_showcase_section(ui, title, subtitle, &items, None);
         }
 
         // 2. SEÇÃO: JOGOS DE ENGENHARIA REVERSA (PORTS NATIVOS & RECOMPILAÇÕES)
@@ -1326,6 +1580,10 @@ impl StoreGui {
     fn render_section_catalog(&mut self, ui: &mut egui::Ui) {
         let (title, subtitle) = match self.section {
             NavSection::Discover => ("🔎 Resultados da Busca", "Projetos verificados encontrados no catálogo."),
+            NavSection::MadeInRust => (
+                "🦀 Feito em Rust",
+                "Apps e jogos cuja linguagem principal no GitHub é Rust (segurança de memória sem coletor de lixo).",
+            ),
             NavSection::ReverseEngineering => (
                 "🧬 Central de Engenharia Reversa (Jogos & Aplicativos Verificados)",
                 "Ports nativos de PC, recompilações estáticas, decompilações e ferramentas de engenharia reversa.",
@@ -1429,7 +1687,12 @@ impl StoreGui {
         ui.add_space(12.0);
 
         let filtered = self.filtered_apps();
-        if filtered.is_empty() {
+        let (reinstall, outside_catalog) = if self.section == NavSection::Library {
+            self.wishlist_split()
+        } else {
+            (Vec::new(), Vec::new())
+        };
+        if filtered.is_empty() && reinstall.is_empty() && outside_catalog.is_empty() {
             ui.vertical_centered(|ui| {
                 ui.add_space(50.0);
                 ui.label(
@@ -1442,6 +1705,54 @@ impl StoreGui {
         }
 
         self.render_cards_collection(ui, &filtered);
+
+        if !reinstall.is_empty() || !outside_catalog.is_empty() {
+            ui.add_space(14.0);
+            ui.label(
+                RichText::new(format!(
+                    "🔁 Para reinstalar ({})",
+                    reinstall.len() + outside_catalog.len()
+                ))
+                .size(17.0)
+                .strong()
+                .color(Color32::WHITE),
+            );
+            ui.label(
+                RichText::new("Vindos de uma biblioteca importada. Abra cada um e baixe; o tempo de jogo volta junto.")
+                    .size(12.0)
+                    .color(Color32::from_rgb(145, 155, 175)),
+            );
+            ui.add_space(8.0);
+            self.render_cards_collection(ui, &reinstall);
+            if !outside_catalog.is_empty() {
+                ui.label(
+                    RichText::new(format!(
+                        "Fora do catálogo local (adicione pelo campo \"Adicionar dono/repo\"): {}",
+                        outside_catalog.join(", ")
+                    ))
+                    .size(12.0)
+                    .color(Color32::from_rgb(240, 195, 85)),
+                );
+            }
+        }
+    }
+
+    /// Lista "Para reinstalar": apps do catálogo ainda não instalados e nomes que não estão no catálogo.
+    fn wishlist_split(&self) -> (Vec<App>, Vec<String>) {
+        let mut in_catalog = Vec::new();
+        let mut outside = Vec::new();
+        for name in &self.wishlist {
+            match self.apps.iter().find(|a| a.full_name.eq_ignore_ascii_case(name)) {
+                Some(a) if a.installed.is_none() => in_catalog.push(a.clone()),
+                Some(_) => {}
+                None => outside.push(name.clone()),
+            }
+        }
+        (in_catalog, outside)
+    }
+
+    fn in_wishlist(&self, full_name: &str) -> bool {
+        self.wishlist.iter().any(|w| w.eq_ignore_ascii_case(full_name))
     }
 
     fn render_cards_collection(&mut self, ui: &mut egui::Ui, items: &[App]) {
@@ -1462,7 +1773,9 @@ impl StoreGui {
             ui.horizontal(|ui| {
                 ui.spacing_mut().item_spacing.x = spacing;
                 for app in row {
-                    self.render_grid_card(ui, app, card_w);
+                    // `vertical`: dentro da linha horizontal, o topo e o corpo do card eram colocados
+                    // lado a lado (título cortado e espaço vazio no card).
+                    ui.vertical(|ui| self.render_grid_card(ui, app, card_w));
                 }
             });
             ui.add_space(spacing);
@@ -1517,6 +1830,9 @@ impl StoreGui {
                             );
 
                             draw_pill(ui, kind_label, kind_color);
+                            if app.is_rust() {
+                                draw_pill(ui, "🦀", RUST_ORANGE);
+                            }
 
                             ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
                                 let (t_short, t_col) = trust_short_badge(app.trust_score);
@@ -1638,6 +1954,12 @@ impl StoreGui {
                             draw_pill(ui, cat, Color32::from_rgb(52, 62, 82));
                         }
                     }
+                    if app.is_rust() {
+                        draw_pill(ui, "🦀 Rust", RUST_ORANGE);
+                    }
+                    if app.attestation == github::ATTESTATION_PRESENT {
+                        draw_pill(ui, "🏗 Atestado", Color32::from_rgb(40, 100, 90));
+                    }
 
                     ui.label(
                         RichText::new(friendly_title(&app.full_name))
@@ -1726,13 +2048,50 @@ impl StoreGui {
             ui.separator();
             ui.label(format!(
                 "Licença: {}",
-                if app.license.is_empty() { "Aberta" } else { &app.license }
+                if app.license.is_empty() || app.license == "NOASSERTION" {
+                    "não informada"
+                } else {
+                    &app.license
+                }
             ));
             ui.separator();
             if ui.link("GitHub Oficial ↗").clicked() {
                 if let Err(e) = downloader::open_url(&app.url) {
                     self.status_msg = format!("{e:#}");
                     self.status_is_error = true;
+                }
+            }
+        });
+
+        // Selos: linguagem e atestado de build do GitHub
+        ui.add_space(4.0);
+        ui.horizontal_wrapped(|ui| {
+            if app.is_rust() {
+                draw_pill(ui, "🦀 Feito em Rust", RUST_ORANGE);
+            } else if !app.language.is_empty() {
+                draw_pill(ui, &format!("Linguagem: {}", app.language), Color32::from_rgb(52, 62, 82));
+            }
+            let attestation_hint = "O GitHub tem um atestado de build (artifact attestation) para o instalador recomendado: \
+                ele foi gerado pelo GitHub Actions a partir do código do repositório. A RRS só confere se o atestado existe; \
+                a assinatura pode ser conferida com `gh release verify-asset`.";
+            match app.attestation.as_str() {
+                github::ATTESTATION_PRESENT => {
+                    draw_pill(ui, "🏗 Atestado de build: presente", Color32::from_rgb(40, 100, 90));
+                    ui.label(RichText::new("ⓘ").color(Color32::GRAY)).on_hover_text(attestation_hint);
+                }
+                github::ATTESTATION_ABSENT => {
+                    draw_pill(ui, "🏗 Sem atestado de build", Color32::from_rgb(60, 66, 80));
+                    ui.label(RichText::new("ⓘ").color(Color32::GRAY)).on_hover_text(
+                        "O instalador recomendado não tem atestado de build do GitHub. Isso é comum e não indica problema; \
+                         só significa que a origem do arquivo não pode ser rastreada até o código por esse meio.",
+                    );
+                }
+                _ => {
+                    ui.label(
+                        RichText::new("🏗 Atestado de build: não consultado (use \"Revalidar no GitHub\")")
+                            .size(11.0)
+                            .color(Color32::GRAY),
+                    );
                 }
             }
         });
@@ -1744,6 +2103,38 @@ impl StoreGui {
                 .color(Color32::from_rgb(215, 222, 235)),
         );
 
+        if self.in_wishlist(&app.full_name) && app.installed.is_none() {
+            ui.add_space(8.0);
+            let mut remove = false;
+            egui::Frame::NONE
+                .fill(Color32::from_rgb(24, 40, 52))
+                .stroke(Stroke::new(1.0_f32, Color32::from_rgb(60, 130, 170)))
+                .corner_radius(CornerRadius::same(6))
+                .inner_margin(egui::Margin::same(10))
+                .show(ui, |ui| {
+                    ui.label(
+                        RichText::new("🔁 Na lista para reinstalar (biblioteca importada)")
+                            .size(12.5)
+                            .strong()
+                            .color(Color32::from_rgb(170, 215, 245)),
+                    );
+                    ui.label(
+                        RichText::new("Ao baixar, o tempo de jogo do outro PC volta junto.")
+                            .size(11.5)
+                            .color(Color32::from_rgb(170, 185, 205)),
+                    );
+                    if ui.small_button("Tirar da lista").clicked() {
+                        remove = true;
+                    }
+                });
+            if remove {
+                if let Ok(conn) = db::open(&self.db_path) {
+                    let _ = db::remove_from_wishlist(&conn, &app.full_name);
+                }
+                self.reload_from_db();
+            }
+        }
+
         // Aviso explicativo especial para Jogos de Engenharia Reversa (Ports / Recompilações)
         if app.kind.as_deref() == Some("re-game") {
             ui.add_space(8.0);
@@ -1754,15 +2145,15 @@ impl StoreGui {
                 .inner_margin(egui::Margin::same(10))
                 .show(ui, |ui| {
                     ui.label(
-                        RichText::new("🧬 Port / Recompilação por Engenharia Reversa Verificada")
+                        RichText::new("🧬 Port / Recompilação por Engenharia Reversa")
                             .size(12.5)
                             .strong()
                             .color(Color32::from_rgb(210, 175, 255)),
                     );
                     ui.label(
                         RichText::new(
-                            "Este projeto recria o motor nativo de PC de forma legal (clean-room) e sem vírus. \
-                             Para jogos originalmente comerciais, o programa solicitará a sua cópia/ROM original na primeira abertura.",
+                            "Este projeto recria o motor do jogo para PC a partir de engenharia reversa e não inclui os arquivos do jogo. \
+                             Para jogos originalmente comerciais, o programa pede a sua cópia/ROM original na primeira abertura.",
                         )
                         .size(11.5)
                         .color(Color32::from_rgb(190, 180, 215)),
@@ -1859,27 +2250,7 @@ impl StoreGui {
                     )
                     .clicked()
                 {
-                    let repo = app.full_name.clone();
-                    let tag = app.latest_tag.clone();
-                    let asset = chosen.clone();
-                    let base_dir = self
-                        .catalog_path
-                        .parent()
-                        .map(|p| p.to_path_buf())
-                        .unwrap_or_else(|| PathBuf::from("."));
-                    let st = Arc::clone(&self.download_state);
-
-                    self.rt.spawn(async move {
-                        if let Err(e) =
-                            downloader::download_and_verify(&repo, &tag, &asset, &base_dir, Some(st.clone()))
-                                .await
-                        {
-                            *st.lock().unwrap() = DownloadState::Failed {
-                                repo,
-                                error: format!("{e:#}"),
-                            };
-                        }
-                    });
+                    self.start_download(app.full_name.clone(), app.latest_tag.clone(), chosen.clone());
                 }
 
                 if let Some(inst) = &app.installed {
@@ -1951,7 +2322,7 @@ impl StoreGui {
                     .corner_radius(CornerRadius::same(6));
 
                     if ui.add(play_btn).clicked() {
-                        let path = inst.file_path.clone();
+                        let path = self.installed_path(&inst.file_path);
                         let repo_name = app.full_name.clone();
                         let events = Arc::clone(&self.bg_events);
                         self.status_msg = format!("▶ Iniciando {}...", friendly_title(&repo_name));
@@ -1978,7 +2349,7 @@ impl StoreGui {
                     ui.add_space(6.0);
                     ui.horizontal(|ui| {
                         if ui.button("📂 Abrir Pasta").clicked() {
-                            let _ = downloader::reveal_in_folder(&inst.file_path);
+                            let _ = downloader::reveal_in_folder(&self.installed_path(&inst.file_path));
                         }
 
                         if ui
@@ -1989,7 +2360,7 @@ impl StoreGui {
                             .on_hover_text("Executa uma varredura nativa do Windows Defender no arquivo baixado sem custos")
                             .clicked()
                         {
-                            let path = inst.file_path.clone();
+                            let path = self.installed_path(&inst.file_path);
                             let repo = app.full_name.clone();
                             let events = Arc::clone(&self.bg_events);
                             self.busy_task = Some("Escaneando com Windows Defender...".into());
@@ -2055,6 +2426,93 @@ impl StoreGui {
                     }
                 }
             });
+
+        // ─── VERSÕES ANTERIORES ─────────────────────────────────────────────
+        ui.add_space(10.0);
+        let arrow = if self.versions_open { "▼" } else { "▶" };
+        if ui
+            .selectable_label(
+                self.versions_open,
+                RichText::new(format!("{arrow} 🕘 Versões anteriores")).size(13.5).strong(),
+            )
+            .clicked()
+        {
+            self.versions_open = !self.versions_open;
+        }
+        if self.versions_open {
+            ui.indent("versoes_anteriores", |ui| {
+                let is_downloading = matches!(
+                    *self.download_state.lock().unwrap(),
+                    DownloadState::Downloading { .. }
+                );
+                let Some(releases) = self.releases_cache.get(&app.full_name).cloned() else {
+                    ui.label(
+                        RichText::new("Instale uma versão anterior se a mais nova der problema no seu PC.")
+                            .size(11.5)
+                            .color(Color32::GRAY),
+                    );
+                    if ui
+                        .add_enabled(self.busy_task.is_none(), egui::Button::new("Carregar versões do GitHub"))
+                        .clicked()
+                    {
+                        self.spawn_load_releases(app.full_name.clone());
+                    }
+                    return;
+                };
+                if releases.is_empty() {
+                    ui.label("Nenhuma release publicada.");
+                    return;
+                }
+                let installed_tag = app.installed.as_ref().map(|i| i.installed_tag.clone());
+                for rel in &releases {
+                    let assets = rel.installable_assets();
+                    let best = github::pick_best_asset(&assets).map(|i| assets[i].clone());
+                    ui.horizontal_wrapped(|ui| {
+                        ui.label(RichText::new(&rel.tag_name).strong().monospace());
+                        if let Some(date) = rel.published_at.as_deref() {
+                            ui.label(
+                                RichText::new(&date[..date.len().min(10)])
+                                    .size(11.0)
+                                    .color(Color32::GRAY),
+                            );
+                        }
+                        if rel.prerelease {
+                            draw_pill(ui, "pré-lançamento", Color32::from_rgb(150, 100, 20));
+                        }
+                        if rel.tag_name == app.latest_tag {
+                            draw_pill(ui, "mais recente", Color32::from_rgb(35, 95, 160));
+                        }
+                        if installed_tag.as_deref() == Some(rel.tag_name.as_str()) {
+                            draw_pill(ui, "instalada", Color32::from_rgb(30, 125, 75));
+                        }
+                        match &best {
+                            Some(asset) => {
+                                let hint = format!(
+                                    "{} ({:.1} MB), {}",
+                                    asset.name,
+                                    asset.size as f64 / 1_048_576.0,
+                                    if asset.digest.is_some() {
+                                        "SHA-256 conferido com o GitHub"
+                                    } else {
+                                        "release sem SHA-256 do GitHub (só calculado)"
+                                    }
+                                );
+                                if ui
+                                    .add_enabled(!is_downloading, egui::Button::new("⬇ Baixar"))
+                                    .on_hover_text(hint)
+                                    .clicked()
+                                {
+                                    self.start_download(app.full_name.clone(), rel.tag_name.clone(), asset.clone());
+                                }
+                            }
+                            None => {
+                                ui.label(RichText::new("sem instalador").size(11.0).color(Color32::GRAY));
+                            }
+                        }
+                    });
+                }
+            });
+        }
 
         ui.add_space(12.0);
 
@@ -2143,7 +2601,7 @@ impl StoreGui {
             .corner_radius(CornerRadius::same(8))
             .inner_margin(egui::Margin::symmetric(12, 10))
             .show(ui, |ui| {
-                ui.horizontal(|ui| {
+                ui.horizontal_wrapped(|ui| {
                     ui.label(RichText::new("Modo de Conversão:").strong().size(12.5));
                     if ui
                         .selectable_value(
@@ -2184,7 +2642,60 @@ impl StoreGui {
 
                 ui.add_space(8.0);
 
-                ui.horizontal(|ui| {
+                // Linha que quebra em janelas estreitas (antes "Traduzir" ficava por cima de "Gerar Projeto Cargo")
+                ui.horizontal_wrapped(|ui| {
+                    if ui
+                        .add(
+                            egui::Button::new(RichText::new("⚡ Traduzir").strong())
+                                .fill(Color32::from_rgb(200, 95, 40)),
+                        )
+                        .clicked()
+                    {
+                        trigger_retranslate = true;
+                    }
+
+                    if ui
+                        .add(
+                            egui::Button::new(
+                                RichText::new("✔ Validar Sintaxe no rustc")
+                                    .strong()
+                                    .color(Color32::WHITE),
+                            )
+                            .fill(Color32::from_rgb(30, 130, 75)),
+                        )
+                        .on_hover_text("Compila o código Rust gerado usando o rustc local para garantir que não há erros")
+                        .clicked()
+                    {
+                        let res = translator::verify_rust_syntax(&self.rust_output);
+                        match &res {
+                            Ok(msg) => {
+                                self.status_msg = msg.clone();
+                                self.status_is_error = false;
+                            }
+                            Err(_) => {
+                                self.status_msg = "O rustc apontou ajustes necessários no código traduzido.".into();
+                                self.status_is_error = true;
+                            }
+                        }
+                        self.rustc_check_status = Some(res);
+                    }
+
+                    if ui
+                        .add(
+                            egui::Button::new(RichText::new("📋 Copiar Rust").strong())
+                                .fill(Color32::from_rgb(45, 95, 165)),
+                        )
+                        .clicked()
+                    {
+                        ui.ctx().copy_text(self.rust_output.clone());
+                        self.status_msg = "Código Rust copiado para a área de transferência!".into();
+                        self.status_is_error = false;
+                    }
+                });
+
+                ui.add_space(8.0);
+
+                ui.horizontal_wrapped(|ui| {
                     ui.label(RichText::new("Arquivo (.c/.cpp/.h/.rs):").size(12.0).color(Color32::GRAY));
                     ui.add(
                         egui::TextEdit::singleline(&mut self.file_io_path)
@@ -2256,56 +2767,6 @@ impl StoreGui {
                             }
                         }
                     }
-
-                    ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-                        if ui
-                            .add(
-                                egui::Button::new(RichText::new("📋 Copiar Rust").strong())
-                                    .fill(Color32::from_rgb(45, 95, 165)),
-                            )
-                            .clicked()
-                        {
-                            ui.ctx().copy_text(self.rust_output.clone());
-                            self.status_msg = "Código Rust copiado para a área de transferência!".into();
-                            self.status_is_error = false;
-                        }
-
-                        if ui
-                            .add(
-                                egui::Button::new(
-                                    RichText::new("✔ Validar Sintaxe no rustc")
-                                        .strong()
-                                        .color(Color32::WHITE),
-                                )
-                                .fill(Color32::from_rgb(30, 130, 75)),
-                            )
-                            .on_hover_text("Compila o código Rust gerado usando o rustc local para garantir que não há erros")
-                            .clicked()
-                        {
-                            let res = translator::verify_rust_syntax(&self.rust_output);
-                            match &res {
-                                Ok(msg) => {
-                                    self.status_msg = msg.clone();
-                                    self.status_is_error = false;
-                                }
-                                Err(_) => {
-                                    self.status_msg = "O rustc apontou ajustes necessários no código traduzido.".into();
-                                    self.status_is_error = true;
-                                }
-                            }
-                            self.rustc_check_status = Some(res);
-                        }
-
-                        if ui
-                            .add(
-                                egui::Button::new(RichText::new("⚡ Traduzir").strong())
-                                    .fill(Color32::from_rgb(200, 95, 40)),
-                            )
-                            .clicked()
-                        {
-                            trigger_retranslate = true;
-                        }
-                    });
                 });
             });
 
@@ -2328,9 +2789,12 @@ impl StoreGui {
                     );
                 });
                 ui.add_space(4.0);
+                // min_scrolled_height: dentro da linha horizontal a altura disponível é a de uma linha,
+                // e o editor ficava com ~4 linhas visíveis.
                 egui::ScrollArea::vertical()
                     .id_salt("cpp_scroll")
                     .max_height(editor_height)
+                    .min_scrolled_height(editor_height)
                     .show(ui, |ui| {
                         let resp = ui.add(
                             egui::TextEdit::multiline(&mut self.cpp_input)
@@ -2361,6 +2825,7 @@ impl StoreGui {
                 egui::ScrollArea::vertical()
                     .id_salt("rust_scroll")
                     .max_height(editor_height)
+                    .min_scrolled_height(editor_height)
                     .show(ui, |ui| {
                         ui.add(
                             egui::TextEdit::multiline(&mut self.rust_output)
@@ -2425,6 +2890,55 @@ impl StoreGui {
                 }
             });
     }
+}
+
+const RUST_ORANGE: Color32 = Color32::from_rgb(190, 85, 35);
+
+/// Linha "Lançados recentemente" (data da release). Enquanto poucos apps têm essa data
+/// (ela chega ao revalidar/checar atualizações), usa a data do último commit e diz isso no título.
+fn recent_apps(apps: &[App], only_trusted: bool, max: usize) -> (&'static str, &'static str, Vec<App>) {
+    let eligible = apps.iter().filter(|a| !only_trusted || a.trust_score >= 70);
+    let mut released: Vec<&App> = eligible.clone().filter(|a| !a.released_at.is_empty()).collect();
+    if released.len() >= 4 {
+        released.sort_by(|a, b| b.released_at.cmp(&a.released_at));
+        return (
+            "🆕 Lançados recentemente",
+            "Versões publicadas há menos tempo no GitHub.",
+            released.into_iter().take(max).cloned().collect(),
+        );
+    }
+    let mut pushed: Vec<&App> = eligible.filter(|a| !a.pushed_at.is_empty()).collect();
+    pushed.sort_by(|a, b| b.pushed_at.cmp(&a.pushed_at));
+    (
+        "🆕 Atualizados recentemente",
+        "Projetos com código atualizado há menos tempo (data do último commit no GitHub).",
+        pushed.into_iter().take(max).cloned().collect(),
+    )
+}
+
+/// Fontes de símbolos do Windows como reserva. A fonte padrão do egui não tem vários emojis e setas
+/// usados na interface (🦀, 🧬, ➔...), que apareciam como "☐". Sem esses arquivos, fica a fonte padrão.
+pub fn configure_fonts(ctx: &egui::Context) {
+    ctx.set_fonts(font_definitions());
+}
+
+fn font_definitions() -> egui::FontDefinitions {
+    let mut fonts = egui::FontDefinitions::default();
+    let fonts_dir = std::env::var_os("WINDIR")
+        .map(PathBuf::from)
+        .unwrap_or_else(|| PathBuf::from("C:\\Windows"))
+        .join("Fonts");
+    for (name, file) in [("segoe-symbol", "seguisym.ttf"), ("segoe-emoji", "seguiemj.ttf")] {
+        if let Ok(bytes) = std::fs::read(fonts_dir.join(file)) {
+            fonts
+                .font_data
+                .insert(name.to_owned(), Arc::new(egui::FontData::from_owned(bytes)));
+            for family in [egui::FontFamily::Proportional, egui::FontFamily::Monospace] {
+                fonts.families.entry(family).or_default().push(name.to_owned());
+            }
+        }
+    }
+    fonts
 }
 
 fn configure_theme(ctx: &egui::Context) {
@@ -2560,6 +3074,13 @@ fn friendly_title(full_name: &str) -> String {
         "4ian/GDevelop" => "GDevelop Engine".into(),
         "mapeditor/tiled" => "Tiled Map Editor".into(),
         "heroiclabs/nakama" => "Nakama Game Server".into(),
+        "alacritty/alacritty" => "Alacritty (Terminal)".into(),
+        "wezterm/wezterm" => "WezTerm (Terminal)".into(),
+        "lapce/lapce" => "Lapce (Editor de Código)".into(),
+        "neovide/neovide" => "Neovide (Neovim com Interface)".into(),
+        "espanso/espanso" => "Espanso (Expansor de Texto)".into(),
+        "gyroflow/gyroflow" => "Gyroflow (Estabilização de Vídeo)".into(),
+        "a-b-street/abstreet" => "A/B Street (Simulador de Trânsito)".into(),
         other => other.split('/').nth(1).unwrap_or(other).to_string(),
     }
 }
@@ -2647,5 +3168,146 @@ fn format_stars(stars: u64) -> String {
         format!("{:.1}k", stars as f64 / 1000.0)
     } else {
         stars.to_string()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::collections::BTreeSet;
+
+    fn embedded_names() -> Vec<String> {
+        let entries: Vec<db::CatalogEntry> =
+            serde_json::from_str(db::EMBEDDED_CATALOG.trim_start_matches('\u{feff}')).unwrap();
+        entries.into_iter().map(|e| e.full_name).collect()
+    }
+
+    #[test]
+    fn colecoes_e_destaques_usam_apps_do_catalogo() {
+        let names = embedded_names();
+        let has = |r: &str| names.iter().any(|n| n.eq_ignore_ascii_case(r));
+        for (title, _, repos) in COLLECTIONS {
+            assert!(repos.len() >= 4, "coleção '{title}' com poucos itens");
+            for r in *repos {
+                assert!(has(r), "coleção '{title}': {r} não está no catálogo");
+            }
+        }
+        for r in FEATURED_REPOS {
+            assert!(has(r), "destaque {r} não está no catálogo");
+        }
+    }
+
+    fn apps_with(released: &[(&str, &str)], pushed: &[(&str, &str)]) -> Vec<App> {
+        let mut items = Vec::new();
+        for (name, date) in released {
+            items.push(format!(
+                r#"{{"full_name":"{name}","description":"","url":"","stars":1,"license":"","topics":"",
+                    "pushed_at":"2020-01-01T00:00:00Z","latest_tag":"v1","released_at":"{date}","platforms":"",
+                    "assets":[],"trust_score":90,"trust_level":"x","trust_notes":["x"]}}"#
+            ));
+        }
+        for (name, date) in pushed {
+            items.push(format!(
+                r#"{{"full_name":"{name}","description":"","url":"","stars":1,"license":"","topics":"",
+                    "pushed_at":"{date}","latest_tag":"v1","platforms":"","assets":[],
+                    "trust_score":90,"trust_level":"x","trust_notes":["x"]}}"#
+            ));
+        }
+        let c = db::open(":memory:").unwrap();
+        db::import_catalog_str(&c, &format!("[{}]", items.join(",")), "t").unwrap();
+        db::list_all(&c).unwrap()
+    }
+
+    #[test]
+    fn recentes_usa_data_da_release_quando_ha_dados_suficientes() {
+        let apps = apps_with(
+            &[("a/1", "2026-01-01T00:00:00Z"), ("a/2", "2026-03-01T00:00:00Z"), ("a/3", "2026-02-01T00:00:00Z"), ("a/4", "2025-12-01T00:00:00Z")],
+            &[("b/novo", "2026-10-01T00:00:00Z")],
+        );
+        let (title, _, list) = recent_apps(&apps, true, 3);
+        assert!(title.contains("Lançados"));
+        let names: Vec<_> = list.iter().map(|a| a.full_name.as_str()).collect();
+        assert_eq!(names, vec!["a/2", "a/3", "a/1"]);
+    }
+
+    #[test]
+    fn recentes_cai_para_data_do_commit_e_avisa_no_titulo() {
+        let apps = apps_with(
+            &[("a/1", "2026-01-01T00:00:00Z")],
+            &[("b/velho", "2024-01-01T00:00:00Z"), ("b/novo", "2026-10-01T00:00:00Z")],
+        );
+        let (title, sub, list) = recent_apps(&apps, true, 2);
+        assert!(title.contains("Atualizados"));
+        assert!(sub.contains("commit"));
+        assert_eq!(list[0].full_name, "b/novo");
+    }
+
+    /// Caracteres não ASCII dentro de literais de string (o que pode aparecer na tela).
+    fn string_literal_chars(src: &str) -> BTreeSet<char> {
+        let chars: Vec<char> = src.chars().collect();
+        let mut out = BTreeSet::new();
+        let mut i = 0;
+        while i < chars.len() {
+            let c = chars[i];
+            if c == '/' && chars.get(i + 1) == Some(&'/') {
+                while i < chars.len() && chars[i] != '\n' {
+                    i += 1;
+                }
+                continue;
+            }
+            // literais de caractere: 'x' e '\n'
+            if c == '\'' && chars.get(i + 2) == Some(&'\'') {
+                i += 3;
+                continue;
+            }
+            if c == '\'' && chars.get(i + 1) == Some(&'\\') && chars.get(i + 3) == Some(&'\'') {
+                i += 4;
+                continue;
+            }
+            if c == '"' {
+                i += 1;
+                while i < chars.len() && chars[i] != '"' {
+                    if chars[i] == '\\' {
+                        i += 2;
+                        continue;
+                    }
+                    if !chars[i].is_ascii() && chars[i] != '\u{feff}' {
+                        out.insert(chars[i]);
+                    }
+                    i += 1;
+                }
+            }
+            i += 1;
+        }
+        out
+    }
+
+    /// Regressão do "☐": todo caractere usado nos textos da interface precisa ter glifo nas fontes configuradas.
+    #[cfg(target_os = "windows")]
+    #[test]
+    fn todos_os_caracteres_da_interface_tem_glifo() {
+        let ctx = egui::Context::default();
+        configure_fonts(&ctx);
+        let _ = ctx.run(egui::RawInput::default(), |_| {});
+        let mut used = BTreeSet::new();
+        for src in [
+            include_str!("gui.rs"),
+            include_str!("installer.rs"),
+            include_str!("downloader.rs"),
+            include_str!("translator.rs"),
+        ] {
+            used.extend(string_literal_chars(src));
+        }
+        assert!(used.contains(&'🦀'), "o leitor de literais não encontrou o 🦀");
+        let missing: Vec<char> = ctx.fonts(|f| {
+            used.iter()
+                .copied()
+                .filter(|c| {
+                    !f.has_glyph(&egui::FontId::proportional(13.0), *c)
+                        || !f.has_glyph(&egui::FontId::monospace(13.0), *c)
+                })
+                .collect()
+        });
+        assert!(missing.is_empty(), "sem glifo nas fontes: {missing:?}");
     }
 }

@@ -80,7 +80,20 @@ enum Cmd {
         max_vt: usize,
     },
     /// Baixa o melhor instalador para o seu PC, confere o SHA-256 oficial e registra como instalado
-    Download { repo: String },
+    Download {
+        repo: String,
+        /// Versão específica (tag da release), ex.: --tag v1.2.0. Sem ela, baixa a mais recente.
+        #[arg(long)]
+        tag: Option<String>,
+    },
+    /// Exporta a lista de apps instalados (e tempo de jogo) para reinstalar em outro PC
+    LibraryExport {
+        /// Arquivo de saída (padrão: rrs-biblioteca.json na pasta da RRS)
+        #[arg(long)]
+        out: Option<PathBuf>,
+    },
+    /// Importa uma biblioteca exportada: os apps entram na lista "Para reinstalar"
+    LibraryImport { file: PathBuf },
     /// Verifica se há atualizações no GitHub para os aplicativos instalados no seu PC
     CheckUpdates,
     /// Traduz um arquivo de código C ou C++ (.c, .cpp, .h, .hpp) para Rust (.rs)
@@ -105,6 +118,15 @@ const DEFAULT_QUERIES: &[&str] = &[
     "topic:desktop-app",
     "topic:tauri-app",
 ];
+
+/// Pasta da RRS (onde ficam `catalog.json`, o banco e `downloads/`).
+fn base_dir_of(catalog_path: &std::path::Path) -> PathBuf {
+    catalog_path
+        .parent()
+        .filter(|p| !p.as_os_str().is_empty())
+        .map(|p| p.to_path_buf())
+        .unwrap_or_else(|| PathBuf::from("."))
+}
 
 /// Resolve caminhos relativos na pasta do próprio executável caso não existam no diretório atual,
 /// permitindo abrir o aplicativo com clique duplo de qualquer lugar.
@@ -166,6 +188,8 @@ async fn main() -> Result<()> {
 
     // Sincroniza automaticamente catalog.json (ou catálogo embutido no .exe) -> SQLite na abertura
     let _ = db::import_catalog(&conn, &catalog_path);
+    // Modo portátil: caminhos de apps instalados passam a ser relativos à pasta da RRS
+    let _ = db::relativize_installed_paths(&conn, &base_dir_of(&catalog_path));
 
     match cli.cmd.unwrap_or(Cmd::Gui) {
         Cmd::Gui => {
@@ -229,7 +253,27 @@ async fn main() -> Result<()> {
             ),
         },
         Cmd::Verify { repo, vt, max_vt } => verify_cmd(&conn, &catalog_path, &repo, vt, max_vt).await,
-        Cmd::Download { repo } => download_cmd(&conn, &catalog_path, &repo).await,
+        Cmd::Download { repo, tag } => download_cmd(&conn, &catalog_path, &repo, tag.as_deref()).await,
+        Cmd::LibraryExport { out } => {
+            let path = out.unwrap_or_else(|| base_dir_of(&catalog_path).join(db::LIBRARY_FILE_NAME));
+            let n = db::export_library(&conn, &path)?;
+            println!("✔ Biblioteca com {n} app(s) exportada para {}", path.display());
+            Ok(())
+        }
+        Cmd::LibraryImport { file } => {
+            let rep = db::import_library(&conn, &file)?;
+            println!(
+                "✔ {} app(s) na lista 'Para reinstalar'; {} já instalado(s) aqui (tempo de jogo mesclado).",
+                rep.to_reinstall, rep.merged
+            );
+            if !rep.not_in_catalog.is_empty() {
+                println!(
+                    "⚠ Fora do catálogo local (use `rrs verify dono/repo`): {}",
+                    rep.not_in_catalog.join(", ")
+                );
+            }
+            Ok(())
+        }
         Cmd::CheckUpdates => check_updates_cmd(&conn, &catalog_path).await,
         Cmd::Translate {
             input,
@@ -357,12 +401,14 @@ async fn save_repo_if_installable(
         stars: repo.stargazers_count,
         license: repo.license.and_then(|l| l.spdx_id).unwrap_or_default(),
         topics: repo.topics.join(","),
+        language: repo.language.unwrap_or_default(),
         created_at: repo.created_at,
         pushed_at: repo.pushed_at.unwrap_or_default(),
         fork: repo.fork,
         archived: repo.archived,
         has_issues: repo.has_issues,
         latest_tag: release.tag_name,
+        released_at: release.published_at.unwrap_or_default(),
         platforms: plats.join(","),
         assets,
         kind: existing.as_ref().and_then(|e| e.kind.clone()),
@@ -372,6 +418,7 @@ async fn save_repo_if_installable(
         trust_score: rep.score,
         trust_level: rep.level.to_string(),
         trust_notes: rep.notes,
+        attestation: String::new(),
         installed: None,
     };
     db::upsert(conn, &app)?;
@@ -449,6 +496,14 @@ async fn verify_cmd(
                 a.digest.as_deref().unwrap_or("sem digest")
             );
         }
+        let attestation = attestation_of_best(&gh, &repo.full_name, &inst_assets).await;
+        match attestation.as_str() {
+            github::ATTESTATION_PRESENT => println!(
+                "🏗 Atestado de build do GitHub: presente para o arquivo ★ (a RRS não confere a assinatura; use `gh release verify-asset`)."
+            ),
+            github::ATTESTATION_ABSENT => println!("🏗 Atestado de build do GitHub: ausente para o arquivo ★."),
+            _ => {}
+        }
 
         // Salva/atualiza no banco caso tenha instaladores
         if !inst_assets.is_empty() {
@@ -466,12 +521,14 @@ async fn verify_cmd(
                 stars: repo.stargazers_count,
                 license: repo.license.and_then(|l| l.spdx_id).unwrap_or_default(),
                 topics: repo.topics.join(","),
+                language: repo.language.clone().unwrap_or_default(),
                 created_at: repo.created_at,
                 pushed_at: repo.pushed_at.unwrap_or_default(),
                 fork: repo.fork,
                 archived: repo.archived,
                 has_issues: repo.has_issues,
                 latest_tag: r.tag_name.clone(),
+                released_at: r.published_at.clone().unwrap_or_default(),
                 platforms: plats.join(","),
                 assets: inst_assets,
                 kind: existing.as_ref().and_then(|e| e.kind.clone()),
@@ -481,6 +538,7 @@ async fn verify_cmd(
                 trust_score: report.score,
                 trust_level: report.level.to_string(),
                 trust_notes: report.notes.clone(),
+                attestation,
                 installed: None,
             };
             let _ = db::upsert(conn, &app);
@@ -498,10 +556,23 @@ async fn verify_cmd(
     Ok(())
 }
 
+/// "presente"/"ausente" para o instalador recomendado com digest; "" quando não deu para consultar.
+async fn attestation_of_best(gh: &github::Github, full_name: &str, assets: &[github::Asset]) -> String {
+    let Some(digest) = github::pick_best_asset(assets).and_then(|i| assets[i].digest.clone()) else {
+        return String::new();
+    };
+    match gh.has_attestation(full_name, &digest).await {
+        Ok(true) => github::ATTESTATION_PRESENT.into(),
+        Ok(false) => github::ATTESTATION_ABSENT.into(),
+        Err(_) => String::new(),
+    }
+}
+
 async fn download_cmd(
     conn: &rusqlite::Connection,
     catalog_path: &PathBuf,
     repo_name: &str,
+    tag: Option<&str>,
 ) -> Result<()> {
     let clean = github::normalize_repo_name(repo_name);
     let app = match db::get(conn, &clean)? {
@@ -514,30 +585,36 @@ async fn download_cmd(
         }
     };
 
-    let best_idx = github::pick_best_asset(&app.assets)
-        .ok_or_else(|| anyhow::anyhow!("Nenhum instalador disponível para {}.", app.full_name))?;
-    let asset = &app.assets[best_idx];
+    // Versão pedida com --tag (versão anterior) ou a mais recente do catálogo
+    let (tag_name, assets) = match tag {
+        Some(t) if t != app.latest_tag => {
+            let gh = github::Github::new(db::get_setting(conn, "github_token").as_deref())?;
+            let rel = gh.release_by_tag(&app.full_name, t).await?;
+            (rel.tag_name.clone(), rel.installable_assets())
+        }
+        _ => (app.latest_tag.clone(), app.assets.clone()),
+    };
+
+    let best_idx = github::pick_best_asset(&assets)
+        .ok_or_else(|| anyhow::anyhow!("Nenhum instalador disponível para {} {tag_name}.", app.full_name))?;
+    let asset = &assets[best_idx];
 
     println!(
         "⬇ Baixando {} ({:.1} MB) de {} ({})...",
         asset.name,
         asset.size as f64 / 1_048_576.0,
         app.full_name,
-        app.latest_tag
+        tag_name
     );
-    let base_dir = catalog_path
-        .parent()
-        .map(|p| p.to_path_buf())
-        .unwrap_or_else(|| PathBuf::from("."));
+    let base_dir = base_dir_of(catalog_path);
     let (final_path, sha256, verified) =
-        downloader::download_and_verify(&app.full_name, &app.latest_tag, asset, &base_dir, None)
-            .await?;
+        downloader::download_and_verify(&app.full_name, &tag_name, asset, &base_dir, None).await?;
 
     db::mark_installed(
         conn,
         &app.full_name,
-        &app.latest_tag,
-        &final_path.to_string_lossy(),
+        &tag_name,
+        &db::to_stored_path(&base_dir, &final_path),
         &sha256,
         verified,
     )?;
@@ -575,6 +652,9 @@ async fn check_updates_cmd(conn: &rusqlite::Connection, catalog_path: &PathBuf) 
                 );
                 updates += 1;
                 app.latest_tag = rel.tag_name;
+                app.released_at = rel.published_at.unwrap_or_default();
+                app.attestation.clear();
+                app.assets = rel.assets.into_iter().filter(|a| github::platform_of(&a.name).is_some()).collect();
                 db::upsert(conn, &app)?;
             } else {
                 println!("✔ {} está atualizado ({})", app.full_name, inst_tag);
