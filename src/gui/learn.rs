@@ -63,6 +63,31 @@ impl StoreGui {
             .inner_margin(egui::Margin::symmetric(14, 10))
             .show(ui, |ui| {
                 ui.horizontal_wrapped(|ui| {
+                    ui.label(RichText::new(self.tr("Nível:")).strong().color(Color32::WHITE));
+                    if ui.selectable_label(self.learn_level_filter == 0, self.tr("Todos (20)")).clicked() {
+                        self.learn_level_filter = 0;
+                    }
+                    if ui.selectable_label(self.learn_level_filter == 1, self.tr("🐣 Básico (1-10)")).clicked() {
+                        self.learn_level_filter = 1;
+                        if self.learn_lesson_idx >= 10 {
+                            self.learn_lesson_idx = 0;
+                            self.learn_code_input = LESSONS[0].initial_code.to_string();
+                            self.learn_output = None;
+                        }
+                    }
+                    if ui.selectable_label(self.learn_level_filter == 2, self.tr("🚀 Intermediário (11-20)")).clicked() {
+                        self.learn_level_filter = 2;
+                        if self.learn_lesson_idx < 10 {
+                            self.learn_lesson_idx = 10;
+                            self.learn_code_input = LESSONS[10].initial_code.to_string();
+                            self.learn_output = None;
+                        }
+                    }
+
+                    ui.add_space(10.0);
+                    ui.separator();
+                    ui.add_space(8.0);
+
                     ui.label(RichText::new(self.tr("📚 Escolha a Lição:")).strong().color(Color32::WHITE));
 
                     let prev_idx = self.learn_lesson_idx;
@@ -71,6 +96,12 @@ impl StoreGui {
                         .selected_text(current_lesson.title)
                         .show_ui(ui, |ui| {
                             for (idx, l) in LESSONS.iter().enumerate() {
+                                if self.learn_level_filter == 1 && l.level != "Básico" {
+                                    continue;
+                                }
+                                if self.learn_level_filter == 2 && l.level != "Intermediário" {
+                                    continue;
+                                }
                                 if ui.selectable_value(&mut self.learn_lesson_idx, idx, l.title).clicked() {
                                     // Se mudou de lição, carrega o código inicial correspondente
                                     if self.learn_lesson_idx != prev_idx {
@@ -147,6 +178,15 @@ impl StoreGui {
                             .inner_margin(egui::Margin::same(14))
                             .show(ui, |ui| {
                                 ui.horizontal(|ui| {
+                                    draw_pill(
+                                        ui,
+                                        current_lesson.level,
+                                        if current_lesson.level == "Básico" {
+                                            Color32::from_rgb(30, 110, 60)
+                                        } else {
+                                            Color32::from_rgb(180, 75, 25)
+                                        },
+                                    );
                                     draw_pill(ui, current_lesson.category, Color32::from_rgb(35, 85, 155));
                                     ui.add_space(4.0);
                                     ui.label(

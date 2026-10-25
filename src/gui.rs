@@ -14,6 +14,7 @@ use std::sync::{Arc, Mutex};
 
 mod extras;
 mod learn;
+mod optimizer;
 mod phase3;
 mod settings;
 mod social;
@@ -44,6 +45,7 @@ enum NavSection {
     Settings,
     CppToRust,
     LearnRust,
+    Optimizer,
 }
 
 #[derive(PartialEq, Clone, Copy)]
@@ -106,6 +108,13 @@ enum BgEvent {
     },
     CommunityThread(Result<crate::community::DiscussionThread, String>),
     LearnRunFinished(crate::learn::RunResult),
+    OptimizerScanFinished {
+        specs: crate::optimizer::SystemSpecs,
+        programs: Vec<crate::optimizer::InstalledProgram>,
+        startup: Vec<crate::optimizer::StartupApp>,
+        actions: Vec<crate::optimizer::OptimizationItem>,
+    },
+    OptimizerActionFinished(Result<String, String>),
     /// Evento de conquista vindo de uma tarefa em segundo plano.
     Stat(&'static str),
     Error(String),
@@ -271,6 +280,17 @@ pub struct StoreGui {
     learn_output: Option<crate::learn::RunResult>,
     learn_is_running: bool,
     learn_show_cheatsheet: bool,
+    learn_level_filter: usize,
+
+    // Otimizador do PC e Diagnóstico de Sistema
+    optimizer_specs: Option<crate::optimizer::SystemSpecs>,
+    optimizer_programs: Option<Vec<crate::optimizer::InstalledProgram>>,
+    optimizer_startup: Option<Vec<crate::optimizer::StartupApp>>,
+    optimizer_actions: Vec<crate::optimizer::OptimizationItem>,
+    optimizer_is_scanning: bool,
+    optimizer_program_search: String,
+    optimizer_tab: usize,
+    external_store_filter: Option<crate::launchers::Store>,
 
     // Tarefas em segundo plano
     downloads: downloader::DownloadManager,
@@ -415,6 +435,15 @@ impl StoreGui {
             learn_output: None,
             learn_is_running: false,
             learn_show_cheatsheet: false,
+            learn_level_filter: 0,
+            optimizer_specs: None,
+            optimizer_programs: None,
+            optimizer_startup: None,
+            optimizer_actions: Vec::new(),
+            optimizer_is_scanning: false,
+            optimizer_program_search: String::new(),
+            optimizer_tab: 0,
+            external_store_filter: None,
             downloads: downloader::DownloadManager::default(),
             bg_events: Arc::new(Mutex::new(Vec::new())),
             busy_task: None,
@@ -604,7 +633,7 @@ impl StoreGui {
                     NavSection::AiAndApps => k == "ai-app" || k == "app",
                     NavSection::Tools => k == "tool" || k == "re-app",
                     NavSection::Library => a.installed.is_some(),
-                    NavSection::CppToRust | NavSection::LearnRust => true,
+                    NavSection::CppToRust | NavSection::LearnRust | NavSection::Optimizer => true,
                 };
                 section_ok && self.matches_global_filters(a)
             })
@@ -845,6 +874,34 @@ impl StoreGui {
                     self.busy_task = None;
                     self.learn_is_running = false;
                     self.learn_output = Some(res);
+                }
+                BgEvent::OptimizerScanFinished {
+                    specs,
+                    programs,
+                    startup,
+                    actions,
+                } => {
+                    self.optimizer_is_scanning = false;
+                    self.optimizer_specs = Some(specs);
+                    self.optimizer_programs = Some(programs);
+                    self.optimizer_startup = Some(startup);
+                    self.optimizer_actions = actions;
+                    self.busy_task = None;
+                    self.status_msg = self.tr("Diagnóstico do PC e especificações atualizadas.");
+                    self.status_is_error = false;
+                }
+                BgEvent::OptimizerActionFinished(res) => {
+                    self.busy_task = None;
+                    match res {
+                        Ok(msg) => {
+                            self.status_msg = format!("✔ {msg}");
+                            self.status_is_error = false;
+                        }
+                        Err(e) => {
+                            self.status_msg = format!("❌ {e}");
+                            self.status_is_error = true;
+                        }
+                    }
                 }
                 BgEvent::Stat(key) => self.record_stat(key),
                 BgEvent::CrateResolved(res) => {
@@ -1333,6 +1390,7 @@ impl eframe::App for StoreGui {
                     format!("📦  {} ({installed_count})", tr(self.lang, "Minha Biblioteca"))
                 };
                 nav_button(ui, &mut self.section, NavSection::Library, &lib_label);
+                nav_button(ui, &mut self.section, NavSection::Optimizer, &tr(self.lang, "⚡  Otimizador do PC"));
                 nav_button(ui, &mut self.section, NavSection::Profile, &tr(self.lang, "🏆  Perfil & Conquistas"));
                 nav_button(ui, &mut self.section, NavSection::Community, &tr(self.lang, "💬  Comunidade"));
 
@@ -1570,7 +1628,7 @@ impl eframe::App for StoreGui {
             });
 
         // ─── PAINEL DIREITO: Ficha da Loja, Precedentes e Download ─────────
-        if !matches!(self.section, NavSection::CppToRust | NavSection::LearnRust | NavSection::Settings | NavSection::Profile) {
+        if !matches!(self.section, NavSection::CppToRust | NavSection::LearnRust | NavSection::Optimizer | NavSection::Settings | NavSection::Profile) {
             let selected_app = self
                 .selected_repo
                 .as_ref()
@@ -1609,6 +1667,10 @@ impl eframe::App for StoreGui {
                 }
                 if self.section == NavSection::LearnRust {
                     self.render_learn_rust(ui);
+                    return;
+                }
+                if self.section == NavSection::Optimizer {
+                    self.render_optimizer(ui);
                     return;
                 }
                 egui::ScrollArea::vertical().show(ui, |ui| {
@@ -1920,6 +1982,7 @@ impl StoreGui {
             ),
             NavSection::CppToRust => ("🦀 Tradutor C/C++ ➔ Rust", ""),
             NavSection::LearnRust => ("📖 Aprender & Programar em Rust", ""),
+            NavSection::Optimizer => ("⚡  Otimizador do PC", ""),
         };
 
         ui.label(RichText::new(tr(self.lang, title)).size(20.0).strong().color(Color32::WHITE));
@@ -1968,7 +2031,7 @@ impl StoreGui {
             }
         }
 
-        if !matches!(self.section, NavSection::ReverseEngineering | NavSection::Library | NavSection::Terminal) {
+        if !matches!(self.section, NavSection::ReverseEngineering | NavSection::Library | NavSection::Terminal | NavSection::Optimizer) {
             ui.add_space(8.0);
             ui.horizontal_wrapped(|ui| {
                 ui.label(RichText::new(tr(self.lang, "Filtro:")).size(12.0).color(Color32::GRAY));

@@ -15,7 +15,7 @@ impl StoreGui {
         if self.busy_task.is_some() {
             return;
         }
-        self.busy_task = Some("Procurando jogos da Steam, Epic e GOG...".into());
+        self.busy_task = Some(self.tr("Sincronizando todas as lojas de games do PC..."));
         let events = Arc::clone(&self.bg_events);
         std::thread::spawn(move || {
             events.lock().unwrap().push(BgEvent::ExternalGames(launchers::all_games()));
@@ -26,15 +26,15 @@ impl StoreGui {
         ui.add_space(14.0);
         ui.horizontal_wrapped(|ui| {
             ui.label(
-                RichText::new(self.tr("🎮 Outras lojas no PC (Steam, Epic, GOG)"))
+                RichText::new(self.tr("🎮 Sincronização de Lojas de Games"))
                     .size(17.0)
                     .strong()
                     .color(Color32::WHITE),
             );
             let label = if self.external_games.is_some() {
-                self.tr("🔄 Procurar de novo")
+                self.tr("🔄 Sincronizar Lojas")
             } else {
-                self.tr("🔎 Procurar jogos instalados")
+                self.tr("🔎 Sincronizar Lojas de Games")
             };
             if ui.add_enabled(self.busy_task.is_none(), egui::Button::new(label)).clicked() {
                 self.spawn_external_scan();
@@ -42,17 +42,56 @@ impl StoreGui {
         });
         let Some(games) = self.external_games.clone() else {
             ui.label(
-                RichText::new(self.tr("Lista os jogos das outras lojas para abrir tudo pela RRS (também no Modo TV)."))
-                    .size(12.0)
-                    .color(Color32::from_rgb(145, 155, 175)),
+                RichText::new(self.tr(
+                    "Sincroniza todos os seus jogos da Steam, Epic Games, GOG, Xbox, EA App, Ubisoft, Battle.net e Riot Games.",
+                ))
+                .size(12.0)
+                .color(Color32::from_rgb(145, 155, 175)),
             );
             return;
         };
         if games.is_empty() {
-            ui.label(RichText::new(self.tr("Nenhum jogo da Steam, Epic ou GOG encontrado.")).color(Color32::GRAY));
+            ui.label(RichText::new(self.tr("Nenhum jogo encontrado nas lojas instaladas no PC.")).color(Color32::GRAY));
             return;
         }
-        for g in &games {
+
+        // Filtro por Loja
+        ui.add_space(6.0);
+        ui.horizontal_wrapped(|ui| {
+            ui.label(RichText::new(self.tr("Loja:")).size(12.0).color(Color32::GRAY));
+            if ui.selectable_label(self.external_store_filter.is_none(), format!("{} ({})", self.tr("Todas"), games.len())).clicked() {
+                self.external_store_filter = None;
+            }
+
+            let stores = [
+                (launchers::Store::Steam, "Steam"),
+                (launchers::Store::Epic, "Epic Games"),
+                (launchers::Store::Gog, "GOG"),
+                (launchers::Store::Xbox, "Xbox"),
+                (launchers::Store::Ea, "EA App"),
+                (launchers::Store::Ubisoft, "Ubisoft"),
+                (launchers::Store::BattleNet, "Battle.net"),
+                (launchers::Store::Riot, "Riot Games"),
+            ];
+
+            for (st, label) in stores {
+                let count = games.iter().filter(|g| g.store == st).count();
+                if count > 0 {
+                    let is_sel = self.external_store_filter == Some(st);
+                    if ui.selectable_label(is_sel, format!("{label} ({count})")).clicked() {
+                        self.external_store_filter = Some(st);
+                    }
+                }
+            }
+        });
+
+        ui.add_space(8.0);
+        let filtered: Vec<&launchers::ExternalGame> = games
+            .iter()
+            .filter(|g| self.external_store_filter.is_none() || self.external_store_filter == Some(g.store))
+            .collect();
+
+        for g in filtered {
             ui.horizontal_wrapped(|ui| {
                 draw_pill(ui, g.store.label(), Color32::from_rgb(52, 62, 82));
                 ui.label(RichText::new(&g.name).strong().color(Color32::WHITE));

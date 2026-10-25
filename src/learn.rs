@@ -11,6 +11,7 @@ pub struct Lesson {
     pub id: &'static str,
     pub title: &'static str,
     pub category: &'static str,
+    pub level: &'static str,
     pub summary: &'static str,
     pub explanation: &'static str,
     pub initial_code: &'static str,
@@ -23,6 +24,7 @@ pub const LESSONS: &[Lesson] = &[
         id: "ola_mundo",
         title: "1. Olá, Mundo & Primeiro Programa",
         category: "Básico",
+        level: "Básico",
         summary: "Conheça a função main(), macros de impressão e como Rust exibe mensagens.",
         explanation: "\
 Em Rust, todo programa executável começa na função `fn main()`.
@@ -45,6 +47,7 @@ fn main() {
         id: "variaveis_mut",
         title: "2. Variáveis & Imutabilidade",
         category: "Básico",
+        level: "Básico",
         summary: "Descubra por que variáveis em Rust são imutáveis por padrão e quando usar `mut`.",
         explanation: "\
 Em muitas linguagens, qualquer variável pode ser alterada a qualquer momento, o que causa bugs difíceis de rastrear.
@@ -70,6 +73,7 @@ fn main() {
         id: "tipos_basicos",
         title: "3. Tipos de Dados & Cálculos",
         category: "Básico",
+        level: "Básico",
         summary: "Números inteiros, decimais, booleanos e conversão explícita segura.",
         explanation: "\
 Rust é fortemente tipada:
@@ -98,6 +102,7 @@ fn main() {
         id: "funcoes",
         title: "4. Funções & Retorno Elegante",
         category: "Lógica",
+        level: "Básico",
         summary: "Aprenda a criar funções limpas com retorno de expressão sem a palavra `return`.",
         explanation: "\
 Funções são definidas com `fn nome(parametro: Tipo) -> TipoDeRetorno`.
@@ -128,6 +133,7 @@ fn main() {
         id: "controle_fluxo",
         title: "5. Condições & O Poder do `match`",
         category: "Lógica",
+        level: "Básico",
         summary: "Decisões com `if/else` e o casador de padrões exaustivo `match`.",
         explanation: "\
 O `if/else` em Rust pode ser usado tanto para controlar o fluxo quanto como expressão para atribuir valores:
@@ -161,6 +167,7 @@ fn main() {
         id: "lacos_repeticao",
         title: "6. Laços de Repetição (`for`, `while`)",
         category: "Lógica",
+        level: "Básico",
         summary: "Iteração segura e expressiva sobre intervalos e coleções.",
         explanation: "\
 Em Rust, raramente usamos laços com índices manuais que podem causar falhas de limite de vetor.
@@ -192,6 +199,7 @@ fn main() {
         id: "structs_e_metodos",
         title: "7. Estruturas (`struct`) & Métodos (`impl`)",
         category: "Modelagem",
+        level: "Básico",
         summary: "Crie seus próprios tipos de dados com campos e comportamentos associados.",
         explanation: "\
 As `structs` permitem agrupar dados relacionados.
@@ -233,6 +241,7 @@ fn main() {
         id: "vetores_colecoes",
         title: "8. Vetores & Coleções Dinâmicas",
         category: "Coleções",
+        level: "Básico",
         summary: "Listas dinâmicas que crescem e diminuem com segurança de memória.",
         explanation: "\
 Um `Vec<T>` é uma lista que armazena elementos do mesmo tipo na memória heap.
@@ -260,6 +269,7 @@ fn main() {
         id: "option_e_result",
         title: "9. Sem Null: `Option` e `Result`",
         category: "Segurança",
+        level: "Básico",
         summary: "O fim dos crashes por NullPointerException: aprenda a tratar ausências e erros.",
         explanation: "\
 O criador do ponteiro nulo (null) chamou-o de seu 'erro de um bilhão de dólares'.
@@ -303,6 +313,7 @@ fn main() {
         id: "mini_jogo",
         title: "10. Mini-Projeto: Jogo de Adivinhação",
         category: "Projeto",
+        level: "Básico",
         summary: "Um jogo interativo completo reunindo variáveis, condições, loops e lógica.",
         explanation: "\
 Parabéns por chegar até aqui!
@@ -348,6 +359,459 @@ fn main() {
 ",
         challenge: "Mude o `numero_secreto` para outro número e teste com novos palpites no vetor.",
     },
+    Lesson {
+        id: "posse_e_emprestimo",
+        title: "11. Posse (Ownership) & Empréstimo (&)",
+        category: "Memória",
+        level: "Intermediário",
+        summary: "O coração de Rust: como o compilador gerencia memória sem Garbage Collector.",
+        explanation: "\
+Em Rust, cada valor tem um único 'dono' (owner). Quando o dono sai de escopo, a memória é liberada automaticamente (Drop).
+Se você passar uma variável do tipo String para outra função ou variável, a posse é 'movida' (Move) e a original deixa de existir!
+Para reutilizar o valor sem mover, usamos 'empréstimo' (Borrowing) com referências imutáveis `&T` ou mutáveis `&mut T`.
+Regra de ouro: Você pode ter infinitas referências de leitura `&` OU exatamente uma referência de escrita `&mut`, nunca ambas ao mesmo tempo.",
+        initial_code: "\
+fn calcular_tamanho(texto: &String) -> usize {
+    texto.len()
+}
+
+fn adicionar_saudacao(texto: &mut String) {
+    texto.push_str(\" — Seja bem-vindo à RRS!\");
+}
+
+fn main() {
+    let mut mensagem = String::from(\"Olá, Rustáceo\");
+
+    // Passamos por referência & (empréstimo), a mensagem continua nossa
+    let tamanho = calcular_tamanho(&mensagem);
+    println!(\"Texto: '{}' (tamanho: {} bytes)\", mensagem, tamanho);
+
+    // Empréstimo mutável &mut para alterar o conteúdo
+    adicionar_saudacao(&mut mensagem);
+    println!(\"Mensagem atualizada: {}\", mensagem);
+}
+",
+        challenge: "Crie uma função `fn duplicar_texto(s: &mut String)` que adicione um espaço e repita o conteúdo de `s`.",
+    },
+    Lesson {
+        id: "traits_e_interfaces",
+        title: "12. Traits: Contratos e Polimorfismo",
+        category: "Abstração",
+        level: "Intermediário",
+        summary: "Defina comportamentos compartilhados entre tipos diferentes sem herança clássica.",
+        explanation: "\
+Em Rust não há herança de classes (`class Dog extends Animal`). Em vez disso, usamos `traits`!
+Uma trait define um conjunto de métodos que um tipo deve implementar. É o equivalente a interfaces em outras linguagens, mas muito mais poderoso e seguro.
+Podemos usar traits para polimorfismo com `impl Trait` ou dynamic dispatch `&dyn Trait`.",
+        initial_code: "\
+trait Descrevivel {
+    fn descrever(&self) -> String;
+
+    // Método com implementação padrão opcional
+    fn resumo(&self) -> String {
+        format!(\"[Resumo]: {}\", self.descrever())
+    }
+}
+
+struct Jogo {
+    titulo: String,
+    preco: f64,
+}
+
+struct Aplicativo {
+    nome: String,
+    versao: String,
+}
+
+impl Descrevivel for Jogo {
+    fn descrever(&self) -> String {
+        format!(\"Jogo '{}' por R$ {:.2}\", self.titulo, self.preco)
+    }
+}
+
+impl Descrevivel for Aplicativo {
+    fn descrever(&self) -> String {
+        format!(\"App '{}' (v{})\", self.nome, self.versao)
+    }
+}
+
+fn exibir_item(item: &impl Descrevivel) {
+    println!(\"{}\", item.resumo());
+}
+
+fn main() {
+    let g = Jogo { titulo: \"CyberRust 2077\".into(), preco: 149.90 };
+    let a = Aplicativo { nome: \"RRS Launcher\".into(), versao: \"2.5\".into() };
+
+    exibir_item(&g);
+    exibir_item(&a);
+}
+",
+        challenge: "Crie uma struct `Livro { titulo: String, paginas: u32 }`, implemente `Descrevivel` para ela e teste com `exibir_item`.",
+    },
+    Lesson {
+        id: "tipos_genericos",
+        title: "13. Tipos Genéricos (`<T>`)",
+        category: "Abstração",
+        level: "Intermediário",
+        summary: "Escreva código flexível e reutilizável para múltiplos tipos com custo zero de runtime.",
+        explanation: "\
+Generics permitem escrever funções, structs e enums que operam sobre qualquer tipo de dado sem duplicar código.
+Em Rust, generics usam 'monomorfização': o compilador gera uma cópia otimizada em código de máquina para cada tipo concreto usado, ou seja, zero perda de desempenho em comparação com código escrito à mão!
+Podemos restringir generics usando 'trait bounds': `<T: Display>` ou `<T: PartialOrd>`.",
+        initial_code: "\
+struct Par<T> {
+    primeiro: T,
+    segundo: T,
+}
+
+impl<T: std::fmt::Display> Par<T> {
+    fn exibir(&self) {
+        println!(\"Par: ({}, {})\", self.primeiro, self.segundo);
+    }
+}
+
+fn maior<T: PartialOrd>(a: T, b: T) -> T {
+    if a > b { a } else { b }
+}
+
+fn main() {
+    let par_inteiros = Par { primeiro: 10, segundo: 20 };
+    let par_textos = Par { primeiro: \"Alpha\", segundo: \"Omega\" };
+
+    par_inteiros.exibir();
+    par_textos.exibir();
+
+    println!(\"Maior número: {}\", maior(42, 100));
+    println!(\"Maior texto: {}\", maior(\"Maçã\", \"Banana\"));
+}
+",
+        challenge: "Adicione um método `fn trocar(&mut self)` na struct `Par<T>` para inverter a ordem dos dois elementos.",
+    },
+    Lesson {
+        id: "closures_lambdas",
+        title: "14. Closures (Funções Anônimas & Lambdas)",
+        category: "Funcional",
+        level: "Intermediário",
+        summary: "Passe lógica como argumento, capture variáveis do ambiente e crie pipelines elegantes.",
+        explanation: "\
+Closures são funções anônimas que você pode salvar em variáveis ou passar como argumentos para outras funções.
+A sintaxe usa barras verticais: `|param1, param2| { corpo }`.
+O grande diferencial das closures é que elas podem capturar variáveis do escopo onde foram criadas (por referência imutável, mutável ou por movimento `move`).",
+        initial_code: "\
+fn main() {
+    let multiplicador = 3;
+
+    // Closure que captura 'multiplicador' do escopo externo
+    let triplicar = |x: i32| x * multiplicador;
+
+    println!(\"3 x 5 = {}\", triplicar(5));
+    println!(\"3 x 12 = {}\", triplicar(12));
+
+    let mut contador = 0;
+    let mut incrementar = || {
+        contador += 1;
+        println!(\"Contador interno: {}\", contador);
+    };
+
+    incrementar();
+    incrementar();
+    incrementar();
+}
+",
+        challenge: "Crie uma closure `let aplicar_desconto = |preco: f64| preco * 0.85;` e calcule o preço com 15% de desconto de R$ 200,00.",
+    },
+    Lesson {
+        id: "iteradores_avancados",
+        title: "15. Iteradores Funcionais (`map`, `filter`, `fold`)",
+        category: "Funcional",
+        level: "Intermediário",
+        summary: "Processe coleções de dados de forma declarativa, expressiva e sem loops manuais.",
+        explanation: "\
+Em Rust, iteradores são 'preguiçosos' (lazy): nada é calculado até você consumir o iterador com `.collect()`, `.sum()` ou `.for_each()`.
+Métodos como `.map()`, `.filter()`, `.take()` e `.fold()` transformam streams de dados com eficiência máxima, muitas vezes superando loops manuais em velocidade graças à vetorização do LLVM.",
+        initial_code: "\
+fn main() {
+    let numeros = vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+    // Pipeline funcional: filtra pares, eleva ao quadrado e coleta
+    let pares_quadrados: Vec<i32> = numeros
+        .iter()
+        .filter(|&&n| n % 2 == 0)
+        .map(|&n| n * n)
+        .collect();
+
+    println!(\"Números originais: {:?}\", numeros);
+    println!(\"Pares ao quadrado: {:?}\", pares_quadrados);
+
+    // Soma acumulada usando fold
+    let soma_total: i32 = numeros.iter().fold(0, |acc, &n| acc + n);
+    println!(\"Soma total de 1 a 10: {}\", soma_total);
+}
+",
+        challenge: "Adicione um filtro para selecionar apenas números ímpares maiores que 3 e multiplique todos eles.",
+    },
+    Lesson {
+        id: "concorrencia_threads",
+        title: "16. Concorrência Segura com Threads",
+        category: "Concorrência",
+        level: "Intermediário",
+        summary: "Execute tarefas em paralelo em múltiplos núcleos da CPU sem risco de 'data race'.",
+        explanation: "\
+Rust garante 'Fearless Concurrency' (concorrência sem medo): o compilador impede em tempo de compilação condições de corrida de dados!
+Com `std::thread::spawn` iniciamos uma nova thread do sistema operacional.
+O método `.join()` aguarda a conclusão da thread e coleta seu resultado.",
+        initial_code: "\
+use std::thread;
+use std::time::Duration;
+
+fn main() {
+    println!(\"Thread principal iniciando tarefas paralelas...\");
+
+    let handle1 = thread::spawn(|| {
+        for i in 1..=3 {
+            println!(\"  [Worker 1] Processando lote {}...\", i);
+            thread::sleep(Duration::from_millis(50));
+        }
+        \"Lote 1 Concluído!\"
+    });
+
+    let handle2 = thread::spawn(|| {
+        for i in 1..=3 {
+            println!(\"  [Worker 2] Indexando arquivos {}...\", i);
+            thread::sleep(Duration::from_millis(70));
+        }
+        \"Lote 2 Concluído!\"
+    });
+
+    // Aguarda o término das threads
+    let res1 = handle1.join().unwrap();
+    let res2 = handle2.join().unwrap();
+
+    println!(\"Resultados: {}, {}\", res1, res2);
+    println!(\"Todas as tarefas concorrentes foram finalizadas!\");
+}
+",
+        challenge: "Crie uma terceira thread que faça a contagem regressiva de 3 a 1 e aguarde todas com `.join()`.",
+    },
+    Lesson {
+        id: "canais_mpsc",
+        title: "17. Mensageria entre Threads (`mpsc`)",
+        category: "Concorrência",
+        level: "Intermediário",
+        summary: "Comunicação entre threads por passagem de mensagens sem travas manuais.",
+        explanation: "\
+Em vez de usar travas complexas (mutex) que podem causar deadlocks, o canal `mpsc` (Multiple Producer, Single Consumer) permite enviar mensagens entre threads de forma limpa.
+Você cria um par `(sender, receiver)` com `std::sync::mpsc::channel()`.
+O transmissor envia dados com `tx.send(dado)` e o receptor lê com `rx.recv()` ou iterando diretamente sobre `rx`.",
+        initial_code: "\
+use std::sync::mpsc;
+use std::thread;
+use std::time::Duration;
+
+fn main() {
+    let (tx, rx) = mpsc::channel();
+
+    let tx1 = tx.clone();
+    thread::spawn(move || {
+        let msgs = vec![\"Download iniciado\", \"50% baixado\", \"Download finalizado\"];
+        for msg in msgs {
+            tx1.send(format!(\"[Rede] {}\", msg)).unwrap();
+            thread::sleep(Duration::from_millis(40));
+        }
+    });
+
+    thread::spawn(move || {
+        let msgs = vec![\"Verificando SHA256\", \"Assinatura digital OK\"];
+        for msg in msgs {
+            tx.send(format!(\"[Segurança] {}\", msg)).unwrap();
+            thread::sleep(Duration::from_millis(60));
+        }
+    });
+
+    // A thread principal recebe todas as mensagens até os transmissores fecharem
+    while let Ok(msg) = rx.recv() {
+        println!(\"Mensagem recebida: {}\", msg);
+    }
+
+    println!(\"Canal fechado. Todas as mensagens foram processadas!\");
+}
+",
+        challenge: "Crie um canal onde uma thread envia o quadrado de números de 1 a 5 e a thread principal imprime cada um.",
+    },
+    Lesson {
+        id: "smart_pointers_box",
+        title: "18. Smart Pointers: Alocação na Heap com `Box<T>`",
+        category: "Ponteiros",
+        level: "Intermediário",
+        summary: "Armazene dados diretamente na Heap e crie estruturas recursivas como listas encadeadas.",
+        explanation: "\
+Em Rust, a maioria dos tipos primitivos vive na Stack (rápida, tamanho fixo conhecido em compilação).
+O `Box<T>` é o ponteiro inteligente mais simples: ele move o valor para a memória Heap e mantém apenas um ponteiro de 8 bytes na Stack.
+É essencial para:
+1. Estruturas com tamanho não conhecido em tempo de compilação (recursivas como árvores e listas encadeadas).
+2. Transferir posse de grandes blocos de dados sem copiar bytes na memória.",
+        initial_code: "\
+// Estrutura recursiva: uma lista encadeada simples precisa de Box
+enum ListaNode {
+    Elemento(i32, Box<ListaNode>),
+    Vazio,
+}
+
+use ListaNode::*;
+
+fn imprimir_lista(mut no: &ListaNode) {
+    print!(\"Lista: \");
+    while let Elemento(valor, proximo) = no {
+        print!(\"{} -> \", valor);
+        no = proximo;
+    }
+    println!(\"FIM\");
+}
+
+fn main() {
+    // Alocando um valor simples na Heap
+    let valor_heap = Box::new(2026);
+    println!(\"Valor dentro da Box na Heap: {}\", *valor_heap);
+
+    // Construindo lista encadeada: 10 -> 20 -> 30 -> Vazio
+    let lista = Elemento(10, Box::new(Elemento(20, Box::new(Elemento(30, Box::new(Vazio))))));
+    imprimir_lista(&lista);
+}
+",
+        challenge: "Crie uma lista encadeada com 4 números (100, 200, 300, 400) e exiba na tela.",
+    },
+    Lesson {
+        id: "arquivos_e_io",
+        title: "19. Arquivos & Sistema de Arquivos (`std::fs`)",
+        category: "I/O",
+        level: "Intermediário",
+        summary: "Crie, leia e manipule arquivos e pastas no disco com tratamento robusto de erros.",
+        explanation: "\
+O módulo `std::fs` contém tudo o que você precisa para interagir com o sistema de arquivos do sistema operacional.
+Métodos convenientes:
+• `fs::write(\"caminho.txt\", \"conteudo\")`: cria ou sobrescreve um arquivo.
+• `fs::read_to_string(\"caminho.txt\")`: lê o arquivo inteiro como texto.
+• `fs::create_dir_all(\"pasta/sub\")`: cria pastas recursivamente.
+Todas essas funções retornam `Result<T, std::io::Error>`, obrigando o tratamento limpo de permissões ou arquivos inexistentes.",
+        initial_code: "\
+use std::fs;
+
+fn main() -> std::io::Result<()> {
+    let pasta = std::env::temp_dir().join(\"rrs_demo_io\");
+    fs::create_dir_all(&pasta)?;
+
+    let arquivo = pasta.join(\"config_exemplo.ini\");
+    let conteudo = \"modo=desempenho\\nfps_limite=144\\nloja_favorita=Steam\";
+
+    // Grava o arquivo
+    fs::write(&arquivo, conteudo)?;
+    println!(\"Arquivo gravado com sucesso em: {}\", arquivo.display());
+
+    // Lê de volta
+    let lido = fs::read_to_string(&arquivo)?;
+    println!(\"\\n--- Conteúdo Lido do Disco ---\");
+    for (i, linha) in lido.lines().enumerate() {
+        println!(\"Linha {}: {}\", i + 1, linha);
+    }
+
+    // Limpeza
+    let _ = fs::remove_file(&arquivo);
+    let _ = fs::remove_dir(&pasta);
+    println!(\"\\nLimpeza de teste concluída!\");
+
+    Ok(())
+}
+",
+        challenge: "Adicione mais uma linha ao arquivo com `tema=escuro` e confira se ela é exibida ao ler.",
+    },
+    Lesson {
+        id: "mini_projeto_cli_tarefas",
+        title: "20. Mini-Projeto: Gerenciador de Tarefas CLI",
+        category: "Projeto",
+        level: "Intermediário",
+        summary: "Um aplicativo completo de linha de comando com structs, enums, métodos e formatação tabular.",
+        explanation: "\
+Parabéns por completar o nível Intermediário de Rust!
+Neste projeto final, construímos um Gerenciador de Tarefas (To-Do List) completo no terminal.
+Usamos structs com métodos `impl`, enums para representar o status da tarefa, vetores dinâmicos e formatação tabular profissional.
+Você pode exportar este projeto como um projeto Cargo completo com o botão acima!",
+        initial_code: "\
+#[derive(Debug, Clone)]
+enum Status {
+    Pendente,
+    EmProgresso,
+    Concluida,
+}
+
+struct Tarefa {
+    id: usize,
+    descricao: String,
+    status: Status,
+}
+
+struct GerenciadorTarefas {
+    itens: Vec<Tarefa>,
+    proximo_id: usize,
+}
+
+impl GerenciadorTarefas {
+    fn novo() -> Self {
+        Self { itens: Vec::new(), proximo_id: 1 }
+    }
+
+    fn adicionar(&mut self, descricao: &str) {
+        self.itens.push(Tarefa {
+            id: self.proximo_id,
+            descricao: descricao.to_string(),
+            status: Status::Pendente,
+        });
+        self.proximo_id += 1;
+    }
+
+    fn concluir(&mut self, id: usize) -> bool {
+        if let Some(t) = self.itens.iter_mut().find(|t| t.id == id) {
+            t.status = Status::Concluida;
+            true
+        } else {
+            false
+        }
+    }
+
+    fn listar(&self) {
+        println!(\"{:-<50}\", \"\");
+        println!(\"{:<5} | {:<25} | {:<12}\", \"ID\", \"DESCRIÇÃO\", \"STATUS\");
+        println!(\"{:-<50}\", \"\");
+        for t in &self.itens {
+            let status_txt = match t.status {
+                Status::Pendente => \"⏳ Pendente\",
+                Status::EmProgresso => \"⚙ Em Andamento\",
+                Status::Concluida => \"✔ Concluída\",
+            };
+            println!(\"{:<5} | {:<25} | {:<12}\", t.id, t.descricao, status_txt);
+        }
+        println!(\"{:-<50}\", \"\");
+    }
+}
+
+fn main() {
+    println!(\"=== RRS Task Manager CLI ===\");
+    let mut app = GerenciadorTarefas::novo();
+
+    app.adicionar(\"Instalar Rust e Cargo\");
+    app.adicionar(\"Aprender Ownership e Borrowing\");
+    app.adicionar(\"Construir o primeiro projeto em Rust\");
+
+    app.concluir(1);
+    app.concluir(2);
+
+    app.listar();
+    println!(\"Total de tarefas cadastradas: {}\", app.itens.len());
+}
+",
+        challenge: "Adicione uma função que conte quantas tarefas estão concluídas e quantas ainda estão pendentes.",
+    },
+
 ];
 
 /// Resultado da execução ou compilação de código Rust.
@@ -373,8 +837,14 @@ pub fn diagnose_beginner_error(stderr: &str) -> Option<String> {
         Some("💡 Dica para Iniciantes: Parece que faltou um ponto e vírgula `;` no final da linha anterior.".into())
     } else if stderr.contains("unused variable") {
         Some("💡 Dica para Iniciantes: A variável foi criada mas nunca usada. Se foi intencional, coloque um sublinhado antes do nome (ex: `_x`) para silenciar o aviso.".into())
+    } else if stderr.contains("cannot move out of") {
+        Some("💡 Dica Intermediária: O valor foi movido e não pode mais ser acessado. Use referência `&` ou `.clone()` se o tipo permitir.".into())
+    } else if stderr.contains("doesn't implement") || stderr.contains("the trait bound") {
+        Some("💡 Dica Intermediária: O tipo não implementa a Trait necessária. Verifique os bounds `<T: ...>` ou adicione `impl Trait for Tipo`.".into())
+    } else if stderr.contains("borrowed value does not live long enough") {
+        Some("💡 Dica Intermediária: A referência tenta viver mais que o valor apontado. Ajuste o escopo das variáveis ou transfira a posse do valor.".into())
     } else if stderr.contains("aborting due to") {
-        Some("💡 Dica para Iniciantes: O compilador `rustc` encontrou erros de sintaxe ou tipos. Leia a primeira linha de erro indicada acima.".into())
+        Some("💡 Dica Pedagógica: O compilador `rustc` encontrou erros. Leia a primeira linha de erro indicada acima para identificar a causa.".into())
     } else {
         None
     }
@@ -547,7 +1017,7 @@ mod tests {
 
     #[test]
     fn todas_as_licoes_tem_id_titulo_e_codigo() {
-        assert_eq!(LESSONS.len(), 10, "devem existir 10 lições para iniciantes");
+        assert_eq!(LESSONS.len(), 20, "devem existir 20 lições (10 básico + 10 intermediário)");
         let mut ids = std::collections::HashSet::new();
         for l in LESSONS {
             assert!(ids.insert(l.id), "id de lição repetido: {}", l.id);

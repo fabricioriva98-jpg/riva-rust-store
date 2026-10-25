@@ -14,6 +14,7 @@ mod gui;
 mod installer;
 mod launchers;
 mod learn;
+mod optimizer;
 mod sandbox;
 mod saves;
 mod social;

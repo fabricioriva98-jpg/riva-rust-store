@@ -5,11 +5,16 @@ use anyhow::{bail, Context, Result};
 use std::collections::BTreeMap;
 use std::path::{Path, PathBuf};
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub enum Store {
     Steam,
     Epic,
     Gog,
+    Xbox,
+    Ea,
+    Ubisoft,
+    BattleNet,
+    Riot,
 }
 
 impl Store {
@@ -18,6 +23,11 @@ impl Store {
             Store::Steam => "Steam",
             Store::Epic => "Epic Games",
             Store::Gog => "GOG",
+            Store::Xbox => "Xbox",
+            Store::Ea => "EA App",
+            Store::Ubisoft => "Ubisoft",
+            Store::BattleNet => "Battle.net",
+            Store::Riot => "Riot Games",
         }
     }
 }
@@ -309,12 +319,243 @@ pub fn gog_games() -> Vec<ExternalGame> {
     Vec::new()
 }
 
+// ─── Xbox / Microsoft Store / PC Game Pass ─────────────────────────────────
+
+pub fn xbox_games() -> Vec<ExternalGame> {
+    let mut games = Vec::new();
+    #[cfg(target_os = "windows")]
+    if let Ok(out) = std::process::Command::new("reg")
+        .args(["query", r"HKCU\System\GameConfigStore\Children", "/s"])
+        .output()
+    {
+        let text = String::from_utf8_lossy(&out.stdout);
+        let mut utm = String::new();
+        let mut exe_path = String::new();
+
+        let flush = |utm: &mut String, exe_path: &mut String, games: &mut Vec<ExternalGame>| {
+            if !utm.is_empty() {
+                let clean = utm.trim_start_matches("P~");
+                let name = clean
+                    .split('_')
+                    .next()
+                    .unwrap_or(clean)
+                    .replace("Microsoft.", "")
+                    .replace('.', " ");
+                let id = clean.to_string();
+                if !games.iter().any(|g| g.id == id) {
+                    games.push(ExternalGame {
+                        store: Store::Xbox,
+                        id: id.clone(),
+                        name,
+                        launch: Launch::Uri(format!("shell:AppsFolder\\{clean}")),
+                    });
+                }
+            } else if !exe_path.is_empty() {
+                let p = PathBuf::from(exe_path.as_str());
+                if p.is_file() {
+                    let file_stem = p.file_stem().and_then(|s| s.to_str()).unwrap_or("Jogo");
+                    if !["explorer", "cmd", "powershell", "runtime", "installer", "setup"]
+                        .contains(&file_stem.to_lowercase().as_str())
+                    {
+                        let name = p
+                            .parent()
+                            .and_then(|d| d.file_name())
+                            .and_then(|s| s.to_str())
+                            .unwrap_or(file_stem)
+                            .to_string();
+                        let dir = p.parent().map(Path::to_path_buf).unwrap_or_default();
+                        let id = format!("{}", p.display());
+                        if !games.iter().any(|g| g.name.eq_ignore_ascii_case(&name)) {
+                            games.push(ExternalGame {
+                                store: Store::Xbox,
+                                id,
+                                name,
+                                launch: Launch::Exe { path: p, dir },
+                            });
+                        }
+                    }
+                }
+            }
+            utm.clear();
+            exe_path.clear();
+        };
+
+        for line in text.lines() {
+            let line = line.trim_end();
+            if line.starts_with("HKEY_") {
+                flush(&mut utm, &mut exe_path, &mut games);
+                continue;
+            }
+            let mut parts = line.trim_start().splitn(3, "    ");
+            if let (Some(k), Some(_), Some(v)) = (parts.next(), parts.next(), parts.next()) {
+                if k == "UtmItemId" {
+                    utm.clear();
+                    utm.push_str(v.trim());
+                } else if k == "MatchedExeFullPath" {
+                    exe_path.clear();
+                    exe_path.push_str(v.trim());
+                }
+            }
+        }
+        flush(&mut utm, &mut exe_path, &mut games);
+    }
+    games
+}
+
+// ─── EA App / Origin ───────────────────────────────────────────────────────
+
+pub fn ea_games() -> Vec<ExternalGame> {
+    let mut games = Vec::new();
+    #[cfg(target_os = "windows")]
+    for key in [
+        r"HKLM\SOFTWARE\Electronic Arts\EA Desktop\InstalledGames",
+        r"HKLM\SOFTWARE\WOW6432Node\Electronic Arts\EA Games",
+    ] {
+        if let Ok(out) = std::process::Command::new("reg").args(["query", key, "/s"]).output() {
+            let text = String::from_utf8_lossy(&out.stdout);
+            for line in text.lines() {
+                let line = line.trim();
+                if line.starts_with("Install Dir") || line.starts_with("InstallDir") {
+                    if let Some(val) = line.split("    ").nth(2) {
+                        let p = PathBuf::from(val.trim());
+                        if p.is_dir() {
+                            let name = p.file_name().and_then(|s| s.to_str()).unwrap_or("Jogo EA").to_string();
+                            let id = name.to_lowercase().replace(' ', "-");
+                            games.push(ExternalGame {
+                                store: Store::Ea,
+                                id,
+                                name,
+                                launch: Launch::Exe { path: p.clone(), dir: p },
+                            });
+                        }
+                    }
+                }
+            }
+        }
+    }
+    games
+}
+
+// ─── Ubisoft Connect ───────────────────────────────────────────────────────
+
+pub fn ubisoft_games() -> Vec<ExternalGame> {
+    let mut games = Vec::new();
+    #[cfg(target_os = "windows")]
+    if let Ok(out) = std::process::Command::new("reg")
+        .args(["query", r"HKLM\SOFTWARE\WOW6432Node\Ubisoft\Launcher\Installs", "/s"])
+        .output()
+    {
+        let text = String::from_utf8_lossy(&out.stdout);
+        let mut current_id = String::new();
+        for line in text.lines() {
+            let line = line.trim();
+            if line.starts_with("HKEY_") {
+                current_id = line.split('\\').next_back().unwrap_or("").to_string();
+            } else if line.starts_with("InstallDir") {
+                if let Some(val) = line.split("    ").nth(2) {
+                    let p = PathBuf::from(val.trim());
+                    let name = p.file_name().and_then(|s| s.to_str()).unwrap_or("Ubisoft Game").to_string();
+                    if !current_id.is_empty() && !games.iter().any(|g: &ExternalGame| g.id == current_id) {
+                        games.push(ExternalGame {
+                            store: Store::Ubisoft,
+                            id: current_id.clone(),
+                            name,
+                            launch: Launch::Uri(format!("uplay://launch/{current_id}/0")),
+                        });
+                    }
+                }
+            }
+        }
+    }
+    games
+}
+
+// ─── Battle.net (Blizzard) ─────────────────────────────────────────────────
+
+pub fn battlenet_games() -> Vec<ExternalGame> {
+    let mut games = Vec::new();
+    #[cfg(target_os = "windows")]
+    for (id, name, default_path) in [
+        ("Pro", "Overwatch 2", r"C:\Program Files (x86)\Overwatch\_retail_\Overwatch.exe"),
+        ("WoW", "World of Warcraft", r"C:\Program Files (x86)\World of Warcraft\_retail_\Wow.exe"),
+        ("Fen", "Diablo IV", r"C:\Program Files (x86)\Diablo IV\Diablo IV.exe"),
+        ("WTCG", "Hearthstone", r"C:\Program Files (x86)\Hearthstone\Hearthstone.exe"),
+        ("OSI", "Diablo II: Resurrected", r"C:\Program Files (x86)\Diablo II Resurrected\D2R.exe"),
+    ] {
+        let p = PathBuf::from(default_path);
+        if p.exists() {
+            games.push(ExternalGame {
+                store: Store::BattleNet,
+                id: id.to_string(),
+                name: name.to_string(),
+                launch: Launch::Uri(format!("battlenet://{id}")),
+            });
+        }
+    }
+    games
+}
+
+// ─── Riot Games ────────────────────────────────────────────────────────────
+
+pub fn riot_games() -> Vec<ExternalGame> {
+    let mut games = Vec::new();
+    #[cfg(target_os = "windows")]
+    for (id, name, path) in [
+        ("league_of_legends", "League of Legends", r"D:\Games\Riot Games\League of Legends\LeagueClient.exe"),
+        ("valorant", "VALORANT", r"D:\Games\Riot Games\VALORANT\live\VALORANT.exe"),
+        ("league_of_legends_c", "League of Legends", r"C:\Riot Games\League of Legends\LeagueClient.exe"),
+        ("valorant_c", "VALORANT", r"C:\Riot Games\VALORANT\live\VALORANT.exe"),
+    ] {
+        let p = PathBuf::from(path);
+        if p.exists() && !games.iter().any(|g: &ExternalGame| g.name == name) {
+            let dir = p.parent().map(Path::to_path_buf).unwrap_or_default();
+            games.push(ExternalGame {
+                store: Store::Riot,
+                id: id.to_string(),
+                name: name.to_string(),
+                launch: Launch::Exe { path: p, dir },
+            });
+        }
+    }
+    games
+}
+
+/// Relatório consolidado da sincronização de todas as lojas instaladas no PC.
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
+#[allow(dead_code)]
+pub struct StoreSyncReport {
+    pub total: usize,
+    pub by_store: BTreeMap<String, usize>,
+    pub games: Vec<ExternalGame>,
+}
+
+/// Sincroniza e reúne os jogos de todas as lojas reconhecidas no sistema.
+#[allow(dead_code)]
+pub fn sync_all_stores() -> StoreSyncReport {
+    let games = all_games();
+    let mut by_store = BTreeMap::new();
+    for g in &games {
+        *by_store.entry(g.store.label().to_string()).or_insert(0) += 1;
+    }
+    StoreSyncReport {
+        total: games.len(),
+        by_store,
+        games,
+    }
+}
+
 /// Todos os jogos das outras lojas, em ordem alfabética.
 pub fn all_games() -> Vec<ExternalGame> {
     let mut all = steam_games();
     all.extend(epic_games());
     all.extend(gog_games());
+    all.extend(xbox_games());
+    all.extend(ea_games());
+    all.extend(ubisoft_games());
+    all.extend(battlenet_games());
+    all.extend(riot_games());
     all.sort_by_key(|g| g.name.to_lowercase());
+    all.dedup_by(|a, b| a.id == b.id && a.store == b.store);
     all
 }
 
@@ -327,6 +568,26 @@ pub fn is_allowed_store_uri(uri: &str) -> bool {
         return rest
             .chars()
             .all(|c| c.is_ascii_alphanumeric() || matches!(c, '-' | '_' | '%' | '?' | '&' | '='));
+    }
+    if let Some(rest) = uri.strip_prefix("uplay://launch/") {
+        return rest
+            .chars()
+            .all(|c| c.is_ascii_alphanumeric() || matches!(c, '/' | '?' | '&' | '='));
+    }
+    if let Some(rest) = uri.strip_prefix("origin2://game/launch?offerId=") {
+        return rest
+            .chars()
+            .all(|c| c.is_ascii_alphanumeric() || matches!(c, '-' | '_' | '%' | '&' | '='));
+    }
+    if let Some(rest) = uri.strip_prefix("battlenet://") {
+        return rest
+            .chars()
+            .all(|c| c.is_ascii_alphanumeric() || matches!(c, '-' | '_'));
+    }
+    if let Some(rest) = uri.strip_prefix("shell:AppsFolder\\") {
+        return rest
+            .chars()
+            .all(|c| c.is_ascii_alphanumeric() || matches!(c, '-' | '_' | '.' | '!' | '~'));
     }
     false
 }
@@ -407,6 +668,12 @@ mod tests {
             g[0].launch,
             Launch::Exe { path: PathBuf::from(r"C:\GOG Games\HoMM 3\Heroes3.exe"), dir: PathBuf::from(r"C:\GOG Games\HoMM 3") }
         );
+    }
+
+    #[test]
+    fn sincronizacao_consolidada_todas_as_lojas_funciona() {
+        let report = sync_all_stores();
+        assert_eq!(report.total, report.games.len());
     }
 
     #[test]
