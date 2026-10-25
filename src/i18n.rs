@@ -395,6 +395,20 @@ pub static TABLE: &[(&str, &str)] = &[
     ("✔ Código Rust validado pelo rustc.", "✔ Rust code checked by rustc."),
     ("Tradução com IA concluída.", "AI translation finished."),
     ("Tradução com IA falhou:", "AI translation failed:"),
+    (
+        "Atualiza o progresso de downloads e tarefas e o controle do Modo TV com menos frequência. Parada, a loja não usa o processador.",
+        "Updates download and task progress and the TV Mode controller less often. When idle, the store uses no CPU.",
+    ),
+    (
+        "Equilíbrio entre fluidez e consumo durante downloads, tarefas e no Modo TV. Parada, a loja não usa o processador.",
+        "Balance between smoothness and power use during downloads, tasks and in TV Mode. When idle, the store uses no CPU.",
+    ),
+    (
+        "Progresso e controle do Modo TV mais fluidos; gasta mais processador só enquanto algo está em andamento.",
+        "Smoother progress and TV Mode controller; uses more CPU only while something is running.",
+    ),
+    ("Sim, apagar", "Yes, delete"),
+    ("⏳ Detectando a toolchain Rust e os editores...", "⏳ Detecting the Rust toolchain and code editors..."),
     // Configurações, conta do GitHub, perfil, conquistas e comunidade
     ("A nota de confiança é um indicador de precedentes, não uma garantia de segurança.", "The trust score is an indicator of track record, not a guarantee of safety."),
     ("Abrir Issues ↗", "Open Issues ↗"),
@@ -603,7 +617,7 @@ pub static TABLE: &[(&str, &str)] = &[
     // Otimizador do PC, Sincronização de Lojas & Aprenda Intermediário
     ("Ajustes seguros e testados para extrair o máximo desempenho da CPU/GPU em jogos e no desenvolvimento com Rust.", "Safe, tested tweaks to extract maximum CPU/GPU performance in gaming and Rust development."),
     ("Analisando hardware, programas instalados e configurações...", "Analyzing hardware, installed software and system settings..."),
-    ("Aplica esta recomendação com 1 clique de forma segura.", "Applies this recommendation safely in 1 click."),
+    ("Aplica esta recomendação no Windows.", "Applies this recommendation to Windows."),
     ("Aplicando otimização no sistema...", "Applying system optimization..."),
     ("Armazenamento", "Storage"),
     ("Ações de 1 Clique", "1-Click Actions"),
@@ -758,9 +772,6 @@ pub static TABLE: &[(&str, &str)] = &[
     ("🍃 Eco", "🍃 Eco"),
     ("⚖️ Normal", "⚖️ Normal"),
     ("🚀 Performance", "🚀 Performance"),
-    ("Reduz a taxa de quadros (~25-30 FPS) e poupa bateria e CPU. Ideal para uso em segundo plano.", "Reduces frame rate (~25-30 FPS) saving battery and CPU. Ideal for background usage."),
-    ("Taxa padrão de 60 FPS com animações suaves e consumo equilibrado para o dia a dia.", "Standard 60 FPS with smooth animations and balanced consumption for daily use."),
-    ("Fluidez máxima para monitores gamers (120/144 FPS+) e resposta imediata nos cliques e console.", "Maximum fluidity for high-refresh gaming monitors (120/144 FPS+) and instant response."),
 ];
 
 #[cfg(test)]

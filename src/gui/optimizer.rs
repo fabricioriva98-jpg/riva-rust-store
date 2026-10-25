@@ -290,6 +290,7 @@ impl StoreGui {
                 .corner_radius(CornerRadius::same(8))
                 .inner_margin(egui::Margin::same(14))
                 .show(ui, |ui| {
+                    ui.set_min_width(ui.available_width());
                     ui.horizontal(|ui| {
                         draw_pill(ui, item.category, Color32::from_rgb(40, 50, 75));
                         let impact_str = format!("{}: {}", self.tr("Impacto"), item.impact);
@@ -305,22 +306,6 @@ impl StoreGui {
 
                         ui.add_space(6.0);
                         ui.label(RichText::new(item.title).strong().size(14.5).color(Color32::WHITE));
-
-                        ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-                            if item.is_optimal {
-                                draw_pill(ui, &self.tr("✔ Configurado / Otimizado"), Color32::from_rgb(35, 110, 60));
-                            } else if ui
-                                .add(
-                                    egui::Button::new(RichText::new(self.tr("⚡ Otimizar Agora")).strong())
-                                        .fill(Color32::from_rgb(35, 130, 60)),
-                                )
-                                .on_hover_text(self.tr("Aplica esta recomendação com 1 clique de forma segura."))
-                                .clicked()
-                            {
-                                self.spawn_optimizer_action(item.id);
-                                self.spawn_optimizer_scan();
-                            }
-                        });
                     });
 
                     ui.add_space(6.0);
@@ -335,6 +320,49 @@ impl StoreGui {
                         ui.label(RichText::new(format!("{}: ", self.tr("Recomendação"))).size(12.0).color(Color32::from_rgb(140, 150, 170)));
                         ui.label(RichText::new(&item.recommended_status).strong().size(12.0).color(Color32::from_rgb(110, 210, 140)));
                     });
+
+                    // Ação em linha própria: alinhado à direita dentro da linha do título, o botão
+                    // não recebia clique nem mouse por cima (defeito da versão anterior)
+                    ui.add_space(8.0);
+                    ui.horizontal(|ui| {
+                        if item.is_optimal {
+                            draw_pill(ui, &self.tr("✔ Configurado / Otimizado"), Color32::from_rgb(35, 110, 60));
+                        } else if ui
+                            .add_enabled(
+                                self.busy_task.is_none() && self.optimizer_confirm.is_none(),
+                                egui::Button::new(RichText::new(self.tr("⚡ Otimizar Agora")).strong())
+                                    .fill(Color32::from_rgb(35, 130, 60)),
+                            )
+                            .on_hover_text(self.tr("Aplica esta recomendação no Windows."))
+                            .clicked()
+                        {
+                            if item.confirm.is_some() {
+                                self.optimizer_confirm = Some(item.id);
+                            } else {
+                                self.spawn_optimizer_action(item.id);
+                            }
+                        }
+                    });
+
+                    // Ação que apaga arquivos: segundo clique, com a quantidade à vista
+                    if let (Some(question), Some(id)) = (&item.confirm, self.optimizer_confirm) {
+                        if id == item.id {
+                            ui.add_space(6.0);
+                            ui.horizontal_wrapped(|ui| {
+                                ui.label(RichText::new(format!("⚠ {question}")).strong().color(Color32::from_rgb(235, 190, 85)));
+                                if ui
+                                    .add(egui::Button::new(self.tr("Sim, apagar")).fill(Color32::from_rgb(150, 50, 40)))
+                                    .clicked()
+                                {
+                                    self.optimizer_confirm = None;
+                                    self.spawn_optimizer_action(item.id);
+                                }
+                                if ui.button(self.tr("Cancelar")).clicked() {
+                                    self.optimizer_confirm = None;
+                                }
+                            });
+                        }
+                    }
                 });
 
             ui.add_space(8.0);

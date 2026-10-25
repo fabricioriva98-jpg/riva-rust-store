@@ -155,18 +155,26 @@ fn find_rustrover() -> Option<PathBuf> {
     find_in_path("rustrover64").or_else(|| find_in_path("rustrover"))
 }
 
-/// Busca um executável no PATH do sistema.
+/// Busca um executável no PATH do sistema, sem abrir processo (antes era um PowerShell por busca,
+/// cerca de 300 ms cada).
 fn find_in_path(cmd: &str) -> Option<PathBuf> {
-    let out = Command::new("powershell")
-        .args(["-NoProfile", "-NonInteractive", "-Command", &format!("(Get-Command {} -ErrorAction SilentlyContinue).Source", cmd)])
-        .output()
-        .ok()?;
-    if out.status.success() {
-        let text = String::from_utf8_lossy(&out.stdout).trim().to_string();
-        if !text.is_empty() {
-            let p = PathBuf::from(text);
-            if p.is_file() {
-                return Some(p);
+    let path = std::env::var_os("PATH")?;
+    let exts: Vec<String> = std::env::var("PATHEXT")
+        .unwrap_or_else(|_| ".COM;.EXE;.BAT;.CMD".into())
+        .split(';')
+        .filter(|e| !e.is_empty())
+        .map(|e| e.to_ascii_lowercase())
+        .collect();
+    find_in_dirs(cmd, std::env::split_paths(&path), &exts)
+}
+
+/// Procura `cmd` + cada extensão nas pastas, na ordem (como o Windows faz com PATH e PATHEXT).
+fn find_in_dirs(cmd: &str, dirs: impl IntoIterator<Item = PathBuf>, exts: &[String]) -> Option<PathBuf> {
+    for dir in dirs {
+        for ext in exts {
+            let candidate = dir.join(format!("{cmd}{ext}"));
+            if candidate.is_file() {
+                return Some(candidate);
             }
         }
     }
@@ -305,6 +313,36 @@ mod tests {
         assert!(ides.iter().any(|i| i.id == "vscode"), "deve incluir VS Code");
         assert!(ides.iter().any(|i| i.id == "antigravity"), "deve incluir Antigravity");
         assert!(ides.iter().any(|i| i.id == "cursor"), "deve incluir Cursor");
+    }
+
+    #[test]
+    fn busca_no_path_segue_ordem_das_pastas_e_extensoes() {
+        let base = std::env::temp_dir().join(format!("rrs_test_path_{}", std::process::id()));
+        let (a, b) = (base.join("a"), base.join("b"));
+        std::fs::create_dir_all(&a).unwrap();
+        std::fs::create_dir_all(&b).unwrap();
+        std::fs::write(a.join("editor.cmd"), "").unwrap();
+        std::fs::write(b.join("editor.exe"), "").unwrap();
+        // Arquivo sem extensão (como o script `code` do VS Code) não é executável no Windows
+        std::fs::write(a.join("editor"), "").unwrap();
+        let exts = vec![".exe".to_string(), ".cmd".to_string()];
+
+        // Primeira pasta com qualquer extensão válida vence, como no Windows
+        assert_eq!(find_in_dirs("editor", [a.clone(), b.clone()], &exts), Some(a.join("editor.cmd")));
+        assert_eq!(find_in_dirs("editor", [b.clone(), a.clone()], &exts), Some(b.join("editor.exe")));
+        assert_eq!(find_in_dirs("nao-existe", [a, b], &exts), None);
+        let _ = std::fs::remove_dir_all(&base);
+    }
+
+    #[test]
+    fn deteccao_de_editores_nao_abre_processos_e_e_rapida() {
+        // Antes eram até 6 PowerShell por chamada (cerca de 1 s neste PC); a tela chamava a cada quadro
+        let src = include_str!("ide.rs");
+        let detect = &src[src.find("pub fn detect_ides").unwrap()..src.find("/// Abre uma pasta de projeto").unwrap()];
+        assert!(!detect.contains("Command::new"), "a detecção deve só conferir arquivos");
+        let start = std::time::Instant::now();
+        let _ = detect_ides();
+        assert!(start.elapsed() < std::time::Duration::from_millis(500), "{:?}", start.elapsed());
     }
 
     #[test]

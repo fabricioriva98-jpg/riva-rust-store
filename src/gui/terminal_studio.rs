@@ -36,6 +36,21 @@ impl StoreGui {
         self.terminal_cmd_input.clear();
     }
 
+    /// Detecta a toolchain Rust e os editores em segundo plano (são vários programas e arquivos;
+    /// na linha da interface travariam a tela).
+    pub(super) fn spawn_dev_env_detection(&mut self) {
+        if self.dev_env_detecting {
+            return;
+        }
+        self.dev_env_detecting = true;
+        let events = Arc::clone(&self.bg_events);
+        std::thread::spawn(move || {
+            let env = terminal_studio::detect_rust_env();
+            let ides = ide::detect_ides();
+            events.lock().unwrap().push(BgEvent::DevEnvDetected { env, ides });
+        });
+    }
+
     /// Renderiza a tela completa de Terminal Integrado e Espelho de IDEs.
     pub(super) fn render_terminal_studio(&mut self, ui: &mut egui::Ui) {
         // Se a pasta de trabalho ainda não foi definida, usa o diretório do projeto ou base
@@ -71,7 +86,8 @@ impl StoreGui {
 
         // ─── BARRA DE DETECÇÃO DO AMBIENTE RUST (TOOLCHAIN & FERRAMENTAS) ──
         if self.rust_env_info.is_none() {
-            self.rust_env_info = Some(terminal_studio::detect_rust_env());
+            self.spawn_dev_env_detection();
+            ui.label(RichText::new(self.tr("⏳ Detectando a toolchain Rust e os editores...")).color(Color32::GRAY));
         }
 
         let mut refresh_env = false;
@@ -120,11 +136,11 @@ impl StoreGui {
         }
 
         if refresh_env {
-            self.rust_env_info = Some(terminal_studio::detect_rust_env());
+            self.spawn_dev_env_detection();
         }
 
         // ─── PAINEL DE INTEGRAÇÃO COM IDES (VS CODE & ANTIGRAVITY) ──────────
-        let ides = ide::detect_ides();
+        let ides = self.detected_ides.clone();
         egui::Frame::NONE
             .fill(Color32::from_rgb(20, 24, 34))
             .stroke(Stroke::new(1.0_f32, Color32::from_rgb(38, 46, 62)))

@@ -5,8 +5,9 @@
 
 use anyhow::{Context, Result};
 use std::collections::BTreeMap;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use std::process::Command;
+use std::time::SystemTime;
 
 /// Informações sobre um programa instalado no sistema.
 #[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
@@ -58,7 +59,13 @@ pub struct OptimizationItem {
     pub recommended_status: String,
     pub is_optimal: bool,
     pub impact: &'static str,
+    /// Pergunta mostrada antes de aplicar (ações que apagam algo); `None` aplica direto.
+    pub confirm: Option<String>,
 }
+
+/// Idade mínima de um arquivo do %TEMP% para a limpeza apagar (o mesmo critério da Limpeza de Disco do
+/// Windows). Arquivos recentes podem estar em uso por um instalador ou programa aberto.
+pub const TEMP_MIN_AGE: std::time::Duration = std::time::Duration::from_secs(7 * 24 * 60 * 60);
 
 // ─── COLETA DE ESPECIFICAÇÕES DE HARDWARE ──────────────────────────────────
 
@@ -365,19 +372,32 @@ pub fn is_game_mode_enabled() -> bool {
         .unwrap_or(false)
 }
 
-/// Calcula o tamanho aproximado dos arquivos temporários do usuário (%TEMP%).
-pub fn calculate_temp_size_mb() -> u64 {
-    let temp = std::env::temp_dir();
-    let Ok(entries) = std::fs::read_dir(temp) else { return 0 };
-    let mut total_bytes = 0u64;
-    for e in entries.flatten() {
-        if let Ok(meta) = e.metadata() {
-            if meta.is_file() {
-                total_bytes = total_bytes.saturating_add(meta.len());
-            }
+/// Arquivos da raiz de `dir` modificados há pelo menos `min_age` (subpastas ficam de fora), com o tamanho.
+pub fn old_temp_files(dir: &Path, min_age: std::time::Duration, now: SystemTime) -> Vec<(PathBuf, u64)> {
+    let Some(limit) = now.checked_sub(min_age) else { return Vec::new() };
+    let Ok(entries) = std::fs::read_dir(dir) else { return Vec::new() };
+    entries
+        .flatten()
+        .filter_map(|e| {
+            let meta = e.metadata().ok()?;
+            let modified = meta.modified().ok()?;
+            (meta.is_file() && modified <= limit).then(|| (e.path(), meta.len()))
+        })
+        .collect()
+}
+
+/// Apaga os arquivos antigos de `dir` (critério de [`old_temp_files`]). Devolve quantos e quantos bytes.
+/// Arquivo em uso que o Windows não deixa apagar é pulado.
+pub fn clean_old_temp_files(dir: &Path, min_age: std::time::Duration, now: SystemTime) -> (usize, u64) {
+    let mut removed = 0usize;
+    let mut freed = 0u64;
+    for (path, len) in old_temp_files(dir, min_age, now) {
+        if std::fs::remove_file(&path).is_ok() {
+            removed += 1;
+            freed = freed.saturating_add(len);
         }
     }
-    total_bytes / (1024 * 1024)
+    (removed, freed)
 }
 
 /// Diagnostica e gera a lista de otimizações recomendadas para o computador.
@@ -395,6 +415,7 @@ pub fn diagnose_optimizations() -> Vec<OptimizationItem> {
         recommended_status: "Alto Desempenho / Ultimate Performance".into(),
         is_optimal: is_high_perf,
         impact: "Alto",
+        confirm: None,
     });
 
     // 2. Modo Jogo do Windows (Game Mode)
@@ -408,20 +429,25 @@ pub fn diagnose_optimizations() -> Vec<OptimizationItem> {
         recommended_status: "Ativado".into(),
         is_optimal: game_mode,
         impact: "Médio",
+        confirm: None,
     });
 
-    // 3. Limpeza de Arquivos Temporários
-    let temp_mb = calculate_temp_size_mb();
-    let temp_optimal = temp_mb < 300;
+    // 3. Limpeza de Arquivos Temporários (só os antigos; ver TEMP_MIN_AGE)
+    let old = old_temp_files(&std::env::temp_dir(), TEMP_MIN_AGE, SystemTime::now());
+    let old_mb = old.iter().map(|(_, len)| len).sum::<u64>() / (1024 * 1024);
     items.push(OptimizationItem {
         id: "clean_temp",
         title: "Limpeza de Arquivos Temporários (%TEMP%)",
         category: "Armazenamento",
-        description: "Remove resíduos de instalações anteriores, logs antigos e caches temporários que consomem espaço no disco principal C:.",
-        current_status: format!("{temp_mb} MB em arquivos temporários"),
+        description: "Apaga da pasta %TEMP% os arquivos com mais de 7 dias, como a Limpeza de Disco do Windows. Arquivos recentes e subpastas ficam, porque podem estar em uso. A exclusão é definitiva.",
+        current_status: format!("{} arquivos com mais de 7 dias ({old_mb} MB)", old.len()),
         recommended_status: "< 300 MB".into(),
-        is_optimal: temp_optimal,
+        is_optimal: old_mb < 300,
         impact: "Recomendado",
+        confirm: Some(format!(
+            "Apagar {} arquivos com mais de 7 dias ({old_mb} MB) da pasta %TEMP%? Não vão para a Lixeira.",
+            old.len()
+        )),
     });
 
     // 4. Otimização de Compilação Rust (Cargo / Defender)
@@ -436,6 +462,7 @@ pub fn diagnose_optimizations() -> Vec<OptimizationItem> {
         recommended_status: "Excluir pasta de projetos do escaneamento contínuo".into(),
         is_optimal: true, // Item informativo com ação de guia
         impact: "Alto para Rust",
+        confirm: None,
     });
 
     items
@@ -485,27 +512,12 @@ pub fn apply_optimization(id: &str) -> Result<String> {
         }
 
         "clean_temp" => {
-            let temp = std::env::temp_dir();
-            let mut removed_count = 0usize;
-            let mut freed_bytes = 0u64;
-
-            if let Ok(entries) = std::fs::read_dir(temp) {
-                for e in entries.flatten() {
-                    let path = e.path();
-                    if let Ok(meta) = path.metadata() {
-                        if meta.is_file() {
-                            let len = meta.len();
-                            if std::fs::remove_file(&path).is_ok() {
-                                removed_count += 1;
-                                freed_bytes += len;
-                            }
-                        }
-                    }
-                }
-            }
-
+            let (removed_count, freed_bytes) =
+                clean_old_temp_files(&std::env::temp_dir(), TEMP_MIN_AGE, SystemTime::now());
             let freed_mb = freed_bytes / (1024 * 1024);
-            Ok(format!("Limpeza concluída: {removed_count} arquivos removidos ({freed_mb} MB liberados)."))
+            Ok(format!(
+                "Limpeza concluída: {removed_count} arquivos com mais de 7 dias removidos ({freed_mb} MB liberados)."
+            ))
         }
 
         "rust_defender_tip" => {
@@ -552,6 +564,39 @@ HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\SystemCom
         assert_eq!(firefox.name, "Mozilla Firefox (x64 pt-BR)");
         assert_eq!(firefox.version.as_deref(), Some("128.0"));
         assert_eq!(firefox.publisher.as_deref(), Some("Mozilla"));
+    }
+
+    #[test]
+    fn limpeza_do_temp_apaga_so_arquivos_antigos_da_raiz() {
+        let dir = std::env::temp_dir().join(format!("rrs_test_temp_{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&dir);
+        std::fs::create_dir_all(dir.join("subpasta")).unwrap();
+        let now = SystemTime::now();
+        let antigo = dir.join("antigo.tmp");
+        let recente = dir.join("recente.tmp");
+        let na_subpasta = dir.join("subpasta").join("antigo.tmp");
+        for (p, idade_dias) in [(&antigo, 10u64), (&recente, 1), (&na_subpasta, 30)] {
+            std::fs::write(p, b"12345").unwrap();
+            let f = std::fs::File::options().write(true).open(p).unwrap();
+            f.set_modified(now - std::time::Duration::from_secs(idade_dias * 24 * 3600)).unwrap();
+        }
+
+        let candidatos = old_temp_files(&dir, TEMP_MIN_AGE, now);
+        assert_eq!(candidatos, vec![(antigo.clone(), 5)], "só o arquivo antigo da raiz");
+
+        assert_eq!(clean_old_temp_files(&dir, TEMP_MIN_AGE, now), (1, 5));
+        assert!(!antigo.exists());
+        assert!(recente.exists(), "arquivo recente pode estar em uso e deve ficar");
+        assert!(na_subpasta.exists(), "subpastas ficam de fora");
+        let _ = std::fs::remove_dir_all(&dir);
+    }
+
+    #[test]
+    fn so_a_limpeza_pede_confirmacao() {
+        let items = diagnose_optimizations();
+        let limpeza = items.iter().find(|i| i.id == "clean_temp").unwrap();
+        assert!(limpeza.confirm.as_deref().is_some_and(|c| c.contains("7 dias")));
+        assert!(items.iter().filter(|i| i.id != "clean_temp").all(|i| i.confirm.is_none()));
     }
 
     #[test]

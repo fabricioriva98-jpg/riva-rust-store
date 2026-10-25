@@ -185,8 +185,8 @@ impl StoreGui {
                 other => self.tv_index = tv_move(self.tv_index, items.len(), cols, other),
             }
         }
-        // O controle não gera eventos de janela: a tela consulta o gilrs a cada 50 ms
-        ctx.request_repaint_after(std::time::Duration::from_millis(50));
+        // O controle não gera eventos de janela: a tela consulta o gilrs no ritmo do perfil de desempenho
+        ctx.request_repaint_after(self.performance_mode.gamepad_poll_interval());
 
         egui::CentralPanel::default()
             .frame(egui::Frame::NONE.fill(Color32::from_rgb(8, 10, 16)).inner_margin(egui::Margin::same(40)))

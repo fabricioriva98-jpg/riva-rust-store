@@ -1,6 +1,7 @@
 //! Gerenciador de Perfis de Desempenho da RRS.
-//! Permite alternar a taxa de renderização (FPS) e o consumo de recursos da interface entre
-//! Modo Eco (economia de bateria/CPU), Modo Normal (60 FPS equilibrado) e Modo Performance (144 FPS+ alta fluidez).
+//! Parada, a interface não é redesenhada em nenhum perfil (o egui só pinta com entrada do usuário
+//! ou evento de tarefa). O perfil decide o ritmo de pintura enquanto há algo em andamento
+//! (download, tarefa, Modo TV com controle): Eco economiza, Performance deixa mais fluido.
 
 use std::time::Duration;
 
@@ -56,18 +57,27 @@ impl PerformanceMode {
 
     pub fn description(self) -> &'static str {
         match self {
-            PerformanceMode::Eco => "Reduz a taxa de quadros (~25-30 FPS) e poupa bateria e CPU. Ideal para uso em segundo plano.",
-            PerformanceMode::Normal => "Taxa padrão de 60 FPS com animações suaves e consumo equilibrado para o dia a dia.",
-            PerformanceMode::Performance => "Fluidez máxima para monitores gamers (120/144 FPS+) e resposta imediata nos cliques e console.",
+            PerformanceMode::Eco => "Atualiza o progresso de downloads e tarefas e o controle do Modo TV com menos frequência. Parada, a loja não usa o processador.",
+            PerformanceMode::Normal => "Equilíbrio entre fluidez e consumo durante downloads, tarefas e no Modo TV. Parada, a loja não usa o processador.",
+            PerformanceMode::Performance => "Progresso e controle do Modo TV mais fluidos; gasta mais processador só enquanto algo está em andamento.",
         }
     }
 
-    /// Retorna o intervalo recomendado entre repaints de tela.
-    pub fn frame_interval(self) -> Duration {
+    /// Intervalo entre pinturas enquanto há download ou tarefa em andamento.
+    pub fn active_interval(self) -> Duration {
         match self {
-            PerformanceMode::Eco => Duration::from_millis(40),        // ~25 FPS
-            PerformanceMode::Normal => Duration::from_millis(16),     // ~60 FPS
-            PerformanceMode::Performance => Duration::from_millis(7), // ~144 FPS
+            PerformanceMode::Eco => Duration::from_millis(250),
+            PerformanceMode::Normal => Duration::from_millis(100),
+            PerformanceMode::Performance => Duration::from_millis(33),
+        }
+    }
+
+    /// Intervalo de consulta ao controle no Modo TV (o controle não gera eventos de janela).
+    pub fn gamepad_poll_interval(self) -> Duration {
+        match self {
+            PerformanceMode::Eco => Duration::from_millis(100),
+            PerformanceMode::Normal => Duration::from_millis(50),
+            PerformanceMode::Performance => Duration::from_millis(16),
         }
     }
 }
@@ -85,8 +95,19 @@ mod tests {
     }
 
     #[test]
-    fn frame_intervals_sao_consistentes() {
-        assert!(PerformanceMode::Performance.frame_interval() < PerformanceMode::Normal.frame_interval());
-        assert!(PerformanceMode::Normal.frame_interval() < PerformanceMode::Eco.frame_interval());
+    fn intervalos_seguem_a_ordem_dos_perfis() {
+        for f in [PerformanceMode::active_interval, PerformanceMode::gamepad_poll_interval] {
+            assert!(f(PerformanceMode::Performance) < f(PerformanceMode::Normal));
+            assert!(f(PerformanceMode::Normal) < f(PerformanceMode::Eco));
+        }
+    }
+
+    #[test]
+    fn nenhum_perfil_pinta_mais_de_60_vezes_por_segundo_em_tarefa() {
+        // 33 ms já é fluido para barra de progresso; menos que isso só gastaria CPU
+        for m in PerformanceMode::ALL {
+            assert!(m.active_interval() >= Duration::from_millis(33), "{m:?}");
+            assert!(m.gamepad_poll_interval() >= Duration::from_millis(16), "{m:?}");
+        }
     }
 }

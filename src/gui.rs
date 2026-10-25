@@ -60,6 +60,54 @@ enum SortBy {
     Updated,
 }
 
+/// Fila de resultados das tarefas em segundo plano. Quem empurra um evento acorda a tela
+/// (`request_repaint`), porque a interface não fica redesenhando sem motivo.
+struct BgQueue {
+    events: Mutex<Vec<BgEvent>>,
+    ctx: egui::Context,
+}
+
+/// Acesso à fila; ao soltar com eventos pendentes, pede uma pintura da tela.
+struct BgQueueGuard<'a> {
+    events: std::sync::MutexGuard<'a, Vec<BgEvent>>,
+    ctx: &'a egui::Context,
+}
+
+impl BgQueue {
+    fn new(ctx: egui::Context) -> Self {
+        Self { events: Mutex::new(Vec::new()), ctx }
+    }
+
+    fn lock(&self) -> std::sync::LockResult<BgQueueGuard<'_>> {
+        match self.events.lock() {
+            Ok(events) => Ok(BgQueueGuard { events, ctx: &self.ctx }),
+            Err(p) => Err(std::sync::PoisonError::new(BgQueueGuard { events: p.into_inner(), ctx: &self.ctx })),
+        }
+    }
+}
+
+impl std::ops::Deref for BgQueueGuard<'_> {
+    type Target = Vec<BgEvent>;
+    fn deref(&self) -> &Self::Target {
+        &self.events
+    }
+}
+
+impl std::ops::DerefMut for BgQueueGuard<'_> {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.events
+    }
+}
+
+impl Drop for BgQueueGuard<'_> {
+    fn drop(&mut self) {
+        // A própria interface esvazia a fila; só acorda a tela quando sobrou evento para tratar
+        if !self.events.is_empty() {
+            self.ctx.request_repaint();
+        }
+    }
+}
+
 enum BgEvent {
     Status(String),
     AppUpdated {
@@ -120,6 +168,10 @@ enum BgEvent {
     },
     OptimizerActionFinished(Result<String, String>),
     TerminalCommandFinished(crate::terminal_studio::TerminalOutput),
+    DevEnvDetected {
+        env: crate::terminal_studio::RustEnvInfo,
+        ides: Vec<crate::ide::IdeInfo>,
+    },
     /// Evento de conquista vindo de uma tarefa em segundo plano.
     Stat(&'static str),
     Error(String),
@@ -293,6 +345,10 @@ pub struct StoreGui {
     optimizer_startup: Option<Vec<crate::optimizer::StartupApp>>,
     optimizer_actions: Vec<crate::optimizer::OptimizationItem>,
     optimizer_is_scanning: bool,
+    /// Ação do Otimizador esperando o segundo clique (ex.: limpeza do %TEMP%)
+    optimizer_confirm: Option<&'static str>,
+    /// Resultado da última ação, mostrado de novo quando o diagnóstico seguinte termina
+    optimizer_action_result: Option<(String, bool)>,
     optimizer_program_search: String,
     optimizer_tab: usize,
     external_store_filter: Option<crate::launchers::Store>,
@@ -315,6 +371,9 @@ pub struct StoreGui {
     cargo_new_name: String,
     cargo_new_is_bin: bool,
     rust_env_info: Option<crate::terminal_studio::RustEnvInfo>,
+    /// Editores detectados (uma vez, em segundo plano; botão Atualizar repete)
+    detected_ides: Vec<crate::ide::IdeInfo>,
+    dev_env_detecting: bool,
 
     // Temas e Aparência
     theme: crate::theme::AppTheme,
@@ -322,7 +381,7 @@ pub struct StoreGui {
 
     // Tarefas em segundo plano
     downloads: downloader::DownloadManager,
-    bg_events: Arc<Mutex<Vec<BgEvent>>>,
+    bg_events: Arc<BgQueue>,
     busy_task: Option<String>,
     status_msg: String,
     status_is_error: bool,
@@ -482,6 +541,8 @@ impl StoreGui {
             optimizer_startup: None,
             optimizer_actions: Vec::new(),
             optimizer_is_scanning: false,
+            optimizer_confirm: None,
+            optimizer_action_result: None,
             optimizer_program_search: String::new(),
             optimizer_tab: 0,
             external_store_filter: None,
@@ -498,10 +559,12 @@ impl StoreGui {
             cargo_new_name: String::new(),
             cargo_new_is_bin: true,
             rust_env_info: None,
+            detected_ides: Vec::new(),
+            dev_env_detecting: false,
             theme,
             accent_color,
             downloads: downloader::DownloadManager::default(),
-            bg_events: Arc::new(Mutex::new(Vec::new())),
+            bg_events: Arc::new(BgQueue::new(cc.egui_ctx.clone())),
             busy_task: None,
             status_msg: "RRS - Riva Rust Store pronta. Catálogo verificado e Tradutor C/C++ ➔ Rust ativos.".into(),
             status_is_error: false,
@@ -755,7 +818,7 @@ impl StoreGui {
     fn process_background(&mut self, ctx: &egui::Context) {
         // Fila de downloads: o registro no banco já foi feito pela própria tarefa; aqui só atualiza a tela.
         if self.downloads.has_active() {
-            ctx.request_repaint_after(std::time::Duration::from_millis(80));
+            ctx.request_repaint_after(self.performance_mode.active_interval());
         }
         let finished = self.downloads.take_finished();
         if !finished.is_empty() {
@@ -980,21 +1043,26 @@ impl StoreGui {
                     self.optimizer_startup = Some(startup);
                     self.optimizer_actions = actions;
                     self.busy_task = None;
-                    self.status_msg = self.tr("Diagnóstico do PC e especificações atualizadas.");
-                    self.status_is_error = false;
+                    (self.status_msg, self.status_is_error) = self
+                        .optimizer_action_result
+                        .take()
+                        .unwrap_or_else(|| (self.tr("Diagnóstico do PC e especificações atualizadas."), false));
                 }
                 BgEvent::OptimizerActionFinished(res) => {
                     self.busy_task = None;
-                    match res {
-                        Ok(msg) => {
-                            self.status_msg = format!("✔ {msg}");
-                            self.status_is_error = false;
-                        }
-                        Err(e) => {
-                            self.status_msg = format!("❌ {e}");
-                            self.status_is_error = true;
-                        }
-                    }
+                    let result = match res {
+                        Ok(msg) => (format!("✔ {msg}"), false),
+                        Err(e) => (format!("❌ {e}"), true),
+                    };
+                    (self.status_msg, self.status_is_error) = result.clone();
+                    self.optimizer_action_result = Some(result);
+                    // Diagnóstico de novo só depois da ação, para mostrar o estado já alterado
+                    self.spawn_optimizer_scan();
+                }
+                BgEvent::DevEnvDetected { env, ides } => {
+                    self.rust_env_info = Some(env);
+                    self.detected_ides = ides;
+                    self.dev_env_detecting = false;
                 }
                 BgEvent::TerminalCommandFinished(out) => {
                     self.terminal_is_running = false;
@@ -1059,12 +1127,11 @@ impl StoreGui {
             }
         }
 
+        // Parada, a tela só é redesenhada por entrada do usuário ou evento da fila (`BgQueue`);
+        // o perfil de desempenho decide o ritmo enquanto há tarefa em andamento.
         if self.busy_task.is_some() {
-            ctx.request_repaint_after(std::time::Duration::from_millis(120));
+            ctx.request_repaint_after(self.performance_mode.active_interval());
         }
-
-        // Pacing de renderização e fluidez de acordo com o perfil de desempenho
-        ctx.request_repaint_after(self.performance_mode.frame_interval());
     }
 
     fn spawn_fetch_or_verify(&mut self, repo_name: String, check_vt: bool) {
@@ -3792,6 +3859,47 @@ fn format_stars(stars: u64) -> String {
 mod tests {
     use super::*;
     use std::collections::BTreeSet;
+
+    /// Roda quadros vazios até o egui parar de pedir pintura (os primeiros quadros sempre pedem).
+    fn settle(ctx: &egui::Context) {
+        for _ in 0..10 {
+            let _ = ctx.run(egui::RawInput::default(), |_| {});
+            if !ctx.has_requested_repaint() {
+                return;
+            }
+        }
+        panic!("o egui continua pedindo pintura sem motivo");
+    }
+
+    #[test]
+    fn tela_do_terminal_nao_detecta_ambiente_a_cada_quadro() {
+        // A detecção roda em `spawn_dev_env_detection` (segundo plano); o desenho só lê o resultado guardado
+        let src = include_str!("gui/terminal_studio.rs");
+        let render = &src[src.find("fn render_terminal_studio").unwrap()..];
+        assert!(!render.contains("detect_ides("), "detect_ides no desenho da tela");
+        assert!(!render.contains("detect_rust_env("), "detect_rust_env no desenho da tela");
+    }
+
+    #[test]
+    fn fila_de_eventos_acorda_a_tela_so_quando_ha_evento() {
+        let ctx = egui::Context::default();
+        let queue = BgQueue::new(ctx.clone());
+        settle(&ctx);
+
+        // Esvaziar a fila (o que a interface faz a cada quadro) não pode gerar pintura nova
+        let drained: Vec<BgEvent> = queue.lock().unwrap().drain(..).collect();
+        assert!(drained.is_empty());
+        assert!(!ctx.has_requested_repaint(), "fila vazia não deve acordar a tela");
+
+        // Uma tarefa em segundo plano entrega um resultado: a tela precisa acordar
+        let q = Arc::new(queue);
+        let q2 = Arc::clone(&q);
+        std::thread::spawn(move || q2.lock().unwrap().push(BgEvent::Status("pronto".into())))
+            .join()
+            .unwrap();
+        assert!(ctx.has_requested_repaint(), "evento novo deve acordar a tela");
+        assert_eq!(q.lock().unwrap().drain(..).count(), 1);
+    }
 
     fn embedded_names() -> Vec<String> {
         let entries: Vec<db::CatalogEntry> =
