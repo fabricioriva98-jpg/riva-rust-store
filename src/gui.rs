@@ -13,6 +13,7 @@ use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
 
 mod extras;
+mod learn;
 mod phase3;
 mod settings;
 mod social;
@@ -42,6 +43,7 @@ enum NavSection {
     Community,
     Settings,
     CppToRust,
+    LearnRust,
 }
 
 #[derive(PartialEq, Clone, Copy)]
@@ -103,6 +105,7 @@ enum BgEvent {
         result: Result<(bool, Vec<crate::community::DiscussionSummary>), String>,
     },
     CommunityThread(Result<crate::community::DiscussionThread, String>),
+    LearnRunFinished(crate::learn::RunResult),
     /// Evento de conquista vindo de uma tarefa em segundo plano.
     Stat(&'static str),
     Error(String),
@@ -262,6 +265,13 @@ pub struct StoreGui {
     rustc_check_status: Option<Result<String, String>>,
     file_io_path: String,
 
+    // Estúdio Aprender & Programar em Rust
+    learn_lesson_idx: usize,
+    learn_code_input: String,
+    learn_output: Option<crate::learn::RunResult>,
+    learn_is_running: bool,
+    learn_show_cheatsheet: bool,
+
     // Tarefas em segundo plano
     downloads: downloader::DownloadManager,
     bg_events: Arc<Mutex<Vec<BgEvent>>>,
@@ -400,6 +410,11 @@ impl StoreGui {
             translate_notes: initial_tr.notes,
             rustc_check_status: None,
             file_io_path: String::new(),
+            learn_lesson_idx: 0,
+            learn_code_input: crate::learn::LESSONS[0].initial_code.to_string(),
+            learn_output: None,
+            learn_is_running: false,
+            learn_show_cheatsheet: false,
             downloads: downloader::DownloadManager::default(),
             bg_events: Arc::new(Mutex::new(Vec::new())),
             busy_task: None,
@@ -589,7 +604,7 @@ impl StoreGui {
                     NavSection::AiAndApps => k == "ai-app" || k == "app",
                     NavSection::Tools => k == "tool" || k == "re-app",
                     NavSection::Library => a.installed.is_some(),
-                    NavSection::CppToRust => true,
+                    NavSection::CppToRust | NavSection::LearnRust => true,
                 };
                 section_ok && self.matches_global_filters(a)
             })
@@ -817,6 +832,19 @@ impl StoreGui {
                 BgEvent::CommunityThread(res) => {
                     self.busy_task = None;
                     self.community_thread = Some(res);
+                }
+                BgEvent::LearnRunFinished(res) => {
+                    if res.success {
+                        self.record_stat(crate::achievements::STAT_LEARN_RUN);
+                        self.status_msg = self.tr("✔ Código Rust compilado e executado com sucesso!");
+                        self.status_is_error = false;
+                    } else {
+                        self.status_msg = self.tr("O compilador rustc reportou erros no código.");
+                        self.status_is_error = true;
+                    }
+                    self.busy_task = None;
+                    self.learn_is_running = false;
+                    self.learn_output = Some(res);
                 }
                 BgEvent::Stat(key) => self.record_stat(key),
                 BgEvent::CrateResolved(res) => {
@@ -1212,15 +1240,11 @@ impl eframe::App for StoreGui {
             )
             .show(ctx, |ui| {
                 ui.horizontal(|ui| {
-                    ui.label(
-                        RichText::new("RRS")
-                            .size(24.0)
-                            .strong()
-                            .color(Color32::from_rgb(245, 130, 65)),
-                    );
+                    crate::brand::logo_badge(ui, 17.0);
+                    ui.add_space(2.0);
                     ui.label(
                         RichText::new("Riva Rust Store")
-                            .size(16.5)
+                            .size(15.5)
                             .strong()
                             .color(Color32::from_rgb(95, 180, 255)),
                     );
@@ -1325,6 +1349,12 @@ impl eframe::App for StoreGui {
                     &mut self.section,
                     NavSection::CppToRust,
                     &tr(self.lang, "🦀  Tradutor C/C++ ➔ Rust"),
+                );
+                nav_button(
+                    ui,
+                    &mut self.section,
+                    NavSection::LearnRust,
+                    &tr(self.lang, "📖  Aprender & Programar"),
                 );
 
                 ui.add_space(14.0);
@@ -1540,7 +1570,7 @@ impl eframe::App for StoreGui {
             });
 
         // ─── PAINEL DIREITO: Ficha da Loja, Precedentes e Download ─────────
-        if !matches!(self.section, NavSection::CppToRust | NavSection::Settings | NavSection::Profile) {
+        if !matches!(self.section, NavSection::CppToRust | NavSection::LearnRust | NavSection::Settings | NavSection::Profile) {
             let selected_app = self
                 .selected_repo
                 .as_ref()
@@ -1575,6 +1605,10 @@ impl eframe::App for StoreGui {
             .show(ctx, |ui| {
                 if self.section == NavSection::CppToRust {
                     self.render_translator_studio(ui);
+                    return;
+                }
+                if self.section == NavSection::LearnRust {
+                    self.render_learn_rust(ui);
                     return;
                 }
                 egui::ScrollArea::vertical().show(ui, |ui| {
@@ -1885,6 +1919,7 @@ impl StoreGui {
                 "Gerencie seus jogos e aplicativos baixados, confira integridade SHA-256 e atualizações.",
             ),
             NavSection::CppToRust => ("🦀 Tradutor C/C++ ➔ Rust", ""),
+            NavSection::LearnRust => ("📖 Aprender & Programar em Rust", ""),
         };
 
         ui.label(RichText::new(tr(self.lang, title)).size(20.0).strong().color(Color32::WHITE));
@@ -3653,6 +3688,7 @@ mod tests {
             include_str!("installer.rs"),
             include_str!("downloader.rs"),
             include_str!("translator.rs"),
+            include_str!("gui/learn.rs"),
         ] {
             used.extend(string_literal_chars(src));
         }

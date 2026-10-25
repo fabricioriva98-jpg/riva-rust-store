@@ -2,6 +2,7 @@ mod db;
 mod downloader;
 mod achievements;
 mod attestation;
+mod brand;
 mod catalog_sign;
 mod community;
 mod crates_io;
@@ -12,6 +13,7 @@ mod github_auth;
 mod gui;
 mod installer;
 mod launchers;
+mod learn;
 mod sandbox;
 mod saves;
 mod social;
@@ -399,6 +401,7 @@ fn run_gui(db_path: String, catalog_path: PathBuf) -> Result<()> {
     let options = eframe::NativeOptions {
         viewport: eframe::egui::ViewportBuilder::default()
             .with_title("RRS - Riva Rust Store — Catálogo Verificado & Tradutor C/C++ ➔ Rust")
+            .with_icon(brand::app_icon())
             .with_inner_size([1260.0, 780.0])
             .with_min_inner_size([960.0, 580.0]),
         ..Default::default()

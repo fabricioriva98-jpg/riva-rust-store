@@ -590,7 +590,10 @@ impl StoreGui {
     fn settings_about(&mut self, ui: &mut egui::Ui) {
         let title = self.tr("ℹ Sobre");
         card(ui, &title, |ui| {
-            ui.label(format!("RRS - Riva Rust Store {}", env!("CARGO_PKG_VERSION")));
+            ui.horizontal(|ui| {
+                crate::brand::logo_badge(ui, 15.0);
+                ui.label(format!("RRS - Riva Rust Store {}", env!("CARGO_PKG_VERSION")));
+            });
             ui.label(
                 RichText::new(format!("{} {}", self.tr("Pasta de dados:"), self.base_dir().display()))
                     .size(11.5)

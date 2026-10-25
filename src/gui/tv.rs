@@ -192,6 +192,8 @@ impl StoreGui {
             .frame(egui::Frame::NONE.fill(Color32::from_rgb(8, 10, 16)).inner_margin(egui::Margin::same(40)))
             .show(ctx, |ui| {
                 ui.horizontal(|ui| {
+                    crate::brand::logo_badge(ui, 26.0);
+                    ui.add_space(12.0);
                     ui.label(RichText::new(self.tr("🎮 Modo TV")).size(34.0).strong().color(Color32::WHITE));
                     ui.add_space(20.0);
                     let pads = self.gamepads.as_ref().map(|g| g.gamepads().count()).unwrap_or(0);

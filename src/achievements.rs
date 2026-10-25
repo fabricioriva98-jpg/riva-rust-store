@@ -22,6 +22,7 @@ pub const STAT_OLD_VERSION: &str = "versao_anterior";
 pub const STAT_PROFILE_PUBLISHED: &str = "perfil_publicado";
 pub const STAT_SHARES: &str = "compartilhamentos";
 pub const STAT_COMMUNITY: &str = "comunidade";
+pub const STAT_LEARN_RUN: &str = "aprendeu_rust";
 
 /// XP por evento.
 const STAT_XP: &[(&str, u64)] = &[
@@ -40,6 +41,7 @@ const STAT_XP: &[(&str, u64)] = &[
     (STAT_PROFILE_PUBLISHED, 50),
     (STAT_SHARES, 15),
     (STAT_COMMUNITY, 10),
+    (STAT_LEARN_RUN, 25),
 ];
 const XP_PER_HOUR_PLAYED: u64 = 30;
 
@@ -72,6 +74,7 @@ pub const ACHIEVEMENTS: &[Achievement] = &[
     Achievement { id: "social", icon: "🌐", name: "Social", desc: "Publique o seu perfil para os amigos.", xp: 60 },
     Achievement { id: "boa_conversa", icon: "💬", name: "Boa conversa", desc: "Abra a central de bate-papo da comunidade.", xp: 30 },
     Achievement { id: "indicacao", icon: "🔗", name: "Indicação", desc: "Compartilhe um app com alguém.", xp: 30 },
+    Achievement { id: "aluno_rustaceo", icon: "📖", name: "Primeiros passos em Rust", desc: "Compile ou execute um código na área Aprender Rust.", xp: 50 },
 ];
 
 pub fn find(id: &str) -> Option<&'static Achievement> {
@@ -137,6 +140,7 @@ pub fn is_unlocked(id: &str, f: &Facts) -> bool {
         "social" => f.stat(STAT_PROFILE_PUBLISHED) >= 1,
         "boa_conversa" => f.stat(STAT_COMMUNITY) >= 1,
         "indicacao" => f.stat(STAT_SHARES) >= 1,
+        "aluno_rustaceo" => f.stat(STAT_LEARN_RUN) >= 1,
         _ => false,
     }
 }

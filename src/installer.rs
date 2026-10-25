@@ -297,6 +297,7 @@ pub fn run_installer_gui() -> Result<()> {
     let options = eframe::NativeOptions {
         viewport: egui::ViewportBuilder::default()
             .with_title("Instalador Oficial — RRS - Riva Rust Store")
+            .with_icon(crate::brand::app_icon())
             .with_inner_size([640.0, 470.0])
             .with_min_inner_size([580.0, 440.0])
             .with_resizable(false),
@@ -361,18 +362,7 @@ impl eframe::App for InstallerWizard {
                     .inner_margin(egui::Margin::symmetric(18, 16))
                     .show(ui, |ui| {
                         ui.horizontal(|ui| {
-                            egui::Frame::NONE
-                                .fill(Color32::from_rgb(215, 75, 40))
-                                .corner_radius(CornerRadius::same(10))
-                                .inner_margin(egui::Margin::symmetric(12, 10))
-                                .show(ui, |ui| {
-                                    ui.label(
-                                        RichText::new("🦀 RRS")
-                                            .size(20.0)
-                                            .strong()
-                                            .color(Color32::WHITE),
-                                    );
-                                });
+                            crate::brand::logo_badge(ui, 20.0);
                             ui.add_space(10.0);
                             ui.vertical(|ui| {
                                 ui.label(

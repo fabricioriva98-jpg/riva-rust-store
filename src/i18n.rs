@@ -576,6 +576,34 @@ pub static TABLE: &[(&str, &str)] = &[
     ("Abra a central de bate-papo da comunidade.", "Open the community chat hub."),
     ("Indicação", "Referral"),
     ("Compartilhe um app com alguém.", "Share an app with someone."),
+    // Estúdio Aprender Rust & Conquista
+    ("📖  Aprender & Programar", "📖  Learn & Code"),
+    ("📖 Aprender & Programar em Rust", "📖 Learn & Code in Rust"),
+    ("📖 Aprender & Programar em Rust — Estúdio do Iniciante", "📖 Learn & Code in Rust — Beginner Studio"),
+    ("Aprenda Rust do zero com lições interativas, compile código direto na tela e crie seus primeiros programas.", "Learn Rust from scratch with interactive lessons, compile code directly on screen, and build your first programs."),
+    ("Compilando e executando código com o rustc...", "Compiling and running code with rustc..."),
+    ("📚 Escolha a Lição:", "📚 Choose Lesson:"),
+    ("🔄 Restaurar Lição", "🔄 Reset Lesson"),
+    ("Restaura o código original desta lição.", "Restores the original code for this lesson."),
+    ("Código inicial da lição restaurado.", "Initial lesson code restored."),
+    ("Exporta este código como um projeto Cargo completo com Cargo.toml e main.rs.", "Exports this code as a complete Cargo project with Cargo.toml and main.rs."),
+    ("Projeto Cargo criado em:", "Cargo project created in:"),
+    ("Erro ao exportar projeto:", "Error exporting project:"),
+    ("💡 Ocultar Dicas", "💡 Hide Tips"),
+    ("💡 Guia Rápido", "💡 Quick Guide"),
+    ("🎯 Desafio Prático:", "🎯 Practical Challenge:"),
+    ("💡 Guia Rápido do Rustáceo", "💡 Rustacean Quick Guide"),
+    ("💻 Editor de Código Rust:", "💻 Rust Code Editor:"),
+    ("⏳ Compilando...", "⏳ Compiling..."),
+    ("▶ Executar Código", "▶ Run Code"),
+    ("📟 Saída do Terminal & Compilador:", "📟 Terminal & Compiler Output:"),
+    ("✔ Sucesso", "✔ Success"),
+    ("❌ Erro", "❌ Error"),
+    ("Clique em '▶ Executar Código' para compilar e testar este programa.", "Click '▶ Run Code' to compile and test this program."),
+    ("✔ Código Rust compilado e executado com sucesso!", "✔ Rust code compiled and executed successfully!"),
+    ("O compilador rustc reportou erros no código.", "The rustc compiler reported errors in the code."),
+    ("Primeiros passos em Rust", "First steps in Rust"),
+    ("Compile ou execute um código na área Aprender Rust.", "Compile or run code in the Learn Rust section."),
 ];
 
 #[cfg(test)]
@@ -634,6 +662,7 @@ mod tests {
             include_str!("gui/tv.rs"),
             include_str!("gui/settings.rs"),
             include_str!("gui/social.rs"),
+            include_str!("gui/learn.rs"),
             include_str!("achievements.rs"),
         ]
     }
