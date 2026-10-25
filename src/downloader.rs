@@ -7,58 +7,173 @@ use std::io::Write;
 use std::path::{Path, PathBuf};
 use std::sync::{Arc, Mutex};
 
-#[derive(Debug, Clone)]
-pub enum DownloadState {
-    Idle,
-    Downloading {
-        repo: String,
-        asset_name: String,
-        downloaded_bytes: u64,
-        total_bytes: u64,
-    },
-    Finished {
-        repo: String,
-        tag: String,
-        file_path: String,
-        sha256: String,
-        verified_digest: bool,
-        message: String,
-    },
-    Failed {
-        repo: String,
-        error: String,
-    },
+/// Situação de um download na fila.
+#[derive(Debug, Clone, PartialEq)]
+pub enum JobState {
+    Queued,
+    Downloading { downloaded_bytes: u64, total_bytes: u64 },
+    Finished { message: String },
+    Failed { error: String },
 }
 
-pub type SharedDownloadState = Arc<Mutex<DownloadState>>;
+#[derive(Debug, Clone)]
+pub struct DownloadJob {
+    pub id: u64,
+    pub repo: String,
+    pub tag: String,
+    pub asset_name: String,
+    pub state: JobState,
+}
 
-pub fn new_shared_state() -> SharedDownloadState {
-    Arc::new(Mutex::new(DownloadState::Idle))
+impl DownloadJob {
+    pub fn is_active(&self) -> bool {
+        matches!(self.state, JobState::Queued | JobState::Downloading { .. })
+    }
+}
+
+pub type SharedQueue = Arc<Mutex<Vec<DownloadJob>>>;
+
+/// Quantos downloads rodam ao mesmo tempo; os demais esperam na fila.
+pub const MAX_PARALLEL_DOWNLOADS: usize = 2;
+
+/// Fila de downloads com até [`MAX_PARALLEL_DOWNLOADS`] simultâneos. Cada tarefa registra o app como
+/// instalado no banco assim que termina (antes isso dependia da tela ver o estado "concluído", e
+/// atualizações em sequência podiam ficar sem registro).
+#[derive(Clone)]
+pub struct DownloadManager {
+    jobs: SharedQueue,
+    slots: Arc<tokio::sync::Semaphore>,
+    next_id: Arc<std::sync::atomic::AtomicU64>,
+}
+
+impl Default for DownloadManager {
+    fn default() -> Self {
+        Self {
+            jobs: Arc::new(Mutex::new(Vec::new())),
+            slots: Arc::new(tokio::sync::Semaphore::new(MAX_PARALLEL_DOWNLOADS)),
+            next_id: Arc::new(std::sync::atomic::AtomicU64::new(1)),
+        }
+    }
+}
+
+impl DownloadManager {
+    pub fn snapshot(&self) -> Vec<DownloadJob> {
+        self.jobs.lock().unwrap().clone()
+    }
+
+    /// `true` se essa versão do app já está na fila ou baixando.
+    pub fn is_queued(&self, repo: &str, tag: &str) -> bool {
+        self.jobs
+            .lock()
+            .unwrap()
+            .iter()
+            .any(|j| j.is_active() && j.repo.eq_ignore_ascii_case(repo) && j.tag == tag)
+    }
+
+    pub fn has_active(&self) -> bool {
+        self.jobs.lock().unwrap().iter().any(|j| j.is_active())
+    }
+
+    /// Retira da fila e devolve os downloads concluídos ou com falha.
+    pub fn take_finished(&self) -> Vec<DownloadJob> {
+        let mut jobs = self.jobs.lock().unwrap();
+        let (done, active): (Vec<_>, Vec<_>) = jobs.drain(..).partition(|j| !j.is_active());
+        *jobs = active;
+        done
+    }
+
+    /// Coloca o download na fila. Devolve `None` se a mesma versão já estiver na fila.
+    pub fn enqueue(
+        &self,
+        rt: &tokio::runtime::Handle,
+        db_path: String,
+        base_dir: PathBuf,
+        repo: String,
+        tag: String,
+        asset: Asset,
+    ) -> Option<u64> {
+        if self.is_queued(&repo, &tag) {
+            return None;
+        }
+        let id = self.next_id.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+        self.jobs.lock().unwrap().push(DownloadJob {
+            id,
+            repo: repo.clone(),
+            tag: tag.clone(),
+            asset_name: asset.name.clone(),
+            state: JobState::Queued,
+        });
+        let jobs = Arc::clone(&self.jobs);
+        let slots = Arc::clone(&self.slots);
+        rt.spawn(async move {
+            let _permit = slots.acquire_owned().await;
+            let state = match download_and_verify(&repo, &asset, &base_dir, Some((&jobs, id))).await {
+                Ok(done) => {
+                    let stored = crate::db::to_stored_path(&base_dir, &done.path);
+                    let registered = crate::db::open(&db_path).and_then(|conn| {
+                        crate::db::mark_installed(&conn, &repo, &tag, &stored, &done.sha256, done.verified)
+                    });
+                    match registered {
+                        Ok(()) => JobState::Finished { message: done.message },
+                        Err(e) => JobState::Failed {
+                            error: format!("arquivo baixado, mas não foi possível registrar no banco: {e:#}"),
+                        },
+                    }
+                }
+                Err(e) => JobState::Failed { error: format!("{e:#}") },
+            };
+            set_job_state(&jobs, id, state);
+        });
+        Some(id)
+    }
+}
+
+fn set_job_state(jobs: &SharedQueue, id: u64, state: JobState) {
+    if let Some(job) = jobs.lock().unwrap().iter_mut().find(|j| j.id == id) {
+        job.state = state;
+    }
+}
+
+/// Resultado de um download conferido.
+#[derive(Debug, Clone)]
+pub struct DownloadOutcome {
+    /// Executável principal (quando o .zip foi extraído) ou o arquivo baixado.
+    pub path: PathBuf,
+    pub sha256: String,
+    pub verified: bool,
+    pub message: String,
 }
 
 /// Faz o download do arquivo, confere o SHA-256 e salva na pasta `downloads/<owner>_<repo>/`.
 pub async fn download_and_verify(
     repo: &str,
-    tag: &str,
     asset: &Asset,
     base_dir: &Path,
-    progress: Option<SharedDownloadState>,
-) -> Result<(PathBuf, String, bool)> {
+    progress: Option<(&SharedQueue, u64)>,
+) -> Result<DownloadOutcome> {
     let safe_repo = repo.replace(['/', '\\', ':'], "_");
     let target_dir = base_dir.join("downloads").join(&safe_repo);
     std::fs::create_dir_all(&target_dir)
         .with_context(|| format!("não foi possível criar a pasta {}", target_dir.display()))?;
 
-    let final_path = target_dir.join(&asset.name);
-    let temp_path = target_dir.join(format!("{}.part", asset.name));
+    // Só o nome do arquivo: um nome com "..\" no catálogo não pode sair da pasta de downloads.
+    let file_name = Path::new(&asset.name)
+        .file_name()
+        .map(|n| n.to_string_lossy().to_string())
+        .filter(|n| !n.is_empty() && n != "." && n != "..")
+        .ok_or_else(|| anyhow::anyhow!("nome de arquivo inválido na release: {}", asset.name))?;
+    let final_path = target_dir.join(&file_name);
+    let temp_path = target_dir.join(format!("{file_name}.part"));
 
-    if let Some(st) = &progress {
-        *st.lock().unwrap() = DownloadState::Downloading {
-            repo: repo.to_string(),
-            asset_name: asset.name.clone(),
-            downloaded_bytes: 0,
-            total_bytes: asset.size,
-        };
+    if let Some((jobs, id)) = progress {
+        set_job_state(
+            jobs,
+            id,
+            JobState::Downloading {
+                downloaded_bytes: 0,
+                total_bytes: asset.size,
+            },
+        );
     }
 
     let client = reqwest::Client::builder()
@@ -81,18 +196,30 @@ pub async fn download_and_verify(
     let mut hasher = Sha256::new();
     let mut downloaded: u64 = 0;
 
-    while let Some(chunk) = resp.chunk().await? {
+    loop {
+        let chunk = match resp.chunk().await {
+            Ok(Some(c)) => c,
+            Ok(None) => break,
+            Err(e) => {
+                // Download interrompido: não deixa o .part pela metade na pasta
+                drop(file);
+                let _ = std::fs::remove_file(&temp_path);
+                return Err(e).context("download interrompido");
+            }
+        };
         file.write_all(&chunk)?;
         hasher.update(&chunk);
         downloaded += chunk.len() as u64;
 
-        if let Some(st) = &progress {
-            *st.lock().unwrap() = DownloadState::Downloading {
-                repo: repo.to_string(),
-                asset_name: asset.name.clone(),
-                downloaded_bytes: downloaded,
-                total_bytes: total,
-            };
+        if let Some((jobs, id)) = progress {
+            set_job_state(
+                jobs,
+                id,
+                JobState::Downloading {
+                    downloaded_bytes: downloaded,
+                    total_bytes: total,
+                },
+            );
         }
     }
     file.flush()?;
@@ -141,18 +268,12 @@ pub async fn download_and_verify(
         )
     };
 
-    if let Some(st) = &progress {
-        *st.lock().unwrap() = DownloadState::Finished {
-            repo: repo.to_string(),
-            tag: tag.to_string(),
-            file_path: effective_path.to_string_lossy().to_string(),
-            sha256: computed_sha256.clone(),
-            verified_digest,
-            message: msg,
-        };
-    }
-
-    Ok((effective_path, computed_sha256, verified_digest))
+    Ok(DownloadOutcome {
+        path: effective_path,
+        sha256: computed_sha256,
+        verified: verified_digest,
+        message: format!("{msg} — {repo}"),
+    })
 }
 
 /// Se o arquivo baixado for um arquivo `.zip`, descompacta em `target_dir/app/` e procura o executável principal.
@@ -518,6 +639,18 @@ pub fn open_url(url: &str) -> Result<()> {
     Ok(())
 }
 
+/// Abre um endereço de loja de jogos (`steam://`, `com.epicgames.launcher://`) já validado em `launchers.rs`.
+pub fn open_store_uri(uri: &str) -> Result<()> {
+    #[cfg(target_os = "windows")]
+    {
+        shell_open(std::ffi::OsStr::new(uri), None)
+    }
+    #[cfg(not(target_os = "windows"))]
+    {
+        bail!("abrir jogos de outras lojas só é suportado no Windows: {uri}")
+    }
+}
+
 /// Abre arquivo, pasta ou URL pelo Shell do Windows (`ShellExecuteW`), sem passar pelo `cmd.exe`.
 #[cfg(target_os = "windows")]
 fn shell_open(target: &std::ffi::OsStr, working_dir: Option<&Path>) -> Result<()> {
@@ -564,6 +697,135 @@ fn shell_open(target: &std::ffi::OsStr, working_dir: Option<&Path>) -> Result<()
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    fn temp_dir(tag: &str) -> PathBuf {
+        let nanos = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap()
+            .as_nanos();
+        let dir = std::env::temp_dir().join(format!("rrs-teste-dl-{tag}-{}-{nanos}", std::process::id()));
+        std::fs::create_dir_all(&dir).unwrap();
+        dir
+    }
+
+    /// Servidor HTTP mínimo: responde `body` a uma única conexão.
+    fn serve_once(body: &'static [u8]) -> String {
+        let listener = std::net::TcpListener::bind("127.0.0.1:0").unwrap();
+        let addr = listener.local_addr().unwrap();
+        std::thread::spawn(move || {
+            if let Ok((mut s, _)) = listener.accept() {
+                use std::io::Read;
+                let mut buf = [0u8; 2048];
+                let _ = s.read(&mut buf);
+                let _ = write!(
+                    s,
+                    "HTTP/1.1 200 OK\r\nContent-Length: {}\r\nConnection: close\r\n\r\n",
+                    body.len()
+                );
+                let _ = s.write_all(body);
+            }
+        });
+        format!("http://{addr}/arquivo.bin")
+    }
+
+    fn prepare_db(base: &Path) -> String {
+        let db_path = base.join("t.db").to_string_lossy().to_string();
+        let conn = crate::db::open(&db_path).unwrap();
+        crate::db::import_catalog_str(
+            &conn,
+            r#"[{"full_name":"dono/app","description":"","url":"","stars":1,"license":"","topics":"",
+                "pushed_at":"","latest_tag":"v2","platforms":"windows","assets":[],"trust_level":"x","trust_notes":["x"]}]"#,
+            "t",
+        )
+        .unwrap();
+        db_path
+    }
+
+    fn wait_queue(rt: &tokio::runtime::Runtime, mgr: &DownloadManager) -> Vec<DownloadJob> {
+        for _ in 0..200 {
+            if !mgr.has_active() {
+                break;
+            }
+            rt.block_on(async { tokio::time::sleep(std::time::Duration::from_millis(50)).await });
+        }
+        mgr.take_finished()
+    }
+
+    #[test]
+    fn fila_registra_instalado_ao_terminar_sem_depender_da_tela() {
+        let rt = tokio::runtime::Runtime::new().unwrap();
+        let base = temp_dir("fila-ok");
+        let db_path = prepare_db(&base);
+        let body: &'static [u8] = b"conteudo do instalador";
+        let asset = Asset {
+            name: "app-setup.exe".into(),
+            size: body.len() as u64,
+            browser_download_url: serve_once(body),
+            digest: Some(format!("sha256:{:x}", Sha256::digest(body))),
+        };
+        let mgr = DownloadManager::default();
+        let job = |a: Asset| mgr.enqueue(rt.handle(), db_path.clone(), base.clone(), "dono/app".into(), "v2".into(), a);
+        assert!(job(asset.clone()).is_some());
+        assert!(job(asset).is_none(), "a mesma versão não entra duas vezes na fila");
+
+        let done = wait_queue(&rt, &mgr);
+        assert_eq!(done.len(), 1);
+        assert!(matches!(done[0].state, JobState::Finished { .. }), "{:?}", done[0].state);
+
+        let conn = crate::db::open(&db_path).unwrap();
+        let inst = crate::db::get(&conn, "dono/app").unwrap().unwrap().installed.unwrap();
+        assert_eq!(inst.installed_tag, "v2");
+        assert!(inst.verified_github_digest);
+        assert_eq!(Path::new(&inst.file_path), Path::new("downloads/dono_app/app-setup.exe"));
+        drop(conn);
+        std::fs::remove_dir_all(&base).unwrap();
+    }
+
+    #[test]
+    fn fila_com_hash_errado_falha_descarta_arquivo_e_nao_registra() {
+        let rt = tokio::runtime::Runtime::new().unwrap();
+        let base = temp_dir("fila-hash");
+        let db_path = prepare_db(&base);
+        let body: &'static [u8] = b"arquivo adulterado";
+        let asset = Asset {
+            name: "app-setup.exe".into(),
+            size: body.len() as u64,
+            browser_download_url: serve_once(body),
+            digest: Some(format!("sha256:{}", "0".repeat(64))),
+        };
+        let mgr = DownloadManager::default();
+        mgr.enqueue(rt.handle(), db_path.clone(), base.clone(), "dono/app".into(), "v2".into(), asset)
+            .unwrap();
+        let done = wait_queue(&rt, &mgr);
+        match &done[0].state {
+            JobState::Failed { error } => assert!(error.contains("NÃO CONFERE"), "{error}"),
+            other => panic!("esperava falha, veio {other:?}"),
+        }
+        let dir = base.join("downloads").join("dono_app");
+        assert!(!dir.join("app-setup.exe").exists());
+        assert!(!dir.join("app-setup.exe.part").exists());
+        let conn = crate::db::open(&db_path).unwrap();
+        assert!(crate::db::get(&conn, "dono/app").unwrap().unwrap().installed.is_none());
+        drop(conn);
+        std::fs::remove_dir_all(&base).unwrap();
+    }
+
+    #[test]
+    fn nome_de_arquivo_com_caminho_nao_sai_da_pasta_de_downloads() {
+        let rt = tokio::runtime::Runtime::new().unwrap();
+        let base = temp_dir("nome");
+        let body: &'static [u8] = b"x";
+        let asset = Asset {
+            name: "..\\..\\fora.exe".into(),
+            size: 1,
+            browser_download_url: serve_once(body),
+            digest: None,
+        };
+        let done = rt.block_on(download_and_verify("dono/app", &asset, &base, None)).unwrap();
+        assert_eq!(done.path, base.join("downloads").join("dono_app").join("fora.exe"));
+        assert!(!base.parent().unwrap().join("fora.exe").exists());
+        std::fs::remove_dir_all(&base).unwrap();
+    }
 
     #[test]
     fn defender_codigo_zero_e_limpo() {

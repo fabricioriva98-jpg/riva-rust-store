@@ -1025,6 +1025,124 @@
     "attestation": ""
   },
   {
+    "full_name": "BurntSushi/ripgrep",
+    "description": "ripgrep recursively searches directories for a regex pattern while respecting your gitignore",
+    "url": "https://github.com/BurntSushi/ripgrep",
+    "stars": 69411,
+    "license": "Unlicense",
+    "topics": "cli,command-line,command-line-tool,gitignore,grep,recursively-search,regex,ripgrep,rust,search",
+    "language": "Rust",
+    "created_at": "2016-03-11T02:02:33Z",
+    "pushed_at": "2026-10-23T20:00:21Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "15.2.0",
+    "released_at": "2026-07-15T16:26:10Z",
+    "platforms": "linux,windows",
+    "assets": [
+      {
+        "name": "ripgrep-15.2.0-aarch64-apple-darwin.tar.gz",
+        "size": 1764284,
+        "browser_download_url": "https://github.com/BurntSushi/ripgrep/releases/download/15.2.0/ripgrep-15.2.0-aarch64-apple-darwin.tar.gz",
+        "digest": "sha256:3750b2e93f37e0c692657da574d7019a101c0084da05a790c83fd335bad973e4"
+      },
+      {
+        "name": "ripgrep-15.2.0-aarch64-pc-windows-msvc.zip",
+        "size": 1640124,
+        "browser_download_url": "https://github.com/BurntSushi/ripgrep/releases/download/15.2.0/ripgrep-15.2.0-aarch64-pc-windows-msvc.zip",
+        "digest": "sha256:e4abca10c3a64ebea742667dd7009449d49403db5460dd6873e389fa2945360f"
+      },
+      {
+        "name": "ripgrep-15.2.0-aarch64-unknown-linux-gnu.tar.gz",
+        "size": 1854661,
+        "browser_download_url": "https://github.com/BurntSushi/ripgrep/releases/download/15.2.0/ripgrep-15.2.0-aarch64-unknown-linux-gnu.tar.gz",
+        "digest": "sha256:a740b91c82eaf9914cfedd353572f2791cbe0162c84101ee0951058f4dcbc90d"
+      },
+      {
+        "name": "ripgrep-15.2.0-aarch64-unknown-linux-musl.tar.gz",
+        "size": 1982561,
+        "browser_download_url": "https://github.com/BurntSushi/ripgrep/releases/download/15.2.0/ripgrep-15.2.0-aarch64-unknown-linux-musl.tar.gz",
+        "digest": "sha256:800b1e7206afe799dfb5a6901f23147cfaabe0e52210538100f61e86e1740915"
+      },
+      {
+        "name": "ripgrep-15.2.0-armv7-unknown-linux-gnueabihf.tar.gz",
+        "size": 1811537,
+        "browser_download_url": "https://github.com/BurntSushi/ripgrep/releases/download/15.2.0/ripgrep-15.2.0-armv7-unknown-linux-gnueabihf.tar.gz",
+        "digest": "sha256:d859589734d9d802107ad9eff6a78cfd9b0080d2fecb0ad8772605b35e373199"
+      },
+      {
+        "name": "ripgrep-15.2.0-armv7-unknown-linux-musleabi.tar.gz",
+        "size": 1830011,
+        "browser_download_url": "https://github.com/BurntSushi/ripgrep/releases/download/15.2.0/ripgrep-15.2.0-armv7-unknown-linux-musleabi.tar.gz",
+        "digest": "sha256:c9617116c02d4cf4f000e156890aed79979aa6d2f6347925aea5a61c1b0eab87"
+      },
+      {
+        "name": "ripgrep-15.2.0-armv7-unknown-linux-musleabihf.tar.gz",
+        "size": 1826012,
+        "browser_download_url": "https://github.com/BurntSushi/ripgrep/releases/download/15.2.0/ripgrep-15.2.0-armv7-unknown-linux-musleabihf.tar.gz",
+        "digest": "sha256:0332b481aa007969a54d5c19e793208e73405c48d38f226bdee56b9ed085cdde"
+      },
+      {
+        "name": "ripgrep-15.2.0-i686-pc-windows-msvc.zip",
+        "size": 1642641,
+        "browser_download_url": "https://github.com/BurntSushi/ripgrep/releases/download/15.2.0/ripgrep-15.2.0-i686-pc-windows-msvc.zip",
+        "digest": "sha256:9bf73bdb3fda9ad4b0235e1295b02c717031c986afa4d7c05dd0af8b74010a95"
+      },
+      {
+        "name": "ripgrep-15.2.0-s390x-unknown-linux-gnu.tar.gz",
+        "size": 2243230,
+        "browser_download_url": "https://github.com/BurntSushi/ripgrep/releases/download/15.2.0/ripgrep-15.2.0-s390x-unknown-linux-gnu.tar.gz",
+        "digest": "sha256:b61a442344f0591321960def6adb8c828b68a448301d1ed93959656fcd3b79c2"
+      },
+      {
+        "name": "ripgrep-15.2.0-x86_64-apple-darwin.tar.gz",
+        "size": 1878284,
+        "browser_download_url": "https://github.com/BurntSushi/ripgrep/releases/download/15.2.0/ripgrep-15.2.0-x86_64-apple-darwin.tar.gz",
+        "digest": "sha256:af7825fcc69a2afc7a7aea55fc9af90e26421d8f20fe59df32e233c0b8a231c1"
+      },
+      {
+        "name": "ripgrep-15.2.0-x86_64-pc-windows-gnu.zip",
+        "size": 1878957,
+        "browser_download_url": "https://github.com/BurntSushi/ripgrep/releases/download/15.2.0/ripgrep-15.2.0-x86_64-pc-windows-gnu.zip",
+        "digest": "sha256:5dbdc225a3ce064314fc05b6de8423a08a7b681764c1a276ff8263feaf68c7d6"
+      },
+      {
+        "name": "ripgrep-15.2.0-x86_64-pc-windows-msvc.zip",
+        "size": 1789611,
+        "browser_download_url": "https://github.com/BurntSushi/ripgrep/releases/download/15.2.0/ripgrep-15.2.0-x86_64-pc-windows-msvc.zip",
+        "digest": "sha256:71b2fef860abe467217a538ff31de02f5258807c0129f771846f87bd029aafc5"
+      },
+      {
+        "name": "ripgrep-15.2.0-x86_64-unknown-linux-musl.tar.gz",
+        "size": 2265718,
+        "browser_download_url": "https://github.com/BurntSushi/ripgrep/releases/download/15.2.0/ripgrep-15.2.0-x86_64-unknown-linux-musl.tar.gz",
+        "digest": "sha256:33e15bcf1624b25cdd2a55813a47a2f95dbe126268203e76aa6a585d1e7b149c"
+      },
+      {
+        "name": "ripgrep_15.2.0-1_amd64.deb",
+        "size": 1703492,
+        "browser_download_url": "https://github.com/BurntSushi/ripgrep/releases/download/15.2.0/ripgrep_15.2.0-1_amd64.deb",
+        "digest": "sha256:5af93eebe4c352474632cf1d28523b0e98bcd4e2f115a249a713b8d8c7d1d01c"
+      }
+    ],
+    "kind": "cli",
+    "category": "Terminal • Rust",
+    "tags": "busca,texto,terminal,rust,grep",
+    "summary": "Busca texto em pastas inteiras muito rápido, respeitando o .gitignore (comando rg); feito em Rust.",
+    "trust_score": 100,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório consolidado (10 anos de histórico)",
+      "🟢 Projeto ativo (atualizado há 1 dias)",
+      "🟢 69411 estrelas no repositório",
+      "🟢 483 contribuidores públicos",
+      "🟢 Código aberto com licença Unlicense",
+      "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
+    ],
+    "attestation": "ausente"
+  },
+  {
     "full_name": "alacritty/alacritty",
     "description": "A cross-platform, OpenGL terminal emulator.",
     "url": "https://github.com/alacritty/alacritty",
@@ -1072,6 +1190,284 @@
       "🟢 66036 estrelas no GitHub",
       "🟢 484 contribuidores públicos",
       "🟢 Código aberto com licença Apache-2.0",
+      "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
+    ],
+    "attestation": "ausente"
+  },
+  {
+    "full_name": "sharkdp/bat",
+    "description": "A cat(1) clone with wings.",
+    "url": "https://github.com/sharkdp/bat",
+    "stars": 60923,
+    "license": "Apache-2.0",
+    "topics": "cli,command-line,git,hacktoberfest,rust,syntax-highlighting,terminal,tool",
+    "language": "Rust",
+    "created_at": "2018-04-21T10:52:23Z",
+    "pushed_at": "2026-10-20T19:18:09Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v0.26.1",
+    "released_at": "2025-12-02T20:48:10Z",
+    "platforms": "linux,windows",
+    "assets": [
+      {
+        "name": "bat-musl_0.26.1_arm64.deb",
+        "size": 2910138,
+        "browser_download_url": "https://github.com/sharkdp/bat/releases/download/v0.26.1/bat-musl_0.26.1_arm64.deb",
+        "digest": "sha256:da2ca4c742dc55216daeb68b6b7ce6d26fac0aae34f3b657c3322c14df4d0cc8"
+      },
+      {
+        "name": "bat-musl_0.26.1_musl-linux-amd64.deb",
+        "size": 3074590,
+        "browser_download_url": "https://github.com/sharkdp/bat/releases/download/v0.26.1/bat-musl_0.26.1_musl-linux-amd64.deb",
+        "digest": "sha256:e2b709e7330e5e0e2b18924ebdd741f4a1e82265a2336a153f8db82567135d94"
+      },
+      {
+        "name": "bat-musl_0.26.1_musl-linux-i686.deb",
+        "size": 3071596,
+        "browser_download_url": "https://github.com/sharkdp/bat/releases/download/v0.26.1/bat-musl_0.26.1_musl-linux-i686.deb",
+        "digest": "sha256:e77baebf043900d93895ec059be7637b7f736bd514a3ee2b0e26316e84fb4e86"
+      },
+      {
+        "name": "bat-v0.26.1-aarch64-apple-darwin.tar.gz",
+        "size": 3216703,
+        "browser_download_url": "https://github.com/sharkdp/bat/releases/download/v0.26.1/bat-v0.26.1-aarch64-apple-darwin.tar.gz",
+        "digest": "sha256:e30beff26779c9bf60bb541e1d79046250cb74378f2757f8eb250afddb19e114"
+      },
+      {
+        "name": "bat-v0.26.1-aarch64-pc-windows-msvc.zip",
+        "size": 3434291,
+        "browser_download_url": "https://github.com/sharkdp/bat/releases/download/v0.26.1/bat-v0.26.1-aarch64-pc-windows-msvc.zip",
+        "digest": "sha256:af07dd1939e99f7f5892d197fc5653cb8cb6c5999552731135ad156eca7e38a5"
+      },
+      {
+        "name": "bat-v0.26.1-aarch64-unknown-linux-gnu.tar.gz",
+        "size": 3345545,
+        "browser_download_url": "https://github.com/sharkdp/bat/releases/download/v0.26.1/bat-v0.26.1-aarch64-unknown-linux-gnu.tar.gz",
+        "digest": "sha256:422eb73e11c854fddd99f5ca8461c2f1d6e6dce0a2a8c3d5daade5ffcb6564aa"
+      },
+      {
+        "name": "bat-v0.26.1-aarch64-unknown-linux-musl.tar.gz",
+        "size": 3383478,
+        "browser_download_url": "https://github.com/sharkdp/bat/releases/download/v0.26.1/bat-v0.26.1-aarch64-unknown-linux-musl.tar.gz",
+        "digest": "sha256:6369242c584065f195fb20cb36fbd7cb63ae690605bbe89868a7596b596c2c23"
+      },
+      {
+        "name": "bat-v0.26.1-arm-unknown-linux-gnueabihf.tar.gz",
+        "size": 3380827,
+        "browser_download_url": "https://github.com/sharkdp/bat/releases/download/v0.26.1/bat-v0.26.1-arm-unknown-linux-gnueabihf.tar.gz",
+        "digest": "sha256:410350b51436461dbdb4b0056203dcf4d30fc303873659ad837678cdf52c42b7"
+      },
+      {
+        "name": "bat-v0.26.1-arm-unknown-linux-musleabihf.tar.gz",
+        "size": 3407734,
+        "browser_download_url": "https://github.com/sharkdp/bat/releases/download/v0.26.1/bat-v0.26.1-arm-unknown-linux-musleabihf.tar.gz",
+        "digest": "sha256:ac08a619f5b1942c4745d2f686fba7145c7de47de990f0f14cc3ab2fa06c005e"
+      },
+      {
+        "name": "bat-v0.26.1-i686-pc-windows-msvc.zip",
+        "size": 3367862,
+        "browser_download_url": "https://github.com/sharkdp/bat/releases/download/v0.26.1/bat-v0.26.1-i686-pc-windows-msvc.zip",
+        "digest": "sha256:07fcab3b17e146878179553c115beb4878835a30b0e5d046457015a5b8f6e7ed"
+      },
+      {
+        "name": "bat-v0.26.1-i686-unknown-linux-gnu.tar.gz",
+        "size": 3572280,
+        "browser_download_url": "https://github.com/sharkdp/bat/releases/download/v0.26.1/bat-v0.26.1-i686-unknown-linux-gnu.tar.gz",
+        "digest": "sha256:336b20f63899322fde693792e5f8c31e343777dca2b00bdcdfa197b71eb79364"
+      },
+      {
+        "name": "bat-v0.26.1-i686-unknown-linux-musl.tar.gz",
+        "size": 3545941,
+        "browser_download_url": "https://github.com/sharkdp/bat/releases/download/v0.26.1/bat-v0.26.1-i686-unknown-linux-musl.tar.gz",
+        "digest": "sha256:81e3386a54a915cabc9019efecec1860b9b030191bdaa928790a182ca865bda1"
+      },
+      {
+        "name": "bat-v0.26.1-x86_64-apple-darwin.tar.gz",
+        "size": 3367309,
+        "browser_download_url": "https://github.com/sharkdp/bat/releases/download/v0.26.1/bat-v0.26.1-x86_64-apple-darwin.tar.gz",
+        "digest": "sha256:830d63b0bba1fa040542ec569e3cf77f60d3356b9de75116a344b061e0894245"
+      },
+      {
+        "name": "bat-v0.26.1-x86_64-pc-windows-msvc.zip",
+        "size": 3613318,
+        "browser_download_url": "https://github.com/sharkdp/bat/releases/download/v0.26.1/bat-v0.26.1-x86_64-pc-windows-msvc.zip",
+        "digest": "sha256:0f729b4b6f5f28d395c641eacc2e9ff68d0096b85aa0eec344aa62425144b69b"
+      },
+      {
+        "name": "bat-v0.26.1-x86_64-unknown-linux-gnu.tar.gz",
+        "size": 3546574,
+        "browser_download_url": "https://github.com/sharkdp/bat/releases/download/v0.26.1/bat-v0.26.1-x86_64-unknown-linux-gnu.tar.gz",
+        "digest": "sha256:726f04c8f576a7fd18b7634f1bbf2f915c43494c1c0f013baa3287edb0d5a2a3"
+      },
+      {
+        "name": "bat-v0.26.1-x86_64-unknown-linux-musl.tar.gz",
+        "size": 3584928,
+        "browser_download_url": "https://github.com/sharkdp/bat/releases/download/v0.26.1/bat-v0.26.1-x86_64-unknown-linux-musl.tar.gz",
+        "digest": "sha256:0dcd8ac79732c0d5b136f11f4ee00e581440e16a44eab5b3105b611bbf2cf191"
+      },
+      {
+        "name": "bat_0.26.1_amd64.deb",
+        "size": 3037592,
+        "browser_download_url": "https://github.com/sharkdp/bat/releases/download/v0.26.1/bat_0.26.1_amd64.deb",
+        "digest": "sha256:ad59954aa1540e526f97267f60557ea5ef4c7dcf91a0811254134537cb353a3c"
+      },
+      {
+        "name": "bat_0.26.1_arm64.deb",
+        "size": 2862796,
+        "browser_download_url": "https://github.com/sharkdp/bat/releases/download/v0.26.1/bat_0.26.1_arm64.deb",
+        "digest": "sha256:4a70c3f6236f2c621bd68357257e21b78c9497de4de1e803301ec0209f168653"
+      },
+      {
+        "name": "bat_0.26.1_armhf.deb",
+        "size": 2908064,
+        "browser_download_url": "https://github.com/sharkdp/bat/releases/download/v0.26.1/bat_0.26.1_armhf.deb",
+        "digest": "sha256:6e3a00d061be73f66282d6dce0533bcaebcb331eb555b38c2802e7ee220dc512"
+      },
+      {
+        "name": "bat_0.26.1_i686.deb",
+        "size": 3087444,
+        "browser_download_url": "https://github.com/sharkdp/bat/releases/download/v0.26.1/bat_0.26.1_i686.deb",
+        "digest": "sha256:3c8acef5b897084b2168eae343aa72dedc728e265a8edd9f8d2eaf2a718e0c58"
+      },
+      {
+        "name": "bat_0.26.1_musl-linux-armhf.deb",
+        "size": 2929440,
+        "browser_download_url": "https://github.com/sharkdp/bat/releases/download/v0.26.1/bat_0.26.1_musl-linux-armhf.deb",
+        "digest": "sha256:b2c35e363a046e13e8e9267d61046bf9813ff8da7b607f65fcf1e6e4ff6a86e8"
+      }
+    ],
+    "kind": "cli",
+    "category": "Terminal • Rust",
+    "tags": "terminal,cat,destaque-de-sintaxe,rust,git",
+    "summary": "Mostra arquivos no terminal com cores de sintaxe, números de linha e marcações do Git (substituto do cat); feito em Rust.",
+    "trust_score": 100,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório consolidado (8 anos de histórico)",
+      "🟢 Projeto ativo (atualizado há 4 dias)",
+      "🟢 60923 estrelas no repositório",
+      "🟢 497 contribuidores públicos",
+      "🟢 Código aberto com licença Apache-2.0",
+      "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
+    ],
+    "attestation": "ausente"
+  },
+  {
+    "full_name": "starship/starship",
+    "description": "☄🌌️  The minimal, blazing-fast, and infinitely customizable prompt for any shell!",
+    "url": "https://github.com/starship/starship",
+    "stars": 60439,
+    "license": "ISC",
+    "topics": "bash,fish,fish-prompt,fish-theme,oh-my-zsh,powershell,rust,shell-prompt,starship,zsh,zsh-prompt,zsh-theme",
+    "language": "Rust",
+    "created_at": "2019-04-02T03:23:12Z",
+    "pushed_at": "2026-10-24T03:27:04Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v1.27.0",
+    "released_at": "2026-10-17T09:17:43Z",
+    "platforms": "linux,windows",
+    "assets": [
+      {
+        "name": "starship-aarch64-apple-darwin.tar.gz",
+        "size": 4039405,
+        "browser_download_url": "https://github.com/starship/starship/releases/download/v1.27.0/starship-aarch64-apple-darwin.tar.gz",
+        "digest": "sha256:5362da8cb2928f98f3ce0ffda697cf0f8de70081db000dae316d6d3a404f6cf0"
+      },
+      {
+        "name": "starship-aarch64-pc-windows-msvc.msi",
+        "size": 5644288,
+        "browser_download_url": "https://github.com/starship/starship/releases/download/v1.27.0/starship-aarch64-pc-windows-msvc.msi",
+        "digest": "sha256:aba1dc3753f64a6afc2f142b8a53900bbc21e9b21b14861dda7b33672378ba72"
+      },
+      {
+        "name": "starship-aarch64-pc-windows-msvc.zip",
+        "size": 4449874,
+        "browser_download_url": "https://github.com/starship/starship/releases/download/v1.27.0/starship-aarch64-pc-windows-msvc.zip",
+        "digest": "sha256:1822b6cf1af28071b056976d3f445359d61df324918ffe76c6d0f851eef9366f"
+      },
+      {
+        "name": "starship-aarch64-unknown-linux-musl.tar.gz",
+        "size": 4776202,
+        "browser_download_url": "https://github.com/starship/starship/releases/download/v1.27.0/starship-aarch64-unknown-linux-musl.tar.gz",
+        "digest": "sha256:341f5cbf24699fa0b27ec88965ad25f862ea09e15d35a543fd6ffdff1d2aa00d"
+      },
+      {
+        "name": "starship-arm-unknown-linux-musleabihf.tar.gz",
+        "size": 4957085,
+        "browser_download_url": "https://github.com/starship/starship/releases/download/v1.27.0/starship-arm-unknown-linux-musleabihf.tar.gz",
+        "digest": "sha256:33531a104304e8f36e1f78657039246ebb730e4c53a7ccdf8c94c0e3630bf6b4"
+      },
+      {
+        "name": "starship-i686-pc-windows-msvc.msi",
+        "size": 5550080,
+        "browser_download_url": "https://github.com/starship/starship/releases/download/v1.27.0/starship-i686-pc-windows-msvc.msi",
+        "digest": "sha256:6081dcd47e46c1397fb9927f53f9f2bcab1d8b7891e398872ef20f0adb03bc30"
+      },
+      {
+        "name": "starship-i686-pc-windows-msvc.zip",
+        "size": 4367294,
+        "browser_download_url": "https://github.com/starship/starship/releases/download/v1.27.0/starship-i686-pc-windows-msvc.zip",
+        "digest": "sha256:66ce8c8d2002684179769c944c30c264f60e4c88e771753b7cb38a6f748b2ffe"
+      },
+      {
+        "name": "starship-i686-unknown-linux-musl.tar.gz",
+        "size": 5062569,
+        "browser_download_url": "https://github.com/starship/starship/releases/download/v1.27.0/starship-i686-unknown-linux-musl.tar.gz",
+        "digest": "sha256:3ccbd2aca8e8189f13272e71d51549001694bceb82191b28d009efe1ef597f7f"
+      },
+      {
+        "name": "starship-riscv64gc-unknown-linux-musl.tar.gz",
+        "size": 5079891,
+        "browser_download_url": "https://github.com/starship/starship/releases/download/v1.27.0/starship-riscv64gc-unknown-linux-musl.tar.gz",
+        "digest": "sha256:4cbf07f29f7610f4d031263bca5f5552b8bcbcf69c43e2ad225960b8082a0adb"
+      },
+      {
+        "name": "starship-x86_64-apple-darwin.tar.gz",
+        "size": 4393052,
+        "browser_download_url": "https://github.com/starship/starship/releases/download/v1.27.0/starship-x86_64-apple-darwin.tar.gz",
+        "digest": "sha256:344e4d38787e0aa86dd522ae5462e6fb6da1227691f81a79ffed480a4563ccb3"
+      },
+      {
+        "name": "starship-x86_64-pc-windows-msvc.msi",
+        "size": 6025216,
+        "browser_download_url": "https://github.com/starship/starship/releases/download/v1.27.0/starship-x86_64-pc-windows-msvc.msi",
+        "digest": "sha256:b3b2e17e318d2d96f62d2213830d42587b6c4d35933a8e506b6e83a52151937e"
+      },
+      {
+        "name": "starship-x86_64-pc-windows-msvc.zip",
+        "size": 4818893,
+        "browser_download_url": "https://github.com/starship/starship/releases/download/v1.27.0/starship-x86_64-pc-windows-msvc.zip",
+        "digest": "sha256:7764f861805376af2812dd78c84fadc16b714cf3f346baed9b597bfda8484403"
+      },
+      {
+        "name": "starship-x86_64-unknown-linux-gnu.tar.gz",
+        "size": 5140037,
+        "browser_download_url": "https://github.com/starship/starship/releases/download/v1.27.0/starship-x86_64-unknown-linux-gnu.tar.gz",
+        "digest": "sha256:3b94758850901717eb36aa1b53f8492c1322506ec6d41273bc6151e79ed8e4a1"
+      },
+      {
+        "name": "starship-x86_64-unknown-linux-musl.tar.gz",
+        "size": 5215016,
+        "browser_download_url": "https://github.com/starship/starship/releases/download/v1.27.0/starship-x86_64-unknown-linux-musl.tar.gz",
+        "digest": "sha256:10c8eb4cb3b761d9bf59ea828444c2dab36c900b7d69a69e08814b286969df89"
+      }
+    ],
+    "kind": "cli",
+    "category": "Terminal • Rust",
+    "tags": "prompt,terminal,powershell,rust,personalizacao",
+    "summary": "Prompt rápido e personalizável para PowerShell, CMD e outros terminais; feito em Rust.",
+    "trust_score": 100,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório consolidado (7 anos de histórico)",
+      "🟢 Projeto ativo (atualizado há 0 dias)",
+      "🟢 60439 estrelas no repositório",
+      "🟢 696 contribuidores públicos",
+      "🟢 Código aberto com licença ISC",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
     ],
     "attestation": "ausente"
@@ -1348,6 +1744,172 @@
       "🟡 Release antiga sem hash SHA-256 pré-calculado pelo GitHub"
     ],
     "attestation": ""
+  },
+  {
+    "full_name": "sharkdp/fd",
+    "description": "A simple, fast and user-friendly alternative to 'find'",
+    "url": "https://github.com/sharkdp/fd",
+    "stars": 44858,
+    "license": "Apache-2.0",
+    "topics": "cli,command-line,filesystem,hacktoberfest,regex,rust,search,terminal,tool",
+    "language": "Rust",
+    "created_at": "2017-05-09T21:27:10Z",
+    "pushed_at": "2026-10-24T19:06:58Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v10.5.0",
+    "released_at": "2026-08-26T07:59:09Z",
+    "platforms": "linux,windows",
+    "assets": [
+      {
+        "name": "fd-musl_10.5.0_amd64.deb",
+        "size": 1288170,
+        "browser_download_url": "https://github.com/sharkdp/fd/releases/download/v10.5.0/fd-musl_10.5.0_amd64.deb",
+        "digest": "sha256:39c8136e643131692992fbf8288fe2b7d00ce4f5f03d79cf87015e1c845ce0b6"
+      },
+      {
+        "name": "fd-musl_10.5.0_arm64.deb",
+        "size": 1165488,
+        "browser_download_url": "https://github.com/sharkdp/fd/releases/download/v10.5.0/fd-musl_10.5.0_arm64.deb",
+        "digest": "sha256:09dc957348eb15fe6e493cd0e5951e94925a1db92e39a772094578eb694e651c"
+      },
+      {
+        "name": "fd-musl_10.5.0_armhf.deb",
+        "size": 1211906,
+        "browser_download_url": "https://github.com/sharkdp/fd/releases/download/v10.5.0/fd-musl_10.5.0_armhf.deb",
+        "digest": "sha256:ed1a785f8831f4c6b807111b1d21a1b2a4edb7499deb53928cb2dc99d0d0cf48"
+      },
+      {
+        "name": "fd-musl_10.5.0_i686.deb",
+        "size": 1257504,
+        "browser_download_url": "https://github.com/sharkdp/fd/releases/download/v10.5.0/fd-musl_10.5.0_i686.deb",
+        "digest": "sha256:1c60137aa59e69b1857f11474f808bd2bc6081dd6197535dbea680730dbc1438"
+      },
+      {
+        "name": "fd-v10.5.0-aarch64-apple-darwin.tar.gz",
+        "size": 1334374,
+        "browser_download_url": "https://github.com/sharkdp/fd/releases/download/v10.5.0/fd-v10.5.0-aarch64-apple-darwin.tar.gz",
+        "digest": "sha256:b67e1836c468e42e411984b56e52fa7abec08c2bd22c867398e7cc134aac5e12"
+      },
+      {
+        "name": "fd-v10.5.0-aarch64-pc-windows-msvc.zip",
+        "size": 1370512,
+        "browser_download_url": "https://github.com/sharkdp/fd/releases/download/v10.5.0/fd-v10.5.0-aarch64-pc-windows-msvc.zip",
+        "digest": "sha256:a2bcddcfd259b05357a77bbc6cd671fdb30f63fd266a0e748305890a8c5ceaa6"
+      },
+      {
+        "name": "fd-v10.5.0-aarch64-unknown-linux-gnu.tar.gz",
+        "size": 1392634,
+        "browser_download_url": "https://github.com/sharkdp/fd/releases/download/v10.5.0/fd-v10.5.0-aarch64-unknown-linux-gnu.tar.gz",
+        "digest": "sha256:c0ee43802e3313a317c5af2f4eabd6ba13eeedd595af9775f05e18a13ac4f52c"
+      },
+      {
+        "name": "fd-v10.5.0-aarch64-unknown-linux-musl.tar.gz",
+        "size": 1429078,
+        "browser_download_url": "https://github.com/sharkdp/fd/releases/download/v10.5.0/fd-v10.5.0-aarch64-unknown-linux-musl.tar.gz",
+        "digest": "sha256:d76c4317f7d5dba69f8a2a15856c90c777e7f0dd4e85f0de8c76de6992c374d4"
+      },
+      {
+        "name": "fd-v10.5.0-arm-unknown-linux-gnueabihf.tar.gz",
+        "size": 1429471,
+        "browser_download_url": "https://github.com/sharkdp/fd/releases/download/v10.5.0/fd-v10.5.0-arm-unknown-linux-gnueabihf.tar.gz",
+        "digest": "sha256:80581dc97f25ae091de3b9eb2803c10cf8b90536c685cd2b631a207b06ea123a"
+      },
+      {
+        "name": "fd-v10.5.0-arm-unknown-linux-musleabihf.tar.gz",
+        "size": 1458985,
+        "browser_download_url": "https://github.com/sharkdp/fd/releases/download/v10.5.0/fd-v10.5.0-arm-unknown-linux-musleabihf.tar.gz",
+        "digest": "sha256:f27978c177dffb6e5bb58487494a7e09b86a8c5d447d5d7265039af6b205faff"
+      },
+      {
+        "name": "fd-v10.5.0-i686-pc-windows-msvc.zip",
+        "size": 1378468,
+        "browser_download_url": "https://github.com/sharkdp/fd/releases/download/v10.5.0/fd-v10.5.0-i686-pc-windows-msvc.zip",
+        "digest": "sha256:6811ce3a8de536a539aab3d58820d8491e616192e801e4958ac51236efad9769"
+      },
+      {
+        "name": "fd-v10.5.0-i686-unknown-linux-gnu.tar.gz",
+        "size": 1506226,
+        "browser_download_url": "https://github.com/sharkdp/fd/releases/download/v10.5.0/fd-v10.5.0-i686-unknown-linux-gnu.tar.gz",
+        "digest": "sha256:36956b07f1a04f565edec811e1368ba07a295249b3d190bc8735eeb890403906"
+      },
+      {
+        "name": "fd-v10.5.0-i686-unknown-linux-musl.tar.gz",
+        "size": 1505416,
+        "browser_download_url": "https://github.com/sharkdp/fd/releases/download/v10.5.0/fd-v10.5.0-i686-unknown-linux-musl.tar.gz",
+        "digest": "sha256:39388db498f1a442c9fce45d722334ec3594fd1354b74d44c434decb20739ffa"
+      },
+      {
+        "name": "fd-v10.5.0-x86_64-apple-darwin.tar.gz",
+        "size": 1426858,
+        "browser_download_url": "https://github.com/sharkdp/fd/releases/download/v10.5.0/fd-v10.5.0-x86_64-apple-darwin.tar.gz",
+        "digest": "sha256:7e31028c62c6955877735d0406807aa484c2a5e6f86235a59e26c29c301da590"
+      },
+      {
+        "name": "fd-v10.5.0-x86_64-pc-windows-gnu.zip",
+        "size": 1475808,
+        "browser_download_url": "https://github.com/sharkdp/fd/releases/download/v10.5.0/fd-v10.5.0-x86_64-pc-windows-gnu.zip",
+        "digest": "sha256:1720ed5b2f5b09870ea9580eb0653d87972e8e7039d5d2f39ea2f54fbfda9f42"
+      },
+      {
+        "name": "fd-v10.5.0-x86_64-pc-windows-msvc.zip",
+        "size": 1535063,
+        "browser_download_url": "https://github.com/sharkdp/fd/releases/download/v10.5.0/fd-v10.5.0-x86_64-pc-windows-msvc.zip",
+        "digest": "sha256:a227701b8551c35a9931d9f6da75503cf86d88e182d71fb849a70864c5d57cd7"
+      },
+      {
+        "name": "fd-v10.5.0-x86_64-unknown-linux-gnu.tar.gz",
+        "size": 1513869,
+        "browser_download_url": "https://github.com/sharkdp/fd/releases/download/v10.5.0/fd-v10.5.0-x86_64-unknown-linux-gnu.tar.gz",
+        "digest": "sha256:a1259cd129636efbc3fef123525c1b49e88fe5088c012630983c310e52fdfa95"
+      },
+      {
+        "name": "fd-v10.5.0-x86_64-unknown-linux-musl.tar.gz",
+        "size": 1573549,
+        "browser_download_url": "https://github.com/sharkdp/fd/releases/download/v10.5.0/fd-v10.5.0-x86_64-unknown-linux-musl.tar.gz",
+        "digest": "sha256:761c72dc8e120d85b22292063be8a796e2eeb20eb3e4f38b8fa2343ccf3514a7"
+      },
+      {
+        "name": "fd_10.5.0_amd64.deb",
+        "size": 1235940,
+        "browser_download_url": "https://github.com/sharkdp/fd/releases/download/v10.5.0/fd_10.5.0_amd64.deb",
+        "digest": "sha256:1fca9f8fb221f26fe37b425db4935dc8180099bdecfd8e031538bfc9396e95f8"
+      },
+      {
+        "name": "fd_10.5.0_arm64.deb",
+        "size": 1128796,
+        "browser_download_url": "https://github.com/sharkdp/fd/releases/download/v10.5.0/fd_10.5.0_arm64.deb",
+        "digest": "sha256:a3128d8e206dd646a27f4637ca081f311df2d6f21cd87bbead7fc92cc0952192"
+      },
+      {
+        "name": "fd_10.5.0_armhf.deb",
+        "size": 1181998,
+        "browser_download_url": "https://github.com/sharkdp/fd/releases/download/v10.5.0/fd_10.5.0_armhf.deb",
+        "digest": "sha256:2c47d127628363ba63f985d8ab84222ae6d2c04c53bdf01a18bc0cfd0525a302"
+      },
+      {
+        "name": "fd_10.5.0_i686.deb",
+        "size": 1254656,
+        "browser_download_url": "https://github.com/sharkdp/fd/releases/download/v10.5.0/fd_10.5.0_i686.deb",
+        "digest": "sha256:442836307a840051ffc7b6b709c9810464593ed07f965e7bf4c5cd5d6a1ad8b0"
+      }
+    ],
+    "kind": "cli",
+    "category": "Terminal • Rust",
+    "tags": "busca,arquivos,terminal,rust,find",
+    "summary": "Encontra arquivos por nome de forma simples e rápida (alternativa ao find); feito em Rust.",
+    "trust_score": 100,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório consolidado (9 anos de histórico)",
+      "🟢 Projeto ativo (atualizado há 0 dias)",
+      "🟢 44858 estrelas no repositório",
+      "🟢 248 contribuidores públicos",
+      "🟢 Código aberto com licença Apache-2.0",
+      "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
+    ],
+    "attestation": "presente"
   },
   {
     "full_name": "LizardByte/Sunshine",
@@ -1685,6 +2247,142 @@
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
     ],
     "attestation": ""
+  },
+  {
+    "full_name": "ajeetdsouza/zoxide",
+    "description": "A smarter cd command. Supports all major shells.",
+    "url": "https://github.com/ajeetdsouza/zoxide",
+    "stars": 40277,
+    "license": "MIT",
+    "topics": "autojump,bash,cli,command-line,command-line-tool,elvish,fasd,fish,fish-shell,fzf,hacktoberfest,jump,nushell,powershell,rust,shell,xonsh,xontrib,z,zsh",
+    "language": "Rust",
+    "created_at": "2020-03-05T13:11:40Z",
+    "pushed_at": "2026-10-24T01:27:58Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v0.10.0",
+    "released_at": "2026-07-04T12:41:16Z",
+    "platforms": "linux,windows",
+    "assets": [
+      {
+        "name": "zoxide-0.10.0-aarch64-apple-darwin.tar.gz",
+        "size": 482696,
+        "browser_download_url": "https://github.com/ajeetdsouza/zoxide/releases/download/v0.10.0/zoxide-0.10.0-aarch64-apple-darwin.tar.gz",
+        "digest": "sha256:b55ae6f2f5f23d0a6ccb3bd4eeb2af9c7e0a6556e5255c82100e40305129bbb0"
+      },
+      {
+        "name": "zoxide-0.10.0-aarch64-linux-android.tar.gz",
+        "size": 500365,
+        "browser_download_url": "https://github.com/ajeetdsouza/zoxide/releases/download/v0.10.0/zoxide-0.10.0-aarch64-linux-android.tar.gz",
+        "digest": "sha256:c64f7ae582fcff4b981ba9be7578e4a28187f6ef1a9fcfd74d6fe7af47c68382"
+      },
+      {
+        "name": "zoxide-0.10.0-aarch64-pc-windows-msvc.zip",
+        "size": 508951,
+        "browser_download_url": "https://github.com/ajeetdsouza/zoxide/releases/download/v0.10.0/zoxide-0.10.0-aarch64-pc-windows-msvc.zip",
+        "digest": "sha256:b0e6eb62b11ebf168d5c65c5d23c635e81848cc4a88ae6b9caee64cf1e35d12b"
+      },
+      {
+        "name": "zoxide-0.10.0-aarch64-unknown-linux-musl.tar.gz",
+        "size": 551084,
+        "browser_download_url": "https://github.com/ajeetdsouza/zoxide/releases/download/v0.10.0/zoxide-0.10.0-aarch64-unknown-linux-musl.tar.gz",
+        "digest": "sha256:f1f16c5d6298d63dee467eedea1cdcd8490e43e493bea43acd416dc9033ef641"
+      },
+      {
+        "name": "zoxide-0.10.0-arm-unknown-linux-musleabihf.tar.gz",
+        "size": 564372,
+        "browser_download_url": "https://github.com/ajeetdsouza/zoxide/releases/download/v0.10.0/zoxide-0.10.0-arm-unknown-linux-musleabihf.tar.gz",
+        "digest": "sha256:040e036e0a96c8e8c53ea893fa2633545617d30c26c66def46487397f0834568"
+      },
+      {
+        "name": "zoxide-0.10.0-armv7-linux-androideabi.tar.gz",
+        "size": 464159,
+        "browser_download_url": "https://github.com/ajeetdsouza/zoxide/releases/download/v0.10.0/zoxide-0.10.0-armv7-linux-androideabi.tar.gz",
+        "digest": "sha256:4b42c9531e1d85f99beb6cc8c6a332369baeec57002884acfb767a386ab0cb5f"
+      },
+      {
+        "name": "zoxide-0.10.0-armv7-unknown-linux-musleabihf.tar.gz",
+        "size": 552375,
+        "browser_download_url": "https://github.com/ajeetdsouza/zoxide/releases/download/v0.10.0/zoxide-0.10.0-armv7-unknown-linux-musleabihf.tar.gz",
+        "digest": "sha256:0b3035b2f5ee25ea8681948b6bfd8308bdf596d2b720b26e32e7d35cedfa08f6"
+      },
+      {
+        "name": "zoxide-0.10.0-i686-unknown-linux-musl.tar.gz",
+        "size": 596495,
+        "browser_download_url": "https://github.com/ajeetdsouza/zoxide/releases/download/v0.10.0/zoxide-0.10.0-i686-unknown-linux-musl.tar.gz",
+        "digest": "sha256:adda452633e2f0610db516c49880cb8e1370cfd8b49cbc9dc75c7c5fe0857c19"
+      },
+      {
+        "name": "zoxide-0.10.0-riscv64gc-unknown-linux-musl.tar.gz",
+        "size": 519735,
+        "browser_download_url": "https://github.com/ajeetdsouza/zoxide/releases/download/v0.10.0/zoxide-0.10.0-riscv64gc-unknown-linux-musl.tar.gz",
+        "digest": "sha256:fd297a392f0266850ea6fb0a4d0b0c041d568596cfd32f541b3b6444c296c0df"
+      },
+      {
+        "name": "zoxide-0.10.0-x86_64-apple-darwin.tar.gz",
+        "size": 517384,
+        "browser_download_url": "https://github.com/ajeetdsouza/zoxide/releases/download/v0.10.0/zoxide-0.10.0-x86_64-apple-darwin.tar.gz",
+        "digest": "sha256:18ab7ae2633ad6e2ab79a4e665cbba1e95b7c872d44523326efb793202451dad"
+      },
+      {
+        "name": "zoxide-0.10.0-x86_64-pc-windows-msvc.zip",
+        "size": 545663,
+        "browser_download_url": "https://github.com/ajeetdsouza/zoxide/releases/download/v0.10.0/zoxide-0.10.0-x86_64-pc-windows-msvc.zip",
+        "digest": "sha256:f465ae548f8754c8e7edbc60b45fbf58c92bfe123db83d790252d6810fa5daf1"
+      },
+      {
+        "name": "zoxide-0.10.0-x86_64-unknown-linux-musl.tar.gz",
+        "size": 591384,
+        "browser_download_url": "https://github.com/ajeetdsouza/zoxide/releases/download/v0.10.0/zoxide-0.10.0-x86_64-unknown-linux-musl.tar.gz",
+        "digest": "sha256:2d93385b99f3e82cf2701609a1bffcad863fbeb75aa3fe7eb6be4d29be68b1ae"
+      },
+      {
+        "name": "zoxide_0.10.0-1_amd64.deb",
+        "size": 481904,
+        "browser_download_url": "https://github.com/ajeetdsouza/zoxide/releases/download/v0.10.0/zoxide_0.10.0-1_amd64.deb",
+        "digest": "sha256:975880c327a8bf4e31e8596313243a4ae342f16afa9bb7d78a6e641bd8cc9dba"
+      },
+      {
+        "name": "zoxide_0.10.0-1_arm64.deb",
+        "size": 420708,
+        "browser_download_url": "https://github.com/ajeetdsouza/zoxide/releases/download/v0.10.0/zoxide_0.10.0-1_arm64.deb",
+        "digest": "sha256:f4799bcf1a4f43c0197b75fd4876fcef79d502280e236e327cb154a6fedf1e40"
+      },
+      {
+        "name": "zoxide_0.10.0-1_armhf.deb",
+        "size": 423784,
+        "browser_download_url": "https://github.com/ajeetdsouza/zoxide/releases/download/v0.10.0/zoxide_0.10.0-1_armhf.deb",
+        "digest": "sha256:ef7895cf10ba89f71953d058c386e5b313fa0f439dc351b331640129d7a81ae8"
+      },
+      {
+        "name": "zoxide_0.10.0-1_i386.deb",
+        "size": 495792,
+        "browser_download_url": "https://github.com/ajeetdsouza/zoxide/releases/download/v0.10.0/zoxide_0.10.0-1_i386.deb",
+        "digest": "sha256:e589703cd0cc9ae3ee7d9aa9c1bd08421af4509349d6fd898f671e62f50b0e42"
+      },
+      {
+        "name": "zoxide_0.10.0-1_riscv64.deb",
+        "size": 426360,
+        "browser_download_url": "https://github.com/ajeetdsouza/zoxide/releases/download/v0.10.0/zoxide_0.10.0-1_riscv64.deb",
+        "digest": "sha256:9e821e421da295579529395379f7f99c3494f0e6514c2ed940409184ac6f841a"
+      }
+    ],
+    "kind": "cli",
+    "category": "Terminal • Rust",
+    "tags": "navegacao,cd,terminal,rust,produtividade",
+    "summary": "Comando cd mais esperto: lembra as pastas que você usa e pula para elas com poucas letras; feito em Rust.",
+    "trust_score": 100,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório consolidado (6 anos de histórico)",
+      "🟢 Projeto ativo (atualizado há 1 dias)",
+      "🟢 40277 estrelas no repositório",
+      "🟢 117 contribuidores públicos",
+      "🟢 Código aberto com licença MIT",
+      "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
+    ],
+    "attestation": "ausente"
   },
   {
     "full_name": "lapce/lapce",
@@ -2419,6 +3117,166 @@
       "🟡 Release antiga sem hash SHA-256 pré-calculado pelo GitHub"
     ],
     "attestation": ""
+  },
+  {
+    "full_name": "sharkdp/hyperfine",
+    "description": "A command-line benchmarking tool",
+    "url": "https://github.com/sharkdp/hyperfine",
+    "stars": 29148,
+    "license": "Apache-2.0",
+    "topics": "benchmark,cli,command-line,rust,terminal,tool",
+    "language": "Rust",
+    "created_at": "2018-01-13T15:49:54Z",
+    "pushed_at": "2026-10-12T08:33:48Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v2.0.0",
+    "released_at": "2026-10-07T21:13:36Z",
+    "platforms": "linux,windows",
+    "assets": [
+      {
+        "name": "hyperfine-musl_2.0.0_amd64.deb",
+        "size": 629294,
+        "browser_download_url": "https://github.com/sharkdp/hyperfine/releases/download/v2.0.0/hyperfine-musl_2.0.0_amd64.deb",
+        "digest": "sha256:4af87468b6e6fba108388ed5a87dcee9915d448eb5c9088358dd85efd8adc85a"
+      },
+      {
+        "name": "hyperfine-musl_2.0.0_arm64.deb",
+        "size": 581002,
+        "browser_download_url": "https://github.com/sharkdp/hyperfine/releases/download/v2.0.0/hyperfine-musl_2.0.0_arm64.deb",
+        "digest": "sha256:7c6b3f90312482c9c09ebbf9d2947eae2ea4e3d951943b2fa9e0176d98fddbb7"
+      },
+      {
+        "name": "hyperfine-musl_2.0.0_armhf.deb",
+        "size": 601566,
+        "browser_download_url": "https://github.com/sharkdp/hyperfine/releases/download/v2.0.0/hyperfine-musl_2.0.0_armhf.deb",
+        "digest": "sha256:d2e22619a38a2d4a36003358ea4d4e9aad7cc861ceedb2605abd381eb5c19196"
+      },
+      {
+        "name": "hyperfine-musl_2.0.0_i686.deb",
+        "size": 646102,
+        "browser_download_url": "https://github.com/sharkdp/hyperfine/releases/download/v2.0.0/hyperfine-musl_2.0.0_i686.deb",
+        "digest": "sha256:35856b6f787a41d7f457db7975e608e679f808e84a65a373f00a8b62f1fc136d"
+      },
+      {
+        "name": "hyperfine-v2.0.0-aarch64-apple-darwin.tar.gz",
+        "size": 609501,
+        "browser_download_url": "https://github.com/sharkdp/hyperfine/releases/download/v2.0.0/hyperfine-v2.0.0-aarch64-apple-darwin.tar.gz",
+        "digest": "sha256:590b839cfea386b384ce0b42d16daf2910277cf30950656194bb3a5f20dea81e"
+      },
+      {
+        "name": "hyperfine-v2.0.0-aarch64-pc-windows-msvc.zip",
+        "size": 587139,
+        "browser_download_url": "https://github.com/sharkdp/hyperfine/releases/download/v2.0.0/hyperfine-v2.0.0-aarch64-pc-windows-msvc.zip",
+        "digest": "sha256:c2d2568368d32d0f2a000e604e10cd9fa8d98e2d04cb78f2aa7ab1a8c11b8118"
+      },
+      {
+        "name": "hyperfine-v2.0.0-aarch64-unknown-linux-gnu.tar.gz",
+        "size": 629185,
+        "browser_download_url": "https://github.com/sharkdp/hyperfine/releases/download/v2.0.0/hyperfine-v2.0.0-aarch64-unknown-linux-gnu.tar.gz",
+        "digest": "sha256:f8244d1e17f8da23ee6b3ae2cdc04a6a185a450f6b74e09bff12e498038fcbc9"
+      },
+      {
+        "name": "hyperfine-v2.0.0-aarch64-unknown-linux-musl.tar.gz",
+        "size": 679032,
+        "browser_download_url": "https://github.com/sharkdp/hyperfine/releases/download/v2.0.0/hyperfine-v2.0.0-aarch64-unknown-linux-musl.tar.gz",
+        "digest": "sha256:f0591c2cb8f66f2d2624d23979cf96dc99a67cb935f9925c82b9a4e3ffe5b2e1"
+      },
+      {
+        "name": "hyperfine-v2.0.0-arm-unknown-linux-gnueabihf.tar.gz",
+        "size": 663375,
+        "browser_download_url": "https://github.com/sharkdp/hyperfine/releases/download/v2.0.0/hyperfine-v2.0.0-arm-unknown-linux-gnueabihf.tar.gz",
+        "digest": "sha256:96f4508441f8d0728ac185889467d2799d201d5687acc4ea3194a2b9efafb22a"
+      },
+      {
+        "name": "hyperfine-v2.0.0-arm-unknown-linux-musleabihf.tar.gz",
+        "size": 698402,
+        "browser_download_url": "https://github.com/sharkdp/hyperfine/releases/download/v2.0.0/hyperfine-v2.0.0-arm-unknown-linux-musleabihf.tar.gz",
+        "digest": "sha256:90678887c054c3f5b51a44f5e6f1448e28dc96f62f360ca5981e86352129a0fa"
+      },
+      {
+        "name": "hyperfine-v2.0.0-i686-pc-windows-msvc.zip",
+        "size": 589055,
+        "browser_download_url": "https://github.com/sharkdp/hyperfine/releases/download/v2.0.0/hyperfine-v2.0.0-i686-pc-windows-msvc.zip",
+        "digest": "sha256:f52881b288244e40b11a92c9e7e0d88f7aa156c2c9b2032aa25c32debefb0463"
+      },
+      {
+        "name": "hyperfine-v2.0.0-i686-unknown-linux-gnu.tar.gz",
+        "size": 711983,
+        "browser_download_url": "https://github.com/sharkdp/hyperfine/releases/download/v2.0.0/hyperfine-v2.0.0-i686-unknown-linux-gnu.tar.gz",
+        "digest": "sha256:5b455489e8d2ad28c5865d7566c4e80dea8d8ef9b134eb716dc650856e4c332d"
+      },
+      {
+        "name": "hyperfine-v2.0.0-i686-unknown-linux-musl.tar.gz",
+        "size": 742363,
+        "browser_download_url": "https://github.com/sharkdp/hyperfine/releases/download/v2.0.0/hyperfine-v2.0.0-i686-unknown-linux-musl.tar.gz",
+        "digest": "sha256:9c5dbdf6385aea4cceb542f61cc6ce5006f81ea71f4e9757cdf91caa821654bf"
+      },
+      {
+        "name": "hyperfine-v2.0.0-x86_64-apple-darwin.tar.gz",
+        "size": 651858,
+        "browser_download_url": "https://github.com/sharkdp/hyperfine/releases/download/v2.0.0/hyperfine-v2.0.0-x86_64-apple-darwin.tar.gz",
+        "digest": "sha256:8afe204926afefa406ad320cef0672b739e5f676c623fbd6d43d779bacd684e3"
+      },
+      {
+        "name": "hyperfine-v2.0.0-x86_64-pc-windows-msvc.zip",
+        "size": 632670,
+        "browser_download_url": "https://github.com/sharkdp/hyperfine/releases/download/v2.0.0/hyperfine-v2.0.0-x86_64-pc-windows-msvc.zip",
+        "digest": "sha256:3dec51acee1060908e67948838d6bc0a7aacde0774acebfa4afb220dcf0bc078"
+      },
+      {
+        "name": "hyperfine-v2.0.0-x86_64-unknown-linux-gnu.tar.gz",
+        "size": 683634,
+        "browser_download_url": "https://github.com/sharkdp/hyperfine/releases/download/v2.0.0/hyperfine-v2.0.0-x86_64-unknown-linux-gnu.tar.gz",
+        "digest": "sha256:ae2beda2ac99c098427e4f755244552daf20e514422889cca6d44421e2d93c87"
+      },
+      {
+        "name": "hyperfine-v2.0.0-x86_64-unknown-linux-musl.tar.gz",
+        "size": 737116,
+        "browser_download_url": "https://github.com/sharkdp/hyperfine/releases/download/v2.0.0/hyperfine-v2.0.0-x86_64-unknown-linux-musl.tar.gz",
+        "digest": "sha256:38e59087bd65520930a13cf513d8a493b7043741e8ad62349a8a9929eb61bc5c"
+      },
+      {
+        "name": "hyperfine_2.0.0_amd64.deb",
+        "size": 581534,
+        "browser_download_url": "https://github.com/sharkdp/hyperfine/releases/download/v2.0.0/hyperfine_2.0.0_amd64.deb",
+        "digest": "sha256:880ba127c51c7b9debde2d830fe27dedbfc92cf2885edd44f7dfbe2152f72afe"
+      },
+      {
+        "name": "hyperfine_2.0.0_arm64.deb",
+        "size": 534764,
+        "browser_download_url": "https://github.com/sharkdp/hyperfine/releases/download/v2.0.0/hyperfine_2.0.0_arm64.deb",
+        "digest": "sha256:6f42715421f08f21b125628dab869e727e4f361f431129c73c5e16f01a30fc23"
+      },
+      {
+        "name": "hyperfine_2.0.0_armhf.deb",
+        "size": 568962,
+        "browser_download_url": "https://github.com/sharkdp/hyperfine/releases/download/v2.0.0/hyperfine_2.0.0_armhf.deb",
+        "digest": "sha256:4fb9f0693f3f45609ac7fc6b73ac8a10d8b0bc483bfa5af26f21985a86863caf"
+      },
+      {
+        "name": "hyperfine_2.0.0_i686.deb",
+        "size": 618970,
+        "browser_download_url": "https://github.com/sharkdp/hyperfine/releases/download/v2.0.0/hyperfine_2.0.0_i686.deb",
+        "digest": "sha256:5eb09f67e9177ae582d00767a74d49007a1b92187e6c485cc1d1f09a4660bf77"
+      }
+    ],
+    "kind": "cli",
+    "category": "Terminal • Rust",
+    "tags": "benchmark,desempenho,terminal,rust",
+    "summary": "Mede o tempo de execução de comandos com estatísticas e comparação entre eles; feito em Rust.",
+    "trust_score": 100,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório consolidado (8 anos de histórico)",
+      "🟢 Projeto ativo (atualizado há 12 dias)",
+      "🟢 29148 estrelas no repositório",
+      "🟢 135 contribuidores públicos",
+      "🟢 Código aberto com licença Apache-2.0",
+      "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
+    ],
+    "attestation": "ausente"
   },
   {
     "full_name": "4ian/GDevelop",

@@ -1,10 +1,21 @@
 mod db;
 mod downloader;
+mod attestation;
+mod catalog_sign;
+mod crates_io;
+mod forge;
+mod i18n;
 mod github;
 mod gui;
 mod installer;
+mod launchers;
+mod sandbox;
+mod saves;
 mod translator;
+mod translator_ai;
 mod verify;
+mod windows_apps;
+mod winget;
 
 use anyhow::{bail, Context, Result};
 use clap::{Parser, Subcommand};
@@ -94,6 +105,32 @@ enum Cmd {
     },
     /// Importa uma biblioteca exportada: os apps entram na lista "Para reinstalar"
     LibraryImport { file: PathBuf },
+    /// Gera o par de chaves que assina o catálogo online (a chave privada fica só com quem publica)
+    CatalogKeygen {
+        /// Arquivo onde gravar a chave privada (não pode existir; mantenha fora do repositório)
+        #[arg(long)]
+        out: PathBuf,
+    },
+    /// Assina o catalog.json atual (gera catalog.json.sig) com versão e validade
+    CatalogSign {
+        /// Arquivo da chave privada gerada por catalog-keygen
+        #[arg(long)]
+        key: PathBuf,
+        /// Versão do catálogo (sempre maior que a anterior)
+        #[arg(long)]
+        versao: u64,
+        /// Dias de validade da assinatura
+        #[arg(long, default_value_t = 14)]
+        dias: i64,
+    },
+    /// Baixa o catálogo online assinado, confere a assinatura e importa
+    CatalogUpdate {
+        /// URL (https) ou caminho do catalog.json publicado; sem ela usa a URL salva nas configurações
+        #[arg(long)]
+        url: Option<String>,
+    },
+    /// Atualiza versões e arquivos de todos os apps do catálogo nas forjas (como o checkver do Scoop)
+    CatalogRefresh,
     /// Verifica se há atualizações no GitHub para os aplicativos instalados no seu PC
     CheckUpdates,
     /// Traduz um arquivo de código C ou C++ (.c, .cpp, .h, .hpp) para Rust (.rs)
@@ -109,7 +146,17 @@ enum Cmd {
         /// Valida o código Rust gerado usando o compilador `rustc`
         #[arg(long)]
         check: bool,
+        /// Traduz com IA (API do Claude, chave em ANTHROPIC_API_KEY ou nas configurações) e corrige pelos erros do rustc
+        #[arg(long)]
+        ai: bool,
+        /// Tentativas de correção com IA
+        #[arg(long, default_value_t = 4)]
+        rounds: usize,
     },
+    /// Instala uma ferramenta de terminal em Rust pelo nome do crate (binário pronto da release, sem compilar)
+    Crate { name: String },
+    /// Lista os jogos instalados pela Steam, Epic Games e GOG
+    Games,
 }
 
 const DEFAULT_QUERIES: &[&str] = &[
@@ -260,6 +307,46 @@ async fn main() -> Result<()> {
             println!("✔ Biblioteca com {n} app(s) exportada para {}", path.display());
             Ok(())
         }
+        Cmd::CatalogKeygen { out } => {
+            if out.exists() {
+                bail!("{} já existe; não sobrescrevo chaves.", out.display());
+            }
+            let (secret, public) = catalog_sign::generate_keypair();
+            std::fs::write(&out, &secret)
+                .with_context(|| format!("falha ao gravar {}", out.display()))?;
+            println!("✔ Chave privada gravada em {} (guarde fora do repositório e do vault).", out.display());
+            println!("Chave pública (coloque em catalog_sign::TRUSTED_KEYS ou em settings.catalog_pubkey):\n{public}");
+            Ok(())
+        }
+        Cmd::CatalogSign { key, versao, dias } => {
+            let secret = std::fs::read_to_string(&key)
+                .with_context(|| format!("falha ao ler {}", key.display()))?;
+            let bytes = std::fs::read(&catalog_path)
+                .with_context(|| format!("falha ao ler {}", catalog_path.display()))?;
+            let sig = catalog_sign::sign_catalog(&bytes, &secret, versao, dias)?;
+            let sig_path = PathBuf::from(format!("{}.sig", catalog_path.display()));
+            std::fs::write(&sig_path, serde_json::to_string_pretty(&sig)?)?;
+            println!(
+                "✔ {} assinado (versão {versao}, vence em {}): {}",
+                catalog_path.display(),
+                sig.expira_em,
+                sig_path.display()
+            );
+            Ok(())
+        }
+        Cmd::CatalogUpdate { url } => {
+            let location = url
+                .or_else(|| db::get_setting(&conn, catalog_sign::SETTING_URL))
+                .ok_or_else(|| anyhow::anyhow!("Informe --url ou salve a URL do catálogo nas configurações."))?;
+            let (bytes, sig) = catalog_sign::fetch_signed(&location).await?;
+            let n = catalog_sign::apply_signed(&conn, &catalog_path, &bytes, &sig)?;
+            if url_is_saved_elsewhere(&conn, &location) {
+                db::set_setting(&conn, catalog_sign::SETTING_URL, &location)?;
+            }
+            println!("✔ Catálogo versão {} conferido e importado ({n} itens).", sig.versao);
+            Ok(())
+        }
+        Cmd::CatalogRefresh => catalog_refresh_cmd(&conn, &catalog_path).await,
         Cmd::LibraryImport { file } => {
             let rep = db::import_library(&conn, &file)?;
             println!(
@@ -280,7 +367,26 @@ async fn main() -> Result<()> {
             output,
             ffi,
             check,
-        } => translate_cmd(&input, output.as_ref(), ffi, check),
+            ai,
+            rounds,
+        } => {
+            if ai {
+                translate_ai_cmd(&conn, &input, output.as_ref(), ffi, rounds).await
+            } else {
+                translate_cmd(&input, output.as_ref(), ffi, check)
+            }
+        }
+        Cmd::Crate { name } => crate_cmd(&conn, &catalog_path, &name).await,
+        Cmd::Games => {
+            let games = launchers::all_games();
+            if games.is_empty() {
+                println!("Nenhum jogo da Steam, Epic ou GOG encontrado.");
+            }
+            for g in games {
+                println!("[{}] {}  ({})", g.store.label(), g.name, g.id);
+            }
+            Ok(())
+        }
     }
 }
 
@@ -310,8 +416,8 @@ async fn sync(
     specific_repos: Vec<String>,
 ) -> Result<()> {
     let saved_token = db::get_setting(conn, "github_token");
-    let gh = github::Github::new(saved_token.as_deref())?;
-    if !gh.has_token {
+    let gh = forge::Forge::new(saved_token.as_deref())?;
+    if !gh.has_token() {
         eprintln!("⚠ Sem GITHUB_TOKEN: limite de 60 requisições/hora.");
     }
 
@@ -367,7 +473,7 @@ async fn sync(
 
 async fn save_repo_if_installable(
     conn: &rusqlite::Connection,
-    gh: &github::Github,
+    gh: &forge::Forge,
     repo: github::Repo,
 ) -> Result<bool> {
     let Some(release) = gh.latest_release(&repo.full_name).await? else {
@@ -437,7 +543,7 @@ async fn verify_cmd(
     max_vt: usize,
 ) -> Result<()> {
     let saved_token = db::get_setting(conn, "github_token");
-    let gh = github::Github::new(saved_token.as_deref())?;
+    let gh = forge::Forge::new(saved_token.as_deref())?;
     let clean = github::normalize_repo_name(repo_name);
     let repo = gh.repo(&clean).await?;
     let release = gh.latest_release(&repo.full_name).await?;
@@ -556,8 +662,54 @@ async fn verify_cmd(
     Ok(())
 }
 
+/// `true` quando a URL usada é diferente da salva (então vale guardá-la para as próximas vezes).
+fn url_is_saved_elsewhere(conn: &rusqlite::Connection, location: &str) -> bool {
+    db::get_setting(conn, catalog_sign::SETTING_URL).as_deref() != Some(location)
+}
+
+/// Atualiza versão, arquivos e data de todos os apps (como o `checkver` do Scoop).
+/// Sem token do GitHub o limite é 60 consultas por hora: para no primeiro bloqueio e diz até onde foi.
+async fn catalog_refresh_cmd(conn: &rusqlite::Connection, catalog_path: &std::path::Path) -> Result<()> {
+    let gh = forge::Forge::new(db::get_setting(conn, "github_token").as_deref())?;
+    if !gh.has_token() {
+        eprintln!("⚠ Sem GITHUB_TOKEN: limite de 60 consultas por hora; um catálogo grande não termina de uma vez.");
+    }
+    let apps = db::list_all(conn)?;
+    let (mut changed, mut checked) = (0, 0);
+    for mut app in apps {
+        match gh.latest_release(&app.full_name).await {
+            Ok(Some(rel)) => {
+                checked += 1;
+                let assets = rel.installable_assets();
+                if rel.tag_name != app.latest_tag && !assets.is_empty() {
+                    println!("⬆ {}: {} → {}", app.full_name, app.latest_tag, rel.tag_name);
+                    app.latest_tag = rel.tag_name;
+                    app.released_at = rel.published_at.unwrap_or_default();
+                    app.assets = assets;
+                    app.attestation.clear();
+                    app.recompute_trust(None, &[]);
+                    db::upsert(conn, &app)?;
+                    changed += 1;
+                } else if app.released_at.is_empty() {
+                    app.released_at = rel.published_at.unwrap_or_default();
+                    db::upsert(conn, &app)?;
+                }
+            }
+            Ok(None) => checked += 1,
+            Err(e) if e.to_string().contains("Limite") => {
+                eprintln!("⏸ Limite da API atingido depois de {checked} apps: {e}");
+                break;
+            }
+            Err(e) => eprintln!("  · {}: {e}", app.full_name),
+        }
+    }
+    let total = db::export_catalog(conn, catalog_path)?;
+    println!("✔ {checked} apps consultados, {changed} com versão nova. Catálogo salvo ({total} itens).");
+    Ok(())
+}
+
 /// "presente"/"ausente" para o instalador recomendado com digest; "" quando não deu para consultar.
-async fn attestation_of_best(gh: &github::Github, full_name: &str, assets: &[github::Asset]) -> String {
+async fn attestation_of_best(gh: &forge::Forge, full_name: &str, assets: &[github::Asset]) -> String {
     let Some(digest) = github::pick_best_asset(assets).and_then(|i| assets[i].digest.clone()) else {
         return String::new();
     };
@@ -588,7 +740,7 @@ async fn download_cmd(
     // Versão pedida com --tag (versão anterior) ou a mais recente do catálogo
     let (tag_name, assets) = match tag {
         Some(t) if t != app.latest_tag => {
-            let gh = github::Github::new(db::get_setting(conn, "github_token").as_deref())?;
+            let gh = forge::Forge::new(db::get_setting(conn, "github_token").as_deref())?;
             let rel = gh.release_by_tag(&app.full_name, t).await?;
             (rel.tag_name.clone(), rel.installable_assets())
         }
@@ -607,8 +759,8 @@ async fn download_cmd(
         tag_name
     );
     let base_dir = base_dir_of(catalog_path);
-    let (final_path, sha256, verified) =
-        downloader::download_and_verify(&app.full_name, &tag_name, asset, &base_dir, None).await?;
+    let done = downloader::download_and_verify(&app.full_name, asset, &base_dir, None).await?;
+    let (final_path, sha256, verified) = (done.path, done.sha256, done.verified);
 
     db::mark_installed(
         conn,
@@ -636,7 +788,7 @@ async fn check_updates_cmd(conn: &rusqlite::Connection, catalog_path: &PathBuf) 
         return Ok(());
     }
     let saved_token = db::get_setting(conn, "github_token");
-    let gh = github::Github::new(saved_token.as_deref())?;
+    let gh = forge::Forge::new(saved_token.as_deref())?;
     let mut updates = 0;
     for mut app in installed {
         let inst_tag = app
@@ -700,6 +852,61 @@ fn translate_cmd(
         }
     }
     Ok(())
+}
+
+async fn translate_ai_cmd(
+    conn: &rusqlite::Connection,
+    input: &PathBuf,
+    output: Option<&PathBuf>,
+    ffi: bool,
+    rounds: usize,
+) -> Result<()> {
+    let src = std::fs::read_to_string(input)
+        .with_context(|| format!("falha ao ler arquivo C/C++: {}", input.display()))?;
+    let key = std::env::var("ANTHROPIC_API_KEY")
+        .ok()
+        .filter(|k| !k.trim().is_empty())
+        .or_else(|| db::get_setting(conn, translator_ai::SETTING_KEY))
+        .unwrap_or_default();
+    let mode = if ffi {
+        translator::TranslateMode::FfiBindings
+    } else {
+        translator::TranslateMode::SafeRust
+    };
+    eprintln!("🤖 Traduzindo com {} (até {rounds} tentativas; cobrado na sua conta da API)...", translator_ai::MODEL);
+    let t = translator_ai::translate_with_claude(&key, &src, mode, rounds).await?;
+    match output {
+        Some(out_path) => {
+            std::fs::write(out_path, &t.code).with_context(|| format!("falha ao salvar {}", out_path.display()))?;
+            println!("✔ Código Rust salvo em: {}", out_path.display());
+        }
+        None => println!("{}", t.code),
+    }
+    eprintln!("• {} rodada(s); unsafe: {}", t.rounds, t.unsafe_count);
+    match t.last_error {
+        None => eprintln!("✔ Compila no rustc."),
+        Some(e) => bail!("Não compilou depois de {} tentativa(s):
+{e}", t.rounds),
+    }
+    Ok(())
+}
+
+/// Ferramenta de terminal pelo nome do crate: crates.io → repositório → verificação → download.
+async fn crate_cmd(conn: &rusqlite::Connection, catalog_path: &PathBuf, name: &str) -> Result<()> {
+    let repo = crates_io::crate_repository(name).await?;
+    println!("📦 {name} → {repo}");
+    if db::get(conn, &repo)?.is_none() {
+        verify_cmd(conn, catalog_path, &repo, false, 1).await?;
+    }
+    let mut app = db::get(conn, &repo)?
+        .ok_or_else(|| anyhow::anyhow!("{repo} não tem binário pronto na última release"))?;
+    if app.kind.is_none() {
+        app.kind = Some("cli".into());
+        app.category = Some("Terminal • Rust".into());
+        db::upsert(conn, &app)?;
+        let _ = db::export_catalog(conn, catalog_path);
+    }
+    download_cmd(conn, catalog_path, &repo, None).await
 }
 
 fn print_line(a: &db::App) {

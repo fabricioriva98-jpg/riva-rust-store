@@ -152,7 +152,7 @@ pub fn evaluate_metadata(
         score += 6;
     }
     notes.push(format!(
-        "{} {} estrelas no GitHub",
+        "{} {} estrelas no repositório",
         if stars >= 200 { "🟢" } else { "🟡" },
         stars
     ));
@@ -200,7 +200,7 @@ pub fn evaluate_metadata(
             score += 5;
             notes.push("🟡 Parte dos instaladores possui hash SHA-256 oficial".into());
         } else if !inst.is_empty() {
-            notes.push("🟡 Release antiga sem hash SHA-256 pré-calculado pelo GitHub".into());
+            notes.push("🟡 Release sem hash SHA-256 publicado (releases antigas do GitHub e outras forjas não publicam)".into());
         } else {
             notes.push("🟡 Release sem instaladores reconhecidos".into());
         }

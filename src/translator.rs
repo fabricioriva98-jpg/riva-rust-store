@@ -177,6 +177,7 @@ pub fn translate_c_cpp_to_rust(source: &str, mode: TranslateMode) -> Translation
 
     let mut stack: Vec<BlockKind> = Vec::new();
     let mut indent_level: usize = 0;
+    let mut untranslated: Vec<usize> = Vec::new();
 
     for (line_idx, raw_line) in source.lines().enumerate() {
         let line_num = line_idx + 1;
@@ -335,6 +336,13 @@ pub fn translate_c_cpp_to_rust(source: &str, mode: TranslateMode) -> Translation
 
         // Instruções dentro de funções (printf, std::cout, return, incremento, variáveis)
         let stmt = translate_statement(trimmed, mode, &mut notes, line_num);
+        if looks_untranslated(&stmt) {
+            untranslated.push(line_num);
+            notes.push(format!(
+                "⚠ Linha {line_num}: construção não reconhecida, copiada quase sem conversão; revise: `{}`",
+                truncate_note(trimmed)
+            ));
+        }
         let _ = writeln!(out, "{}{}", "    ".repeat(indent_level), stmt);
         if trimmed.ends_with('{') {
             stack.push(BlockKind::Normal);
@@ -342,7 +350,15 @@ pub fn translate_c_cpp_to_rust(source: &str, mode: TranslateMode) -> Translation
         }
     }
 
-    if notes.is_empty() {
+    if !untranslated.is_empty() {
+        notes.insert(
+            0,
+            format!(
+                "⚠ Conversão assistida (experimental): {} linha(s) não reconhecida(s). Revise o resultado ou use \"Traduzir com IA\".",
+                untranslated.len()
+            ),
+        );
+    } else if notes.is_empty() {
         notes.push(
             "✔ Tradução concluída sem alertas críticos. Estruturas, tipos e controle de fluxo convertidos."
                 .into(),
@@ -355,11 +371,38 @@ pub fn translate_c_cpp_to_rust(source: &str, mode: TranslateMode) -> Translation
     }
 }
 
+/// `true` quando a linha de saída ainda tem cara de C/C++ (o tradutor por padrões não reconheceu a construção).
+pub fn looks_untranslated(line: &str) -> bool {
+    let t = line.trim();
+    if t.is_empty() || t.starts_with("//") {
+        return false;
+    }
+    const C_STARTS: &[&str] = &[
+        "typedef", "switch", "case ", "default:", "goto ", "static ", "unsigned ", "signed ", "long ",
+        "short ", "int ", "char ", "float ", "double ", "struct ", "union ", "#if", "#else", "#elif",
+        "template", "namespace", "using ", "class ", "do {",
+    ];
+    const C_TOKENS: &[&str] = &["->", "malloc(", "calloc(", "realloc(", "sizeof(", "printf(", "std::", "nullptr", "NULL", "++", "for ("];
+    C_STARTS.iter().any(|p| t.starts_with(p)) || C_TOKENS.iter().any(|p| t.contains(p))
+}
+
+fn truncate_note(s: &str) -> String {
+    if s.chars().count() > 70 {
+        format!("{}…", s.chars().take(69).collect::<String>())
+    } else {
+        s.to_string()
+    }
+}
+
 /// Testa se o código Rust gerado compila limpo usando o `rustc` instalado no sistema.
 pub fn verify_rust_syntax(rust_code: &str) -> Result<String, String> {
+    // Nome único por chamada: duas validações ao mesmo tempo (tela e tradução com IA) não colidem
+    static COUNTER: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
+    let n = COUNTER.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
     let temp_dir = std::env::temp_dir();
-    let src_path = temp_dir.join("rrs_translated_check.rs");
-    let out_path = temp_dir.join("rrs_translated_check.rmeta");
+    let stem = format!("rrs_translated_check_{}_{n}", std::process::id());
+    let src_path = temp_dir.join(format!("{stem}.rs"));
+    let out_path = temp_dir.join(format!("{stem}.rmeta"));
 
     std::fs::write(&src_path, rust_code).map_err(|e| format!("Falha ao criar arquivo temporário: {e}"))?;
 
@@ -901,4 +944,29 @@ description = "Projeto gerado automaticamente pelo Tradutor C/C++ da RRS - Riva 
     std::fs::write(src_dir.join("main.rs"), main_code)?;
 
     Ok(proj_dir)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn exemplos_embutidos_traduzem_sem_aviso_e_compilam() {
+        for ex in EXAMPLES {
+            let r = translate_c_cpp_to_rust(ex.cpp_code, TranslateMode::SafeRust);
+            let avisos: Vec<_> = r.notes.iter().filter(|n| n.starts_with('⚠')).collect();
+            assert!(avisos.is_empty(), "{}: {avisos:?}", ex.name);
+            assert!(verify_rust_syntax(&r.rust_code).is_ok(), "{} não compilou", ex.name);
+        }
+    }
+
+    #[test]
+    fn c_comum_nao_reconhecido_gera_aviso_por_linha() {
+        let src = "typedef struct { int w; int h; } Size;\nint main(void) {\n    char* buf = malloc(64);\n    switch (x) { default: break; }\n    return 0;\n}\n";
+        let r = translate_c_cpp_to_rust(src, TranslateMode::SafeRust);
+        assert!(r.notes[0].contains("experimental"), "{:?}", r.notes);
+        assert!(r.notes.iter().any(|n| n.contains("Linha 1")), "typedef sem aviso: {:?}", r.notes);
+        assert!(r.notes.iter().any(|n| n.contains("Linha 4")), "switch sem aviso: {:?}", r.notes);
+        assert!(!r.notes.iter().any(|n| n.contains("sem alertas")));
+    }
 }

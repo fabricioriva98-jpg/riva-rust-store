@@ -218,14 +218,23 @@ impl Github {
     }
 }
 
-/// Aceita tanto `dono/repo` quanto `https://github.com/dono/repo`.
+/// Aceita `dono/repo`, `https://github.com/dono/repo` e, para outras forjas, `host/caminho`
+/// (ex.: `https://codeberg.org/dono/repo` → `codeberg.org/dono/repo`; ver `forge.rs`).
 pub fn normalize_repo_name(input: &str) -> String {
     let s = input.trim().trim_end_matches('/');
     let s = s
-        .strip_prefix("https://github.com/")
-        .or_else(|| s.strip_prefix("http://github.com/"))
-        .or_else(|| s.strip_prefix("github.com/"))
+        .strip_prefix("https://")
+        .or_else(|| s.strip_prefix("http://"))
         .unwrap_or(s);
+    let s = s.strip_prefix("www.").unwrap_or(s);
+    let s = s.strip_prefix("github.com/").unwrap_or(s);
+    let first = s.split('/').next().unwrap_or("");
+    if first.contains('.') {
+        // Outra forja: mantém o host e o caminho inteiro (o GitLab aceita subgrupos),
+        // sem sufixos de páginas web como "/-/releases".
+        let path = s.split("/-/").next().unwrap_or(s).trim_end_matches('/');
+        return path.trim_end_matches(".git").to_string();
+    }
     let mut parts = s.split('/');
     match (parts.next(), parts.next()) {
         (Some(owner), Some(repo)) => format!("{owner}/{}", repo.trim_end_matches(".git")),

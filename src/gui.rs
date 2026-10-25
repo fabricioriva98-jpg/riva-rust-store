@@ -1,14 +1,20 @@
 //! Interface gráfica estilo Steam / Microsoft Store / Google Play (egui / eframe).
 
 use crate::db::{self, App};
-use crate::downloader::{self, DownloadState, ScanVerdict, SharedDownloadState};
-use crate::github::{self, Github};
+use crate::downloader::{self, JobState, ScanVerdict};
+use crate::forge::Forge;
+use crate::github;
 use crate::translator::{self, TranslateMode};
 use crate::verify;
 use eframe::egui::{self, Color32, CornerRadius, RichText, Stroke, Vec2};
+use crate::i18n::{tr, Lang};
 use std::collections::HashMap;
 use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
+
+mod extras;
+mod phase3;
+mod tv;
 
 #[derive(PartialEq, Clone, Copy)]
 enum NavSection {
@@ -20,6 +26,7 @@ enum NavSection {
     AiAndApps,
     Tools,
     Library,
+    Terminal,
     CppToRust,
 }
 
@@ -55,6 +62,18 @@ enum BgEvent {
         repo: String,
         releases: Vec<github::Release>,
     },
+    WindowsScan(Vec<crate::windows_apps::InstalledProgram>),
+    WingetResults {
+        query: String,
+        packages: Result<Vec<crate::winget::WingetPackage>, String>,
+    },
+    ExternalGames(Vec<crate::launchers::ExternalGame>),
+    GhVerified {
+        repo: String,
+        result: Result<crate::attestation::GhVerify, String>,
+    },
+    AiTranslated(Result<crate::translator_ai::AiTranslation, String>),
+    CrateResolved(Result<String, String>),
     Error(String),
 }
 
@@ -134,6 +153,29 @@ pub struct StoreGui {
     releases_cache: HashMap<String, Vec<github::Release>>,
     versions_open: bool,
     library_path: String,
+    /// URL (ou caminho) do catálogo online assinado.
+    catalog_url: String,
+    lang: Lang,
+    windows_programs: Option<Vec<crate::windows_apps::InstalledProgram>>,
+    windows_matches: Vec<crate::windows_apps::CatalogMatch>,
+    save_dir_input: String,
+    restore_confirm: Option<PathBuf>,
+    winget_query: String,
+    winget_results: Option<Result<Vec<crate::winget::WingetPackage>, String>>,
+    winget_confirm: Option<String>,
+    uninstall_confirm: Option<String>,
+    external_games: Option<Vec<crate::launchers::ExternalGame>>,
+    gh_verify_status: Option<(String, Result<crate::attestation::GhVerify, String>)>,
+    sandbox_available: bool,
+    anthropic_key_input: String,
+    ai_busy: bool,
+    /// Repositório vindo do crates.io: ao verificar, entra no catálogo como ferramenta de terminal.
+    pending_cli: Option<String>,
+    crate_input: String,
+    tv_mode: bool,
+    tv_index: usize,
+    gamepads: Option<gilrs::Gilrs>,
+    tv_stick: (i8, i8),
 
     // Navegação e filtros
     section: NavSection,
@@ -171,7 +213,7 @@ pub struct StoreGui {
     file_io_path: String,
 
     // Tarefas em segundo plano
-    download_state: SharedDownloadState,
+    downloads: downloader::DownloadManager,
     bg_events: Arc<Mutex<Vec<BgEvent>>>,
     busy_task: Option<String>,
     status_msg: String,
@@ -197,8 +239,23 @@ impl StoreGui {
 
         let mut github_token_input = std::env::var("GITHUB_TOKEN").unwrap_or_default();
         let mut vt_key_input = std::env::var("VIRUSTOTAL_API_KEY").unwrap_or_default();
+        let mut catalog_url = String::new();
+        let mut catalog_due = false;
+        let mut lang = Lang::Pt;
+        let mut anthropic_key_input = std::env::var("ANTHROPIC_API_KEY").unwrap_or_default();
 
         if let Ok(conn) = db::open(&db_path) {
+            if anthropic_key_input.is_empty() {
+                anthropic_key_input = db::get_setting(&conn, crate::translator_ai::SETTING_KEY).unwrap_or_default();
+            }
+            lang = Lang::from_setting(db::get_setting(&conn, crate::i18n::SETTING_LANG).as_deref());
+            catalog_url = db::get_setting(&conn, crate::catalog_sign::SETTING_URL).unwrap_or_default();
+            // Catálogo online: confere no máximo uma vez por dia ao abrir
+            let last = db::get_setting(&conn, "catalog_last_check")
+                .and_then(|t| chrono::DateTime::parse_from_rfc3339(&t).ok())
+                .map(|t| t.with_timezone(&chrono::Utc));
+            catalog_due = !catalog_url.is_empty()
+                && last.is_none_or(|t| chrono::Utc::now() - t > chrono::Duration::hours(24));
             if github_token_input.is_empty() {
                 if let Some(t) = db::get_setting(&conn, "github_token") {
                     github_token_input = t;
@@ -224,6 +281,27 @@ impl StoreGui {
             releases_cache: HashMap::new(),
             versions_open: false,
             library_path,
+            catalog_url,
+            lang,
+            windows_programs: None,
+            windows_matches: Vec::new(),
+            save_dir_input: String::new(),
+            restore_confirm: None,
+            winget_query: String::new(),
+            winget_results: None,
+            winget_confirm: None,
+            uninstall_confirm: None,
+            external_games: None,
+            gh_verify_status: None,
+            sandbox_available: crate::sandbox::available(),
+            anthropic_key_input,
+            ai_busy: false,
+            pending_cli: None,
+            crate_input: String::new(),
+            tv_mode: false,
+            tv_index: 0,
+            gamepads: None,
+            tv_stick: (0, 0),
             section: NavSection::Discover,
             grid_view: true,
             featured_idx: 0,
@@ -247,7 +325,7 @@ impl StoreGui {
             translate_notes: initial_tr.notes,
             rustc_check_status: None,
             file_io_path: String::new(),
-            download_state: downloader::new_shared_state(),
+            downloads: downloader::DownloadManager::default(),
             bg_events: Arc::new(Mutex::new(Vec::new())),
             busy_task: None,
             status_msg: "RRS - Riva Rust Store pronta. Catálogo verificado e Tradutor C/C++ ➔ Rust ativos.".into(),
@@ -263,7 +341,54 @@ impl StoreGui {
         {
             gui.select_app(&first);
         }
+        if catalog_due {
+            gui.spawn_catalog_update();
+        }
         gui
+    }
+
+    /// Baixa o catálogo online assinado e importa se a assinatura, a versão e a validade conferirem.
+    fn spawn_catalog_update(&mut self) {
+        let location = self.catalog_url.trim().to_string();
+        if location.is_empty() || self.busy_task.is_some() {
+            return;
+        }
+        self.busy_task = Some("Conferindo catálogo online...".into());
+        let db_path = self.db_path.clone();
+        let catalog_path = self.catalog_path.clone();
+        let events = Arc::clone(&self.bg_events);
+        self.rt.spawn(async move {
+            let res = async {
+                let (bytes, sig) = crate::catalog_sign::fetch_signed(&location).await?;
+                let conn = db::open(&db_path)?;
+                let _ = db::set_setting(&conn, "catalog_last_check", &chrono::Utc::now().to_rfc3339());
+                let n = crate::catalog_sign::apply_signed(&conn, &catalog_path, &bytes, &sig)?;
+                Ok::<_, anyhow::Error>((n, sig.versao))
+            }
+            .await;
+            let ev = match res {
+                Ok((n, versao)) => BgEvent::SyncFinished {
+                    updated: n,
+                    message: format!("✔ Catálogo online versão {versao} conferido (assinatura válida)"),
+                },
+                Err(e) => BgEvent::Error(format!("Catálogo online não atualizado: {e:#}")),
+            };
+            events.lock().unwrap().push(ev);
+        });
+    }
+
+    /// Texto no idioma escolhido (ver `i18n.rs`).
+    fn tr(&self, pt: &str) -> String {
+        crate::i18n::tr(self.lang, pt)
+    }
+
+    /// Resumo do app: o curado em português, ou a descrição do GitHub (em geral em inglês) no modo inglês.
+    fn summary_of(&self, app: &App) -> String {
+        if self.lang == Lang::En && !app.description.trim().is_empty() {
+            app.description.clone()
+        } else {
+            app.display_summary().to_string()
+        }
     }
 
     /// Pasta da RRS (catálogo, banco e `downloads/`).
@@ -291,6 +416,7 @@ impl StoreGui {
                 self.wishlist = w;
             }
         }
+        self.refresh_windows_matches();
         let mut cats: Vec<String> = self
             .apps
             .iter()
@@ -305,6 +431,7 @@ impl StoreGui {
     fn select_app(&mut self, full_name: &str) {
         if self.selected_repo.as_deref() != Some(full_name) {
             self.versions_open = false;
+            self.load_save_dir_input(full_name);
         }
         self.selected_repo = Some(full_name.to_string());
         self.defender_scan_status = None;
@@ -362,6 +489,7 @@ impl StoreGui {
                 let section_ok = match self.section {
                     NavSection::Discover => true,
                     NavSection::MadeInRust => a.is_rust(),
+                    NavSection::Terminal => k == "cli",
                     NavSection::ReverseEngineering => {
                         if self.re_subfilter == "re-game" {
                             k == "re-game"
@@ -403,33 +531,25 @@ impl StoreGui {
     }
 
     fn process_background(&mut self, ctx: &egui::Context) {
-        let dl_snapshot = self.download_state.lock().unwrap().clone();
-        match dl_snapshot {
-            DownloadState::Idle => {}
-            DownloadState::Downloading { .. } => {
-                ctx.request_repaint_after(std::time::Duration::from_millis(80));
-            }
-            DownloadState::Finished {
-                repo,
-                tag,
-                file_path,
-                sha256,
-                verified_digest,
-                message,
-            } => {
-                if let Ok(conn) = db::open(&self.db_path) {
-                    let stored = db::to_stored_path(&self.base_dir(), std::path::Path::new(&file_path));
-                    let _ = db::mark_installed(&conn, &repo, &tag, &stored, &sha256, verified_digest);
+        // Fila de downloads: o registro no banco já foi feito pela própria tarefa; aqui só atualiza a tela.
+        if self.downloads.has_active() {
+            ctx.request_repaint_after(std::time::Duration::from_millis(80));
+        }
+        let finished = self.downloads.take_finished();
+        if !finished.is_empty() {
+            self.reload_from_db();
+            for job in finished {
+                match job.state {
+                    JobState::Finished { message } => {
+                        self.status_msg = message;
+                        self.status_is_error = false;
+                    }
+                    JobState::Failed { error } => {
+                        self.status_msg = format!("Falha no download de {} {}: {error}", job.repo, job.tag);
+                        self.status_is_error = true;
+                    }
+                    _ => {}
                 }
-                *self.download_state.lock().unwrap() = DownloadState::Idle;
-                self.reload_from_db();
-                self.status_msg = message;
-                self.status_is_error = false;
-            }
-            DownloadState::Failed { repo, error } => {
-                *self.download_state.lock().unwrap() = DownloadState::Idle;
-                self.status_msg = format!("Falha no download de {repo}: {error}");
-                self.status_is_error = true;
             }
         }
 
@@ -440,8 +560,17 @@ impl StoreGui {
                     self.status_msg = s;
                     self.status_is_error = false;
                 }
-                BgEvent::AppUpdated { app, message } => {
+                BgEvent::AppUpdated { mut app, message } => {
                     let name = app.full_name.clone();
+                    // Veio do crates.io: entra no catálogo como ferramenta de terminal
+                    if self.pending_cli.as_deref().is_some_and(|p| p.eq_ignore_ascii_case(&name)) {
+                        self.pending_cli = None;
+                        if app.kind.is_none() {
+                            app.kind = Some("cli".into());
+                            app.category = Some("Terminal • Rust".into());
+                        }
+                        self.section = NavSection::Terminal;
+                    }
                     if let Ok(conn) = db::open(&self.db_path) {
                         let _ = db::upsert(&conn, &app);
                         let _ = db::export_catalog(&conn, &self.catalog_path);
@@ -483,6 +612,46 @@ impl StoreGui {
                     };
                     self.status_is_error = defender_verdict != ScanVerdict::Clean;
                     self.busy_task = None;
+                }
+                BgEvent::WindowsScan(programs) => {
+                    self.busy_task = None;
+                    self.windows_programs = Some(programs);
+                    self.refresh_windows_matches();
+                    self.status_msg = format!(
+                        "✔ {} {}",
+                        self.windows_matches.len(),
+                        self.tr("apps do catálogo encontrados no Windows")
+                    );
+                    self.status_is_error = false;
+                }
+                BgEvent::WingetResults { query, packages } => {
+                    self.busy_task = None;
+                    self.winget_query = query;
+                    self.winget_results = Some(packages);
+                }
+                BgEvent::ExternalGames(games) => {
+                    self.busy_task = None;
+                    self.status_msg = format!("✔ {} {}", games.len(), self.tr("jogos encontrados em outras lojas"));
+                    self.status_is_error = false;
+                    self.external_games = Some(games);
+                }
+                BgEvent::GhVerified { repo, result } => {
+                    self.busy_task = None;
+                    self.gh_verify_status = Some((repo, result));
+                }
+                BgEvent::AiTranslated(res) => self.apply_ai_result(res),
+                BgEvent::CrateResolved(res) => {
+                    self.busy_task = None;
+                    match res {
+                        Ok(repo) => {
+                            self.pending_cli = Some(repo.clone());
+                            self.spawn_fetch_or_verify(repo, false);
+                        }
+                        Err(e) => {
+                            self.status_msg = e;
+                            self.status_is_error = true;
+                        }
+                    }
                 }
                 BgEvent::ReleasesLoaded { repo, releases } => {
                     self.busy_task = None;
@@ -533,7 +702,7 @@ impl StoreGui {
 
         self.rt.spawn(async move {
             let res: anyhow::Result<(App, String)> = async {
-                let gh = Github::new(Some(&gh_token))?;
+                let gh = Forge::new(Some(&gh_token))?;
                 let repo = gh.repo(&clean).await?;
                 let release = gh.latest_release(&repo.full_name).await?;
                 let contributors = gh.contributors(&repo.full_name).await?;
@@ -677,7 +846,7 @@ impl StoreGui {
 
         self.rt.spawn(async move {
             let res: anyhow::Result<usize> = async {
-                let gh = Github::new(Some(&gh_token))?;
+                let gh = Forge::new(Some(&gh_token))?;
                 let conn = db::open(&db_path)?;
                 let mut count = 0;
                 for mut app in targets {
@@ -725,29 +894,56 @@ impl StoreGui {
         if outdated.is_empty() {
             return;
         }
-        let base_dir = self
-            .catalog_path
-            .parent()
-            .map(|p| p.to_path_buf())
-            .unwrap_or_else(|| PathBuf::from("."));
-        let st = Arc::clone(&self.download_state);
-        let events = Arc::clone(&self.bg_events);
-        self.busy_task = Some(format!("Atualizando {} aplicativos...", outdated.len()));
-
-        self.rt.spawn(async move {
-            let mut updated_count = 0;
-            for app in outdated {
-                if let Some(best_idx) = github::pick_best_asset(&app.assets) {
-                    let asset = app.assets[best_idx].clone();
-                    if downloader::download_and_verify(&app.full_name, &app.latest_tag, &asset, &base_dir, Some(st.clone())).await.is_ok() {
-                        updated_count += 1;
-                    }
+        // Cada atualização entra na fila (até 2 ao mesmo tempo) e se registra no banco ao terminar.
+        let mut queued = 0;
+        for app in outdated {
+            if let Some(best_idx) = github::pick_best_asset(&app.assets) {
+                let asset = app.assets[best_idx].clone();
+                if self.start_download(app.full_name.clone(), app.latest_tag.clone(), asset) {
+                    queued += 1;
                 }
             }
-            events.lock().unwrap().push(BgEvent::SyncFinished {
-                updated: updated_count,
-                message: format!("✔ {updated_count} aplicativos atualizados com sucesso!"),
-            });
+        }
+        self.status_msg = format!("⬇ {queued} atualização(ões) na fila de downloads.");
+        self.status_is_error = false;
+    }
+
+    /// Abre um app instalado, mede o tempo de jogo e faz backup dos saves quando ele fecha
+    /// (se a pasta de saves estiver configurada). Usado pelo botão "Jogar" e pelo Modo TV.
+    fn launch_installed(&mut self, app: &App) {
+        let Some(inst) = &app.installed else { return };
+        let path = self.installed_path(&inst.file_path);
+        let repo_name = app.full_name.clone();
+        let events = Arc::clone(&self.bg_events);
+        let save_dir = db::open(&self.db_path)
+            .ok()
+            .and_then(|c| crate::saves::save_dir(&c, &repo_name));
+        let base_dir = self.base_dir();
+        self.status_msg = format!("▶ {}...", friendly_title(&repo_name));
+        self.status_is_error = false;
+        std::thread::spawn(move || {
+            let start = std::time::Instant::now();
+            match downloader::launch_installed_app(&path) {
+                Ok(Some(mut child)) => {
+                    let _ = child.wait();
+                    let elapsed = start.elapsed().as_secs();
+                    if let Some(dir) = save_dir {
+                        let ev = match crate::saves::backup(&base_dir, &repo_name, std::path::Path::new(&dir), None) {
+                            Ok(zip) => BgEvent::Status(format!("💾 Backup dos saves: {}", zip.display())),
+                            Err(e) => BgEvent::Error(format!("Backup dos saves não feito: {e:#}")),
+                        };
+                        events.lock().unwrap().push(ev);
+                    }
+                    events.lock().unwrap().push(BgEvent::PlaytimeUpdated {
+                        repo: repo_name,
+                        elapsed_seconds: elapsed,
+                    });
+                }
+                Ok(None) => {}
+                Err(e) => {
+                    events.lock().unwrap().push(BgEvent::Error(format!("Erro ao iniciar: {e}")));
+                }
+            }
         });
     }
 
@@ -760,7 +956,7 @@ impl StoreGui {
         let gh_token = self.github_token_input.clone();
         let events = Arc::clone(&self.bg_events);
         self.rt.spawn(async move {
-            let res = async { Github::new(Some(&gh_token))?.releases(&repo, 15).await }.await;
+            let res = async { Forge::new(Some(&gh_token))?.releases(&repo, 15).await }.await;
             let ev = match res {
                 Ok(releases) => BgEvent::ReleasesLoaded { repo, releases },
                 Err(e) => BgEvent::Error(format!("Não foi possível carregar as versões: {e:#}")),
@@ -769,26 +965,28 @@ impl StoreGui {
         });
     }
 
-    /// Baixa um instalador (de qualquer versão), confere o SHA-256 e registra como instalado ao terminar.
-    fn start_download(&mut self, repo: String, tag: String, asset: github::Asset) {
-        let base_dir = self.base_dir();
-        let st = Arc::clone(&self.download_state);
-        self.rt.spawn(async move {
-            if let Err(e) =
-                downloader::download_and_verify(&repo, &tag, &asset, &base_dir, Some(st.clone())).await
-            {
-                *st.lock().unwrap() = DownloadState::Failed {
-                    repo,
-                    error: format!("{e:#}"),
-                };
-            }
-        });
+    /// Coloca um instalador (de qualquer versão) na fila; ele confere o SHA-256 e se registra ao terminar.
+    /// Devolve `false` se essa versão já estava na fila.
+    fn start_download(&mut self, repo: String, tag: String, asset: github::Asset) -> bool {
+        let queued = self
+            .downloads
+            .enqueue(&self.rt, self.db_path.clone(), self.base_dir(), repo.clone(), tag.clone(), asset)
+            .is_some();
+        if queued {
+            self.status_msg = format!("⬇ {} {tag} na fila de downloads.", friendly_title(&repo));
+            self.status_is_error = false;
+        }
+        queued
     }
 }
 
 impl eframe::App for StoreGui {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         self.process_background(ctx);
+        if self.tv_mode {
+            self.render_tv(ctx);
+            return;
+        }
 
         let updates_count = self.apps.iter().filter(|a| a.has_update()).count();
         let installed_count = self.apps.iter().filter(|a| a.installed.is_some()).count();
@@ -818,6 +1016,7 @@ impl eframe::App for StoreGui {
             .filter(|a| matches!(a.kind.as_deref(), Some("tool" | "re-app")))
             .count();
         let rust_count = self.apps.iter().filter(|a| a.is_rust()).count();
+        let cli_count = self.apps.iter().filter(|a| a.kind.as_deref() == Some("cli")).count();
 
         // ─── BARRA LATERAL ESQUERDA (Estilo Steam / Microsoft Store) ───────
         egui::SidePanel::left("left_nav")
@@ -847,13 +1046,13 @@ impl eframe::App for StoreGui {
                 ui.add_space(2.0);
                 draw_pill(
                     ui,
-                    "🛡 CATÁLOGO VERIFICADO",
+                    &tr(self.lang, "🛡 CATÁLOGO VERIFICADO"),
                     Color32::from_rgb(24, 105, 65),
                 );
 
                 ui.add_space(16.0);
                 ui.label(
-                    RichText::new("EXPLORAR LOJA")
+                    RichText::new(tr(self.lang, "EXPLORAR LOJA"))
                         .size(11.0)
                         .strong()
                         .color(Color32::from_rgb(120, 130, 150)),
@@ -864,48 +1063,54 @@ impl eframe::App for StoreGui {
                     ui,
                     &mut self.section,
                     NavSection::Discover,
-                    &format!("🏠  Vitrine & Destaques ({})", self.apps.len()),
+                    &format!("🏠  {} ({})", tr(self.lang, "Vitrine & Destaques"), self.apps.len()),
                 );
                 nav_button(
                     ui,
                     &mut self.section,
                     NavSection::MadeInRust,
-                    &format!("🦀  Feito em Rust ({rust_count})"),
+                    &format!("🦀  {} ({rust_count})", tr(self.lang, "Feito em Rust")),
                 );
                 nav_button(
                     ui,
                     &mut self.section,
                     NavSection::ReverseEngineering,
-                    &format!("🧬  Engenharia Reversa ({re_count})"),
+                    &format!("🧬  {} ({re_count})", tr(self.lang, "Engenharia Reversa")),
                 );
                 nav_button(
                     ui,
                     &mut self.section,
                     NavSection::Games,
-                    &format!("🎮  Jogos & Ports ({games_count})"),
+                    &format!("🎮  {} ({games_count})", tr(self.lang, "Jogos & Ports")),
                 );
                 nav_button(
                     ui,
                     &mut self.section,
                     NavSection::Emulators,
-                    &format!("🕹  Emuladores & Retrô ({emu_count})"),
+                    &format!("🕹  {} ({emu_count})", tr(self.lang, "Emuladores & Retrô")),
                 );
                 nav_button(
                     ui,
                     &mut self.section,
                     NavSection::AiAndApps,
-                    &format!("🤖  IA Local & Apps ({apps_count})"),
+                    &format!("🤖  {} ({apps_count})", tr(self.lang, "IA Local & Apps")),
                 );
                 nav_button(
                     ui,
                     &mut self.section,
                     NavSection::Tools,
-                    &format!("🛠  Ferramentas & RE ({tools_count})"),
+                    &format!("🛠  {} ({tools_count})", tr(self.lang, "Ferramentas & RE")),
+                );
+                nav_button(
+                    ui,
+                    &mut self.section,
+                    NavSection::Terminal,
+                    &format!("⌨  {} ({cli_count})", tr(self.lang, "Terminal (Rust)")),
                 );
 
                 ui.add_space(14.0);
                 ui.label(
-                    RichText::new("SEU PC")
+                    RichText::new(tr(self.lang, "SEU PC"))
                         .size(11.0)
                         .strong()
                         .color(Color32::from_rgb(120, 130, 150)),
@@ -913,17 +1118,17 @@ impl eframe::App for StoreGui {
                 ui.add_space(4.0);
 
                 let lib_label = if updates_count > 0 {
-                    format!("📦  Biblioteca ({installed_count})  ⬆{updates_count}")
+                    format!("📦  {} ({installed_count})  ⬆{updates_count}", tr(self.lang, "Biblioteca"))
                 } else if !self.wishlist.is_empty() {
-                    format!("📦  Biblioteca ({installed_count})  🔁{}", self.wishlist.len())
+                    format!("📦  {} ({installed_count})  🔁{}", tr(self.lang, "Biblioteca"), self.wishlist.len())
                 } else {
-                    format!("📦  Minha Biblioteca ({installed_count})")
+                    format!("📦  {} ({installed_count})", tr(self.lang, "Minha Biblioteca"))
                 };
                 nav_button(ui, &mut self.section, NavSection::Library, &lib_label);
 
                 ui.add_space(12.0);
                 ui.label(
-                    RichText::new("ESTÚDIO RUST")
+                    RichText::new(tr(self.lang, "ESTÚDIO RUST"))
                         .size(11.0)
                         .strong()
                         .color(Color32::from_rgb(245, 145, 80)),
@@ -933,20 +1138,31 @@ impl eframe::App for StoreGui {
                     ui,
                     &mut self.section,
                     NavSection::CppToRust,
-                    "🦀  Tradutor C/C++ ➔ Rust",
+                    &tr(self.lang, "🦀  Tradutor C/C++ ➔ Rust"),
                 );
 
                 ui.add_space(14.0);
                 ui.separator();
                 ui.add_space(10.0);
 
-                ui.checkbox(&mut self.only_trusted, "🛡 Só Verificados (70+)");
+                ui.checkbox(&mut self.only_trusted, tr(self.lang, "🛡 Só Verificados (70+)"));
+                ui.add_space(6.0);
+                if ui
+                    .add(
+                        egui::Button::new(RichText::new(tr(self.lang, "🎮 Modo TV (tela cheia)")).strong())
+                            .min_size(Vec2::new(ui.available_width(), 28.0)),
+                    )
+                    .on_hover_text(tr(self.lang, "Biblioteca em tela cheia para jogar com controle ou teclado (inclui Steam, Epic e GOG)."))
+                    .clicked()
+                {
+                    self.enter_tv_mode(ctx);
+                }
                 ui.add_space(6.0);
 
                 let btn_text = if let Some(task) = &self.busy_task {
-                    task.as_str()
+                    task.clone()
                 } else {
-                    "🔄 Checar Atualizações"
+                    tr(self.lang, "🔄 Checar Atualizações")
                 };
                 if ui
                     .add_enabled(
@@ -961,9 +1177,9 @@ impl eframe::App for StoreGui {
                 ui.add_space(4.0);
                 if ui
                     .button(if self.show_settings {
-                        "✖ Fechar Chaves API"
+                        tr(self.lang, "✖ Fechar Chaves API")
                     } else {
-                        "⚙ Configurar Chaves API"
+                        tr(self.lang, "⚙ Configurar Chaves API")
                     })
                     .clicked()
                 {
@@ -974,7 +1190,7 @@ impl eframe::App for StoreGui {
                 if ui
                     .add(
                         egui::Button::new(
-                            RichText::new("📌 Instalar RRS no PC")
+                            RichText::new(tr(self.lang, "📌 Instalar RRS no PC"))
                                 .size(12.0)
                                 .color(Color32::from_rgb(155, 225, 180)),
                         )
@@ -982,7 +1198,7 @@ impl eframe::App for StoreGui {
                         .min_size(Vec2::new(ui.available_width(), 26.0)),
                     )
                     .on_hover_text(
-                        "Instala a RRS no Windows e cria atalhos na Área de Trabalho, Menu Iniciar e terminal (comando 'rrs').",
+                        tr(self.lang, "Instala a RRS no Windows e cria atalhos na Área de Trabalho, Menu Iniciar e terminal (comando 'rrs')."),
                     )
                     .clicked()
                 {
@@ -1020,16 +1236,16 @@ impl eframe::App for StoreGui {
                     ui.label("🔎");
                     ui.add(
                         egui::TextEdit::singleline(&mut self.search)
-                            .hint_text("Buscar jogos, ports de engenharia reversa, emuladores, IA, apps...")
+                            .hint_text(tr(self.lang, "Buscar jogos, ports de engenharia reversa, emuladores, IA, apps..."))
                             .desired_width(260.0),
                     );
-                    if !self.search.is_empty() && ui.small_button("✖").clicked() {
+                    if !self.search.is_empty() && icon_button(ui, "✖", &tr(self.lang, "Limpar busca")).clicked() {
                         self.search.clear();
                     }
 
                     ui.separator();
 
-                    ui.label(RichText::new("Plataforma:").size(12.0).color(Color32::GRAY));
+                    ui.label(RichText::new(tr(self.lang, "Plataforma:")).size(12.0).color(Color32::GRAY));
                     egui::ComboBox::from_id_salt("plat_combo")
                         .selected_text(&self.platform_filter)
                         .width(88.0)
@@ -1039,36 +1255,36 @@ impl eframe::App for StoreGui {
                             }
                         });
 
-                    ui.label(RichText::new("Ordenar:").size(12.0).color(Color32::GRAY));
+                    ui.label(RichText::new(tr(self.lang, "Ordenar:")).size(12.0).color(Color32::GRAY));
                     egui::ComboBox::from_id_salt("sort_combo")
                         .selected_text(match self.sort_by {
-                            SortBy::Stars => "Mais Populares",
-                            SortBy::Trust => "Maior Confiança",
-                            SortBy::Name => "Nome (A-Z)",
-                            SortBy::Updated => "Mais Recentes",
+                            SortBy::Stars => tr(self.lang, "Mais Populares"),
+                            SortBy::Trust => tr(self.lang, "Maior Confiança"),
+                            SortBy::Name => tr(self.lang, "Nome (A-Z)"),
+                            SortBy::Updated => tr(self.lang, "Mais Recentes"),
                         })
                         .width(120.0)
                         .show_ui(ui, |ui| {
-                            ui.selectable_value(&mut self.sort_by, SortBy::Stars, "Mais Populares");
-                            ui.selectable_value(&mut self.sort_by, SortBy::Trust, "Maior Confiança");
-                            ui.selectable_value(&mut self.sort_by, SortBy::Updated, "Mais Recentes");
-                            ui.selectable_value(&mut self.sort_by, SortBy::Name, "Nome (A-Z)");
+                            ui.selectable_value(&mut self.sort_by, SortBy::Stars, tr(self.lang, "Mais Populares"));
+                            ui.selectable_value(&mut self.sort_by, SortBy::Trust, tr(self.lang, "Maior Confiança"));
+                            ui.selectable_value(&mut self.sort_by, SortBy::Updated, tr(self.lang, "Mais Recentes"));
+                            ui.selectable_value(&mut self.sort_by, SortBy::Name, tr(self.lang, "Nome (A-Z)"));
                         });
 
                     ui.separator();
-                    ui.selectable_value(&mut self.grid_view, true, "⊞ Grade");
-                    ui.selectable_value(&mut self.grid_view, false, "☰ Lista");
+                    ui.selectable_value(&mut self.grid_view, true, tr(self.lang, "⊞ Grade"));
+                    ui.selectable_value(&mut self.grid_view, false, tr(self.lang, "☰ Lista"));
 
                     ui.separator();
                     ui.add(
                         egui::TextEdit::singleline(&mut self.add_repo_input)
-                            .hint_text("Adicionar dono/repo do GitHub")
+                            .hint_text(tr(self.lang, "Adicionar dono/repo do GitHub"))
                             .desired_width(185.0),
                     );
                     if ui
                         .add_enabled(
                             self.busy_task.is_none() && !self.add_repo_input.trim().is_empty(),
-                            egui::Button::new("+ Verificar Repo"),
+                            egui::Button::new(tr(self.lang, "+ Verificar Repo")),
                         )
                         .clicked()
                     {
@@ -1086,12 +1302,12 @@ impl eframe::App for StoreGui {
                         .inner_margin(egui::Margin::same(10))
                         .show(ui, |ui| {
                             ui.vertical(|ui| {
-                                ui.horizontal(|ui| {
-                                    ui.label(RichText::new("🔑 GITHUB_TOKEN:").strong());
+                                ui.horizontal_wrapped(|ui| {
+                                    ui.label(RichText::new(tr(self.lang, "🔑 GITHUB_TOKEN:")).strong());
                                     ui.add(
                                         egui::TextEdit::singleline(&mut self.github_token_input)
                                             .password(true)
-                                            .hint_text("Opcional (5000 req/h no GitHub)")
+                                            .hint_text(tr(self.lang, "Opcional (5000 req/h no GitHub)"))
                                             .desired_width(200.0),
                                     );
                                     ui.add_space(8.0);
@@ -1099,11 +1315,19 @@ impl eframe::App for StoreGui {
                                     ui.add(
                                         egui::TextEdit::singleline(&mut self.vt_key_input)
                                             .password(true)
-                                            .hint_text("Opcional (consulta VirusTotal)")
+                                            .hint_text(tr(self.lang, "Opcional (consulta VirusTotal)"))
                                             .desired_width(200.0),
                                     );
-                                    if ui.button("💾 Salvar Chaves").clicked() {
+                                    ui.label(RichText::new("ANTHROPIC_API_KEY:").strong());
+                                    ui.add(
+                                        egui::TextEdit::singleline(&mut self.anthropic_key_input)
+                                            .password(true)
+                                            .hint_text(tr(self.lang, "Opcional (tradutor com IA)"))
+                                            .desired_width(200.0),
+                                    );
+                                    if ui.button(tr(self.lang, "💾 Salvar Chaves")).clicked() {
                                         if let Ok(conn) = db::open(&self.db_path) {
+                                            let _ = db::set_setting(&conn, crate::translator_ai::SETTING_KEY, &self.anthropic_key_input);
                                             let _ = db::set_setting(&conn, "github_token", &self.github_token_input);
                                             let _ = db::set_setting(&conn, "virustotal_api_key", &self.vt_key_input);
                                             self.status_msg = "Chaves de API salvas localmente no SQLite.".into();
@@ -1117,15 +1341,67 @@ impl eframe::App for StoreGui {
                                 ui.add_space(6.0);
 
                                 ui.horizontal_wrapped(|ui| {
-                                    ui.label(RichText::new("📚 Biblioteca:").strong());
+                                    ui.label(RichText::new(self.tr("🌍 Idioma:")).strong());
+                                    for (lang, label) in [(Lang::Pt, "Português"), (Lang::En, "English")] {
+                                        if ui.selectable_label(self.lang == lang, label).clicked() && self.lang != lang {
+                                            self.lang = lang;
+                                            if let Ok(conn) = db::open(&self.db_path) {
+                                                let _ = db::set_setting(&conn, crate::i18n::SETTING_LANG, lang.code());
+                                            }
+                                        }
+                                    }
+                                    if self.lang == Lang::En {
+                                        ui.label(
+                                            RichText::new("App summaries come from each project's GitHub description.")
+                                                .size(11.0)
+                                                .color(Color32::GRAY),
+                                        );
+                                    }
+                                });
+
+                                ui.add_space(6.0);
+
+                                ui.horizontal_wrapped(|ui| {
+                                    ui.label(RichText::new(tr(self.lang, "🌐 Catálogo online:")).strong());
                                     ui.add(
-                                        egui::TextEdit::singleline(&mut self.library_path)
-                                            .hint_text("Arquivo rrs-biblioteca.json")
+                                        egui::TextEdit::singleline(&mut self.catalog_url)
+                                            .hint_text(tr(self.lang, "https://.../catalog.json (com catalog.json.sig ao lado)"))
                                             .desired_width(280.0),
                                     );
                                     if ui
-                                        .button("📤 Exportar biblioteca")
-                                        .on_hover_text("Salva a lista de apps instalados e o tempo de jogo, para reinstalar em outro PC")
+                                        .add_enabled(
+                                            self.busy_task.is_none() && !self.catalog_url.trim().is_empty(),
+                                            egui::Button::new(tr(self.lang, "🔄 Salvar e atualizar")),
+                                        )
+                                        .on_hover_text(
+                                            "Baixa o catálogo e a assinatura; só importa se a assinatura for de uma chave confiável, \
+                                             a versão não for mais antiga que a atual e a validade não tiver vencido.",
+                                        )
+                                        .clicked()
+                                    {
+                                        if let Ok(conn) = db::open(&self.db_path) {
+                                            let _ = db::set_setting(
+                                                &conn,
+                                                crate::catalog_sign::SETTING_URL,
+                                                self.catalog_url.trim(),
+                                            );
+                                        }
+                                        self.spawn_catalog_update();
+                                    }
+                                });
+
+                                ui.add_space(6.0);
+
+                                ui.horizontal_wrapped(|ui| {
+                                    ui.label(RichText::new(tr(self.lang, "📚 Biblioteca:")).strong());
+                                    ui.add(
+                                        egui::TextEdit::singleline(&mut self.library_path)
+                                            .hint_text(tr(self.lang, "Arquivo rrs-biblioteca.json"))
+                                            .desired_width(280.0),
+                                    );
+                                    if ui
+                                        .button(tr(self.lang, "📤 Exportar biblioteca"))
+                                        .on_hover_text(tr(self.lang, "Salva a lista de apps instalados e o tempo de jogo, para reinstalar em outro PC"))
                                         .clicked()
                                     {
                                         let path = PathBuf::from(self.library_path.trim());
@@ -1136,8 +1412,8 @@ impl eframe::App for StoreGui {
                                         };
                                     }
                                     if ui
-                                        .button("📥 Importar biblioteca")
-                                        .on_hover_text("Lê um rrs-biblioteca.json de outro PC: os apps entram em Biblioteca › Para reinstalar")
+                                        .button(tr(self.lang, "📥 Importar biblioteca"))
+                                        .on_hover_text(tr(self.lang, "Lê um rrs-biblioteca.json de outro PC: os apps entram em Biblioteca › Para reinstalar"))
                                         .clicked()
                                     {
                                         let path = PathBuf::from(self.library_path.trim());
@@ -1167,14 +1443,14 @@ impl eframe::App for StoreGui {
                                 ui.add_space(6.0);
 
                                 ui.horizontal(|ui| {
-                                    ui.label(RichText::new("📦 Catálogo Local:").strong());
+                                    ui.label(RichText::new(tr(self.lang, "📦 Catálogo Local:")).strong());
                                     ui.label(
-                                        RichText::new(format!("{} itens carregados", self.apps.len()))
+                                        RichText::new(format!("{} {}", self.apps.len(), tr(self.lang, "itens carregados")))
                                             .color(Color32::from_rgb(170, 185, 205)),
                                     );
 
                                     ui.add_space(10.0);
-                                    if ui.button("📤 Exportar Catálogo JSON").clicked() {
+                                    if ui.button(tr(self.lang, "📤 Exportar Catálogo JSON")).clicked() {
                                         if let Ok(conn) = db::open(&self.db_path) {
                                             match db::export_catalog(&conn, &self.catalog_path) {
                                                 Ok(n) => {
@@ -1192,7 +1468,7 @@ impl eframe::App for StoreGui {
                                         }
                                     }
 
-                                    if ui.button("📥 Reimportar catalog.json").clicked() {
+                                    if ui.button(tr(self.lang, "📥 Reimportar catalog.json")).clicked() {
                                         if let Ok(conn) = db::open(&self.db_path) {
                                             match db::import_catalog(&conn, &self.catalog_path) {
                                                 Ok(n) => {
@@ -1208,14 +1484,14 @@ impl eframe::App for StoreGui {
                                         }
                                     }
 
-                                    if ui.button("📁 Abrir Pasta do Catálogo").clicked() {
+                                    if ui.button(tr(self.lang, "📁 Abrir Pasta do Catálogo")).clicked() {
                                         if let Some(parent) = self.catalog_path.parent().or_else(|| std::path::Path::new(".").into()) {
                                             let _ = std::process::Command::new("explorer").arg(parent).spawn();
                                         }
                                     }
 
                                     ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-                                        if ui.small_button("✖ Fechar").clicked() {
+                                        if ui.small_button(tr(self.lang, "✖ Fechar")).clicked() {
                                             self.show_settings = false;
                                         }
                                     });
@@ -1234,31 +1510,44 @@ impl eframe::App for StoreGui {
             )
             .show(ctx, |ui| {
                 ui.horizontal(|ui| {
-                    let dl = self.download_state.lock().unwrap().clone();
-                    if let DownloadState::Downloading {
-                        repo,
-                        asset_name,
-                        downloaded_bytes,
-                        total_bytes,
-                    } = dl
-                    {
-                        let frac = if total_bytes > 0 {
-                            (downloaded_bytes as f32 / total_bytes as f32).clamp(0.0, 1.0)
-                        } else {
-                            0.5
-                        };
-                        let mb_done = downloaded_bytes as f64 / 1_048_576.0;
-                        let mb_tot = total_bytes as f64 / 1_048_576.0;
-                        ui.label(
-                            RichText::new(format!("⬇ Baixando {repo} ({asset_name}):"))
-                                .color(Color32::from_rgb(100, 200, 255))
-                                .strong(),
-                        );
-                        ui.add(
-                            egui::ProgressBar::new(frac)
-                                .desired_width(260.0)
-                                .text(format!("{mb_done:.1} / {mb_tot:.1} MB ({:.0}%)", frac * 100.0)),
-                        );
+                    let jobs = self.downloads.snapshot();
+                    let queued = jobs.iter().filter(|j| j.state == JobState::Queued).count();
+                    let running: Vec<_> = jobs
+                        .iter()
+                        .filter_map(|j| match j.state {
+                            JobState::Downloading { downloaded_bytes, total_bytes } => {
+                                Some((j, downloaded_bytes, total_bytes))
+                            }
+                            _ => None,
+                        })
+                        .collect();
+                    if !running.is_empty() || queued > 0 {
+                        for (job, downloaded_bytes, total_bytes) in &running {
+                            let frac = if *total_bytes > 0 {
+                                (*downloaded_bytes as f32 / *total_bytes as f32).clamp(0.0, 1.0)
+                            } else {
+                                0.5
+                            };
+                            let mb_done = *downloaded_bytes as f64 / 1_048_576.0;
+                            let mb_tot = *total_bytes as f64 / 1_048_576.0;
+                            ui.label(
+                                RichText::new(format!("⬇ {} {}:", friendly_title(&job.repo), job.tag))
+                                    .color(Color32::from_rgb(100, 200, 255))
+                                    .strong(),
+                            )
+                            .on_hover_text(&job.asset_name);
+                            ui.add(
+                                egui::ProgressBar::new(frac)
+                                    .desired_width(170.0)
+                                    .text(format!("{mb_done:.1}/{mb_tot:.1} MB ({:.0}%)", frac * 100.0)),
+                            );
+                        }
+                        if queued > 0 {
+                            ui.label(
+                                RichText::new(format!("+{queued} {}", tr(self.lang, "na fila")))
+                                    .color(Color32::from_rgb(175, 185, 200)),
+                            );
+                        }
                     } else {
                         let color = if self.status_is_error {
                             Color32::from_rgb(255, 110, 110)
@@ -1270,7 +1559,7 @@ impl eframe::App for StoreGui {
 
                     ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
                         ui.label(
-                            RichText::new(format!("{} projetos verificados no catálogo", self.apps.len()))
+                            RichText::new(format!("{} {}", self.apps.len(), tr(self.lang, "projetos verificados no catálogo")))
                                 .size(11.5)
                                 .color(Color32::from_rgb(115, 125, 140)),
                         );
@@ -1359,16 +1648,16 @@ impl StoreGui {
                     ui.set_min_width(ui.available_width());
                     // Selos quebram linha em janelas estreitas (antes se sobrepunham aos botões de navegação)
                     ui.horizontal_wrapped(|ui| {
-                        draw_pill(ui, "★ DESTAQUE", accent);
+                        draw_pill(ui, &tr(self.lang, "★ DESTAQUE"), accent);
                         let (k_label, k_col) = kind_badge(hero.kind.as_deref());
-                        draw_pill(ui, k_label, k_col);
+                        draw_pill(ui, &tr(self.lang, k_label), k_col);
                         if let Some(cat) = &hero.category {
                             draw_pill(ui, cat, Color32::from_rgb(48, 58, 78));
                         }
                         if hero.is_rust() {
-                            draw_pill(ui, "🦀 Rust", RUST_ORANGE);
+                            draw_pill(ui, &tr(self.lang, "🦀 Rust"), RUST_ORANGE);
                         }
-                        let (t_label, t_col) = trust_badge(hero.trust_score, &hero.trust_level);
+                        let (t_label, t_col) = trust_badge(hero.trust_score, self.lang);
                         draw_pill(ui, &t_label, t_col);
                     });
 
@@ -1380,7 +1669,7 @@ impl StoreGui {
                             .color(Color32::WHITE),
                     );
                     ui.label(
-                        RichText::new(hero.display_summary())
+                        RichText::new(self.summary_of(hero))
                             .size(14.5)
                             .color(Color32::from_rgb(205, 215, 232)),
                     );
@@ -1388,9 +1677,12 @@ impl StoreGui {
                     ui.add_space(6.0);
                     ui.label(
                         RichText::new(format!(
-                            "★ {} estrelas   •   Versão {}   •   Plataformas: {}",
+                            "★ {} {}   •   {} {}   •   {} {}",
                             format_stars(hero.stars),
+                            tr(self.lang, "estrelas"),
+                            tr(self.lang, "Versão"),
                             hero.latest_tag,
+                            tr(self.lang, "Plataformas:"),
                             short_platforms(&hero.platforms)
                         ))
                         .size(12.5)
@@ -1402,7 +1694,7 @@ impl StoreGui {
                         if ui
                             .add(
                                 egui::Button::new(
-                                    RichText::new("📦 Ver na Loja & Baixar com SHA-256")
+                                    RichText::new(tr(self.lang, "📦 Ver na Loja & Baixar com SHA-256"))
                                         .strong()
                                         .size(13.5),
                                 )
@@ -1416,7 +1708,7 @@ impl StoreGui {
                         }
 
                         ui.add_space(10.0);
-                        if ui.button("◀ Anterior").clicked() {
+                        if ui.button(tr(self.lang, "◀ Anterior")).clicked() {
                             self.featured_idx = (idx + featured_apps.len() - 1) % featured_apps.len();
                         }
                         ui.label(
@@ -1424,7 +1716,7 @@ impl StoreGui {
                                 .size(12.0)
                                 .color(Color32::GRAY),
                         );
-                        if ui.button("Próximo ▶").clicked() {
+                        if ui.button(tr(self.lang, "Próximo ▶")).clicked() {
                             self.featured_idx = (idx + 1) % featured_apps.len();
                         }
                     });
@@ -1553,21 +1845,21 @@ impl StoreGui {
         }
         ui.horizontal(|ui| {
             ui.label(
-                RichText::new(title)
+                RichText::new(tr(self.lang, title))
                     .size(17.5)
                     .strong()
                     .color(Color32::from_rgb(235, 240, 252)),
             );
             if let Some(nav) = target_nav {
                 ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-                    if ui.link("Ver todos →").clicked() {
+                    if ui.link(tr(self.lang, "Ver todos →")).clicked() {
                         self.section = nav;
                     }
                 });
             }
         });
         ui.label(
-            RichText::new(subtitle)
+            RichText::new(tr(self.lang, subtitle))
                 .size(12.0)
                 .color(Color32::from_rgb(140, 150, 170)),
         );
@@ -1580,6 +1872,10 @@ impl StoreGui {
     fn render_section_catalog(&mut self, ui: &mut egui::Ui) {
         let (title, subtitle) = match self.section {
             NavSection::Discover => ("🔎 Resultados da Busca", "Projetos verificados encontrados no catálogo."),
+            NavSection::Terminal => (
+                "⌨ Terminal (Rust)",
+                "Ferramentas de linha de comando já compiladas, baixadas da release oficial e conferidas pelo SHA-256.",
+            ),
             NavSection::MadeInRust => (
                 "🦀 Feito em Rust",
                 "Apps e jogos cuja linguagem principal no GitHub é Rust (segurança de memória sem coletor de lixo).",
@@ -1611,9 +1907,9 @@ impl StoreGui {
             NavSection::CppToRust => ("🦀 Tradutor C/C++ ➔ Rust", ""),
         };
 
-        ui.label(RichText::new(title).size(20.0).strong().color(Color32::WHITE));
+        ui.label(RichText::new(tr(self.lang, title)).size(20.0).strong().color(Color32::WHITE));
         ui.label(
-            RichText::new(subtitle)
+            RichText::new(tr(self.lang, subtitle))
                 .size(12.5)
                 .color(Color32::from_rgb(145, 155, 175)),
         );
@@ -1622,17 +1918,17 @@ impl StoreGui {
         if self.section == NavSection::ReverseEngineering {
             ui.add_space(8.0);
             ui.horizontal(|ui| {
-                ui.label(RichText::new("Mostrar:").size(12.5).color(Color32::GRAY));
-                ui.selectable_value(&mut self.re_subfilter, "todos".into(), "Todos de Eng. Reversa");
+                ui.label(RichText::new(tr(self.lang, "Mostrar:")).size(12.5).color(Color32::GRAY));
+                ui.selectable_value(&mut self.re_subfilter, "todos".into(), tr(self.lang, "Todos de Eng. Reversa"));
                 ui.selectable_value(
                     &mut self.re_subfilter,
                     "re-game".into(),
-                    "🧬 Jogos (Ports, Decompilações & Recompilações)",
+                    tr(self.lang, "🧬 Jogos (Ports, Decompilações & Recompilações)"),
                 );
                 ui.selectable_value(
                     &mut self.re_subfilter,
                     "re-app".into(),
-                    "🔬 Aplicativos & Ferramentas (Ghidra, ImHex, x64dbg)",
+                    tr(self.lang, "🔬 Aplicativos & Ferramentas (Ghidra, ImHex, x64dbg)"),
                 );
             });
         }
@@ -1642,7 +1938,7 @@ impl StoreGui {
             if outdated_count > 0 {
                 ui.add_space(8.0);
                 let btn = egui::Button::new(
-                    RichText::new(format!("⬆ Atualizar Todos os Aplicativos ({outdated_count} disponíveis)"))
+                    RichText::new(format!("{} ({outdated_count})", tr(self.lang, "⬆ Atualizar Todos os Aplicativos")))
                         .size(13.0)
                         .strong()
                         .color(Color32::WHITE),
@@ -1657,10 +1953,10 @@ impl StoreGui {
             }
         }
 
-        if self.section != NavSection::ReverseEngineering && self.section != NavSection::Library {
+        if !matches!(self.section, NavSection::ReverseEngineering | NavSection::Library | NavSection::Terminal) {
             ui.add_space(8.0);
             ui.horizontal_wrapped(|ui| {
-                ui.label(RichText::new("Filtro:").size(12.0).color(Color32::GRAY));
+                ui.label(RichText::new(tr(self.lang, "Filtro:")).size(12.0).color(Color32::GRAY));
                 let quick_tags = [
                     ("Todos", "todas"),
                     ("🎮 Jogos", "game"),
@@ -1673,7 +1969,7 @@ impl StoreGui {
                 ];
                 for (label, kind_val) in quick_tags {
                     let is_active = self.category_filter == kind_val;
-                    if ui.selectable_label(is_active, label).clicked() {
+                    if ui.selectable_label(is_active, tr(self.lang, label)).clicked() {
                         if is_active && kind_val != "todas" {
                             self.category_filter = "todas".into();
                         } else {
@@ -1685,6 +1981,9 @@ impl StoreGui {
         }
 
         ui.add_space(12.0);
+        if self.section == NavSection::Terminal {
+            self.render_crate_installer(ui);
+        }
 
         let filtered = self.filtered_apps();
         let (reinstall, outside_catalog) = if self.section == NavSection::Library {
@@ -1694,46 +1993,61 @@ impl StoreGui {
         };
         if filtered.is_empty() && reinstall.is_empty() && outside_catalog.is_empty() {
             ui.vertical_centered(|ui| {
-                ui.add_space(50.0);
+                ui.add_space(30.0);
                 ui.label(
-                    RichText::new("Nenhum item encontrado nesta seção com os filtros atuais.")
+                    RichText::new(self.tr("Nenhum item encontrado nesta seção com os filtros atuais."))
                         .size(15.5)
                         .color(Color32::GRAY),
                 );
             });
-            return;
         }
 
         self.render_cards_collection(ui, &filtered);
+        match self.section {
+            NavSection::Library => {
+                self.render_wishlist_part(ui, &reinstall, &outside_catalog);
+                self.render_windows_section(ui);
+                self.render_external_section(ui);
+            }
+            NavSection::Discover => self.render_winget_section(ui),
+            _ => {}
+        }
+    }
 
-        if !reinstall.is_empty() || !outside_catalog.is_empty() {
-            ui.add_space(14.0);
+    fn render_wishlist_part(&mut self, ui: &mut egui::Ui, reinstall: &[App], outside_catalog: &[String]) {
+        if reinstall.is_empty() && outside_catalog.is_empty() {
+            return;
+        }
+        ui.add_space(14.0);
+        ui.label(
+            RichText::new(format!(
+                "{} ({})",
+                self.tr("🔁 Para reinstalar"),
+                reinstall.len() + outside_catalog.len()
+            ))
+            .size(17.0)
+            .strong()
+            .color(Color32::WHITE),
+        );
+        ui.label(
+            RichText::new(self.tr(
+                "Vindos de uma biblioteca importada. Abra cada um e baixe; o tempo de jogo volta junto.",
+            ))
+            .size(12.0)
+            .color(Color32::from_rgb(145, 155, 175)),
+        );
+        ui.add_space(8.0);
+        self.render_cards_collection(ui, reinstall);
+        if !outside_catalog.is_empty() {
             ui.label(
                 RichText::new(format!(
-                    "🔁 Para reinstalar ({})",
-                    reinstall.len() + outside_catalog.len()
+                    "{} {}",
+                    self.tr("Fora do catálogo local (adicione pelo campo \"Adicionar dono/repo\"):"),
+                    outside_catalog.join(", ")
                 ))
-                .size(17.0)
-                .strong()
-                .color(Color32::WHITE),
+                .size(12.0)
+                .color(Color32::from_rgb(240, 195, 85)),
             );
-            ui.label(
-                RichText::new("Vindos de uma biblioteca importada. Abra cada um e baixe; o tempo de jogo volta junto.")
-                    .size(12.0)
-                    .color(Color32::from_rgb(145, 155, 175)),
-            );
-            ui.add_space(8.0);
-            self.render_cards_collection(ui, &reinstall);
-            if !outside_catalog.is_empty() {
-                ui.label(
-                    RichText::new(format!(
-                        "Fora do catálogo local (adicione pelo campo \"Adicionar dono/repo\"): {}",
-                        outside_catalog.join(", ")
-                    ))
-                    .size(12.0)
-                    .color(Color32::from_rgb(240, 195, 85)),
-                );
-            }
         }
     }
 
@@ -1821,15 +2135,15 @@ impl StoreGui {
                         ui.set_width(width - 24.0);
                         ui.horizontal(|ui| {
                             // Ícone oficial do projeto (avatar do GitHub com cache assíncrono)
-                            let owner = app.full_name.split('/').next().unwrap_or(&app.full_name);
-                            let avatar_url = format!("https://github.com/{owner}.png?size=64");
-                            ui.add(
-                                egui::Image::new(&avatar_url)
-                                    .fit_to_exact_size(Vec2::new(22.0, 22.0))
-                                    .corner_radius(CornerRadius::same(5)),
-                            );
+                            if let Some(avatar_url) = avatar_url(&app.full_name, 64) {
+                                ui.add(
+                                    egui::Image::new(&avatar_url)
+                                        .fit_to_exact_size(Vec2::new(22.0, 22.0))
+                                        .corner_radius(CornerRadius::same(5)),
+                                );
+                            }
 
-                            draw_pill(ui, kind_label, kind_color);
+                            draw_pill(ui, &tr(self.lang, kind_label), kind_color);
                             if app.is_rust() {
                                 draw_pill(ui, "🦀", RUST_ORANGE);
                             }
@@ -1854,11 +2168,10 @@ impl StoreGui {
                                 .color(Color32::WHITE),
                         );
 
-                        let owner = app.full_name.split('/').next().unwrap_or(&app.full_name);
                         ui.label(
                             RichText::new(format!(
                                 "{}  •  {}",
-                                owner,
+                                owner_label(&app.full_name),
                                 app.category.as_deref().unwrap_or("Geral")
                             ))
                             .size(11.0)
@@ -1866,7 +2179,7 @@ impl StoreGui {
                         );
 
                         ui.add_space(4.0);
-                        let sum = truncate_chars(app.display_summary(), 88);
+                        let sum = truncate_chars(&self.summary_of(app), 88);
                         ui.label(
                             RichText::new(sum)
                                 .size(12.2)
@@ -1898,7 +2211,7 @@ impl StoreGui {
                                 if ui
                                     .add(
                                         egui::Button::new(
-                                            RichText::new(btn_txt).size(11.5).strong().color(Color32::WHITE),
+                                            RichText::new(tr(self.lang, btn_txt)).size(11.5).strong().color(Color32::WHITE),
                                         )
                                         .fill(btn_col),
                                     )
@@ -1912,7 +2225,7 @@ impl StoreGui {
             })
             .response;
 
-        if resp.interact(egui::Sense::click()).clicked() {
+        if clickable_card(resp, &friendly_title(&app.full_name)).clicked() {
             self.select_app(&app.full_name);
         }
     }
@@ -1938,16 +2251,16 @@ impl StoreGui {
             .show(ui, |ui| {
                 ui.set_min_width(ui.available_width());
                 ui.horizontal(|ui| {
-                    let owner = app.full_name.split('/').next().unwrap_or(&app.full_name);
-                    let avatar_url = format!("https://github.com/{owner}.png?size=64");
-                    ui.add(
-                        egui::Image::new(&avatar_url)
-                            .fit_to_exact_size(Vec2::new(26.0, 26.0))
-                            .corner_radius(CornerRadius::same(5)),
-                    );
+                    if let Some(avatar_url) = avatar_url(&app.full_name, 64) {
+                        ui.add(
+                            egui::Image::new(&avatar_url)
+                                .fit_to_exact_size(Vec2::new(26.0, 26.0))
+                                .corner_radius(CornerRadius::same(5)),
+                        );
+                    }
 
                     let (kind_label, kind_color) = kind_badge(app.kind.as_deref());
-                    draw_pill(ui, kind_label, kind_color);
+                    draw_pill(ui, &tr(self.lang, kind_label), kind_color);
 
                     if let Some(cat) = &app.category {
                         if !cat.is_empty() {
@@ -1955,10 +2268,10 @@ impl StoreGui {
                         }
                     }
                     if app.is_rust() {
-                        draw_pill(ui, "🦀 Rust", RUST_ORANGE);
+                        draw_pill(ui, &tr(self.lang, "🦀 Rust"), RUST_ORANGE);
                     }
                     if app.attestation == github::ATTESTATION_PRESENT {
-                        draw_pill(ui, "🏗 Atestado", Color32::from_rgb(40, 100, 90));
+                        draw_pill(ui, &tr(self.lang, "🏗 Atestado"), Color32::from_rgb(40, 100, 90));
                     }
 
                     ui.label(
@@ -1969,17 +2282,17 @@ impl StoreGui {
                     );
 
                     if app.has_update() {
-                        draw_pill(ui, "⬆ ATUALIZAÇÃO", Color32::from_rgb(200, 120, 20));
+                        draw_pill(ui, &tr(self.lang, "⬆ ATUALIZAÇÃO"), Color32::from_rgb(200, 120, 20));
                     } else if let Some(inst) = &app.installed {
                         draw_pill(
                             ui,
-                            &format!("✔ Instalado ({})", inst.installed_tag),
+                            &format!("{} ({})", tr(self.lang, "✔ Instalado"), inst.installed_tag),
                             Color32::from_rgb(30, 125, 75),
                         );
                     }
 
                     ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-                        let (t_label, t_col) = trust_badge(app.trust_score, &app.trust_level);
+                        let (t_label, t_col) = trust_badge(app.trust_score, self.lang);
                         draw_pill(ui, &t_label, t_col);
 
                         ui.label(
@@ -1992,14 +2305,14 @@ impl StoreGui {
 
                 ui.add_space(4.0);
                 ui.label(
-                    RichText::new(app.display_summary())
+                    RichText::new(self.summary_of(app))
                         .size(13.0)
                         .color(Color32::from_rgb(190, 198, 212)),
                 );
             })
             .response;
 
-        if resp.interact(egui::Sense::click()).clicked() {
+        if clickable_card(resp, &friendly_title(&app.full_name)).clicked() {
             self.select_app(&app.full_name);
         }
     }
@@ -2007,21 +2320,21 @@ impl StoreGui {
     fn render_details_panel(&mut self, ui: &mut egui::Ui, app: &App) {
         ui.horizontal(|ui| {
             let (kind_label, kind_color) = kind_badge(app.kind.as_deref());
-            draw_pill(ui, kind_label, kind_color);
+            draw_pill(ui, &tr(self.lang, kind_label), kind_color);
             if let Some(cat) = &app.category {
                 draw_pill(ui, cat, Color32::from_rgb(52, 62, 82));
             }
         });
 
         ui.add_space(4.0);
-        let owner = app.full_name.split('/').next().unwrap_or(&app.full_name);
-        let avatar_url = format!("https://github.com/{owner}.png?size=128");
         ui.horizontal(|ui| {
-            ui.add(
-                egui::Image::new(&avatar_url)
-                    .fit_to_exact_size(Vec2::new(42.0, 42.0))
-                    .corner_radius(CornerRadius::same(8)),
-            );
+            if let Some(avatar_url) = avatar_url(&app.full_name, 128) {
+                ui.add(
+                    egui::Image::new(&avatar_url)
+                        .fit_to_exact_size(Vec2::new(42.0, 42.0))
+                        .corner_radius(CornerRadius::same(8)),
+                );
+            }
             ui.vertical(|ui| {
                 ui.label(
                     RichText::new(friendly_title(&app.full_name))
@@ -2041,21 +2354,22 @@ impl StoreGui {
         ui.add_space(4.0);
         ui.horizontal(|ui| {
             ui.label(
-                RichText::new(format!("★ {} estrelas", app.stars))
+                RichText::new(format!("★ {} {}", app.stars, tr(self.lang, "estrelas")))
                     .strong()
                     .color(Color32::from_rgb(245, 200, 75)),
             );
             ui.separator();
             ui.label(format!(
-                "Licença: {}",
+                "{} {}",
+                tr(self.lang, "Licença:"),
                 if app.license.is_empty() || app.license == "NOASSERTION" {
-                    "não informada"
+                    tr(self.lang, "não informada")
                 } else {
-                    &app.license
+                    app.license.clone()
                 }
             ));
             ui.separator();
-            if ui.link("GitHub Oficial ↗").clicked() {
+            if ui.link(tr(self.lang, "GitHub Oficial ↗")).clicked() {
                 if let Err(e) = downloader::open_url(&app.url) {
                     self.status_msg = format!("{e:#}");
                     self.status_is_error = true;
@@ -2067,20 +2381,20 @@ impl StoreGui {
         ui.add_space(4.0);
         ui.horizontal_wrapped(|ui| {
             if app.is_rust() {
-                draw_pill(ui, "🦀 Feito em Rust", RUST_ORANGE);
+                draw_pill(ui, &tr(self.lang, "🦀 Feito em Rust"), RUST_ORANGE);
             } else if !app.language.is_empty() {
-                draw_pill(ui, &format!("Linguagem: {}", app.language), Color32::from_rgb(52, 62, 82));
+                draw_pill(ui, &format!("{} {}", tr(self.lang, "Linguagem:"), app.language), Color32::from_rgb(52, 62, 82));
             }
             let attestation_hint = "O GitHub tem um atestado de build (artifact attestation) para o instalador recomendado: \
                 ele foi gerado pelo GitHub Actions a partir do código do repositório. A RRS só confere se o atestado existe; \
                 a assinatura pode ser conferida com `gh release verify-asset`.";
             match app.attestation.as_str() {
                 github::ATTESTATION_PRESENT => {
-                    draw_pill(ui, "🏗 Atestado de build: presente", Color32::from_rgb(40, 100, 90));
+                    draw_pill(ui, &tr(self.lang, "🏗 Atestado de build: presente"), Color32::from_rgb(40, 100, 90));
                     ui.label(RichText::new("ⓘ").color(Color32::GRAY)).on_hover_text(attestation_hint);
                 }
                 github::ATTESTATION_ABSENT => {
-                    draw_pill(ui, "🏗 Sem atestado de build", Color32::from_rgb(60, 66, 80));
+                    draw_pill(ui, &tr(self.lang, "🏗 Sem atestado de build"), Color32::from_rgb(60, 66, 80));
                     ui.label(RichText::new("ⓘ").color(Color32::GRAY)).on_hover_text(
                         "O instalador recomendado não tem atestado de build do GitHub. Isso é comum e não indica problema; \
                          só significa que a origem do arquivo não pode ser rastreada até o código por esse meio.",
@@ -2088,7 +2402,7 @@ impl StoreGui {
                 }
                 _ => {
                     ui.label(
-                        RichText::new("🏗 Atestado de build: não consultado (use \"Revalidar no GitHub\")")
+                        RichText::new(tr(self.lang, "🏗 Atestado de build: não consultado (use \"Revalidar no GitHub\")"))
                             .size(11.0)
                             .color(Color32::GRAY),
                     );
@@ -2098,7 +2412,7 @@ impl StoreGui {
 
         ui.add_space(8.0);
         ui.label(
-            RichText::new(app.display_summary())
+            RichText::new(self.summary_of(app))
                 .size(13.8)
                 .color(Color32::from_rgb(215, 222, 235)),
         );
@@ -2113,17 +2427,17 @@ impl StoreGui {
                 .inner_margin(egui::Margin::same(10))
                 .show(ui, |ui| {
                     ui.label(
-                        RichText::new("🔁 Na lista para reinstalar (biblioteca importada)")
+                        RichText::new(tr(self.lang, "🔁 Na lista para reinstalar (biblioteca importada)"))
                             .size(12.5)
                             .strong()
                             .color(Color32::from_rgb(170, 215, 245)),
                     );
                     ui.label(
-                        RichText::new("Ao baixar, o tempo de jogo do outro PC volta junto.")
+                        RichText::new(tr(self.lang, "Ao baixar, o tempo de jogo do outro PC volta junto."))
                             .size(11.5)
                             .color(Color32::from_rgb(170, 185, 205)),
                     );
-                    if ui.small_button("Tirar da lista").clicked() {
+                    if ui.small_button(tr(self.lang, "Tirar da lista")).clicked() {
                         remove = true;
                     }
                 });
@@ -2145,16 +2459,13 @@ impl StoreGui {
                 .inner_margin(egui::Margin::same(10))
                 .show(ui, |ui| {
                     ui.label(
-                        RichText::new("🧬 Port / Recompilação por Engenharia Reversa")
+                        RichText::new(tr(self.lang, "🧬 Port / Recompilação por Engenharia Reversa"))
                             .size(12.5)
                             .strong()
                             .color(Color32::from_rgb(210, 175, 255)),
                     );
                     ui.label(
-                        RichText::new(
-                            "Este projeto recria o motor do jogo para PC a partir de engenharia reversa e não inclui os arquivos do jogo. \
-                             Para jogos originalmente comerciais, o programa pede a sua cópia/ROM original na primeira abertura.",
-                        )
+                        RichText::new(tr(self.lang, "Este projeto recria o motor do jogo para PC a partir de engenharia reversa e não inclui os arquivos do jogo. Para jogos originalmente comerciais, o programa pede a sua cópia/ROM original na primeira abertura."))
                         .size(11.5)
                         .color(Color32::from_rgb(190, 180, 215)),
                     );
@@ -2171,14 +2482,14 @@ impl StoreGui {
             .inner_margin(egui::Margin::same(12))
             .show(ui, |ui| {
                 ui.label(
-                    RichText::new(format!("📦 Obter Aplicativo — Versão {}", app.latest_tag))
+                    RichText::new(format!("{} {}", tr(self.lang, "📦 Obter Aplicativo — Versão"), app.latest_tag))
                         .size(14.5)
                         .strong(),
                 );
                 ui.add_space(6.0);
 
                 if app.assets.is_empty() {
-                    ui.label("Nenhum instalador encontrado nesta Release.");
+                    ui.label(tr(self.lang, "Nenhum instalador encontrado nesta Release."));
                     return;
                 }
 
@@ -2186,7 +2497,7 @@ impl StoreGui {
                 let idx = self.selected_asset_idx.min(app.assets.len() - 1);
                 let chosen = &app.assets[idx];
 
-                ui.label(RichText::new("Instalador selecionado:").size(11.5).color(Color32::GRAY));
+                ui.label(RichText::new(tr(self.lang, "Instalador selecionado:")).size(11.5).color(Color32::GRAY));
                 egui::ComboBox::from_id_salt("asset_selector")
                     .width(ui.available_width() - 8.0)
                     .selected_text(format!(
@@ -2200,9 +2511,9 @@ impl StoreGui {
                             let label = format!(
                                 "{}{} ({:.1} MB) [{}]",
                                 if i == recommended_idx {
-                                    "★ Recomendado p/ seu PC: "
+                                    tr(self.lang, "★ Recomendado p/ seu PC: ")
                                 } else {
-                                    ""
+                                    String::new()
                                 },
                                 a.name,
                                 a.size as f64 / 1_048_576.0,
@@ -2215,14 +2526,14 @@ impl StoreGui {
                 ui.add_space(6.0);
                 if let Some(digest) = &chosen.digest {
                     ui.label(
-                        RichText::new(format!("✔ SHA-256 Oficial do GitHub:\n{digest}"))
+                        RichText::new(format!("{}\n{digest}", tr(self.lang, "✔ SHA-256 Oficial do GitHub:")))
                             .size(10.8)
                             .monospace()
                             .color(Color32::from_rgb(105, 215, 145)),
                     );
                 } else {
                     ui.label(
-                        RichText::new("• O hash SHA-256 será calculado e registrado durante o download.")
+                        RichText::new(tr(self.lang, "• O hash SHA-256 será calculado e registrado durante o download."))
                             .size(11.2)
                             .color(Color32::from_rgb(220, 185, 95)),
                     );
@@ -2230,15 +2541,14 @@ impl StoreGui {
 
                 ui.add_space(8.0);
 
-                let is_downloading = matches!(
-                    *self.download_state.lock().unwrap(),
-                    DownloadState::Downloading { .. }
-                );
+                let is_downloading = self.downloads.is_queued(&app.full_name, &app.latest_tag);
 
-                let dl_btn_label = if app.has_update() {
-                    format!("⬆ Atualizar para {} (Verificar SHA-256)", app.latest_tag)
+                let dl_btn_label = if is_downloading {
+                    tr(self.lang, "⏳ Na fila de downloads...")
+                } else if app.has_update() {
+                    format!("{} {} ({})", tr(self.lang, "⬆ Atualizar para"), app.latest_tag, tr(self.lang, "Verificar SHA-256"))
                 } else {
-                    "⬇ Baixar & Verificar SHA-256 Automaticamente".to_string()
+                    tr(self.lang, "⬇ Baixar & Verificar SHA-256 Automaticamente")
                 };
 
                 if ui
@@ -2260,11 +2570,14 @@ impl StoreGui {
 
                     let status_text = if app.has_update() {
                         format!(
-                            "Instalado: {} (Nova versão disponível: {})",
-                            inst.installed_tag, app.latest_tag
+                            "{} {} ({} {})",
+                            tr(self.lang, "Instalado:"),
+                            inst.installed_tag,
+                            tr(self.lang, "Nova versão disponível:"),
+                            app.latest_tag
                         )
                     } else {
-                        format!("✔ Pronto no PC — Versão {}", inst.installed_tag)
+                        format!("{} {}", tr(self.lang, "✔ Pronto no PC — Versão"), inst.installed_tag)
                     };
                     ui.label(
                         RichText::new(status_text)
@@ -2275,9 +2588,9 @@ impl StoreGui {
                         RichText::new(format!(
                             "SHA-256 ({}): {}",
                             if inst.verified_github_digest {
-                                "confirmado c/ GitHub"
+                                tr(self.lang, "confirmado c/ GitHub")
                             } else {
-                                "calculado"
+                                tr(self.lang, "calculado")
                             },
                             inst.sha256
                         ))
@@ -2288,7 +2601,8 @@ impl StoreGui {
                     if !inst.installed_at.is_empty() {
                         ui.label(
                             RichText::new(format!(
-                                "Baixado em: {}",
+                                "{} {}",
+                                tr(self.lang, "Baixado em:"),
                                 &inst.installed_at[..inst.installed_at.len().min(10)]
                             ))
                             .size(10.2)
@@ -2299,13 +2613,13 @@ impl StoreGui {
                     ui.add_space(4.0);
                     ui.horizontal(|ui| {
                         ui.label(
-                            RichText::new(format!("⏱ Tempo de Jogo: {}", inst.formatted_playtime()))
+                            RichText::new(format!("{} {}", tr(self.lang, "⏱ Tempo de Jogo:"), inst.formatted_playtime()))
                                 .size(11.5)
                                 .color(Color32::from_rgb(175, 215, 255)),
                         );
                         ui.add_space(6.0);
                         ui.label(
-                            RichText::new(format!("📅 Última vez: {}", inst.formatted_last_played()))
+                            RichText::new(format!("{} {}", tr(self.lang, "📅 Última vez:"), inst.formatted_last_played()))
                                 .size(11.5)
                                 .color(Color32::from_rgb(150, 165, 185)),
                         );
@@ -2313,7 +2627,7 @@ impl StoreGui {
 
                     ui.add_space(8.0);
                     let is_game = matches!(app.kind.as_deref(), Some("game" | "re-game"));
-                    let play_label = if is_game { "▶ JOGAR AGORA" } else { "▶ ABRIR APLICATIVO" };
+                    let play_label = if is_game { tr(self.lang, "▶ JOGAR AGORA") } else { tr(self.lang, "▶ ABRIR APLICATIVO") };
                     let play_btn = egui::Button::new(
                         RichText::new(play_label).size(13.5).strong().color(Color32::WHITE),
                     )
@@ -2322,42 +2636,21 @@ impl StoreGui {
                     .corner_radius(CornerRadius::same(6));
 
                     if ui.add(play_btn).clicked() {
-                        let path = self.installed_path(&inst.file_path);
-                        let repo_name = app.full_name.clone();
-                        let events = Arc::clone(&self.bg_events);
-                        self.status_msg = format!("▶ Iniciando {}...", friendly_title(&repo_name));
-                        self.status_is_error = false;
-                        std::thread::spawn(move || {
-                            let start = std::time::Instant::now();
-                            match downloader::launch_installed_app(&path) {
-                                Ok(Some(mut child)) => {
-                                    let _ = child.wait();
-                                    let elapsed = start.elapsed().as_secs();
-                                    events.lock().unwrap().push(BgEvent::PlaytimeUpdated {
-                                        repo: repo_name,
-                                        elapsed_seconds: elapsed,
-                                    });
-                                }
-                                Ok(None) => {}
-                                Err(e) => {
-                                    events.lock().unwrap().push(BgEvent::Error(format!("Erro ao iniciar: {e}")));
-                                }
-                            }
-                        });
+                        self.launch_installed(app);
                     }
 
                     ui.add_space(6.0);
                     ui.horizontal(|ui| {
-                        if ui.button("📂 Abrir Pasta").clicked() {
+                        if ui.button(tr(self.lang, "📂 Abrir Pasta")).clicked() {
                             let _ = downloader::reveal_in_folder(&self.installed_path(&inst.file_path));
                         }
 
                         if ui
                             .add_enabled(
                                 self.busy_task.is_none(),
-                                egui::Button::new("🛡️ Windows Defender"),
+                                egui::Button::new(tr(self.lang, "🛡️ Windows Defender")),
                             )
-                            .on_hover_text("Executa uma varredura nativa do Windows Defender no arquivo baixado sem custos")
+                            .on_hover_text(tr(self.lang, "Executa uma varredura nativa do Windows Defender no arquivo baixado sem custos"))
                             .clicked()
                         {
                             let path = self.installed_path(&inst.file_path);
@@ -2390,19 +2683,27 @@ impl StoreGui {
                             });
                         }
 
-                        if ui.button("🗑 Desinstalar").clicked() {
-                            let base_dir = self
-                                .catalog_path
-                                .parent()
-                                .map(|p| p.to_path_buf())
-                                .unwrap_or_else(|| PathBuf::from("."));
-                            let _ = downloader::uninstall_app(&base_dir, &app.full_name);
-                            if let Ok(conn) = db::open(&self.db_path) {
-                                let _ = db::unmark_installed(&conn, &app.full_name);
+                        // Dois cliques: a pasta do app em downloads/ pode ter saves dentro
+                        let confirming = self.uninstall_confirm.as_deref() == Some(app.full_name.as_str());
+                        let label = if confirming { self.tr("⚠ Confirmar remoção") } else { self.tr("🗑 Desinstalar") };
+                        if ui
+                            .button(label)
+                            .on_hover_text(self.tr("Apaga a pasta do app em downloads\\ e tira da biblioteca."))
+                            .clicked()
+                        {
+                            if !confirming {
+                                self.uninstall_confirm = Some(app.full_name.clone());
+                            } else {
+                                self.uninstall_confirm = None;
+                                let _ = downloader::uninstall_app(&self.base_dir(), &app.full_name);
+                                if let Ok(conn) = db::open(&self.db_path) {
+                                    let _ = db::unmark_installed(&conn, &app.full_name);
+                                }
+                                self.reload_from_db();
+                                self.status_msg =
+                                    format!("✔ {} {}", friendly_title(&app.full_name), self.tr("removido do computador."));
+                                self.status_is_error = false;
                             }
-                            self.reload_from_db();
-                            self.status_msg = format!("✔ {} removido do computador.", friendly_title(&app.full_name));
-                            self.status_is_error = false;
                         }
                     });
 
@@ -2424,6 +2725,9 @@ impl StoreGui {
                                 .color(Color32::from_rgb(180, 200, 225)),
                         );
                     }
+
+                    self.render_security_extras(ui, app, inst);
+                    self.render_saves_block(ui, app, inst);
                 }
             });
 
@@ -2441,18 +2745,14 @@ impl StoreGui {
         }
         if self.versions_open {
             ui.indent("versoes_anteriores", |ui| {
-                let is_downloading = matches!(
-                    *self.download_state.lock().unwrap(),
-                    DownloadState::Downloading { .. }
-                );
                 let Some(releases) = self.releases_cache.get(&app.full_name).cloned() else {
                     ui.label(
-                        RichText::new("Instale uma versão anterior se a mais nova der problema no seu PC.")
+                        RichText::new(tr(self.lang, "Instale uma versão anterior se a mais nova der problema no seu PC."))
                             .size(11.5)
                             .color(Color32::GRAY),
                     );
                     if ui
-                        .add_enabled(self.busy_task.is_none(), egui::Button::new("Carregar versões do GitHub"))
+                        .add_enabled(self.busy_task.is_none(), egui::Button::new(tr(self.lang, "Carregar versões do GitHub")))
                         .clicked()
                     {
                         self.spawn_load_releases(app.full_name.clone());
@@ -2460,7 +2760,7 @@ impl StoreGui {
                     return;
                 };
                 if releases.is_empty() {
-                    ui.label("Nenhuma release publicada.");
+                    ui.label(tr(self.lang, "Nenhuma release publicada."));
                     return;
                 }
                 let installed_tag = app.installed.as_ref().map(|i| i.installed_tag.clone());
@@ -2477,13 +2777,13 @@ impl StoreGui {
                             );
                         }
                         if rel.prerelease {
-                            draw_pill(ui, "pré-lançamento", Color32::from_rgb(150, 100, 20));
+                            draw_pill(ui, &tr(self.lang, "pré-lançamento"), Color32::from_rgb(150, 100, 20));
                         }
                         if rel.tag_name == app.latest_tag {
-                            draw_pill(ui, "mais recente", Color32::from_rgb(35, 95, 160));
+                            draw_pill(ui, &tr(self.lang, "mais recente"), Color32::from_rgb(35, 95, 160));
                         }
                         if installed_tag.as_deref() == Some(rel.tag_name.as_str()) {
-                            draw_pill(ui, "instalada", Color32::from_rgb(30, 125, 75));
+                            draw_pill(ui, &tr(self.lang, "instalada"), Color32::from_rgb(30, 125, 75));
                         }
                         match &best {
                             Some(asset) => {
@@ -2492,13 +2792,16 @@ impl StoreGui {
                                     asset.name,
                                     asset.size as f64 / 1_048_576.0,
                                     if asset.digest.is_some() {
-                                        "SHA-256 conferido com o GitHub"
+                                        tr(self.lang, "SHA-256 conferido com o GitHub")
                                     } else {
-                                        "release sem SHA-256 do GitHub (só calculado)"
+                                        tr(self.lang, "release sem SHA-256 do GitHub (só calculado)")
                                     }
                                 );
                                 if ui
-                                    .add_enabled(!is_downloading, egui::Button::new("⬇ Baixar"))
+                                    .add_enabled(
+                                        !self.downloads.is_queued(&app.full_name, &rel.tag_name),
+                                        egui::Button::new(tr(self.lang, "⬇ Baixar")),
+                                    )
                                     .on_hover_text(hint)
                                     .clicked()
                                 {
@@ -2506,7 +2809,7 @@ impl StoreGui {
                                 }
                             }
                             None => {
-                                ui.label(RichText::new("sem instalador").size(11.0).color(Color32::GRAY));
+                                ui.label(RichText::new(tr(self.lang, "sem instalador")).size(11.0).color(Color32::GRAY));
                             }
                         }
                     });
@@ -2517,7 +2820,7 @@ impl StoreGui {
         ui.add_space(12.0);
 
         // ─── BLOCO 2: VERIFICAÇÃO DE SEGURANÇA E PRECEDENTES ───────────────
-        let (t_label, t_col) = trust_badge(app.trust_score, &app.trust_level);
+        let (t_label, t_col) = trust_badge(app.trust_score, self.lang);
         egui::Frame::NONE
             .fill(Color32::from_rgb(16, 19, 26))
             .stroke(Stroke::new(1.0_f32, t_col))
@@ -2525,7 +2828,7 @@ impl StoreGui {
             .inner_margin(egui::Margin::same(12))
             .show(ui, |ui| {
                 ui.horizontal(|ui| {
-                    ui.label(RichText::new("🛡 Auditoria de Precedentes").size(14.5).strong());
+                    ui.label(RichText::new(tr(self.lang, "🛡 Auditoria de Precedentes")).size(14.5).strong());
                     ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
                         draw_pill(ui, &t_label, t_col);
                     });
@@ -2535,7 +2838,7 @@ impl StoreGui {
                 ui.add(
                     egui::ProgressBar::new(app.trust_score as f32 / 100.0)
                         .fill(t_col)
-                        .text(format!("Índice de Confiança: {}/100", app.trust_score)),
+                        .text(format!("{} {}/100", tr(self.lang, "Índice de Confiança:"), app.trust_score)),
                 );
 
                 ui.add_space(8.0);
@@ -2549,7 +2852,7 @@ impl StoreGui {
                     if ui
                         .add_enabled(
                             self.busy_task.is_none(),
-                            egui::Button::new("🔄 Revalidar no GitHub"),
+                            egui::Button::new(tr(self.lang, "🔄 Revalidar no GitHub")),
                         )
                         .clicked()
                     {
@@ -2559,9 +2862,9 @@ impl StoreGui {
                     if ui
                         .add_enabled(
                             self.busy_task.is_none(),
-                            egui::Button::new("🔍 Checar no VirusTotal"),
+                            egui::Button::new(tr(self.lang, "🔍 Checar no VirusTotal")),
                         )
-                        .on_hover_text("Consulta os hashes oficiais da Release no VirusTotal sem baixar o arquivo")
+                        .on_hover_text(tr(self.lang, "Consulta os hashes oficiais da Release no VirusTotal sem baixar o arquivo"))
                         .clicked()
                     {
                         self.spawn_fetch_or_verify(app.full_name.clone(), true);
@@ -2574,17 +2877,17 @@ impl StoreGui {
     fn render_translator_studio(&mut self, ui: &mut egui::Ui) {
         ui.horizontal(|ui| {
             ui.label(
-                RichText::new("🦀 Tradutor de C / C++ para Rust — RRS Studio")
+                RichText::new(tr(self.lang, "🦀 Tradutor de C / C++ para Rust — RRS Studio"))
                     .size(21.0)
                     .strong()
                     .color(Color32::from_rgb(245, 140, 75)),
             );
-            draw_pill(ui, "OFFLINE & INSTANTÂNEO", Color32::from_rgb(30, 120, 75));
-            draw_pill(ui, "VALIDADOR RUSTC INTEGRADO", Color32::from_rgb(45, 95, 175));
+            draw_pill(ui, &tr(self.lang, "OFFLINE & INSTANTÂNEO"), Color32::from_rgb(30, 120, 75));
+            draw_pill(ui, &tr(self.lang, "VALIDADOR RUSTC INTEGRADO"), Color32::from_rgb(45, 95, 175));
         });
         ui.label(
             RichText::new(
-                "Converta estruturas, classes, headers de engenharia reversa, ponteiros, loops e containers STL (std::vector, std::string) de C/C++ para Rust.",
+                tr(self.lang, "Converta estruturas, classes, headers de engenharia reversa, ponteiros, loops e containers STL (std::vector, std::string) de C/C++ para Rust."),
             )
             .size(12.5)
             .color(Color32::from_rgb(155, 165, 185)),
@@ -2602,12 +2905,12 @@ impl StoreGui {
             .inner_margin(egui::Margin::symmetric(12, 10))
             .show(ui, |ui| {
                 ui.horizontal_wrapped(|ui| {
-                    ui.label(RichText::new("Modo de Conversão:").strong().size(12.5));
+                    ui.label(RichText::new(tr(self.lang, "Modo de Conversão:")).strong().size(12.5));
                     if ui
                         .selectable_value(
                             &mut self.translate_mode,
                             TranslateMode::SafeRust,
-                            "🦀 Rust Idiomático & Seguro (Vec, String, &mut)",
+                            tr(self.lang, "🦀 Rust Idiomático & Seguro (Vec, String, &mut)"),
                         )
                         .clicked()
                     {
@@ -2617,7 +2920,7 @@ impl StoreGui {
                         .selectable_value(
                             &mut self.translate_mode,
                             TranslateMode::FfiBindings,
-                            "🔗 FFI / ABI C (#[repr(C)], *mut T, extern \"C\")",
+                            tr(self.lang, "🔗 FFI / ABI C (#[repr(C)], *mut T, extern \"C\")"),
                         )
                         .clicked()
                     {
@@ -2626,10 +2929,10 @@ impl StoreGui {
 
                     ui.separator();
 
-                    ui.label(RichText::new("Exemplos:").size(12.0).color(Color32::GRAY));
+                    ui.label(RichText::new(tr(self.lang, "Exemplos:")).size(12.0).color(Color32::GRAY));
                     for (idx, ex) in translator::EXAMPLES.iter().enumerate() {
                         if ui
-                            .button(format!("Exemplo {}", idx + 1))
+                            .button(format!("{} {}", tr(self.lang, "Exemplo"), idx + 1))
                             .on_hover_text(format!("{}\n{}", ex.name, ex.description))
                             .clicked()
                         {
@@ -2646,7 +2949,7 @@ impl StoreGui {
                 ui.horizontal_wrapped(|ui| {
                     if ui
                         .add(
-                            egui::Button::new(RichText::new("⚡ Traduzir").strong())
+                            egui::Button::new(RichText::new(tr(self.lang, "⚡ Traduzir")).strong())
                                 .fill(Color32::from_rgb(200, 95, 40)),
                         )
                         .clicked()
@@ -2657,13 +2960,13 @@ impl StoreGui {
                     if ui
                         .add(
                             egui::Button::new(
-                                RichText::new("✔ Validar Sintaxe no rustc")
+                                RichText::new(tr(self.lang, "✔ Validar Sintaxe no rustc"))
                                     .strong()
                                     .color(Color32::WHITE),
                             )
                             .fill(Color32::from_rgb(30, 130, 75)),
                         )
-                        .on_hover_text("Compila o código Rust gerado usando o rustc local para garantir que não há erros")
+                        .on_hover_text(tr(self.lang, "Compila o código Rust gerado usando o rustc local para garantir que não há erros"))
                         .clicked()
                     {
                         let res = translator::verify_rust_syntax(&self.rust_output);
@@ -2682,7 +2985,7 @@ impl StoreGui {
 
                     if ui
                         .add(
-                            egui::Button::new(RichText::new("📋 Copiar Rust").strong())
+                            egui::Button::new(RichText::new(tr(self.lang, "📋 Copiar Rust")).strong())
                                 .fill(Color32::from_rgb(45, 95, 165)),
                         )
                         .clicked()
@@ -2696,13 +2999,13 @@ impl StoreGui {
                 ui.add_space(8.0);
 
                 ui.horizontal_wrapped(|ui| {
-                    ui.label(RichText::new("Arquivo (.c/.cpp/.h/.rs):").size(12.0).color(Color32::GRAY));
+                    ui.label(RichText::new(tr(self.lang, "Arquivo (.c/.cpp/.h/.rs):")).size(12.0).color(Color32::GRAY));
                     ui.add(
                         egui::TextEdit::singleline(&mut self.file_io_path)
-                            .hint_text("Caminho de arquivo para carregar (.cpp/.h) ou salvar (.rs)")
+                            .hint_text(tr(self.lang, "Caminho de arquivo para carregar (.cpp/.h) ou salvar (.rs)"))
                             .desired_width(290.0),
                     );
-                    if ui.button("📂 Carregar C/C++").clicked() && !self.file_io_path.trim().is_empty() {
+                    if ui.button(tr(self.lang, "📂 Carregar C/C++")).clicked() && !self.file_io_path.trim().is_empty() {
                         match std::fs::read_to_string(self.file_io_path.trim()) {
                             Ok(content) => {
                                 self.cpp_input = content;
@@ -2717,7 +3020,7 @@ impl StoreGui {
                             }
                         }
                     }
-                    if ui.button("💾 Salvar .rs").clicked() && !self.file_io_path.trim().is_empty() {
+                    if ui.button(tr(self.lang, "💾 Salvar .rs")).clicked() && !self.file_io_path.trim().is_empty() {
                         match std::fs::write(self.file_io_path.trim(), &self.rust_output) {
                             Ok(_) => {
                                 self.status_msg = format!("Código Rust salvo em: {}", self.file_io_path.trim());
@@ -2733,13 +3036,13 @@ impl StoreGui {
                     if ui
                         .add(
                             egui::Button::new(
-                                RichText::new("📦 Gerar Projeto Cargo")
+                                RichText::new(tr(self.lang, "📦 Gerar Projeto Cargo"))
                                     .strong()
                                     .color(Color32::from_rgb(255, 210, 140)),
                             )
                             .fill(Color32::from_rgb(52, 38, 20)),
                         )
-                        .on_hover_text("Cria uma pasta completa com Cargo.toml e src/main.rs pronta para 'cargo run'")
+                        .on_hover_text(tr(self.lang, "Cria uma pasta completa com Cargo.toml e src/main.rs pronta para 'cargo run'"))
                         .clicked()
                     {
                         let base_dir = self
@@ -2770,7 +3073,9 @@ impl StoreGui {
                 });
             });
 
-        ui.add_space(10.0);
+        ui.add_space(6.0);
+        self.render_ai_translate(ui);
+        ui.add_space(6.0);
 
         // Editor Lado a Lado: C/C++ (Esquerda)  ➔  Rust (Direita)
         let editor_height = (ui.available_height() - 135.0).max(240.0);
@@ -2781,9 +3086,9 @@ impl StoreGui {
             ui.vertical(|ui| {
                 ui.set_width(half_w);
                 ui.horizontal(|ui| {
-                    draw_pill(ui, "ENTRADA C / C++", Color32::from_rgb(55, 85, 140));
+                    draw_pill(ui, &tr(self.lang, "ENTRADA C / C++"), Color32::from_rgb(55, 85, 140));
                     ui.label(
-                        RichText::new("Cole seu código .c, .cpp, .h ou .hpp abaixo (tradução em tempo real)")
+                        RichText::new(tr(self.lang, "Cole seu código .c, .cpp, .h ou .hpp abaixo (tradução em tempo real)"))
                             .size(11.5)
                             .color(Color32::GRAY),
                     );
@@ -2814,9 +3119,9 @@ impl StoreGui {
             ui.vertical(|ui| {
                 ui.set_width(half_w);
                 ui.horizontal(|ui| {
-                    draw_pill(ui, "SAÍDA RUST (.RS)", Color32::from_rgb(195, 85, 35));
+                    draw_pill(ui, &tr(self.lang, "SAÍDA RUST (.RS)"), Color32::from_rgb(195, 85, 35));
                     ui.label(
-                        RichText::new("Você também pode editar o código Rust gerado antes de validar/salvar")
+                        RichText::new(tr(self.lang, "Você também pode editar o código Rust gerado antes de validar/salvar"))
                             .size(11.5)
                             .color(Color32::GRAY),
                     );
@@ -2854,7 +3159,7 @@ impl StoreGui {
             .show(ui, |ui| {
                 ui.set_min_width(ui.available_width());
                 ui.label(
-                    RichText::new("📋 Notas de Conversão & Verificação do Compilador")
+                    RichText::new(tr(self.lang, "📋 Notas de Conversão & Verificação do Compilador"))
                         .size(13.0)
                         .strong()
                         .color(Color32::WHITE),
@@ -2880,7 +3185,7 @@ impl StoreGui {
                         }
                         Err(err_msg) => {
                             ui.label(
-                                RichText::new(format!("Diagnóstico do rustc:\n{err_msg}"))
+                                RichText::new(format!("{}\n{err_msg}", tr(self.lang, "Diagnóstico do rustc:")))
                                     .size(11.2)
                                     .monospace()
                                     .color(Color32::from_rgb(255, 140, 120)),
@@ -2981,6 +3286,7 @@ fn kind_badge(kind: Option<&str>) -> (&'static str, Color32) {
         Some("game") => ("JOGO GRÁTIS", Color32::from_rgb(40, 140, 85)),
         Some("app") => ("APLICATIVO", Color32::from_rgb(35, 115, 195)),
         Some("tool") => ("FERRAMENTA", Color32::from_rgb(95, 110, 130)),
+        Some("cli") => ("TERMINAL", Color32::from_rgb(70, 95, 70)),
         _ => ("ITEM", Color32::from_rgb(75, 80, 95)),
     }
 }
@@ -3081,7 +3387,33 @@ fn friendly_title(full_name: &str) -> String {
         "espanso/espanso" => "Espanso (Expansor de Texto)".into(),
         "gyroflow/gyroflow" => "Gyroflow (Estabilização de Vídeo)".into(),
         "a-b-street/abstreet" => "A/B Street (Simulador de Trânsito)".into(),
-        other => other.split('/').nth(1).unwrap_or(other).to_string(),
+        "BurntSushi/ripgrep" => "ripgrep (rg)".into(),
+        "sharkdp/bat" => "bat".into(),
+        "sharkdp/fd" => "fd".into(),
+        "sharkdp/hyperfine" => "hyperfine".into(),
+        "ajeetdsouza/zoxide" => "zoxide".into(),
+        "starship/starship" => "Starship (Prompt)".into(),
+        other => other.rsplit('/').next().unwrap_or(other).to_string(),
+    }
+}
+
+/// Avatar do dono no GitHub; outras forjas não têm um endereço público padronizado.
+fn avatar_url(full_name: &str, size: u32) -> Option<String> {
+    if crate::forge::is_other_forge(full_name) {
+        return None;
+    }
+    let owner = full_name.split('/').next()?;
+    Some(format!("https://github.com/{owner}.png?size={size}"))
+}
+
+/// "dono" no GitHub; "dono (codeberg.org)" nas outras forjas.
+fn owner_label(full_name: &str) -> String {
+    let mut parts = full_name.split('/');
+    let first = parts.next().unwrap_or(full_name);
+    if crate::forge::is_other_forge(full_name) {
+        format!("{} ({first})", parts.next().unwrap_or(""))
+    } else {
+        first.to_string()
     }
 }
 
@@ -3129,13 +3461,13 @@ fn trust_short_badge(score: i32) -> (String, Color32) {
     }
 }
 
-fn trust_badge(score: i32, _level: &str) -> (String, Color32) {
+fn trust_badge(score: i32, lang: Lang) -> (String, Color32) {
     if score >= 70 {
-        (format!("✔ {score}/100 Verificado"), Color32::from_rgb(30, 135, 75))
+        (format!("✔ {score}/100 {}", tr(lang, "Verificado")), Color32::from_rgb(30, 135, 75))
     } else if score >= 40 {
-        (format!("⚠ {score}/100 Atenção"), Color32::from_rgb(185, 130, 20))
+        (format!("⚠ {score}/100 {}", tr(lang, "Atenção")), Color32::from_rgb(185, 130, 20))
     } else {
-        (format!("✘ {score}/100 Alto Risco"), Color32::from_rgb(185, 45, 45))
+        (format!("✘ {score}/100 {}", tr(lang, "Alto Risco")), Color32::from_rgb(185, 45, 45))
     }
 }
 
@@ -3151,6 +3483,23 @@ fn clean_and_color_note(note: &str) -> (String, Color32) {
     } else {
         (format!("• {note}"), Color32::from_rgb(190, 200, 215))
     }
+}
+
+/// Card clicável com nome acessível: o leitor de tela anuncia o título do app como botão
+/// (sem isso o card era só uma área clicável sem nome).
+fn clickable_card(resp: egui::Response, title: &str) -> egui::Response {
+    let resp = resp.interact(egui::Sense::click());
+    let label = title.to_string();
+    resp.widget_info(move || egui::WidgetInfo::labeled(egui::WidgetType::Button, true, &label));
+    resp
+}
+
+/// Botão só com ícone, com nome acessível e dica ao passar o mouse.
+fn icon_button(ui: &mut egui::Ui, icon: &str, name: &str) -> egui::Response {
+    let resp = ui.small_button(icon).on_hover_text(name);
+    let label = name.to_string();
+    resp.widget_info(move || egui::WidgetInfo::labeled(egui::WidgetType::Button, true, &label));
+    resp
 }
 
 fn draw_pill(ui: &mut egui::Ui, text: &str, bg: Color32) {
@@ -3180,6 +3529,29 @@ mod tests {
         let entries: Vec<db::CatalogEntry> =
             serde_json::from_str(db::EMBEDDED_CATALOG.trim_start_matches('\u{feff}')).unwrap();
         entries.into_iter().map(|e| e.full_name).collect()
+    }
+
+    /// O leitor de tela precisa receber o nome do app no card clicável e no botão de ícone.
+    #[test]
+    fn cards_e_botoes_de_icone_tem_nome_para_leitor_de_tela() {
+        let ctx = egui::Context::default();
+        ctx.enable_accesskit();
+        let out = ctx.run(egui::RawInput::default(), |ctx| {
+            egui::CentralPanel::default().show(ctx, |ui| {
+                let resp = egui::Frame::NONE.show(ui, |ui| ui.label("conteúdo do card")).response;
+                clickable_card(resp, "Ship of Harkinian");
+                icon_button(ui, "✖", "Limpar busca");
+            });
+        });
+        let update = out.platform_output.accesskit_update.expect("AccessKit ligado");
+        let has = |name: &str| {
+            update
+                .nodes
+                .iter()
+                .any(|(_, n)| n.label() == Some(name) && n.role() == egui::accesskit::Role::Button)
+        };
+        assert!(has("Ship of Harkinian"), "card sem nome acessível");
+        assert!(has("Limpar busca"), "botão de ícone sem nome acessível");
     }
 
     #[test]

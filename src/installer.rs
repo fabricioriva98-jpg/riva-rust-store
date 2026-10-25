@@ -251,6 +251,32 @@ fn create_windows_shortcuts_and_path(
     Ok(())
 }
 
+/// Garante a pasta no PATH do usuário (sem duplicar). Usado pelo "Adicionar ao terminal".
+pub fn add_dir_to_user_path(dir: &Path) -> Result<()> {
+    #[cfg(target_os = "windows")]
+    {
+        let dir_str = dir.to_string_lossy().replace('\'', "''");
+        let script = format!(
+            "$userPath = [Environment]::GetEnvironmentVariable('Path', 'User');\n\
+             if ($null -eq $userPath) {{ $userPath = '' }}\n\
+             $parts = $userPath -split ';' | Where-Object {{ $_ -ne '' }};\n\
+             if ($parts -notcontains '{dir_str}') {{\n\
+                 $newPath = ($parts + '{dir_str}') -join ';';\n\
+                 [Environment]::SetEnvironmentVariable('Path', $newPath, 'User');\n\
+             }}\n"
+        );
+        let status = Command::new("powershell")
+            .args(["-NoProfile", "-NonInteractive", "-WindowStyle", "Hidden", "-Command", &script])
+            .status()
+            .context("não foi possível executar o PowerShell")?;
+        if !status.success() {
+            bail!("não foi possível atualizar o PATH do usuário");
+        }
+    }
+    let _ = dir;
+    Ok(())
+}
+
 fn remove_windows_shortcuts() -> Result<()> {
     #[cfg(target_os = "windows")]
     {
