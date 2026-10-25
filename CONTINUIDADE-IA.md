@@ -106,7 +106,19 @@ Linha de comando útil: `search`, `show dono/repo`, `verify dono/repo`, `downloa
 - Otimizador não inventa valor: dado que não foi lido aparece como `optimizer::NOT_READ`.
 - Nenhum caminho deste PC (`E:\Fabricio`, `C:\Users\fabri`) no código (`codigo_distribuido_nao_tem_caminhos_deste_pc`).
 
-Feito e testado: avaliação, correções G1–G3, fases 1, 2 e 3 do `IDEIAS-MELHORIAS-24.10.26.md` (resumo lá), rodada social e identidade visual com espaço educacional interativo. Catálogo com 133 itens. Testes automatizados aumentados para 138 (todos passando).
+Feito e testado: avaliação, correções G1–G3, fases 1, 2 e 3 do `IDEIAS-MELHORIAS-24.10.26.md` (resumo lá), rodada social e identidade visual com espaço educacional interativo. Catálogo com 133 itens. Testes automatizados mantidos em 138 (todos passando).
+
+Rodada Terminal & IDE Dedicada do Rust Aprimorada: Abas, Histórico ↑/↓ e Console Moderno (25/10, noite — Antigravity / Gemini):
+- **Organização em 3 Abas Dedicadas (`gui/terminal_studio.rs`)**:
+  - `💻 Editor & IDE`: editor de código integrado com realce de sintaxe, botões de compilação/execução (`▶ Compilar & Rodar (rustc)` e `🧹 Limpar Código`), status do compilador e 6 templates rápidos injetáveis (`Olá Mundo`, `Calculadora / Funções`, `Concorrência / Threads`, `Servidor HTTP / Tokio`, `Leitura & JSON / Serde`, `CLI com Argumentos`).
+  - `⚡ Console & Terminal`: janela de terminal inspirada em ferramentas modernas com barra de título estilizada (`🔴 🟡 🟢`), pills de status de execução (`Pronto`, `Executando...`, `Concluído`, `Falhou`), buffer com colorização inteligente de logs do Cargo/rustc (`Compiling`, `warning:`, `error:`, comandos `$ cargo`), entrada interativa com histórico ↑ / ↓ e botões de `🧹 Limpar Console` e `📋 Copiar Saída`.
+  - `📦 Projetos & Ferramentas`: gerador de projetos Cargo (`--bin` e `--lib`), gerenciador de dependências com adição interativa (`cargo add`) e chips rápidos de crates populares (`serde`, `tokio`, `anyhow`, `rand`, `clap`, `reqwest`), atalhos de utilitários (`cargo clippy`, `cargo doc --open`, `cargo clean`, `rustc --version`, `rustup show`), integração de abertura no Windows Explorer (`📂 Abrir Pasta no Explorer`) e no terminal nativo do sistema (`🪟 Abrir no Terminal Nativo` via Windows Terminal ou PowerShell).
+- **Navegação de Histórico no Terminal com Setas Cima/Baixo (`terminal_studio.rs`, `gui.rs`, `gui/terminal_studio.rs`)**:
+  - Adicionado vetor de histórico de comandos (`terminal_cmd_history`) e índice de navegação (`terminal_cmd_history_idx`). Ao digitar um comando e pressionar Enter ou clicar em Executar, o comando é gravado no histórico. Pressionar a seta para cima (`ArrowUp`) ou para baixo (`ArrowDown`) percorre os comandos anteriores preservando o texto digitado.
+- **Barra de Atalhos Rápidos Cargo com Preservação de Regras**:
+  - Mantidos atalhos rápidos fixos no rodapé do console (`⚡ cargo check`, `🔨 cargo build`, `▶ cargo run`, `🧪 cargo test`, `📎 cargo clippy`, `📚 cargo doc --open`, `🧹 cargo clean`) garantindo conformidade estrita com o teste de segurança `terminal_so_recebe_o_que_o_usuario_digita`.
+- **Internacionalização e Testes**: paridade rigorosa na tabela `i18n.rs::TABLE` com 22 novos termos traduzidos e substituição de chaves obsoletas. Todos os **138 testes unitários passando 100%** (incluindo `todo_texto_traduzivel_tem_ingles`, `tabela_sem_repeticao_nem_sobra` e `terminal_so_recebe_o_que_o_usuario_digita`), 0 novos avisos no Clippy.
+- **Binários de Release**: executáveis `RRS - Riva Rust Store.exe` e `Instalador - RRS Riva Rust Store.exe` recompilados em modo release (18.066.432 bytes) e validados por CLI (`search "rust"`). Backups prévios em `Obsoleto\gitstore-exe-antes-melhorar-terminal-rust-25.10.26\`.
 
 Rodada Sincronização Diária com o GitHub & Atualizações sob Demanda (25/10, fim de tarde — Antigravity / Gemini):
 - **Sincronização Diária Automática e sob Demanda com GitHub (`db.rs`, `gui.rs`, `gui/settings.rs`)**:

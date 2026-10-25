@@ -200,6 +200,33 @@ pub fn create_cargo_project(parent_dir: &Path, name: &str, is_bin: bool) -> Resu
     }
 }
 
+/// Abre o terminal nativo do Windows (Windows Terminal 'wt' ou PowerShell) na pasta indicada.
+pub fn open_native_terminal(working_dir: &Path) -> Result<(), String> {
+    let dir = if working_dir.is_dir() { working_dir } else { Path::new(".") };
+    let wt = Command::new("wt")
+        .arg("-d")
+        .arg(dir)
+        .spawn();
+    if wt.is_ok() {
+        return Ok(());
+    }
+    Command::new("powershell")
+        .args(["-NoExit", "-Command", &format!("Set-Location '{}'", dir.display())])
+        .spawn()
+        .map_err(|e| format!("Não foi possível abrir o terminal: {e}"))?;
+    Ok(())
+}
+
+/// Abre a pasta no Windows Explorer.
+pub fn open_in_explorer(working_dir: &Path) -> Result<(), String> {
+    let dir = if working_dir.is_dir() { working_dir } else { Path::new(".") };
+    Command::new("explorer")
+        .arg(dir)
+        .spawn()
+        .map_err(|e| format!("Não foi possível abrir o Windows Explorer: {e}"))?;
+    Ok(())
+}
+
 /// Avalia uma expressão Rust ou código instantâneo gerando uma compilação temporária em rustc.
 pub fn eval_rust_expression(expr: &str, cancel: &AtomicBool) -> TerminalOutput {
     let start = Instant::now();
