@@ -60,6 +60,9 @@ enum SortBy {
     Updated,
 }
 
+/// Linhas guardadas no console do terminal integrado (as mais antigas saem primeiro).
+const MAX_TERMINAL_LINES: usize = 5000;
+
 /// Fila de resultados das tarefas em segundo plano. Quem empurra um evento acorda a tela
 /// (`request_repaint`), porque a interface não fica redesenhando sem motivo.
 struct BgQueue {
@@ -166,8 +169,9 @@ enum BgEvent {
         startup: Vec<crate::optimizer::StartupApp>,
         actions: Vec<crate::optimizer::OptimizationItem>,
     },
-    OptimizerActionFinished(Result<String, String>),
+    OptimizerActionFinished(Result<crate::optimizer::ActionOutcome, String>),
     TerminalCommandFinished(crate::terminal_studio::TerminalOutput),
+    IdeActionFinished(Result<String, String>),
     DevEnvDetected {
         env: crate::terminal_studio::RustEnvInfo,
         ides: Vec<crate::ide::IdeInfo>,
@@ -349,6 +353,8 @@ pub struct StoreGui {
     optimizer_confirm: Option<&'static str>,
     /// Resultado da última ação, mostrado de novo quando o diagnóstico seguinte termina
     optimizer_action_result: Option<(String, bool)>,
+    /// Plano de energia de antes da otimização (botão "Voltar ao plano anterior")
+    optimizer_prev_power: Option<String>,
     optimizer_program_search: String,
     optimizer_tab: usize,
     external_store_filter: Option<crate::launchers::Store>,
@@ -365,6 +371,12 @@ pub struct StoreGui {
     // Terminal Integrado & Espelho de IDEs
     terminal_logs: Vec<(crate::terminal_studio::TerminalLineKind, String)>,
     terminal_working_dir: PathBuf,
+    /// Campo editável da pasta de trabalho do terminal
+    terminal_dir_input: String,
+    /// Botão Parar do terminal e do avaliador
+    terminal_cancel: Arc<std::sync::atomic::AtomicBool>,
+    /// Botão Parar das lições
+    learn_cancel: Arc<std::sync::atomic::AtomicBool>,
     terminal_cmd_input: String,
     terminal_is_running: bool,
     terminal_repl_input: String,
@@ -403,6 +415,10 @@ impl StoreGui {
             .to_string_lossy()
             .to_string();
 
+        let optimizer_prev_power = db::open(&db_path)
+            .ok()
+            .and_then(|c| db::get_setting(&c, crate::optimizer::SETTING_PREVIOUS_POWER))
+            .filter(|g| !g.is_empty());
         let mut theme = crate::theme::AppTheme::Antigravity;
         let mut accent_color = crate::theme::AccentColor::NeonCyan;
         let mut performance_mode = crate::performance::PerformanceMode::Normal;
@@ -543,6 +559,7 @@ impl StoreGui {
             optimizer_is_scanning: false,
             optimizer_confirm: None,
             optimizer_action_result: None,
+            optimizer_prev_power,
             optimizer_program_search: String::new(),
             optimizer_tab: 0,
             external_store_filter: None,
@@ -553,6 +570,9 @@ impl StoreGui {
             rust_lib_active_tab: 0,
             terminal_logs: Vec::new(),
             terminal_working_dir: PathBuf::new(),
+            terminal_dir_input: String::new(),
+            terminal_cancel: Arc::new(std::sync::atomic::AtomicBool::new(false)),
+            learn_cancel: Arc::new(std::sync::atomic::AtomicBool::new(false)),
             terminal_cmd_input: String::new(),
             terminal_is_running: false,
             terminal_repl_input: String::new(),
@@ -1051,13 +1071,33 @@ impl StoreGui {
                 BgEvent::OptimizerActionFinished(res) => {
                     self.busy_task = None;
                     let result = match res {
-                        Ok(msg) => (format!("✔ {msg}"), false),
+                        Ok(outcome) => {
+                            // Guarda o plano de energia anterior (ou esquece, depois de restaurar)
+                            if let Ok(conn) = db::open(&self.db_path) {
+                                if let Some(prev) = &outcome.previous_power_scheme {
+                                    let _ = db::set_setting(&conn, crate::optimizer::SETTING_PREVIOUS_POWER, prev);
+                                    self.optimizer_prev_power = Some(prev.clone());
+                                }
+                                if outcome.power_restored {
+                                    let _ = db::set_setting(&conn, crate::optimizer::SETTING_PREVIOUS_POWER, "");
+                                    self.optimizer_prev_power = None;
+                                }
+                            }
+                            (format!("✔ {}", outcome.message), false)
+                        }
                         Err(e) => (format!("❌ {e}"), true),
                     };
                     (self.status_msg, self.status_is_error) = result.clone();
                     self.optimizer_action_result = Some(result);
                     // Diagnóstico de novo só depois da ação, para mostrar o estado já alterado
                     self.spawn_optimizer_scan();
+                }
+                BgEvent::IdeActionFinished(res) => {
+                    self.busy_task = None;
+                    (self.status_msg, self.status_is_error) = match res {
+                        Ok(msg) => (format!("✔ {msg}"), false),
+                        Err(e) => (format!("❌ {e}"), true),
+                    };
                 }
                 BgEvent::DevEnvDetected { env, ides } => {
                     self.rust_env_info = Some(env);
@@ -1066,7 +1106,6 @@ impl StoreGui {
                 }
                 BgEvent::TerminalCommandFinished(out) => {
                     self.terminal_is_running = false;
-                    self.busy_task = None;
                     if !out.stdout.is_empty() {
                         for line in out.stdout.lines() {
                             self.terminal_logs.push((
@@ -1088,10 +1127,16 @@ impl StoreGui {
                     } else {
                         format!("❌ {} ({:.2}s)", self.tr("Comando falhou"), (out.elapsed_ms as f64) / 1000.0)
                     };
+                    if let Some(n) = &out.notice {
+                        self.terminal_logs.push((crate::terminal_studio::TerminalLineKind::SystemInfo, format!("⏹ {n}")));
+                    }
                     self.terminal_logs.push((
                         crate::terminal_studio::TerminalLineKind::SystemInfo,
                         status_txt.clone(),
                     ));
+                    // Histórico do console limitado (a saída de cada comando já é limitada a 1 MB)
+                    let excess = self.terminal_logs.len().saturating_sub(MAX_TERMINAL_LINES);
+                    self.terminal_logs.drain(..excess);
                     self.status_msg = status_txt;
                     self.status_is_error = !out.success;
                 }
@@ -3869,6 +3914,38 @@ mod tests {
             }
         }
         panic!("o egui continua pedindo pintura sem motivo");
+    }
+
+    #[test]
+    fn terminal_so_recebe_o_que_o_usuario_digita() {
+        // O terminal roda qualquer comando no PowerShell: texto do catálogo, do GitHub ou da IA
+        // nunca pode chegar até ele. Só o campo digitado e os atalhos fixos da própria tela.
+        let sources = [
+            ("gui.rs", include_str!("gui.rs")),
+            ("gui/extras.rs", include_str!("gui/extras.rs")),
+            ("gui/learn.rs", include_str!("gui/learn.rs")),
+            ("gui/optimizer.rs", include_str!("gui/optimizer.rs")),
+            ("gui/phase3.rs", include_str!("gui/phase3.rs")),
+            ("gui/rust_lib.rs", include_str!("gui/rust_lib.rs")),
+            ("gui/settings.rs", include_str!("gui/settings.rs")),
+            ("gui/social.rs", include_str!("gui/social.rs")),
+            ("gui/tv.rs", include_str!("gui/tv.rs")),
+        ];
+        let call = ["spawn_terminal", "_cmd("].concat();
+        let run = ["run_terminal", "_command("].concat();
+        let eval = ["spawn_terminal", "_eval("].concat();
+        for (name, src) in sources {
+            let code = &src[..src.find("#[cfg(test)]").unwrap_or(src.len())];
+            for needle in [&call, &run, &eval] {
+                assert!(!code.contains(needle.as_str()), "{name} chama {needle}");
+            }
+        }
+        let ts = include_str!("gui/terminal_studio.rs");
+        let calls: Vec<&str> = ts.lines().map(str::trim).filter(|l| l.contains(&call) && !l.contains("fn ")).collect();
+        assert_eq!(calls, ["self.spawn_terminal_cmd(cmd);", "self.spawn_terminal_cmd(&cmd);"]);
+        assert!(ts.contains("let shortcuts = [\n                (\"⚡ cargo check\", \"cargo check\"),"), "atalhos devem ser literais");
+        assert!(ts.contains("let cmd = self.terminal_cmd_input.clone();"));
+        assert!(ts.contains("let expr = std::mem::take(&mut self.terminal_repl_input);"));
     }
 
     #[test]

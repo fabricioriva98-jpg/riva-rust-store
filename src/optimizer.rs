@@ -105,14 +105,12 @@ pub fn collect_system_specs() -> SystemSpecs {
         r"HKLM\HARDWARE\DESCRIPTION\System\CentralProcessor\0",
         "ProcessorNameString",
     )
-    .unwrap_or_else(|| "Processador x86_64".to_string())
+    .unwrap_or_else(|| NOT_READ.to_string())
     .trim()
     .to_string();
 
-    let cpu_threads = std::thread::available_parallelism()
-        .map(|p| p.get() as u32)
-        .unwrap_or(4);
-    let cpu_cores = (cpu_threads / 2).max(1);
+    // 0 = não foi possível ler (a tela mostra assim, sem chutar)
+    let cpu_threads = std::thread::available_parallelism().map(|p| p.get() as u32).unwrap_or(0);
 
     // 2. Placa de Vídeo (GPU)
     let gpu_name = query_registry_value(
@@ -125,7 +123,7 @@ pub fn collect_system_specs() -> SystemSpecs {
             "DriverDesc",
         )
     })
-    .unwrap_or_else(|| "Placa de Vídeo Integrada / Genérica".to_string())
+    .unwrap_or_else(|| NOT_READ.to_string())
     .trim()
     .to_string();
 
@@ -133,12 +131,12 @@ pub fn collect_system_specs() -> SystemSpecs {
         r"HKLM\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000",
         "DriverVersion",
     )
-    .unwrap_or_else(|| "Padrão".to_string())
+    .unwrap_or_else(|| NOT_READ.to_string())
     .trim()
     .to_string();
 
-    // 3. Memória RAM e Discos via PowerShell CIM
-    let (ram_total_gb, ram_free_gb, disks) = collect_ram_and_disks();
+    // 3. Memória RAM, núcleos físicos e discos via PowerShell CIM
+    let (ram_total_gb, ram_free_gb, disks, cpu_cores) = collect_ram_and_disks();
 
     SystemSpecs {
         cpu_name,
@@ -152,14 +150,20 @@ pub fn collect_system_specs() -> SystemSpecs {
     }
 }
 
-/// Consulta RAM e Discos locais com chamada direta e rápida via powershell.
-fn collect_ram_and_disks() -> (f64, f64, Vec<DiskInfo>) {
+/// Texto mostrado quando o Windows não informou um dado (antes a tela mostrava valores inventados).
+pub const NOT_READ: &str = "Não foi possível ler";
+
+/// Consulta RAM, núcleos físicos e discos locais com uma chamada ao PowerShell.
+/// Se falhar, devolve zeros e lista vazia: a tela mostra "Não foi possível ler", nunca um palpite.
+fn collect_ram_and_disks() -> (f64, f64, Vec<DiskInfo>, u32) {
     let script = r#"
 $os = Get-CimInstance Win32_OperatingSystem
 $disks = Get-CimInstance Win32_LogicalDisk -Filter 'DriveType=3' | Select-Object DeviceID, FreeSpace, Size
+$cores = (Get-CimInstance Win32_Processor | Measure-Object -Property NumberOfCores -Sum).Sum
 [PSCustomObject]@{
     RamTotal = [math]::Round($os.TotalVisibleMemorySize / 1024 / 1024, 2)
     RamFree = [math]::Round($os.FreePhysicalMemory / 1024 / 1024, 2)
+    Cores = $cores
     Disks = $disks
 } | ConvertTo-Json -Compress
 "#;
@@ -172,8 +176,9 @@ $disks = Get-CimInstance Win32_LogicalDisk -Filter 'DriveType=3' | Select-Object
         if output.status.success() {
             let text = String::from_utf8_lossy(&output.stdout);
             if let Ok(val) = serde_json::from_str::<serde_json::Value>(&text) {
-                let ram_total = val["RamTotal"].as_f64().unwrap_or(16.0);
-                let ram_free = val["RamFree"].as_f64().unwrap_or(8.0);
+                let ram_total = val["RamTotal"].as_f64().unwrap_or(0.0);
+                let ram_free = val["RamFree"].as_f64().unwrap_or(0.0);
+                let cores = val["Cores"].as_u64().unwrap_or(0) as u32;
                 let mut disks = Vec::new();
 
                 let disks_arr = if val["Disks"].is_array() {
@@ -206,18 +211,12 @@ $disks = Get-CimInstance Win32_LogicalDisk -Filter 'DriveType=3' | Select-Object
                     }
                 }
 
-                return (ram_total, ram_free, disks);
+                return (ram_total, ram_free, disks, cores);
             }
         }
     }
 
-    // Fallback razoável caso PowerShell falhe
-    (16.0, 8.0, vec![DiskInfo {
-        drive: "C:".into(),
-        total_gb: 256.0,
-        free_gb: 80.0,
-        used_pct: 68.0,
-    }])
+    (0.0, 0.0, Vec::new(), 0)
 }
 
 // ─── INVENTÁRIO DE PROGRAMAS INSTALADOS ────────────────────────────────────
@@ -365,11 +364,24 @@ pub fn query_power_schemes() -> (String, String, bool) {
     (active_name, active_guid, is_high_perf)
 }
 
-/// Verifica se o Modo Jogo do Windows (Game Mode) está ativado no registro.
-pub fn is_game_mode_enabled() -> bool {
-    query_registry_value(r"HKCU\Software\Microsoft\GameBar", "AllowAutoGameMode")
-        .map(|v| v.trim() == "0x1" || v.trim() == "1")
-        .unwrap_or(false)
+/// Estado do Modo Jogo gravado no registro: `Some(true/false)` quando o usuário mudou,
+/// `None` quando a chave não existe. [Inferência] Sem a chave vale o padrão do Windows 10/11,
+/// que é ligado; antes a RRS tratava a ausência como "desativado" e recomendava ligar o que já estava ligado.
+pub fn game_mode_setting() -> Option<bool> {
+    query_registry_value(r"HKCU\Software\Microsoft\GameBar", "AllowAutoGameMode").map(|v| parse_reg_bool(&v))
+}
+
+fn parse_reg_bool(v: &str) -> bool {
+    matches!(v.trim(), "0x1" | "1")
+}
+
+/// Texto e estado do Modo Jogo para a tela.
+pub fn game_mode_status(setting: Option<bool>) -> (bool, &'static str) {
+    match setting {
+        Some(true) => (true, "Ativado"),
+        Some(false) => (false, "Desativado"),
+        None => (true, "Ativado (padrão do Windows)"),
+    }
 }
 
 /// Arquivos da raiz de `dir` modificados há pelo menos `min_age` (subpastas ficam de fora), com o tamanho.
@@ -410,7 +422,7 @@ pub fn diagnose_optimizations() -> Vec<OptimizationItem> {
         id: "power_high_perf",
         title: "Plano de Energia de Alto Desempenho",
         category: "Energia & CPU",
-        description: "Garante frequência máxima de clock do processador e resposta instantânea em jogos e compilações Rust, evitando throttling de economia de energia.",
+        description: "Mantém o processador em frequência alta por mais tempo, o que ajuda em jogos e compilações. Em notebook gasta mais bateria e esquenta mais. A RRS guarda o plano atual para você poder voltar.",
         current_status: format!("Ativo: {power_name}"),
         recommended_status: "Alto Desempenho / Ultimate Performance".into(),
         is_optimal: is_high_perf,
@@ -419,13 +431,13 @@ pub fn diagnose_optimizations() -> Vec<OptimizationItem> {
     });
 
     // 2. Modo Jogo do Windows (Game Mode)
-    let game_mode = is_game_mode_enabled();
+    let (game_mode, game_mode_text) = game_mode_status(game_mode_setting());
     items.push(OptimizationItem {
         id: "game_mode",
         title: "Modo Jogo do Windows (Game Mode)",
         category: "Jogos & GPU",
-        description: "Prioriza processos de jogos em primeiro plano, alocando núcleos de CPU e memória dedicados e suspendendo tarefas em segundo plano.",
-        current_status: if game_mode { "Ativado (Prioridade máxima)".into() } else { "Padrão / Desativado".into() },
+        description: "Com um jogo aberto em primeiro plano, o Windows dá prioridade a ele e evita tarefas de fundo, como instalar atualizações e mostrar avisos de reinício.",
+        current_status: game_mode_text.into(),
         recommended_status: "Ativado".into(),
         is_optimal: game_mode,
         impact: "Médio",
@@ -450,17 +462,16 @@ pub fn diagnose_optimizations() -> Vec<OptimizationItem> {
         )),
     });
 
-    // 4. Otimização de Compilação Rust (Cargo / Defender)
-    let home_dir = std::env::var_os("USERPROFILE").map(PathBuf::from).unwrap_or_default();
-    let cargo_dir = home_dir.join(".cargo");
+    // 4. Compilação Rust mais rápida sem tirar a proteção do antivírus (Dev Drive)
+    // Fonte: https://learn.microsoft.com/windows/dev-drive/ (consultada em 25/10/2026)
     items.push(OptimizationItem {
-        id: "rust_defender_tip",
-        title: "Exclusão do Windows Defender para Rust Dev",
+        id: "rust_dev_drive",
+        title: "Pasta de projetos Rust mais rápida (Dev Drive)",
         category: "Desenvolvimento",
-        description: "O antivírus em tempo real inspeciona cada arquivo intermediário gerado pelo `rustc` na pasta `target/`, aumentando o tempo de compilação em até 40%.",
-        current_status: if cargo_dir.exists() { "Ambiente Cargo detectado".into() } else { "Iniciante".into() },
-        recommended_status: "Excluir pasta de projetos do escaneamento contínuo".into(),
-        is_optimal: true, // Item informativo com ação de guia
+        description: "O antivírus examina cada arquivo que o compilador cria, o que deixa builds grandes mais lentos. Excluir a pasta do Windows Defender tira a proteção dela; a Microsoft indica o Dev Drive como alternativa segura: uma unidade para código em que o Defender usa o modo de desempenho. Pede Windows 11 (build 22621.2338 ou mais nova), administrador e 50 GB livres.",
+        current_status: "Informativo".into(),
+        recommended_status: "Configurações › Sistema › Armazenamento › Configurações avançadas de armazenamento › Discos e volumes › Criar Dev Drive".into(),
+        is_optimal: true, // Item informativo: a RRS não altera discos nem o antivírus
         impact: "Alto para Rust",
         confirm: None,
     });
@@ -468,10 +479,49 @@ pub fn diagnose_optimizations() -> Vec<OptimizationItem> {
     items
 }
 
-/// Aplica uma ação de otimização de 1 clique de forma segura.
-pub fn apply_optimization(id: &str) -> Result<String> {
+/// Chave em `settings` com o GUID do plano de energia que estava ativo antes da RRS mudar.
+pub const SETTING_PREVIOUS_POWER: &str = "plano_energia_anterior";
+
+/// Resultado de uma ação do Otimizador.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ActionOutcome {
+    pub message: String,
+    /// GUID do plano de energia anterior (guardar para o botão "Voltar ao plano anterior")
+    pub previous_power_scheme: Option<String>,
+    /// O plano anterior foi restaurado (apagar o GUID guardado)
+    pub power_restored: bool,
+}
+
+impl ActionOutcome {
+    fn message(message: impl Into<String>) -> Self {
+        Self { message: message.into(), previous_power_scheme: None, power_restored: false }
+    }
+}
+
+/// GUID de plano de energia no formato do `powercfg` (8-4-4-4-12 hexadecimais).
+pub fn is_valid_scheme_guid(guid: &str) -> bool {
+    let parts: Vec<&str> = guid.split('-').collect();
+    parts.len() == 5
+        && parts.iter().zip([8, 4, 4, 4, 12]).all(|(p, n)| p.len() == n && p.chars().all(|c| c.is_ascii_hexdigit()))
+}
+
+/// Volta ao plano de energia guardado antes da otimização.
+pub fn restore_power_scheme(guid: &str) -> Result<ActionOutcome> {
+    if !is_valid_scheme_guid(guid) {
+        anyhow::bail!("Plano de energia guardado inválido: {guid}");
+    }
+    let status = Command::new("powercfg").args(["/setactive", guid]).status().context("falha ao executar powercfg")?;
+    if !status.success() {
+        anyhow::bail!("O Windows não aceitou voltar ao plano anterior (ele pode ter sido apagado).");
+    }
+    Ok(ActionOutcome { message: "Plano de energia anterior restaurado.".into(), previous_power_scheme: None, power_restored: true })
+}
+
+/// Aplica uma ação de otimização (só a partir de um clique do usuário).
+pub fn apply_optimization(id: &str) -> Result<ActionOutcome> {
     match id {
         "power_high_perf" => {
+            let (_, previous_guid, _) = query_power_schemes();
             // Tenta ativar Desempenho Máximo (Ultimate) ou Alto Desempenho (High Performance)
             let schemes = [
                 "81250311-f525-4fe4-801c-64cde27af3bf", // Ultimate Performance
@@ -492,7 +542,11 @@ pub fn apply_optimization(id: &str) -> Result<String> {
             }
 
             if applied {
-                Ok("Plano de energia de Alto Desempenho ativado com sucesso!".into())
+                Ok(ActionOutcome {
+                    message: "Plano de energia de Alto Desempenho ativado. Para voltar, use \"Voltar ao plano anterior\".".into(),
+                    previous_power_scheme: is_valid_scheme_guid(&previous_guid).then_some(previous_guid),
+                    power_restored: false,
+                })
             } else {
                 anyhow::bail!("Não foi possível alterar o plano de energia. Execute como Administrador se necessário.")
             }
@@ -505,7 +559,7 @@ pub fn apply_optimization(id: &str) -> Result<String> {
                 .context("falha ao executar reg.exe")?;
 
             if status.success() {
-                Ok("Modo Jogo do Windows ativado no registro com sucesso!".into())
+                Ok(ActionOutcome::message("Modo Jogo do Windows ativado."))
             } else {
                 anyhow::bail!("Falha ao gravar no registro do Windows.")
             }
@@ -515,13 +569,9 @@ pub fn apply_optimization(id: &str) -> Result<String> {
             let (removed_count, freed_bytes) =
                 clean_old_temp_files(&std::env::temp_dir(), TEMP_MIN_AGE, SystemTime::now());
             let freed_mb = freed_bytes / (1024 * 1024);
-            Ok(format!(
+            Ok(ActionOutcome::message(format!(
                 "Limpeza concluída: {removed_count} arquivos com mais de 7 dias removidos ({freed_mb} MB liberados)."
-            ))
-        }
-
-        "rust_defender_tip" => {
-            Ok("Dica: No Windows Defender, acesse 'Proteção contra vírus e ameaças' → 'Configurações de proteção' → 'Exclusões' e adicione a pasta dos seus projetos Rust para acelerar compilações em até 40%.".into())
+            )))
         }
 
         _ => anyhow::bail!("Ação de otimização desconhecida: {id}"),
@@ -589,6 +639,34 @@ HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\SystemCom
         assert!(recente.exists(), "arquivo recente pode estar em uso e deve ficar");
         assert!(na_subpasta.exists(), "subpastas ficam de fora");
         let _ = std::fs::remove_dir_all(&dir);
+    }
+
+    #[test]
+    fn modo_jogo_sem_chave_no_registro_e_o_padrao_ligado() {
+        assert_eq!(game_mode_status(None), (true, "Ativado (padrão do Windows)"));
+        assert_eq!(game_mode_status(Some(false)), (false, "Desativado"));
+        assert_eq!(game_mode_status(Some(true)), (true, "Ativado"));
+        assert!(parse_reg_bool("0x1") && !parse_reg_bool("0x0"));
+    }
+
+    #[test]
+    fn guid_do_plano_de_energia_e_validado_antes_do_powercfg() {
+        assert!(is_valid_scheme_guid("381b4222-f694-41f0-9685-ff5bb260df2e"));
+        assert!(!is_valid_scheme_guid("381b4222-f694-41f0-9685"));
+        assert!(!is_valid_scheme_guid("381b4222-f694-41f0-9685-ff5bb260df2e /x"));
+        assert!(!is_valid_scheme_guid("zzzzzzzz-f694-41f0-9685-ff5bb260df2e"));
+        assert!(restore_power_scheme("& calc").is_err());
+    }
+
+    #[test]
+    fn otimizador_nao_inventa_dados_nem_promete_numeros() {
+        let src = include_str!("optimizer.rs");
+        let code = &src[..src.find("#[cfg(test)]").unwrap()];
+        for proibido in ["256.0", "80.0,", "unwrap_or(16.0)", "até 40%", "Exclusões", "Placa de Vídeo Integrada / Genérica"] {
+            assert!(!code.contains(proibido), "texto ou valor inventado: {proibido}");
+        }
+        let item = diagnose_optimizations().into_iter().find(|i| i.id == "rust_dev_drive").unwrap();
+        assert!(item.description.contains("Dev Drive") && item.is_optimal);
     }
 
     #[test]

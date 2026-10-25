@@ -850,8 +850,11 @@ pub fn diagnose_beginner_error(stderr: &str) -> Option<String> {
     }
 }
 
-/// Compila e executa código Rust localmente de forma segura com o compilador `rustc` do sistema.
-pub fn compile_and_run(code: &str) -> RunResult {
+/// Compila e executa código Rust localmente com o compilador `rustc` do sistema.
+/// Compilação e execução têm tempo máximo e saída limitada ([`crate::subprocess`]); `cancel`
+/// é o botão Parar. Um `loop {}` de iniciante para sozinho em 10 s.
+pub fn compile_and_run(code: &str, cancel: &std::sync::atomic::AtomicBool) -> RunResult {
+    use crate::subprocess;
     let start = Instant::now();
     static COUNTER: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
     let n = COUNTER.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
@@ -863,25 +866,21 @@ pub fn compile_and_run(code: &str) -> RunResult {
     } else {
         stem
     });
+    let elapsed = || start.elapsed().as_millis() as u64;
 
     if let Err(e) = std::fs::write(&src_path, code) {
         return RunResult {
             success: false,
             output: format!("Erro ao criar arquivo temporário: {e}"),
-            elapsed_ms: start.elapsed().as_millis() as u64,
+            elapsed_ms: elapsed(),
             beginner_tip: None,
         };
     }
 
     // Compilação com rustc
-    let compile_output = std::process::Command::new("rustc")
-        .arg("--edition=2021")
-        .arg("-O")
-        .arg(&src_path)
-        .arg("-o")
-        .arg(&exe_path)
-        .output();
-
+    let mut compile = std::process::Command::new("rustc");
+    compile.arg("--edition=2021").arg("-O").arg(&src_path).arg("-o").arg(&exe_path);
+    let compile_output = subprocess::run_limited(compile, subprocess::COMPILE, Some(cancel));
     let _ = std::fs::remove_file(&src_path);
 
     let compile_res = match compile_output {
@@ -891,54 +890,64 @@ pub fn compile_and_run(code: &str) -> RunResult {
             return RunResult {
                 success: false,
                 output: format!("Não foi possível executar o `rustc`: {e}\nCertifique-se de que o Rust está instalado no seu computador."),
-                elapsed_ms: start.elapsed().as_millis() as u64,
+                elapsed_ms: elapsed(),
                 beginner_tip: Some("💡 Instalação do Rust: Você pode instalar o Rust oficial pelo site https://rustup.rs.".into()),
             };
         }
     };
 
-    if !compile_res.status.success() {
-        let stderr = String::from_utf8_lossy(&compile_res.stderr).to_string();
-        let tip = diagnose_beginner_error(&stderr);
+    if !compile_res.success() {
+        let tip = diagnose_beginner_error(&compile_res.stderr);
         let _ = std::fs::remove_file(&exe_path);
+        let header = match compile_res.notice(subprocess::COMPILE) {
+            Some(n) => format!("⏹ Compilação interrompida ({n})."),
+            None => "❌ Erro de Compilação:".to_string(),
+        };
         return RunResult {
             success: false,
-            output: format!("❌ Erro de Compilação:\n{}", stderr.trim()),
-            elapsed_ms: start.elapsed().as_millis() as u64,
+            output: format!("{header}\n{}", compile_res.stderr.trim()),
+            elapsed_ms: elapsed(),
             beginner_tip: tip,
         };
     }
 
     // Execução do executável compilado
-    let run_res = std::process::Command::new(&exe_path).output();
-
+    let run_res = subprocess::run_limited(std::process::Command::new(&exe_path), subprocess::RUN, Some(cancel));
     let _ = std::fs::remove_file(&exe_path);
+    let _ = std::fs::remove_file(exe_path.with_extension("pdb"));
 
     match run_res {
         Ok(out) => {
-            let stdout = String::from_utf8_lossy(&out.stdout).to_string();
-            let stderr = String::from_utf8_lossy(&out.stderr).to_string();
-            let elapsed_ms = start.elapsed().as_millis() as u64;
-
-            if out.status.success() {
-                let display_out = if stdout.is_empty() && stderr.is_empty() {
+            let elapsed_ms = elapsed();
+            let notice = out.notice(subprocess::RUN);
+            if out.success() {
+                let mut display_out = if out.stdout.is_empty() && out.stderr.is_empty() {
                     "✔ Programa executado com sucesso (nenhuma saída de texto gerada).".into()
-                } else if !stderr.is_empty() {
-                    format!("{}\n[Saída de Erro]:\n{}", stdout, stderr)
+                } else if !out.stderr.is_empty() {
+                    format!("{}\n[Saída de Erro]:\n{}", out.stdout, out.stderr)
                 } else {
-                    stdout
+                    out.stdout
                 };
-
+                if let Some(n) = notice {
+                    display_out.push_str(&format!("\n⚠ {n}"));
+                }
                 RunResult {
                     success: true,
                     output: display_out,
                     elapsed_ms,
                     beginner_tip: None,
                 }
+            } else if let Some(n) = notice.filter(|_| out.timed_out || out.cancelled) {
+                RunResult {
+                    success: false,
+                    output: format!("⏹ Programa interrompido ({n}).\n{}\n{}", out.stdout, out.stderr),
+                    elapsed_ms,
+                    beginner_tip: Some("💡 Dica: Um `loop` sem `break` (ou um `while` cuja condição nunca fica falsa) roda para sempre. Confira a condição de parada.".into()),
+                }
             } else {
                 RunResult {
                     success: false,
-                    output: format!("❌ O programa encerrou com falha:\n{}\n{}", stdout, stderr),
+                    output: format!("❌ O programa encerrou com falha:\n{}\n{}", out.stdout, out.stderr),
                     elapsed_ms,
                     beginner_tip: Some("💡 Dica: Verifique se houve algum `panic!` no código (ex.: índice fora dos limites do vetor ou divisão inesperada).".into()),
                 }
@@ -947,7 +956,7 @@ pub fn compile_and_run(code: &str) -> RunResult {
         Err(e) => RunResult {
             success: false,
             output: format!("Falha ao iniciar o programa compilado: {e}"),
-            elapsed_ms: start.elapsed().as_millis() as u64,
+            elapsed_ms: elapsed(),
             beginner_tip: None,
         },
     }
@@ -1060,12 +1069,25 @@ mod tests {
                 println!("RRS_TESTE_OK_123");
             }
         "#;
-        let res = compile_and_run(code);
+        let res = compile_and_run(code, &std::sync::atomic::AtomicBool::new(false));
         if res.output.contains("Não foi possível executar o `rustc`") {
             // Em ambiente sem rustc no PATH de testes, ignora
             return;
         }
         assert!(res.success, "falha na execução: {}", res.output);
         assert!(res.output.contains("RRS_TESTE_OK_123"));
+    }
+
+    #[test]
+    fn licao_com_laco_infinito_para_sozinha_com_dica() {
+        let code = "fn main() { let mut n: u64 = 0; loop { n = n.wrapping_add(1); std::hint::black_box(n); } }";
+        let res = compile_and_run(code, &std::sync::atomic::AtomicBool::new(false));
+        if res.output.contains("Não foi possível executar o `rustc`") {
+            return;
+        }
+        assert!(!res.success);
+        assert!(res.output.contains("tempo máximo"), "{}", res.output);
+        assert!(res.beginner_tip.as_deref().is_some_and(|t| t.contains("loop")));
+        assert!(res.elapsed_ms < 40_000, "{}", res.elapsed_ms);
     }
 }

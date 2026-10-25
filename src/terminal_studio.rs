@@ -1,9 +1,15 @@
 //! Terminal Integrado e Espelhado de Desenvolvimento da RRS.
 //! Permite executar comandos Cargo, rustc, rustup, git e utilitários de sistema diretamente no aplicativo
 //! de forma assíncrona, com histórico de comandos e botões rápidos de produtividade.
+//!
+//! Tudo roda por [`crate::subprocess::run_limited`]: tempo máximo, botão Parar e saída limitada.
+//! Regra (o teste `terminal_so_recebe_o_que_o_usuario_digita` em `gui.rs` cobra): o terminal só
+//! executa o que o usuário digita ou os atalhos fixos; nunca texto do catálogo, do GitHub ou da IA.
 
-use std::path::Path;
-use std::process::{Command, Stdio};
+use crate::subprocess::{self, Limits};
+use std::path::{Path, PathBuf};
+use std::process::Command;
+use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
 use std::time::Instant;
 
 /// Tipo de saída de linha do terminal.
@@ -15,15 +21,6 @@ pub enum TerminalLineKind {
     SystemInfo,
 }
 
-/// Uma entrada de log no console do terminal integrado.
-#[derive(Debug, Clone)]
-#[allow(dead_code)]
-pub struct TerminalLine {
-    pub kind: TerminalLineKind,
-    pub text: String,
-    pub timestamp: String,
-}
-
 /// Resultado da execução de um comando no terminal.
 #[derive(Debug, Clone)]
 pub struct TerminalOutput {
@@ -33,13 +30,34 @@ pub struct TerminalOutput {
     pub stderr: String,
     pub success: bool,
     pub elapsed_ms: u64,
+    /// Parado por tempo máximo ou pelo botão Parar, ou saída cortada
+    pub notice: Option<String>,
+}
+
+impl TerminalOutput {
+    fn failed(command: String, stderr: String, elapsed_ms: u64) -> Self {
+        Self { command, stdout: String::new(), stderr, success: false, elapsed_ms, notice: None }
+    }
+}
+
+/// Pasta padrão dos projetos do terminal e das lições exportadas: `Documentos\Projetos Rust`.
+/// Antes era a pasta de dados da RRS (onde fica o banco, com as chaves de API) ou, no modo
+/// portátil, a própria pasta do programa.
+pub fn default_projects_dir() -> PathBuf {
+    let documents = crate::optimizer::query_registry_value(
+        r"HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders",
+        "Personal",
+    )
+    .map(PathBuf::from)
+    .filter(|p| p.is_dir())
+    .or_else(|| std::env::var_os("USERPROFILE").map(|h| PathBuf::from(h).join("Documents")))
+    .unwrap_or_else(std::env::temp_dir);
+    documents.join("Projetos Rust")
 }
 
 /// Executa um comando no terminal dentro do diretório de trabalho especificado.
-pub fn run_terminal_command(working_dir: &Path, raw_cmd: &str) -> TerminalOutput {
-    let start = Instant::now();
+pub fn run_terminal_command(working_dir: &Path, raw_cmd: &str, cancel: &AtomicBool) -> TerminalOutput {
     let trimmed = raw_cmd.trim();
-
     if trimmed.is_empty() {
         return TerminalOutput {
             command: String::new(),
@@ -47,55 +65,44 @@ pub fn run_terminal_command(working_dir: &Path, raw_cmd: &str) -> TerminalOutput
             stderr: String::new(),
             success: true,
             elapsed_ms: 0,
+            notice: None,
         };
+    }
+    if let Err(e) = std::fs::create_dir_all(working_dir) {
+        return TerminalOutput::failed(trimmed.into(), format!("Pasta de trabalho indisponível: {e}"), 0);
     }
 
     // Separa os argumentos preservando aspas
     let parts = split_args(trimmed);
     let prog = &parts[0];
-    let args = &parts[1..];
 
-    // Se for ferramenta direta de desenvolvimento (cargo, rustc, rustup, git), chama diretamente
+    // Ferramentas de desenvolvimento (cargo, rustc, rustup, git, gh) são chamadas diretamente
     let is_direct_tool = ["cargo", "rustc", "rustup", "git", "gh"].contains(&prog.to_lowercase().as_str());
-
-    let output_res = if is_direct_tool {
-        let mut cmd = Command::new(prog);
-        cmd.args(args);
-        cmd.current_dir(working_dir);
-        cmd.stdout(Stdio::piped());
-        cmd.stderr(Stdio::piped());
-        cmd.output()
+    let mut cmd = if is_direct_tool {
+        let mut c = Command::new(prog);
+        c.args(&parts[1..]);
+        c
     } else {
         // Demais comandos usam PowerShell nativo (nunca cmd.exe)
-        let mut cmd = Command::new("powershell");
-        cmd.args(["-NoProfile", "-NonInteractive", "-Command", trimmed]);
-        cmd.current_dir(working_dir);
-        cmd.stdout(Stdio::piped());
-        cmd.stderr(Stdio::piped());
-        cmd.output()
+        let mut c = Command::new("powershell");
+        c.args(["-NoProfile", "-NonInteractive", "-Command", trimmed]);
+        c
     };
+    cmd.current_dir(working_dir);
+    finish(trimmed.to_string(), subprocess::run_limited(cmd, subprocess::TERMINAL, Some(cancel)), subprocess::TERMINAL)
+}
 
-    let elapsed_ms = start.elapsed().as_millis() as u64;
-
-    match output_res {
-        Ok(out) => {
-            let stdout = String::from_utf8_lossy(&out.stdout).to_string();
-            let stderr = String::from_utf8_lossy(&out.stderr).to_string();
-            TerminalOutput {
-                command: trimmed.to_string(),
-                stdout,
-                stderr,
-                success: out.status.success(),
-                elapsed_ms,
-            }
-        }
-        Err(e) => TerminalOutput {
-            command: trimmed.to_string(),
-            stdout: String::new(),
-            stderr: format!("Falha ao iniciar o processo '{}': {}", prog, e),
-            success: false,
-            elapsed_ms,
+fn finish(command: String, res: std::io::Result<subprocess::LimitedOutput>, limits: Limits) -> TerminalOutput {
+    match res {
+        Ok(out) => TerminalOutput {
+            command,
+            success: out.success(),
+            elapsed_ms: out.elapsed.as_millis() as u64,
+            notice: out.notice(limits),
+            stdout: out.stdout,
+            stderr: out.stderr,
         },
+        Err(e) => TerminalOutput::failed(command.clone(), format!("Falha ao iniciar o processo '{command}': {e}"), 0),
     }
 }
 
@@ -163,55 +170,43 @@ pub fn detect_rust_env() -> RustEnvInfo {
 }
 
 fn run_silent(cmd: &str, args: &[&str]) -> Option<String> {
-    Command::new(cmd)
-        .args(args)
-        .stdout(Stdio::piped())
-        .stderr(Stdio::piped())
-        .output()
+    let mut c = Command::new(cmd);
+    c.args(args);
+    subprocess::run_limited(c, subprocess::QUICK, None)
         .ok()
-        .filter(|o| o.status.success())
-        .map(|o| String::from_utf8_lossy(&o.stdout).trim().to_string())
+        .filter(|o| o.success())
+        .map(|o| o.stdout.trim().to_string())
         .filter(|s| !s.is_empty())
 }
 
 /// Cria um novo projeto Cargo (--bin ou --lib) de forma declarativa.
 pub fn create_cargo_project(parent_dir: &Path, name: &str, is_bin: bool) -> Result<String, String> {
+    std::fs::create_dir_all(parent_dir).map_err(|e| format!("Pasta de trabalho indisponível: {e}"))?;
     let flag = if is_bin { "--bin" } else { "--lib" };
-    let output = Command::new("cargo")
-        .arg("new")
-        .arg(name)
-        .arg(flag)
-        .current_dir(parent_dir)
-        .stdout(Stdio::piped())
-        .stderr(Stdio::piped())
-        .output()
+    let mut c = Command::new("cargo");
+    c.arg("new").arg(name).arg(flag).current_dir(parent_dir);
+    let output = subprocess::run_limited(c, subprocess::QUICK, None)
         .map_err(|e| format!("Falha ao invocar 'cargo new': {}", e))?;
 
-    if output.status.success() {
-        let msg = String::from_utf8_lossy(&output.stderr).to_string();
-        Ok(if msg.trim().is_empty() {
+    if output.success() {
+        let msg = output.stderr.trim();
+        Ok(if msg.is_empty() {
             format!("Projeto '{}' criado com sucesso em {:?}", name, parent_dir.join(name))
         } else {
-            msg.trim().to_string()
+            msg.to_string()
         })
     } else {
-        let err = String::from_utf8_lossy(&output.stderr).to_string();
-        Err(err.trim().to_string())
+        Err(output.notice(subprocess::QUICK).unwrap_or_else(|| output.stderr.trim().to_string()))
     }
 }
 
 /// Avalia uma expressão Rust ou código instantâneo gerando uma compilação temporária em rustc.
-pub fn eval_rust_expression(expr: &str) -> TerminalOutput {
+pub fn eval_rust_expression(expr: &str, cancel: &AtomicBool) -> TerminalOutput {
     let start = Instant::now();
     let trimmed = expr.trim();
+    let command = format!("eval: {trimmed}");
     if trimmed.is_empty() {
-        return TerminalOutput {
-            command: "rust_eval".to_string(),
-            stdout: String::new(),
-            stderr: "Expressão vazia".to_string(),
-            success: false,
-            elapsed_ms: 0,
-        };
+        return TerminalOutput::failed("rust_eval".into(), "Expressão vazia".into(), 0);
     }
 
     let code = if trimmed.contains("fn main()") {
@@ -223,83 +218,51 @@ pub fn eval_rust_expression(expr: &str) -> TerminalOutput {
         )
     };
 
+    // Contador por processo: duas avaliações ao mesmo tempo nunca usam o mesmo arquivo
+    static COUNTER: AtomicU64 = AtomicU64::new(0);
+    let n = COUNTER.fetch_add(1, Ordering::Relaxed);
     let temp_dir = std::env::temp_dir();
-    let file_id = format!("rrs_eval_{}_{}", std::process::id(), Instant::now().elapsed().as_nanos());
+    let file_id = format!("rrs_eval_{}_{n}", std::process::id());
     let src_path = temp_dir.join(format!("{}.rs", file_id));
     let exe_path = temp_dir.join(format!("{}.exe", file_id));
 
     if let Err(e) = std::fs::write(&src_path, code) {
-        return TerminalOutput {
-            command: format!("eval: {}", trimmed),
-            stdout: String::new(),
-            stderr: format!("Erro ao criar arquivo de scratchpad temporário: {}", e),
-            success: false,
-            elapsed_ms: start.elapsed().as_millis() as u64,
-        };
+        return TerminalOutput::failed(
+            command,
+            format!("Erro ao criar arquivo de scratchpad temporário: {}", e),
+            start.elapsed().as_millis() as u64,
+        );
     }
 
-    // Compila com rustc
-    let compile_res = Command::new("rustc")
-        .arg("--edition=2021")
-        .arg("-O")
-        .arg(&src_path)
-        .arg("-o")
-        .arg(&exe_path)
-        .stdout(Stdio::piped())
-        .stderr(Stdio::piped())
-        .output();
-
+    let mut compile = Command::new("rustc");
+    compile.arg("--edition=2021").arg("-O").arg(&src_path).arg("-o").arg(&exe_path);
+    let compile_res = subprocess::run_limited(compile, subprocess::COMPILE, Some(cancel));
     let _ = std::fs::remove_file(&src_path);
 
-    match compile_res {
-        Ok(out) if out.status.success() => {
-            // Executa o binário compilado
-            let run_res = Command::new(&exe_path)
-                .stdout(Stdio::piped())
-                .stderr(Stdio::piped())
-                .output();
-            let _ = std::fs::remove_file(&exe_path);
-            let elapsed_ms = start.elapsed().as_millis() as u64;
-
-            match run_res {
-                Ok(run_out) => TerminalOutput {
-                    command: format!("eval: {}", trimmed),
-                    stdout: String::from_utf8_lossy(&run_out.stdout).to_string(),
-                    stderr: String::from_utf8_lossy(&run_out.stderr).to_string(),
-                    success: run_out.status.success(),
-                    elapsed_ms,
-                },
-                Err(e) => TerminalOutput {
-                    command: format!("eval: {}", trimmed),
-                    stdout: String::new(),
-                    stderr: format!("Erro na execução do binário de teste: {}", e),
-                    success: false,
-                    elapsed_ms,
-                },
-            }
+    let out = match compile_res {
+        Ok(out) if out.success() => {
+            let run = subprocess::run_limited(Command::new(&exe_path), subprocess::RUN, Some(cancel));
+            let mut t = finish(command, run, subprocess::RUN);
+            t.elapsed_ms = start.elapsed().as_millis() as u64;
+            t
         }
-        Ok(out) => {
-            let _ = std::fs::remove_file(&exe_path);
-            let elapsed_ms = start.elapsed().as_millis() as u64;
-            TerminalOutput {
-                command: format!("eval: {}", trimmed),
-                stdout: String::new(),
-                stderr: String::from_utf8_lossy(&out.stderr).to_string(),
-                success: false,
-                elapsed_ms,
-            }
-        }
-        Err(e) => {
-            let elapsed_ms = start.elapsed().as_millis() as u64;
-            TerminalOutput {
-                command: format!("eval: {}", trimmed),
-                stdout: String::new(),
-                stderr: format!("Compilador rustc não disponível: {}", e),
-                success: false,
-                elapsed_ms,
-            }
-        }
-    }
+        Ok(out) => TerminalOutput {
+            command,
+            stdout: String::new(),
+            notice: out.notice(subprocess::COMPILE),
+            stderr: out.stderr,
+            success: false,
+            elapsed_ms: start.elapsed().as_millis() as u64,
+        },
+        Err(e) => TerminalOutput::failed(
+            command,
+            format!("Compilador rustc não disponível: {}", e),
+            start.elapsed().as_millis() as u64,
+        ),
+    };
+    let _ = std::fs::remove_file(&exe_path);
+    let _ = std::fs::remove_file(exe_path.with_extension("pdb"));
+    out
 }
 
 #[cfg(test)]
@@ -315,7 +278,7 @@ mod tests {
     #[test]
     fn execucao_de_comando_simples_funciona() {
         let temp = std::env::temp_dir();
-        let res = run_terminal_command(&temp, "cargo --version");
+        let res = run_terminal_command(&temp, "cargo --version", &AtomicBool::new(false));
         if res.stderr.contains("Falha ao iniciar o processo") {
             // Em ambiente sem cargo no PATH dos testes, ignora
             return;
@@ -332,11 +295,30 @@ mod tests {
 
     #[test]
     fn avaliacao_de_expressao_rust_funciona() {
-        let res = eval_rust_expression("10 + 32");
+        let res = eval_rust_expression("10 + 32", &AtomicBool::new(false));
         if res.stderr.contains("Compilador rustc não disponível") {
             return;
         }
         assert!(res.success);
         assert!(res.stdout.contains("42"));
+    }
+
+    #[test]
+    fn avaliacao_com_laco_infinito_para_sozinha() {
+        let res = eval_rust_expression("fn main() { loop { std::hint::spin_loop(); } }", &AtomicBool::new(false));
+        if res.stderr.contains("Compilador rustc não disponível") {
+            return;
+        }
+        assert!(!res.success);
+        assert!(res.notice.as_deref().is_some_and(|n| n.contains("tempo máximo")), "{res:?}");
+        assert!(res.elapsed_ms < 40_000, "{}", res.elapsed_ms);
+    }
+
+    #[test]
+    fn pasta_padrao_fica_fora_da_pasta_da_rrs() {
+        let dir = default_projects_dir();
+        assert!(dir.ends_with("Projetos Rust"), "{dir:?}");
+        let exe_dir = std::env::current_exe().unwrap().parent().unwrap().to_path_buf();
+        assert!(!dir.starts_with(&exe_dir));
     }
 }

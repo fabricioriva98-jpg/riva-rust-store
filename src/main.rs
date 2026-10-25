@@ -21,6 +21,7 @@ mod rust_lib;
 mod sandbox;
 mod saves;
 mod social;
+mod subprocess;
 mod terminal_studio;
 mod theme;
 mod translator;

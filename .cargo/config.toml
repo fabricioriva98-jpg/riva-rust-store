@@ -1,0 +1,5 @@
+[build]
+# Compilação fora do vault (M8 da ANALISE-25.10.26): a pasta de build tinha 9 mil arquivos e o
+# Obsidian carregava tudo. No C: (NTFS) o cache incremental funciona; no F: (exFAT) ele falhava
+# por falta de hard links, por isso antes ficava `incremental = false`.
+target-dir = "C:/cargo-target/rrs"

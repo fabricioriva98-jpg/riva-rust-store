@@ -17,7 +17,7 @@ impl StoreGui {
         }
 
         self.terminal_is_running = true;
-        self.busy_task = Some(format!("Executando: {trimmed}"));
+        self.terminal_cancel.store(false, std::sync::atomic::Ordering::Relaxed);
 
         // Adiciona o comando no histórico visível do terminal
         self.terminal_logs.push((
@@ -27,13 +27,30 @@ impl StoreGui {
 
         let dir = self.terminal_working_dir.clone();
         let events = Arc::clone(&self.bg_events);
+        let cancel = Arc::clone(&self.terminal_cancel);
 
         std::thread::spawn(move || {
-            let out = terminal_studio::run_terminal_command(&dir, &trimmed);
+            let out = terminal_studio::run_terminal_command(&dir, &trimmed, &cancel);
             events.lock().unwrap().push(BgEvent::TerminalCommandFinished(out));
         });
 
         self.terminal_cmd_input.clear();
+    }
+
+    /// Avalia uma expressão no avaliador (compila e roda em segundo plano, com tempo máximo).
+    fn spawn_terminal_eval(&mut self, expr: String) {
+        if self.terminal_is_running {
+            return;
+        }
+        self.terminal_is_running = true;
+        self.terminal_cancel.store(false, std::sync::atomic::Ordering::Relaxed);
+        self.terminal_logs.push((terminal_studio::TerminalLineKind::Command, format!(">> eval: {}", expr.trim())));
+        let events = Arc::clone(&self.bg_events);
+        let cancel = Arc::clone(&self.terminal_cancel);
+        std::thread::spawn(move || {
+            let out = terminal_studio::eval_rust_expression(&expr, &cancel);
+            events.lock().unwrap().push(BgEvent::TerminalCommandFinished(out));
+        });
     }
 
     /// Detecta a toolchain Rust e os editores em segundo plano (são vários programas e arquivos;
@@ -55,7 +72,8 @@ impl StoreGui {
     pub(super) fn render_terminal_studio(&mut self, ui: &mut egui::Ui) {
         // Se a pasta de trabalho ainda não foi definida, usa o diretório do projeto ou base
         if self.terminal_working_dir.as_os_str().is_empty() {
-            self.terminal_working_dir = self.base_dir();
+            self.terminal_working_dir = terminal_studio::default_projects_dir();
+            self.terminal_dir_input = self.terminal_working_dir.to_string_lossy().to_string();
         }
 
         // ─── CABEÇALHO DO ESTÚDIO ──────────────────────────────────────────
@@ -203,20 +221,17 @@ impl StoreGui {
                     ui.add_space(6.0);
 
                     if ui
-                        .add(egui::Button::new(self.tr("⚙ Instalar rust-analyzer no VS Code")))
+                        .add_enabled(self.busy_task.is_none(), egui::Button::new(self.tr("⚙ Instalar rust-analyzer no VS Code")))
                         .on_hover_text(self.tr("Instala a extensão oficial de autocompletar e conferência de tipos no VS Code."))
                         .clicked()
                     {
-                        match ide::install_vscode_extension("rust-lang.rust-analyzer") {
-                            Ok(msg) => {
-                                self.status_msg = format!("✔ {msg}");
-                                self.status_is_error = false;
-                            }
-                            Err(e) => {
-                                self.status_msg = format!("❌ {e}");
-                                self.status_is_error = true;
-                            }
-                        }
+                        // Leva de segundos a minutos (baixa a extensão): em segundo plano
+                        self.busy_task = Some(self.tr("Instalando rust-analyzer no VS Code..."));
+                        let events = Arc::clone(&self.bg_events);
+                        std::thread::spawn(move || {
+                            let res = ide::install_vscode_extension("rust-lang.rust-analyzer").map_err(|e| format!("{e:#}"));
+                            events.lock().unwrap().push(BgEvent::IdeActionFinished(res));
+                        });
                     }
 
                     if ui
@@ -265,6 +280,11 @@ impl StoreGui {
                                     terminal_studio::TerminalLineKind::SystemInfo,
                                     format!("✔ {}", msg),
                                 ));
+                                let project = self.terminal_working_dir.join(&name);
+                                if project.is_dir() {
+                                    self.terminal_dir_input = project.to_string_lossy().to_string();
+                                    self.terminal_working_dir = project;
+                                }
                                 self.status_msg = msg;
                                 self.status_is_error = false;
                                 self.cargo_new_name.clear();
@@ -296,32 +316,14 @@ impl StoreGui {
                     let eval_enter = repl_resp.lost_focus() && ui.input(|i| i.key_pressed(egui::Key::Enter));
                     let eval_clicked = ui
                         .add_enabled(
-                            !self.terminal_repl_input.trim().is_empty(),
+                            !self.terminal_repl_input.trim().is_empty() && !self.terminal_is_running,
                             egui::Button::new(RichText::new(self.tr("▶ Avaliar")).strong()),
                         )
                         .clicked();
 
-                    if (eval_enter || eval_clicked) && !self.terminal_repl_input.trim().is_empty() {
-                        let expr = self.terminal_repl_input.clone();
-                        self.terminal_logs.push((
-                            terminal_studio::TerminalLineKind::Command,
-                            format!(">> eval: {}", expr.trim()),
-                        ));
-                        let out = terminal_studio::eval_rust_expression(&expr);
-                        if out.success {
-                            if !out.stdout.trim().is_empty() {
-                                self.terminal_logs.push((
-                                    terminal_studio::TerminalLineKind::Stdout,
-                                    format!("=> {} ({}ms)", out.stdout.trim(), out.elapsed_ms),
-                                ));
-                            }
-                        } else {
-                            self.terminal_logs.push((
-                                terminal_studio::TerminalLineKind::Stderr,
-                                format!("❌ {}\n{}", out.stderr.trim(), out.stdout.trim()),
-                            ));
-                        }
-                        self.terminal_repl_input.clear();
+                    if (eval_enter || eval_clicked) && !self.terminal_repl_input.trim().is_empty() && !self.terminal_is_running {
+                        let expr = std::mem::take(&mut self.terminal_repl_input);
+                        self.spawn_terminal_eval(expr);
                     }
                 });
             });
@@ -335,23 +337,36 @@ impl StoreGui {
             .corner_radius(CornerRadius::same(6))
             .inner_margin(egui::Margin::symmetric(10, 8))
             .show(ui, |ui| {
-                ui.horizontal(|ui| {
+                ui.horizontal_wrapped(|ui| {
                     ui.label(RichText::new(self.tr("📂 Pasta de Trabalho:")).strong().size(12.0).color(Color32::from_rgb(160, 175, 200)));
-                    ui.label(
-                        RichText::new(self.terminal_working_dir.to_string_lossy().to_string())
-                            .monospace()
-                            .size(12.0)
-                            .color(Color32::WHITE),
+                    ui.add(
+                        egui::TextEdit::singleline(&mut self.terminal_dir_input)
+                            .font(egui::TextStyle::Monospace)
+                            .desired_width(380.0),
                     );
-
-                    ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-                        if ui.button(self.tr("🧹 Limpar Saída")).clicked() {
-                            self.terminal_logs.clear();
+                    if ui
+                        .add_enabled(!self.terminal_is_running, egui::Button::new(self.tr("Usar pasta")))
+                        .clicked()
+                    {
+                        let p = std::path::PathBuf::from(self.terminal_dir_input.trim());
+                        if p.is_dir() {
+                            self.terminal_working_dir = p;
+                        } else {
+                            self.status_msg = format!("❌ {} {}", self.tr("Pasta não encontrada:"), self.terminal_dir_input.trim());
+                            self.status_is_error = true;
                         }
-                        if ui.button(self.tr("🔄 Resetar Pasta")).clicked() {
-                            self.terminal_working_dir = self.base_dir();
-                        }
-                    });
+                    }
+                    if ui
+                        .add_enabled(!self.terminal_is_running, egui::Button::new(self.tr("🔄 Resetar Pasta")))
+                        .on_hover_text(self.tr("Volta para a pasta Projetos Rust, dentro de Documentos."))
+                        .clicked()
+                    {
+                        self.terminal_working_dir = terminal_studio::default_projects_dir();
+                        self.terminal_dir_input = self.terminal_working_dir.to_string_lossy().to_string();
+                    }
+                    if ui.button(self.tr("🧹 Limpar Saída")).clicked() {
+                        self.terminal_logs.clear();
+                    }
                 });
             });
 
@@ -437,7 +452,7 @@ impl StoreGui {
             let resp = ui.add(
                 egui::TextEdit::singleline(&mut self.terminal_cmd_input)
                     .hint_text(input_hint)
-                    .desired_width(ui.available_width() - 110.0),
+                    .desired_width(ui.available_width() - 200.0),
             );
 
             let enter_pressed = resp.lost_focus() && ui.input(|i| i.key_pressed(egui::Key::Enter));
@@ -448,10 +463,26 @@ impl StoreGui {
                 )
                 .clicked();
 
+            if self.terminal_is_running
+                && ui
+                    .add(egui::Button::new(RichText::new(self.tr("⏹ Parar")).strong()).fill(Color32::from_rgb(150, 50, 40)))
+                    .on_hover_text(self.tr("Encerra o comando e os programas que ele abriu."))
+                    .clicked()
+            {
+                self.terminal_cancel.store(true, std::sync::atomic::Ordering::Relaxed);
+            }
+
             if enter_pressed || btn_clicked {
                 let cmd = self.terminal_cmd_input.clone();
                 self.spawn_terminal_cmd(&cmd);
             }
         });
+        ui.label(
+            RichText::new(self.tr(
+                "Os comandos rodam no PowerShell com as permissões da sua conta. Cole só comandos em que você confia. Tempo máximo: 30 min por comando.",
+            ))
+            .size(11.0)
+            .color(Color32::from_rgb(140, 150, 170)),
+        );
     }
 }

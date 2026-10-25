@@ -44,6 +44,16 @@ impl StoreGui {
         });
     }
 
+    /// Volta ao plano de energia que estava ativo antes da otimização.
+    fn spawn_optimizer_restore_power(&mut self, guid: String) {
+        self.busy_task = Some(self.tr("Aplicando otimização no sistema..."));
+        let events = Arc::clone(&self.bg_events);
+        std::thread::spawn(move || {
+            let res = optimizer::restore_power_scheme(&guid).map_err(|e| e.to_string());
+            events.lock().unwrap().push(BgEvent::OptimizerActionFinished(res));
+        });
+    }
+
     /// Renderiza a tela completa do Otimizador do PC.
     pub(super) fn render_optimizer(&mut self, ui: &mut egui::Ui) {
         if self.optimizer_specs.is_none() && !self.optimizer_is_scanning {
@@ -161,16 +171,15 @@ impl StoreGui {
                             ui.add_space(4.0);
                             ui.label(RichText::new(&specs.cpu_name).strong().size(14.0).color(Color32::WHITE));
                             ui.add_space(2.0);
+                            let cores = if specs.cpu_cores > 0 {
+                                format!("{} {}, ", specs.cpu_cores, self.tr("núcleos físicos"))
+                            } else {
+                                String::new()
+                            };
                             ui.label(
-                                RichText::new(format!(
-                                    "{} {}, {} {}",
-                                    specs.cpu_cores,
-                                    self.tr("núcleos físicos"),
-                                    specs.cpu_threads,
-                                    self.tr("threads lógicas")
-                                ))
-                                .size(12.0)
-                                .color(Color32::from_rgb(150, 165, 190)),
+                                RichText::new(format!("{cores}{} {}", specs.cpu_threads, self.tr("threads lógicas")))
+                                    .size(12.0)
+                                    .color(Color32::from_rgb(150, 165, 190)),
                             );
                         });
 
@@ -187,19 +196,23 @@ impl StoreGui {
                                 ui.label(RichText::new(self.tr("Memória do Sistema")).strong().color(Color32::WHITE));
                             });
                             ui.add_space(4.0);
-                            ui.label(RichText::new(format!("{:.1} GB Total", specs.ram_total_gb)).strong().size(14.0).color(Color32::WHITE));
-                            ui.add_space(2.0);
-                            ui.label(
-                                RichText::new(format!(
-                                    "{:.1} GB {} ({:.1} GB {})",
-                                    specs.ram_free_gb,
-                                    self.tr("livres atualmente"),
-                                    specs.ram_total_gb - specs.ram_free_gb,
-                                    self.tr("em uso")
-                                ))
-                                .size(12.0)
-                                .color(Color32::from_rgb(150, 165, 190)),
-                            );
+                            if specs.ram_total_gb > 0.0 {
+                                ui.label(RichText::new(format!("{:.1} GB Total", specs.ram_total_gb)).strong().size(14.0).color(Color32::WHITE));
+                                ui.add_space(2.0);
+                                ui.label(
+                                    RichText::new(format!(
+                                        "{:.1} GB {} ({:.1} GB {})",
+                                        specs.ram_free_gb,
+                                        self.tr("livres atualmente"),
+                                        specs.ram_total_gb - specs.ram_free_gb,
+                                        self.tr("em uso")
+                                    ))
+                                    .size(12.0)
+                                    .color(Color32::from_rgb(150, 165, 190)),
+                                );
+                            } else {
+                                ui.label(RichText::new(self.tr("Não foi possível ler")).strong().size(14.0).color(Color32::GRAY));
+                            }
                         });
 
                     ui.end_row();
@@ -239,16 +252,25 @@ impl StoreGui {
                                 ui.label(RichText::new(self.tr("Armazenamento")).strong().color(Color32::WHITE));
                             });
                             ui.add_space(4.0);
-                            for d in &specs.disks {
-                                ui.horizontal(|ui| {
-                                    ui.label(RichText::new(format!("Unidade {}", d.drive)).strong().size(12.5).color(Color32::WHITE));
-                                    ui.label(
-                                        RichText::new(format!("{:.0} GB livres de {:.0} GB ({:.0}% usado)", d.free_gb, d.total_gb, d.used_pct))
-                                            .size(11.5)
-                                            .color(Color32::from_rgb(160, 175, 195)),
-                                    );
-                                });
+                            if specs.disks.is_empty() {
+                                ui.label(RichText::new(self.tr("Não foi possível ler")).strong().size(14.0).color(Color32::GRAY));
                             }
+                            // O cartão fica numa célula de grade (horizontal): as unidades vão empilhadas
+                            ui.vertical(|ui| for d in &specs.disks {
+                                ui.label(
+                                    RichText::new(format!(
+                                        "{} {:.0} GB {} {:.0} GB ({:.0}% {})",
+                                        d.drive,
+                                        d.free_gb,
+                                        self.tr("livres de"),
+                                        d.total_gb,
+                                        d.used_pct,
+                                        self.tr("usado")
+                                    ))
+                                    .size(12.0)
+                                    .color(Color32::from_rgb(200, 210, 225)),
+                                );
+                            });
                         });
 
                     ui.end_row();
@@ -327,6 +349,17 @@ impl StoreGui {
                     ui.horizontal(|ui| {
                         if item.is_optimal {
                             draw_pill(ui, &self.tr("✔ Configurado / Otimizado"), Color32::from_rgb(35, 110, 60));
+                            if item.id == "power_high_perf" {
+                                if let Some(prev) = self.optimizer_prev_power.clone().filter(|g| !g.is_empty()) {
+                                    if ui
+                                        .add_enabled(self.busy_task.is_none(), egui::Button::new(self.tr("↩ Voltar ao plano anterior")))
+                                        .on_hover_text(self.tr("Reativa o plano de energia que estava em uso antes da RRS mudar."))
+                                        .clicked()
+                                    {
+                                        self.spawn_optimizer_restore_power(prev);
+                                    }
+                                }
+                            }
                         } else if ui
                             .add_enabled(
                                 self.busy_task.is_none() && self.optimizer_confirm.is_none(),

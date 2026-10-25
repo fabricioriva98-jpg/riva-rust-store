@@ -14,12 +14,13 @@ impl StoreGui {
             return;
         }
         self.learn_is_running = true;
-        self.busy_task = Some(self.tr("Compilando e executando código com o rustc..."));
+        self.learn_cancel.store(false, std::sync::atomic::Ordering::Relaxed);
+        let cancel = Arc::clone(&self.learn_cancel);
         let code = self.learn_code_input.clone();
         let events = Arc::clone(&self.bg_events);
 
         std::thread::spawn(move || {
-            let res = learn::compile_and_run(&code);
+            let res = learn::compile_and_run(&code, &cancel);
             events.lock().unwrap().push(BgEvent::LearnRunFinished(res));
         });
     }
@@ -134,7 +135,7 @@ impl StoreGui {
                     {
                         let stem = current_lesson.id.replace('_', "-");
                         let proj_name = format!("rrs-aprenda-{stem}");
-                        let base = self.base_dir();
+                        let base = crate::terminal_studio::default_projects_dir();
                         match learn::generate_beginner_cargo_project(&base, &proj_name, &self.learn_code_input) {
                             Ok(p) => {
                                 self.status_msg = format!("✔ {} {}", self.tr("Projeto Cargo criado em:"), p.display());
@@ -279,7 +280,8 @@ impl StoreGui {
                 ui.horizontal(|ui| {
                     ui.label(RichText::new(self.tr("💻 Editor de Código Rust:")).strong().color(Color32::WHITE));
 
-                    ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
+                    ui.add_space(8.0);
+                    {
                         let btn_text = if self.learn_is_running {
                             self.tr("⏳ Compilando...")
                         } else {
@@ -298,7 +300,15 @@ impl StoreGui {
                         if ui.add_enabled(!self.learn_is_running, run_btn).clicked() {
                             self.spawn_learn_run();
                         }
-                    });
+                        if self.learn_is_running
+                            && ui
+                                .add(egui::Button::new(self.tr("⏹ Parar")).fill(Color32::from_rgb(150, 50, 40)))
+                                .on_hover_text(self.tr("Encerra a compilação ou o programa (para sozinho depois de 10 s rodando)."))
+                                .clicked()
+                        {
+                            self.learn_cancel.store(true, std::sync::atomic::Ordering::Relaxed);
+                        }
+                    }
                 });
 
                 ui.add_space(6.0);

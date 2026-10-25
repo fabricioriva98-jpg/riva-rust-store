@@ -1,0 +1,13 @@
+/target
+*.db
+.env
+
+# Executáveis da raiz: gerados pelo `cargo build --release` (hash registrado no diário e no CONTINUIDADE-IA.md)
+/*.exe
+*.pdb
+
+# Dados do usuário que a RRS grava ao lado do programa no modo portátil
+/downloads/
+/bin/
+/rrs-biblioteca.json
+/rrs-install.json

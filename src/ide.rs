@@ -79,37 +79,32 @@ pub fn detect_ides() -> Vec<IdeInfo> {
     ides
 }
 
-/// Localiza o executável do Visual Studio Code.
+/// Localiza o executável do Visual Studio Code (`Code.exe`, nunca o `code.cmd`).
 fn find_vscode() -> Option<PathBuf> {
-    let candidates = [
-        PathBuf::from(r"E:\Fabricio\Programas\Microsoft VS Code\Code.exe"),
-        PathBuf::from(r"E:\Fabricio\Programas\Microsoft VS Code\bin\code.cmd"),
-    ];
-    for c in &candidates {
-        if c.is_file() {
-            return Some(c.clone());
-        }
-    }
-
-    if let Ok(local_app_data) = std::env::var("LOCALAPPDATA") {
-        let p = PathBuf::from(local_app_data).join(r"Programs\Microsoft VS Code\Code.exe");
+    let standard = ["LOCALAPPDATA", "ProgramFiles", "ProgramFiles(x86)"].into_iter().filter_map(|var| {
+        let base = PathBuf::from(std::env::var_os(var)?);
+        let sub = if var == "LOCALAPPDATA" { r"Programs\Microsoft VS Code\Code.exe" } else { r"Microsoft VS Code\Code.exe" };
+        Some(base.join(sub))
+    });
+    for p in standard {
         if p.is_file() {
             return Some(p);
         }
     }
+    // Instalação em outro lugar: o instalador põe `<pasta>\bin` no PATH
+    find_in_path("code").and_then(|cli| code_exe_from_cli(&cli))
+}
 
-    let program_files = [
-        PathBuf::from(r"C:\Program Files\Microsoft VS Code\Code.exe"),
-        PathBuf::from(r"C:\Program Files (x86)\Microsoft VS Code\Code.exe"),
-    ];
-    for p in &program_files {
-        if p.is_file() {
-            return Some(p.clone());
-        }
-    }
+/// `...\Microsoft VS Code\bin\code.cmd` → `...\Microsoft VS Code\Code.exe`.
+fn code_exe_from_cli(cli: &Path) -> Option<PathBuf> {
+    let exe = cli.parent()?.parent()?.join("Code.exe");
+    exe.is_file().then_some(exe)
+}
 
-    // Tenta comando no PATH
-    find_in_path("code")
+/// `...\Microsoft VS Code\Code.exe` → `...\Microsoft VS Code\bin\code.cmd` (a linha de comando oficial).
+fn code_cli_from_exe(exe: &Path) -> Option<PathBuf> {
+    let cli = exe.parent()?.join("bin").join("code.cmd");
+    cli.is_file().then_some(cli)
 }
 
 /// Localiza o executável do Google Antigravity.
@@ -119,15 +114,8 @@ fn find_antigravity() -> Option<PathBuf> {
         if p.is_file() {
             return Some(p);
         }
-        let p_updater = PathBuf::from(&local_app_data).join(r"antigravity-updater\pending\Antigravity-x64.exe");
-        if p_updater.is_file() {
-            return Some(p_updater);
-        }
-    }
-
-    let fixed_path = PathBuf::from(r"C:\Users\fabri\AppData\Local\Programs\antigravity\Antigravity.exe");
-    if fixed_path.is_file() {
-        return Some(fixed_path);
+        // (O `antigravity-updater\pending\Antigravity-x64.exe` é o instalador da próxima versão: abrir uma
+        // pasta com ele rodaria a instalação, por isso não entra aqui.)
     }
 
     find_in_path("antigravity").or_else(|| find_in_path("agy"))
@@ -232,22 +220,34 @@ pub fn open_file_in_ide(ide_id: &str, file: &Path, line: Option<usize>) -> Resul
     Ok(format!("Arquivo aberto no {}: {}", ide.name, file.display()))
 }
 
-/// Instala uma extensão oficial recomendada para Rust no VS Code.
-pub fn install_vscode_extension(ext_id: &str) -> Result<String> {
-    let status = Command::new("code")
-        .args(["--install-extension", ext_id])
-        .output();
+/// Id de extensão do VS Code (`editor.nome`): só letras, números e hífens. O `code.cmd` passa
+/// pelo interpretador de lotes do Windows, então nada fora disso pode chegar a ele.
+pub fn is_valid_extension_id(id: &str) -> bool {
+    let mut parts = id.split('.');
+    let ok = |p: Option<&str>| p.is_some_and(|p| !p.is_empty() && p.chars().all(|c| c.is_ascii_alphanumeric() || c == '-'));
+    ok(parts.next()) && ok(parts.next()) && parts.next().is_none()
+}
 
-    match status {
-        Ok(out) => {
-            if out.status.success() {
-                Ok(format!("Extensão '{}' instalada com sucesso no VS Code!", ext_id))
-            } else {
-                let err = String::from_utf8_lossy(&out.stderr);
-                bail!("Falha ao instalar extensão no VS Code: {}", err.trim())
-            }
-        }
-        Err(e) => bail!("Não foi possível chamar o comando 'code': {}", e),
+/// Instala uma extensão no VS Code pela linha de comando oficial (`bin\code.cmd`) da instalação detectada.
+/// Antes chamava `code`, que o Windows não acha sem a extensão `.cmd` (o botão falhava sempre).
+pub fn install_vscode_extension(ext_id: &str) -> Result<String> {
+    if !is_valid_extension_id(ext_id) {
+        bail!("Id de extensão inválido: {ext_id}");
+    }
+    let cli = find_vscode()
+        .and_then(|exe| code_cli_from_exe(&exe))
+        .or_else(|| find_in_path("code"))
+        .context("VS Code não encontrado (nem o comando `code` no PATH).")?;
+    let mut cmd = Command::new(&cli);
+    cmd.args(["--install-extension", ext_id]);
+    let limits = crate::subprocess::Limits { timeout: std::time::Duration::from_secs(5 * 60), max_output: 64 * 1024 };
+    let out = crate::subprocess::run_limited(cmd, limits, None)
+        .with_context(|| format!("Não foi possível chamar {}", cli.display()))?;
+    if out.success() {
+        Ok(format!("Extensão '{ext_id}' instalada no VS Code."))
+    } else {
+        let why = out.notice(limits).unwrap_or_else(|| format!("{} {}", out.stdout.trim(), out.stderr.trim()));
+        bail!("Falha ao instalar a extensão no VS Code: {}", why.trim())
     }
 }
 
@@ -332,6 +332,39 @@ mod tests {
         assert_eq!(find_in_dirs("editor", [b.clone(), a.clone()], &exts), Some(b.join("editor.exe")));
         assert_eq!(find_in_dirs("nao-existe", [a, b], &exts), None);
         let _ = std::fs::remove_dir_all(&base);
+    }
+
+    #[test]
+    fn caminhos_do_vs_code_entre_exe_e_linha_de_comando() {
+        let base = std::env::temp_dir().join(format!("rrs_test_vscode_{}", std::process::id()));
+        std::fs::create_dir_all(base.join("bin")).unwrap();
+        std::fs::write(base.join("Code.exe"), "").unwrap();
+        std::fs::write(base.join("bin").join("code.cmd"), "").unwrap();
+        assert_eq!(code_exe_from_cli(&base.join("bin").join("code.cmd")), Some(base.join("Code.exe")));
+        assert_eq!(code_cli_from_exe(&base.join("Code.exe")), Some(base.join("bin").join("code.cmd")));
+        let _ = std::fs::remove_dir_all(&base);
+    }
+
+    #[test]
+    fn id_de_extensao_e_validado() {
+        assert!(is_valid_extension_id("rust-lang.rust-analyzer"));
+        assert!(is_valid_extension_id("tamasfe.even-better-toml"));
+        for ruim in ["rust-analyzer", "a.b.c", "a.b & calc", "a.b\"", ".x", "x."] {
+            assert!(!is_valid_extension_id(ruim), "{ruim}");
+        }
+    }
+
+    #[test]
+    fn codigo_distribuido_nao_tem_caminhos_deste_pc() {
+        // O .exe vai para outras pessoas: caminhos com nome de usuário e pastas pessoais não podem estar nele
+        let fontes = [include_str!("ide.rs"), include_str!("terminal_studio.rs"), include_str!("optimizer.rs")];
+        let pessoais = [["E:", "\\Fabricio"].concat(), [":\\Users\\", "fabri"].concat()];
+        for src in fontes {
+            let code = &src[..src.find("#[cfg(test)]").unwrap_or(src.len())];
+            for p in &pessoais {
+                assert!(!code.contains(p.as_str()), "caminho pessoal no código: {p}");
+            }
+        }
     }
 
     #[test]
