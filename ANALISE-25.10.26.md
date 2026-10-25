@@ -12,7 +12,7 @@ Escopo: as 5 rodadas do Antigravity/Gemini de 24–25/10 (logo, Aprender Rust, l
 
 Nada foi alterado no código nesta análise.
 
-**Atualização (25/10, 14:00): G1, G2 e G3 corrigidos** a pedido do Fabricio ("Pode corrigir os 3 problemas graves (G1, G2, G3) da análise, com testes, e gerar os .exe."). Resultado medido no release novo (sha256 `f7c4b445…`): 0,0% de CPU parada nos modos Normal e Eco e minimizada; aba Terminal sem nenhum PowerShell (só a detecção inicial, em segundo plano); limpeza com confirmação e só de arquivos com mais de 7 dias, conferida com um %TEMP% de teste. Testes: 123 (7 novos). Achado durante a correção: na versão anterior, **nenhum** botão "⚡ Otimizar Agora" respondia ao clique nem ao mouse (o botão ficava alinhado à direita dentro da linha do título); foi para uma linha própria e agora funciona. Ou seja, a limpeza perigosa existia no código, mas não era acionável pela tela.
+**Atualização (25/10, 13:50): G1, G2 e G3 corrigidos** a pedido do Fabricio ("Pode corrigir os 3 problemas graves (G1, G2, G3) da análise, com testes, e gerar os .exe."). Resultado medido no release novo (sha256 `f7c4b445…`): 0,0% de CPU parada nos modos Normal e Eco e minimizada; aba Terminal sem nenhum PowerShell (só a detecção inicial, em segundo plano); limpeza com confirmação e só de arquivos com mais de 7 dias, conferida com um %TEMP% de teste. Testes: 123 (7 novos). Achado durante a correção: na versão anterior, **nenhum** botão "⚡ Otimizar Agora" respondia ao clique nem ao mouse (o botão ficava alinhado à direita dentro da linha do título); foi para uma linha própria e agora funciona. Ou seja, a limpeza perigosa existia no código, mas não era acionável pela tela.
 
 ## 1. Resumo
 
@@ -27,7 +27,7 @@ Nada foi alterado no código nesta análise.
 | Segurança | nenhuma falha que permita a terceiros executar código; os riscos novos são do próprio usuário (apagar %TEMP% com 1 clique, comandos sem limite de tempo) |
 | Escopo do Gemini | mexeu só na RRS, no diário e nas notas do dia; fez cópia no `Obsoleto` antes de cada rodada |
 
-## 2. Graves (corrigidos em 25/10, 14:00; detalhe no topo)
+## 2. Graves (corrigidos em 25/10, 13:50; detalhe no topo)
 
 **G1. A loja não descansa mais: CPU alta mesmo parada.** `src/gui.rs:1067` pede uma nova pintura da tela a cada quadro em todos os modos. Antes, o egui só redesenhava quando algo mudava. Medido com o release, janela parada por 10 s:
 
@@ -46,7 +46,7 @@ O modo Eco gasta mais do que a versão de ontem em qualquer situação. Correç�
 
 ## 3. Médios
 
-**Atualização (25/10, 14:40): M1 a M6 corrigidos** a pedido do Fabricio ("Pode corrigir os problemas médios M1 a M6 da análise, com testes, e gerar os .exe."). Release `37e9cb7e…`; testes 137 (14 novos); clippy com os 8 avisos antigos. Resumo:
+**Atualização (25/10, 14:10): M1 a M6 corrigidos** a pedido do Fabricio ("Pode corrigir os problemas médios M1 a M6 da análise, com testes, e gerar os .exe."). Release `37e9cb7e…`; testes 137 (14 novos); clippy com os 8 avisos antigos. Resumo:
 - M1: módulo `subprocess.rs` (tempo máximo, botão Parar que encerra o processo e os filhos com `taskkill /T`, saída limitada). Terminal 30 min e 1 MB; lições e avaliador: compilação 60 s, execução 10 s. Avaliador saiu da linha da interface. Terminal não usa mais `busy_task` (a loja continua usável). Console limitado a 5.000 linhas. Conferido na tela: `Start-Sleep -Seconds 120` parado pelo botão.
 - M2: pasta padrão `Documentos\Projetos Rust` (lida do Windows; neste PC `E:\DOC PC\Projetos Rust`); campo para trocar a pasta; projeto criado vira a pasta de trabalho; aviso de que os comandos rodam com as permissões da conta; teste que só aceita o campo digitado e os atalhos fixos. A exportação das lições também foi para essa pasta (era o B3).
 - M3: sem valores inventados (mostra "Não foi possível ler"); núcleos físicos lidos do Windows (antes: threads ÷ 2); Modo Jogo sem chave = padrão ligado; textos sem promessas; plano de energia anterior guardado e botão "↩ Voltar ao plano anterior". O cartão de discos deixou de sobrepor texto.
@@ -65,7 +65,8 @@ O modo Eco gasta mais do que a versão de ontem em qualquer situação. Correç�
 | M7 | **Sem controle de versão**: o git do projeto não tem nenhum commit. Com duas IAs alternando, o histórico existe só como 14 cópias da pasta `src` no `Obsoleto` | `.git` | Proposta (pendente): um commit local (sem push) ao fim de cada rodada |
 | M8 | `target/` dentro do vault cresceu de 4,9 GB para **8,9 GB** | `target/` | Proposta (pendente) de 24/10: `target-dir` no disco C: |
 
-**Atualização (25/10, 15:10): M7 e M8 feitos.** M7: git local com 12 commits, reconstruídos das cópias do `Obsoleto` (uma por rodada, com a data da cópia e a IA que fez) mais o estado atual; sem remoto, sem push; `.exe` e banco fora do git. M8: build em `C:\cargo-targetrs`; a pasta `target` antiga (5,0 GB em 9.137 arquivos, 8,9 GB ocupados no exFAT) foi para `Obsoleto/.gitstore-target-antes-m8-25.10.26` (nome com ponto, o Obsidian não carrega), com CSV e DESFAZER. Release compilou no C: (2 min 14 s, primeira vez) e os 137 testes passam; recompilar depois de mexer num arquivo levou 14 s, com cache incremental.
+**Atualização (25/10, 14:25): M7 e M8 feitos.** M7: git local com 12 commits, reconstruídos das cópias do `Obsoleto` (uma por rodada, com a data da cópia e a IA que fez) mais o estado atual; sem remoto, sem push; `.exe` e banco fora do git. M8: build em `C:\cargo-target
+rs`; a pasta `target` antiga (5,0 GB em 9.137 arquivos, 8,9 GB ocupados no exFAT) foi para `Obsoleto/.gitstore-target-antes-m8-25.10.26` (nome com ponto, o Obsidian não carrega), com CSV e DESFAZER. Release compilou no C: (2 min 14 s, primeira vez) e os 137 testes passam; recompilar depois de mexer num arquivo levou 14 s, com cache incremental.
 
 ## 4. Baixos
 

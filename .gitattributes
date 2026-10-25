@@ -1,0 +1,5 @@
+# Fins de linha LF no repositório e na pasta de trabalho: os testes comparam trechos do código-fonte
+# (include_str!) com "\n"; com CRLF eles falhariam depois de um checkout.
+* text=auto eol=lf
+*.png binary
+*.ico binary

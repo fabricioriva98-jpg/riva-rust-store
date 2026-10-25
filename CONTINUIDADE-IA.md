@@ -97,7 +97,7 @@ Linha de comando útil: `search`, `show dono/repo`, `verify dono/repo`, `downloa
 
 ## 6. Estado em 25/10/2026
 
-**Análise do Claude (25/10, 13:30)**: `ANALISE-25.10.26.md`. Os 3 graves foram **corrigidos às 14:00**, os médios M1–M6 **às 14:40** e M7/M8 (git local e build no C:) **às 15:10** (testes: 137); os baixos B1–B8 continuam pendentes. Regras novas que os testes cobram:
+**Análise do Claude (25/10, 13:25)**: `ANALISE-25.10.26.md`. Os 3 graves foram **corrigidos às 13:50**, os médios M1–M6 **às 14:10** e M7/M8 (git local e build no C:) **às 14:25** (testes: 137); os baixos B1–B8 continuam pendentes. Regras novas que os testes cobram:
 - A interface **não** pede pintura contínua: tarefa em segundo plano entrega o resultado pela fila `BgQueue` (que acorda a tela); `request_repaint_after` só enquanto há download, tarefa (`busy_task`), aviso ou Modo TV, no ritmo de `PerformanceMode::active_interval` / `gamepad_poll_interval`.
 - Nada que abre processo ou varre disco roda dentro do desenho da tela (`render_*`): use uma thread e um `BgEvent` (exemplo: `spawn_dev_env_detection`).
 - Ação do Otimizador que apaga algo leva `confirm: Some(pergunta)` e só roda no segundo clique; a limpeza do %TEMP% só apaga arquivos da raiz com mais de 7 dias (`optimizer::TEMP_MIN_AGE`).
