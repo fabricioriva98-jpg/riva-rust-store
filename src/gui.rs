@@ -297,16 +297,24 @@ pub struct StoreGui {
     optimizer_tab: usize,
     external_store_filter: Option<crate::launchers::Store>,
 
+    // Modo de Desempenho
+    performance_mode: crate::performance::PerformanceMode,
+
     // Biblioteca Rust (std & Crates)
     rust_lib_selected_idx: usize,
     rust_lib_search: String,
     rust_lib_category_filter: String,
+    rust_lib_active_tab: usize,
 
     // Terminal Integrado & Espelho de IDEs
     terminal_logs: Vec<(crate::terminal_studio::TerminalLineKind, String)>,
     terminal_working_dir: PathBuf,
     terminal_cmd_input: String,
     terminal_is_running: bool,
+    terminal_repl_input: String,
+    cargo_new_name: String,
+    cargo_new_is_bin: bool,
+    rust_env_info: Option<crate::terminal_studio::RustEnvInfo>,
 
     // Temas e Aparência
     theme: crate::theme::AppTheme,
@@ -338,6 +346,7 @@ impl StoreGui {
 
         let mut theme = crate::theme::AppTheme::Antigravity;
         let mut accent_color = crate::theme::AccentColor::NeonCyan;
+        let mut performance_mode = crate::performance::PerformanceMode::Normal;
         let mut github_token_input = std::env::var("GITHUB_TOKEN").unwrap_or_default();
         let mut vt_key_input = std::env::var("VIRUSTOTAL_API_KEY").unwrap_or_default();
         let mut catalog_url = String::new();
@@ -355,6 +364,9 @@ impl StoreGui {
             }
             if let Some(a) = db::get_setting(&conn, crate::theme::SETTING_ACCENT) {
                 accent_color = crate::theme::AccentColor::from_id(&a);
+            }
+            if let Some(p) = db::get_setting(&conn, crate::performance::SETTING_PERFORMANCE) {
+                performance_mode = crate::performance::PerformanceMode::from_id(&p);
             }
             if anthropic_key_input.is_empty() {
                 anthropic_key_input = db::get_setting(&conn, crate::translator_ai::SETTING_KEY).unwrap_or_default();
@@ -473,13 +485,19 @@ impl StoreGui {
             optimizer_program_search: String::new(),
             optimizer_tab: 0,
             external_store_filter: None,
+            performance_mode,
             rust_lib_selected_idx: 0,
             rust_lib_search: String::new(),
             rust_lib_category_filter: "todas".to_string(),
+            rust_lib_active_tab: 0,
             terminal_logs: Vec::new(),
             terminal_working_dir: PathBuf::new(),
             terminal_cmd_input: String::new(),
             terminal_is_running: false,
+            terminal_repl_input: String::new(),
+            cargo_new_name: String::new(),
+            cargo_new_is_bin: true,
+            rust_env_info: None,
             theme,
             accent_color,
             downloads: downloader::DownloadManager::default(),
@@ -523,6 +541,16 @@ impl StoreGui {
             let _ = db::set_setting(&conn, crate::theme::SETTING_ACCENT, accent.id());
         }
         self.status_msg = format!("{} {}", self.tr("Cor de destaque aplicada:"), self.tr(accent.label()));
+        self.status_is_error = false;
+    }
+
+    /// Altera o modo de desempenho (Eco, Normal, Performance) e persiste no banco de dados.
+    pub fn set_performance_mode(&mut self, mode: crate::performance::PerformanceMode) {
+        self.performance_mode = mode;
+        if let Ok(conn) = db::open(&self.db_path) {
+            let _ = db::set_setting(&conn, crate::performance::SETTING_PERFORMANCE, mode.id());
+        }
+        self.status_msg = format!("{} {}", self.tr("Modo de desempenho alterado para:"), self.tr(mode.label()));
         self.status_is_error = false;
     }
 
@@ -1034,6 +1062,9 @@ impl StoreGui {
         if self.busy_task.is_some() {
             ctx.request_repaint_after(std::time::Duration::from_millis(120));
         }
+
+        // Pacing de renderização e fluidez de acordo com o perfil de desempenho
+        ctx.request_repaint_after(self.performance_mode.frame_interval());
     }
 
     fn spawn_fetch_or_verify(&mut self, repo_name: String, check_vt: bool) {
@@ -1676,6 +1707,19 @@ impl eframe::App for StoreGui {
                             for theme in crate::theme::AppTheme::ALL {
                                 if ui.selectable_label(self.theme == *theme, tr(self.lang, theme.label())).clicked() {
                                     self.set_theme(ctx, *theme);
+                                }
+                            }
+                        });
+
+                    ui.separator();
+                    ui.label("⚡");
+                    egui::ComboBox::from_id_salt("quick_performance_selector")
+                        .selected_text(tr(self.lang, self.performance_mode.short_label()))
+                        .width(115.0)
+                        .show_ui(ui, |ui| {
+                            for mode in crate::performance::PerformanceMode::ALL {
+                                if ui.selectable_label(self.performance_mode == *mode, tr(self.lang, mode.label())).clicked() {
+                                    self.set_performance_mode(*mode);
                                 }
                             }
                         });

@@ -723,8 +723,44 @@ pub static TABLE: &[(&str, &str)] = &[
     ("👑 Dourado Âmbar", "👑 Golden Amber"),
     ("🔮 Roxo Neon", "🔮 Neon Purple"),
 
+    // Livro Oficial de Rust, Biblioteca expandida e Terminal Studio
+    ("Abre a tradução colaborativa da comunidade brasileira oficial.", "Opens the official Brazilian community collaborative translation."),
+    ("Abre a versão oficial no site doc.rust-lang.org.", "Opens the official version at doc.rust-lang.org."),
+    ("Controle de Pacing de Renderização e Consumo de Recursos:", "Rendering Pacing and Resource Consumption Control:"),
+    ("Escrito por Steve Klabnik e Carol Nichols, com contribuições de toda a comunidade Rust. O guia definitivo e oficial para aprender todos os conceitos da linguagem.", "Written by Steve Klabnik and Carol Nichols, with contributions from the Rust community. The definitive, official guide to learning all Rust concepts."),
+    ("Expressão Rust (ex: 2 + 2 * 10)", "Rust Expression (e.g. 2 + 2 * 10)"),
+    ("Modo de desempenho alterado para:", "Performance mode changed to:"),
+    ("Página oficial completa em formato contínuo: no navegador, pressione Ctrl+P para salvar como PDF offline.", "Full official single-page format: in your browser, press Ctrl+P to save as an offline PDF."),
+    ("capítulos", "chapters"),
+    ("nome_do_projeto", "project_name"),
+    ("rustc não detectado", "rustc not detected"),
+    ("Índice de Capítulos do Livro", "Book Chapter Index"),
+    ("▶ Avaliar", "▶ Evaluate"),
+    ("⚡ Perfil de Desempenho & Taxa de Quadros (FPS)", "⚡ Performance Profile & Frame Rate (FPS)"),
+    ("⚡ Scratchpad REPL:", "⚡ Scratchpad REPL:"),
+    ("➕ Criar", "➕ Create"),
+    ("🇧🇷 Ler Online em Português (PT-BR) ↗", "🇧🇷 Read Online in Portuguese (PT-BR) ↗"),
+    ("🇧🇷 PT-BR ↗", "🇧🇷 PT-BR ↗"),
+    ("🇺🇸 EN ↗", "🇺🇸 EN ↗"),
+    ("🇺🇸 Ler Oficial em Inglês (Web) ↗", "🇺🇸 Read Official in English (Web) ↗"),
+    ("💡 Dica de Leitura Offline: Clique no botão 'Versão para Impressão & Salvar PDF' acima e utilize 'Salvar como PDF' (Ctrl+P) no seu navegador para ter o livro completo no seu computador!", "💡 Offline Reading Tip: Click 'Print & Save PDF Version' above and use 'Save as PDF' (Ctrl+P) in your browser to save the complete book offline!"),
+    ("📄 Versão para Impressão & Salvar PDF ↗", "📄 Print & Save PDF Version ↗"),
+    ("📖 O Livro Oficial de Rust (PDF & Web)", "📖 The Official Rust Book (PDF & Web)"),
+    ("📖 O Livro da Linguagem Rust (The Official Rust Book)", "📖 The Rust Programming Language (The Official Rust Book)"),
+    ("📚 Módulos & Crates (45+)", "📚 Modules & Crates (45+)"),
+    ("📦 Novo Projeto Cargo:", "📦 New Cargo Project:"),
+    ("🦀 Toolchain Rust do Sistema:", "🦀 System Rust Toolchain:"),
 
-
+    // Modos de Desempenho (PerformanceMode)
+    ("🍃 Modo Eco (Economia)", "🍃 Eco Mode (Power Saving)"),
+    ("⚖️ Modo Normal (Equilibrado)", "⚖️ Normal Mode (Balanced)"),
+    ("🚀 Modo Performance (Máximo)", "🚀 Performance Mode (Maximum)"),
+    ("🍃 Eco", "🍃 Eco"),
+    ("⚖️ Normal", "⚖️ Normal"),
+    ("🚀 Performance", "🚀 Performance"),
+    ("Reduz a taxa de quadros (~25-30 FPS) e poupa bateria e CPU. Ideal para uso em segundo plano.", "Reduces frame rate (~25-30 FPS) saving battery and CPU. Ideal for background usage."),
+    ("Taxa padrão de 60 FPS com animações suaves e consumo equilibrado para o dia a dia.", "Standard 60 FPS with smooth animations and balanced consumption for daily use."),
+    ("Fluidez máxima para monitores gamers (120/144 FPS+) e resposta imediata nos cliques e console.", "Maximum fluidity for high-refresh gaming monitors (120/144 FPS+) and instant response."),
 ];
 
 #[cfg(test)]
@@ -788,6 +824,7 @@ mod tests {
             include_str!("gui/rust_lib.rs"),
             include_str!("gui/terminal_studio.rs"),
             include_str!("theme.rs"),
+            include_str!("performance.rs"),
             include_str!("achievements.rs"),
         ]
     }

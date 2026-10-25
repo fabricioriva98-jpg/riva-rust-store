@@ -1,6 +1,6 @@
 //! Catálogo e Referência Completa da Biblioteca Rust (Standard Library `std` & Top Crates do Ecossistema).
-//! Fornece documentação em português, assinatura de tipos essenciais, métodos principais e exemplos de código
-//! executáveis prontos para testar no editor da RRS e integrar a projetos Cargo.
+//! Fornece documentação em português, assinatura de tipos essenciais, métodos principais, capítulos do Livro Oficial
+//! e exemplos de código executáveis prontos para testar no editor da RRS e integrar a projetos Cargo.
 
 /// Categoria de módulo ou biblioteca Rust.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -12,18 +12,22 @@ pub enum LibCategory {
     SystemOs,
     MemoryTypes,
     Ecosystem,
+    GameDev,
+    Database,
 }
 
 impl LibCategory {
     pub fn label(self) -> &'static str {
         match self {
             LibCategory::Collections => "Coleções (std::collections)",
-            LibCategory::SyncConcurrency => "Concorrência & Sincronização (std::sync)",
+            LibCategory::SyncConcurrency => "Concorrência & Sincronização (std::sync, atomics)",
             LibCategory::FsIo => "Arquivos & Entrada/Saída (std::fs, std::io)",
-            LibCategory::Net => "Redes & Sockets (std::net)",
-            LibCategory::SystemOs => "Processos & Sistema (std::process, std::env)",
-            LibCategory::MemoryTypes => "Tipos & Memória (std::cell, std::time, std::path)",
-            LibCategory::Ecosystem => "Top Crates do Ecossistema (Cargo)",
+            LibCategory::Net => "Redes & Web (std::net, axum, reqwest)",
+            LibCategory::SystemOs => "Processos & Sistema (std::process, std::env, sysinfo)",
+            LibCategory::MemoryTypes => "Tipos & Memória (std::cell, std::mem, Box)",
+            LibCategory::Ecosystem => "Top Crates do Ecossistema (serde, tokio, clap, etc.)",
+            LibCategory::GameDev => "Jogos & Gráficos (bevy, wgpu)",
+            LibCategory::Database => "Bancos de Dados (sqlx, rusqlite)",
         }
     }
 }
@@ -44,8 +48,186 @@ pub struct RustLibItem {
     pub docs_url: &'static str,
 }
 
+/// Capítulo do livro oficial "The Rust Programming Language" (O Livro de Rust).
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct RustBookChapter {
+    pub number: usize,
+    pub title: &'static str,
+    pub summary: &'static str,
+    pub topics: &'static [&'static str],
+    pub web_url_en: &'static str,
+    pub web_url_pt: &'static str,
+}
+
+pub const RUST_BOOK_PDF_URL: &str = "https://doc.rust-lang.org/stable/book/print.html";
+pub const RUST_BOOK_EN_URL: &str = "https://doc.rust-lang.org/book/";
+pub const RUST_BOOK_PT_URL: &str = "https://rust-br.github.io/rust-book-pt-br/";
+
+pub const RUST_BOOK_CHAPTERS: &[RustBookChapter] = &[
+    RustBookChapter {
+        number: 1,
+        title: "Começando (Getting Started)",
+        summary: "Instalação do rustup, primeiro Olá Mundo com rustc e introdução ao gerenciador de pacotes Cargo.",
+        topics: &["rustup", "rustc", "cargo new", "cargo build", "cargo run"],
+        web_url_en: "https://doc.rust-lang.org/book/ch01-00-getting-started.html",
+        web_url_pt: "https://rust-br.github.io/rust-book-pt-br/ch01-00-getting-started.html",
+    },
+    RustBookChapter {
+        number: 2,
+        title: "Programando um Jogo de Adivinhação",
+        summary: "Primeiro projeto prático: let, mut, match, io::stdin(), tratamento de erros e crate rand.",
+        topics: &["std::io", "mut", "rand", "cmp::Ordering", "loop", "match"],
+        web_url_en: "https://doc.rust-lang.org/book/ch02-00-guessing-game-tutorial.html",
+        web_url_pt: "https://rust-br.github.io/rust-book-pt-br/ch02-00-guessing-game-tutorial.html",
+    },
+    RustBookChapter {
+        number: 3,
+        title: "Conceitos Comuns de Programação",
+        summary: "Variáveis, imutabilidade por padrão, tipos primitivos, funções e controle de fluxo.",
+        topics: &["variables", "shadowing", "types", "functions", "if/else", "loops"],
+        web_url_en: "https://doc.rust-lang.org/book/ch03-00-common-programming-concepts.html",
+        web_url_pt: "https://rust-br.github.io/rust-book-pt-br/ch03-00-common-programming-concepts.html",
+    },
+    RustBookChapter {
+        number: 4,
+        title: "Entendendo Ownership (Posse)",
+        summary: "O conceito central de Rust: ownership, regras da pilha e heap, referências, borrowing e slices.",
+        topics: &["ownership rules", "move semantics", "&references", "&mut", "slices"],
+        web_url_en: "https://doc.rust-lang.org/book/ch04-00-understanding-ownership.html",
+        web_url_pt: "https://rust-br.github.io/rust-book-pt-br/ch04-00-understanding-ownership.html",
+    },
+    RustBookChapter {
+        number: 5,
+        title: "Usando Structs para Dados Relacionados",
+        summary: "Definindo e instanciando structs, structs clássicas, tuple structs e blocos de métodos impl.",
+        topics: &["struct", "impl", "self", "associated functions", "derive(Debug)"],
+        web_url_en: "https://doc.rust-lang.org/book/ch05-00-using-structs-to-structure-related-data.html",
+        web_url_pt: "https://rust-br.github.io/rust-book-pt-br/ch05-00-using-structs-to-structure-related-data.html",
+    },
+    RustBookChapter {
+        number: 6,
+        title: "Enums e Pattern Matching",
+        summary: "Enums com dados acoplados, o operador match, Option<T> sem null e sintaxe if let.",
+        topics: &["enum", "Option<T>", "match", "exhaustive patterns", "if let"],
+        web_url_en: "https://doc.rust-lang.org/book/ch06-00-enums.html",
+        web_url_pt: "https://rust-br.github.io/rust-book-pt-br/ch06-00-enums.html",
+    },
+    RustBookChapter {
+        number: 7,
+        title: "Gerenciando Projetos Crescentes com Pacotes, Crates e Módulos",
+        summary: "Sistema de módulos, caminhos absolutos e relativos, pub, use e separação em arquivos.",
+        topics: &["packages", "crates", "mod", "pub", "use", "super"],
+        web_url_en: "https://doc.rust-lang.org/book/ch07-00-managing-growing-projects-with-packages-crates-and-modules.html",
+        web_url_pt: "https://rust-br.github.io/rust-book-pt-br/ch07-00-managing-growing-projects-with-packages-crates-and-modules.html",
+    },
+    RustBookChapter {
+        number: 8,
+        title: "Coleções Comuns (Vector, String, HashMap)",
+        summary: "Estruturas dinâmicas na heap: Vec<T>, strings UTF-8 e HashMap<K, V>.",
+        topics: &["Vec<T>", "String vs &str", "UTF-8", "HashMap", "entry api"],
+        web_url_en: "https://doc.rust-lang.org/book/ch08-00-common-collections.html",
+        web_url_pt: "https://rust-br.github.io/rust-book-pt-br/ch08-00-common-collections.html",
+    },
+    RustBookChapter {
+        number: 9,
+        title: "Tratamento de Erros",
+        summary: "Erros irrecuperáveis com panic! e erros recuperáveis com Result<T, E> e o operador ?.",
+        topics: &["panic!", "Result<T, E>", "? operator", "unwrap / expect"],
+        web_url_en: "https://doc.rust-lang.org/book/ch09-00-error-handling.html",
+        web_url_pt: "https://rust-br.github.io/rust-book-pt-br/ch09-00-error-handling.html",
+    },
+    RustBookChapter {
+        number: 10,
+        title: "Tipos Genéricos, Traits e Lifetimes",
+        summary: "Abstração com tipos genéricos, polimorfismo via traits e garantia de validade com lifetimes ('a).",
+        topics: &["generics <T>", "traits", "trait bounds", "lifetimes 'a"],
+        web_url_en: "https://doc.rust-lang.org/book/ch10-00-generics.html",
+        web_url_pt: "https://rust-br.github.io/rust-book-pt-br/ch10-00-generics.html",
+    },
+    RustBookChapter {
+        number: 11,
+        title: "Escrevendo Testes Automatizados",
+        summary: "Anatomia de testes unitários com #[test], assert!, assert_eq!, should_panic e testes de integração.",
+        topics: &["#[test]", "assert_eq!", "cargo test", "integration tests"],
+        web_url_en: "https://doc.rust-lang.org/book/ch11-00-testing.html",
+        web_url_pt: "https://rust-br.github.io/rust-book-pt-br/ch11-00-testing.html",
+    },
+    RustBookChapter {
+        number: 12,
+        title: "Projeto de E/S: Construindo o Minigrep",
+        summary: "Projeto completo construindo uma ferramenta CLI como o grep: argumentos, leitura de arquivo e TDD.",
+        topics: &["CLI arguments", "std::fs", "minigrep", "TDD", "refactoring"],
+        web_url_en: "https://doc.rust-lang.org/book/ch12-00-an-io-project.html",
+        web_url_pt: "https://rust-br.github.io/rust-book-pt-br/ch12-00-an-io-project.html",
+    },
+    RustBookChapter {
+        number: 13,
+        title: "Recursos de Linguagens Funcionais: Iteradores e Closures",
+        summary: "Closures capturando ambiente, a trait Iterator, adaptadores de iterador e custo zero de abstração.",
+        topics: &["closures", "Fn/FnMut/FnOnce", "Iterator", "map/filter", "zero-cost"],
+        web_url_en: "https://doc.rust-lang.org/book/ch13-00-functional-features.html",
+        web_url_pt: "https://rust-br.github.io/rust-book-pt-br/ch13-00-functional-features.html",
+    },
+    RustBookChapter {
+        number: 14,
+        title: "Mais sobre o Cargo e o Crates.io",
+        summary: "Perfis de compilação release/dev, documentação com rustdoc, workspaces e publicação no crates.io.",
+        topics: &["cargo profiles", "/// rustdoc", "cargo workspaces", "crates.io"],
+        web_url_en: "https://doc.rust-lang.org/book/ch14-00-more-about-cargo.html",
+        web_url_pt: "https://rust-br.github.io/rust-book-pt-br/ch14-00-more-about-cargo.html",
+    },
+    RustBookChapter {
+        number: 15,
+        title: "Smart Pointers (Ponteiros Inteligentes)",
+        summary: "Box<T> para heap, Rc<T> para contagem de referências, RefCell<T> para mutabilidade interior e drop.",
+        topics: &["Box<T>", "Deref", "Drop", "Rc<T>", "RefCell<T>"],
+        web_url_en: "https://doc.rust-lang.org/book/ch15-00-smart-pointers.html",
+        web_url_pt: "https://rust-br.github.io/rust-book-pt-br/ch15-00-smart-pointers.html",
+    },
+    RustBookChapter {
+        number: 16,
+        title: "Concorrência Sem Medo (Fearless Concurrency)",
+        summary: "Threads com std::thread, passagem de mensagens por canais mpsc e estado compartilhado com Arc<Mutex<T>>.",
+        topics: &["std::thread", "mpsc::channel", "Arc<T>", "Mutex<T>", "Send / Sync"],
+        web_url_en: "https://doc.rust-lang.org/book/ch16-00-concurrency.html",
+        web_url_pt: "https://rust-br.github.io/rust-book-pt-br/ch16-00-concurrency.html",
+    },
+    RustBookChapter {
+        number: 17,
+        title: "Recursos de Orientação a Objetos em Rust",
+        summary: "Encapsulamento, polimorfismo dinâmico com trait objects (dyn Trait) e implementação de State Pattern.",
+        topics: &["OOP in Rust", "dyn Trait", "dispatch dynamic vs static", "state pattern"],
+        web_url_en: "https://doc.rust-lang.org/book/ch17-00-oop.html",
+        web_url_pt: "https://rust-br.github.io/rust-book-pt-br/ch17-00-oop.html",
+    },
+    RustBookChapter {
+        number: 18,
+        title: "Padrões e Matching",
+        summary: "Onde padrões podem ser usados (match, if let, while let, for), padrões refutáveis e guards.",
+        topics: &["pattern syntax", "destructuring", "guards @", "refutable patterns"],
+        web_url_en: "https://doc.rust-lang.org/book/ch18-00-patterns.html",
+        web_url_pt: "https://rust-br.github.io/rust-book-pt-br/ch18-00-patterns.html",
+    },
+    RustBookChapter {
+        number: 19,
+        title: "Recursos Avançados",
+        summary: "Unsafe Rust, traits avançadas, tipos avançados, ponteiros brutos e macros declarativas/procedurais.",
+        topics: &["unsafe", "raw pointers", "advanced traits", "macros", "procedural macros"],
+        web_url_en: "https://doc.rust-lang.org/book/ch19-00-advanced-features.html",
+        web_url_pt: "https://rust-br.github.io/rust-book-pt-br/ch19-00-advanced-features.html",
+    },
+    RustBookChapter {
+        number: 20,
+        title: "Projeto Final: Servidor Web Multithreaded",
+        summary: "Projeto final: TCP listener, parsing de requisições HTTP e criação de um ThreadPool com canais.",
+        topics: &["std::net::TcpListener", "HTTP parsing", "ThreadPool", "graceful shutdown"],
+        web_url_en: "https://doc.rust-lang.org/book/ch20-00-final-project-a-multithreaded-web-server.html",
+        web_url_pt: "https://rust-br.github.io/rust-book-pt-br/ch20-00-final-project-a-multithreaded-web-server.html",
+    },
+];
+
 pub const RUST_LIBS: &[RustLibItem] = &[
-    // ─── COLEÇÕES ─────────────────────────────────────────────────────────────
+// ─── COLEÇÕES ─────────────────────────────────────────────────────────────
     RustLibItem {
         id: "std_hashmap",
         name: "std::collections::HashMap",
@@ -822,6 +1004,643 @@ fn main() {
         cargo_dep: Some("rand = \"0.8\""),
         docs_url: "https://docs.rs/rand/latest/rand/",
     },
+
+    // ─── COLEÇÕES ADICIONAIS ──────────────────────────────────────────────────
+    RustLibItem {
+        id: "std_hashset",
+        name: "std::collections::HashSet",
+        category: LibCategory::Collections,
+        summary: "Conjunto de elementos únicos na memória com testes de pertinência O(1) e operações de união e interseção.",
+        description: "\
+O `HashSet<T>` implementa um conjunto matemático sem repetições baseado em tabela hash.
+Ideal para deduplicação instantânea de dados, conferência de presença e testes rápidos de pertinência (`.contains()`).",
+        key_types: &["HashSet<T>"],
+        key_methods: &[
+            ".insert(val) -> bool",
+            ".contains(&val) -> bool",
+            ".intersection(&other)",
+            ".union(&other)",
+            ".difference(&other)",
+        ],
+        example_code: r#"use std::collections::HashSet;
+
+fn main() {
+    let mut tags = HashSet::new();
+    tags.insert("rust");
+    tags.insert("segurança");
+    tags.insert("concorrência");
+    tags.insert("rust"); // duplicata ignorada
+
+    println!("Total de tags únicas: {}", tags.len());
+    println!("Contém 'rust'? {}", tags.contains("rust"));
+}
+"#,
+        is_std: true,
+        cargo_dep: None,
+        docs_url: "https://doc.rust-lang.org/std/collections/struct.HashSet.html",
+    },
+    RustLibItem {
+        id: "std_btreeset",
+        name: "std::collections::BTreeSet",
+        category: LibCategory::Collections,
+        summary: "Conjunto ordenado baseado em B-Tree com iteração crescente garantida e busca por intervalos.",
+        description: "\
+O `BTreeSet<T>` armazena elementos únicos mantendo-os sempre ordenados através de uma árvore B.
+Permite consultas por intervalo (`.range()`) e recuperar o menor ou maior elemento com facilidade.",
+        key_types: &["BTreeSet<T>"],
+        key_methods: &[
+            ".insert(val)",
+            ".range(min..=max)",
+            ".first() -> Option<&T>",
+            ".last() -> Option<&T>",
+        ],
+        example_code: r#"use std::collections::BTreeSet;
+
+fn main() {
+    let mut notas = BTreeSet::new();
+    notas.insert(85);
+    notas.insert(92);
+    notas.insert(70);
+    notas.insert(100);
+
+    println!("Notas ordenadas: {:?}", notas);
+    println!("Maior nota: {:?}", notas.last());
+}
+"#,
+        is_std: true,
+        cargo_dep: None,
+        docs_url: "https://doc.rust-lang.org/std/collections/struct.BTreeSet.html",
+    },
+
+    // ─── CONCORRÊNCIA E ATÔMICOS ───────────────────────────────────────────────
+    RustLibItem {
+        id: "std_atomic",
+        name: "std::sync::atomic::{AtomicBool, AtomicUsize}",
+        category: LibCategory::SyncConcurrency,
+        summary: "Primitivas atômicas lock-free com instruções de hardware para contadores e flags seguras entre threads.",
+        description: "\
+Tipos atômicos fornecem sincronização livre de travas (lock-free) através de instruções diretas da CPU (como CMPXCHG).
+Ideais para contadores globais de estatísticas, flags de encerramento (`AtomicBool`) e métricas sem o overhead de Mutex.",
+        key_types: &["AtomicBool", "AtomicUsize", "Ordering"],
+        key_methods: &[
+            ".load(Ordering)",
+            ".store(val, Ordering)",
+            ".fetch_add(val, Ordering)",
+            ".compare_exchange(..)",
+        ],
+        example_code: r#"use std::sync::atomic::{AtomicUsize, Ordering};
+use std::sync::Arc;
+use std::thread;
+
+fn main() {
+    let contador = Arc::new(AtomicUsize::new(0));
+    let mut handles = vec![];
+
+    for _ in 0..5 {
+        let c = Arc::clone(&contador);
+        handles.push(thread::spawn(move || {
+            c.fetch_add(10, Ordering::SeqCst);
+        }));
+    }
+
+    for h in handles {
+        h.join().unwrap();
+    }
+
+    println!("Total atômico acumulado: {}", contador.load(Ordering::SeqCst));
+}
+"#,
+        is_std: true,
+        cargo_dep: None,
+        docs_url: "https://doc.rust-lang.org/std/sync/atomic/index.html",
+    },
+    RustLibItem {
+        id: "std_once_lock",
+        name: "std::sync::OnceLock",
+        category: LibCategory::SyncConcurrency,
+        summary: "Inicialização preguiçosa (lazy) segura e thread-safe de valores estáticos com custo zero após inicializado.",
+        description: "\
+`OnceLock<T>` (estabilizado em Rust 1.70+) é a solução nativa da linguagem para inicialização preguiçosa e variáveis globais seguras.
+Garante que o valor seja computado exatamente uma única vez, mesmo sob concorrência intensa de múltiplas threads.",
+        key_types: &["OnceLock<T>"],
+        key_methods: &[
+            ".get() -> Option<&T>",
+            ".get_or_init(|| ...)",
+            ".set(val) -> Result<()>",
+        ],
+        example_code: r#"use std::sync::OnceLock;
+
+static CONFIG: OnceLock<String> = OnceLock::new();
+
+fn get_config() -> &'static str {
+    CONFIG.get_or_init(|| {
+        println!("Inicializando configuração global (apenas 1x)...");
+        "Modo Produção v1.0".to_string()
+    })
+}
+
+fn main() {
+    println!("Chamada 1: {}", get_config());
+    println!("Chamada 2: {}", get_config());
+}
+"#,
+        is_std: true,
+        cargo_dep: None,
+        docs_url: "https://doc.rust-lang.org/std/sync/struct.OnceLock.html",
+    },
+
+    // ─── MEMÓRIA E MUTABILIDADE INTERIOR ──────────────────────────────────────
+    RustLibItem {
+        id: "std_cell",
+        name: "std::cell::{RefCell, Cell}",
+        category: LibCategory::MemoryTypes,
+        summary: "Mutabilidade interior em thread única: confere regras de empréstimo em tempo de execução ao invés de compilação.",
+        description: "\
+`RefCell<T>` permite mutar dados mesmo quando a referência externa é imutável (`&self`).
+As regras de empréstimo de Rust (apenas 1 mutável ou N imutáveis) são conferidas em tempo de execução (`.borrow()` e `.borrow_mut()`).",
+        key_types: &["RefCell<T>", "Cell<T>"],
+        key_methods: &[
+            ".borrow() -> Ref<T>",
+            ".borrow_mut() -> RefMut<T>",
+            ".get() (para Cell)",
+            ".set(val) (para Cell)",
+        ],
+        example_code: r#"use std::cell::RefCell;
+
+struct Logger {
+    mensagens: RefCell<Vec<String>>,
+}
+
+impl Logger {
+    fn registrar(&self, msg: &str) {
+        // Muta o vetor interno mesmo com &self imutável
+        self.mensagens.borrow_mut().push(msg.to_string());
+    }
+}
+
+fn main() {
+    let log = Logger { mensagens: RefCell::new(vec![]) };
+    log.registrar("Iniciando app");
+    log.registrar("Conexão OK");
+
+    println!("Total de logs gravados: {}", log.mensagens.borrow().len());
+}
+"#,
+        is_std: true,
+        cargo_dep: None,
+        docs_url: "https://doc.rust-lang.org/std/cell/index.html",
+    },
+    RustLibItem {
+        id: "std_mem",
+        name: "std::mem::{size_of, replace, take}",
+        category: LibCategory::MemoryTypes,
+        summary: "Manipulação avançada de layout de memória, tamanhos de structs e troca de valores sem cópia.",
+        description: "\
+O módulo `std::mem` oferece utilitários fundamentais para inspecionar memória em baixo nível (`size_of`, `align_of`)
+e transferir posse de valores dentro de referências mutáveis (`replace`, `take`, `swap`) de forma 100% segura.",
+        key_types: &["std::mem"],
+        key_methods: &[
+            "mem::size_of::<T>() -> usize",
+            "mem::replace(&mut dest, src)",
+            "mem::take(&mut dest)",
+            "mem::drop(val)",
+        ],
+        example_code: r#"use std::mem;
+
+struct Buffer {
+    dados: Vec<u8>,
+}
+
+fn main() {
+    let mut buf = Buffer { dados: vec![1, 2, 3, 4, 5] };
+    
+    // mem::take substitui o conteúdo por Vec::default() sem clonar
+    let extraidos = mem::take(&mut buf.dados);
+
+    println!("Dados extraídos: {:?}", extraidos);
+    println!("Buffer original resetado: {:?}", buf.dados);
+    println!("Tamanho de Buffer na stack: {} bytes", mem::size_of::<Buffer>());
+}
+"#,
+        is_std: true,
+        cargo_dep: None,
+        docs_url: "https://doc.rust-lang.org/std/mem/index.html",
+    },
+
+    // ─── REDES E SERVIDORES ───────────────────────────────────────────────────
+    RustLibItem {
+        id: "std_net_tcplistener",
+        name: "std::net::TcpListener",
+        category: LibCategory::Net,
+        summary: "Servidor de sockets TCP síncrono nativo para escuta de portas de rede e aceitação de conexões.",
+        description: "\
+`TcpListener` permite vincular uma porta local (como `127.0.0.1:8080`) e aceitar fluxos de clientes TCP (`TcpStream`).
+É a base nativa sobre a qual servidores HTTP, proxies e protocolos de rede são construídos em Rust.",
+        key_types: &["TcpListener", "Incoming"],
+        key_methods: &[
+            "TcpListener::bind(addr)",
+            ".incoming() -> impl Iterator<Item = Result<TcpStream>>",
+            ".accept() -> Result<(TcpStream, SocketAddr)>",
+        ],
+        example_code: r#"use std::net::TcpListener;
+
+fn main() {
+    let listener = TcpListener::bind("127.0.0.1:0").expect("Falha ao abrir socket TCP");
+    let porta = listener.local_addr().unwrap().port();
+    println!("Servidor TCP ouvindo com sucesso na porta efêmera: {}", porta);
+}
+"#,
+        is_std: true,
+        cargo_dep: None,
+        docs_url: "https://doc.rust-lang.org/std/net/struct.TcpListener.html",
+    },
+    RustLibItem {
+        id: "std_net_udp",
+        name: "std::net::UdpSocket",
+        category: LibCategory::Net,
+        summary: "Comunicação rápida de datagramas UDP sem conexão para jogos multiplayer, DNS e streaming.",
+        description: "\
+O protocolo UDP é sem conexão e sem garantia de entrega, proporcionando latência ultrabaixa.
+O `UdpSocket` nativo de Rust é perfeito para protocolos de jogos multiplayer, telemetria de IoT e resolução DNS.",
+        key_types: &["UdpSocket"],
+        key_methods: &[
+            "UdpSocket::bind(addr)",
+            ".send_to(&buf, dest)",
+            ".recv_from(&mut buf)",
+        ],
+        example_code: r#"use std::net::UdpSocket;
+
+fn main() {
+    let socket = UdpSocket::bind("127.0.0.1:0").expect("Falha ao abrir socket UDP");
+    let porta = socket.local_addr().unwrap().port();
+    println!("Socket UDP pronto para datagramas na porta: {}", porta);
+}
+"#,
+        is_std: true,
+        cargo_dep: None,
+        docs_url: "https://doc.rust-lang.org/std/net/struct.UdpSocket.html",
+    },
+
+    // ─── FRAMEWORKS WEB E BANCOS DE DADOS ────────────────────────────────────
+    RustLibItem {
+        id: "crate_axum",
+        name: "axum",
+        category: LibCategory::Net,
+        summary: "Framework web moderno e ergonômico construído pela equipe do Tokio com extração tipada de requisições.",
+        description: "\
+Axum é o framework web preferido no ecossistema Rust atual.
+Desenvolvido sobre Tokio e Tower, ele oferece roteamento rápido, middlewares modulares e extração declarativa de parâmetros via tipos (`Json<T>`, `Path<T>`, `Query<T>`).",
+        key_types: &["Router", "Json", "Path", "response::IntoResponse"],
+        key_methods: &[
+            "Router::new().route(path, get(handler))",
+            "serve(listener, router)",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// axum = "0.7"
+// tokio = { version = "1.0", features = ["full"] }
+
+fn main() {
+    println!("Axum: rotas declarativas de altíssima performance para APIs REST.");
+    println!("Exemplo conceitual de rota:");
+    println!("  async fn saudar() -> &'static str {{ "Olá do Axum Web Framework!" }}");
+    println!("  let app = axum::Router::new().route("/", axum::routing::get(saudar));");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"axum = "0.7"
+tokio = { version = "1.0", features = ["full"] }"#),
+        docs_url: "https://docs.rs/axum/latest/axum/",
+    },
+    RustLibItem {
+        id: "crate_sqlx",
+        name: "sqlx",
+        category: LibCategory::Database,
+        summary: "Driver SQL 100% Rust assíncrono com conferência de sintaxe e tipos das queries em tempo de compilação.",
+        description: "\
+SQLx permite escrever SQL puro com checagem em tempo de compilação sem necessidade de ORM pesado.
+Garante em tempo de build que suas tabelas, colunas e tipos SQL batem exatamente com as structs de Rust através da macro `query_as!`. Suporta PostgreSQL, MySQL e SQLite.",
+        key_types: &["PgPool", "SqlitePool", "query!", "query_as!"],
+        key_methods: &[
+            "SqlitePool::connect(&url).await",
+            r#"query_as!(Struct, "SELECT id FROM tabela").fetch_all(&pool).await"#,
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// sqlx = { version = "0.8", features = ["runtime-tokio", "sqlite"] }
+
+fn main() {
+    println!("SQLx: queries SQL tipadas e seguras sem erros de digitação em runtime.");
+    println!("Exemplo de uso:");
+    println!("  let pool = SqlitePool::connect("sqlite:banco.db").await?;");
+    println!("  let rows = sqlx::query!("SELECT id, nome FROM usuarios").fetch_all(&pool).await?;");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"sqlx = { version = "0.8", features = ["runtime-tokio", "sqlite"] }"#),
+        docs_url: "https://docs.rs/sqlx/latest/sqlx/",
+    },
+    RustLibItem {
+        id: "crate_rusqlite",
+        name: "rusqlite",
+        category: LibCategory::Database,
+        summary: "Bindings ergonômicos e seguros para SQLite embutido, padrão da indústria para aplicações desktop e locais.",
+        description: "\
+`rusqlite` é a biblioteca padrão para utilizar SQLite localmente em aplicações Rust (inclusive é a utilizada na própria RRS).
+Garante transações ACID, preparação de statements cacheados e mapeamento flexível de colunas.",
+        key_types: &["Connection", "Statement", "params!"],
+        key_methods: &[
+            "Connection::open(path)",
+            ".execute(sql, params)",
+            ".query_row(sql, params, |row| ..)",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// rusqlite = "0.32"
+
+fn main() {
+    println!("rusqlite: banco de dados relacional embarcado ultrarrápido sem servidor.");
+    println!("  let conn = rusqlite::Connection::open("dados.db")?;");
+    println!("  conn.execute("CREATE TABLE secao (id INTEGER, valor TEXT)", [])?;");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"rusqlite = "0.32""#),
+        docs_url: "https://docs.rs/rusqlite/latest/rusqlite/",
+    },
+
+    // ─── DESENVOLVIMENTO DE JOGOS E GRÁFICOS ─────────────────────────────────
+    RustLibItem {
+        id: "crate_bevy",
+        name: "bevy",
+        category: LibCategory::GameDev,
+        summary: "Game engine moderna e revolucionária em Rust baseada em Entity-Component-System (ECS) e renderização paralela.",
+        description: "\
+Bevy é a engine de jogos mais popular do ecossistema Rust.
+Utiliza arquitetura puramente orientada a dados (ECS) com paralelização automática na CPU e pipeline moderno de renderização em 2D e 3D.",
+        key_types: &["App", "Commands", "Query", "Res", "Component", "Resource"],
+        key_methods: &[
+            "App::new().add_plugins(DefaultPlugins).run()",
+            "commands.spawn((ComponentA, ComponentB))",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// bevy = "0.14"
+
+fn main() {
+    println!("Bevy: motor de jogos moderno e ergonômico em Rust com ECS.");
+    println!("Estrutura típica de um jogo Bevy:");
+    println!("  fn movimentar_jogador(mut query: Query<&mut Transform, With<Player>>) {{ .. }}");
+    println!("  App::new().add_plugins(DefaultPlugins).add_systems(Update, movimentar_jogador).run();");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"bevy = "0.14""#),
+        docs_url: "https://docs.rs/bevy/latest/bevy/",
+    },
+    RustLibItem {
+        id: "crate_wgpu",
+        name: "wgpu",
+        category: LibCategory::GameDev,
+        summary: "API gráfica portável de altíssima performance para Vulkan, DirectX 12, Metal e WebGPU nativo.",
+        description: "\
+`wgpu` é a implementação em Rust da especificação WebGPU padrão da W3C.
+Permite programar pipelines gráficos modernos de shaders e computação (GPGPU) compatíveis com Windows, Linux, macOS e Web sem alterar o código-fonte.",
+        key_types: &["Device", "Queue", "RenderPipeline", "ShaderModule"],
+        key_methods: &[
+            "Instance::new(Backends::all())",
+            "device.create_render_pipeline(&desc)",
+            "queue.submit([command_buffer])",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// wgpu = "22.0"
+
+fn main() {
+    println!("wgpu: gráficos portáteis de última geração (DirectX 12, Vulkan, Metal, WebGPU).");
+    println!("Utilizado em engines de jogos, emuladores e interfaces desktop de alto desempenho.");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"wgpu = "22.0""#),
+        docs_url: "https://docs.rs/wgpu/latest/wgpu/",
+    },
+
+    // ─── CRIPTOGRAFIA, REGEX E UTILITÁRIOS ────────────────────────────────────
+    RustLibItem {
+        id: "crate_regex",
+        name: "regex",
+        category: LibCategory::Ecosystem,
+        summary: "Expressões regulares com tempo linear O(n) e garantia matemática contra ataques de ReDoS.",
+        description: "\
+O crate oficial `regex` compila expressões regulares em autômatos finitos (DFA/NFA).
+Diferente de engines com backtracking (como PCRE ou Python), garante que o tempo de matching cresce estritamente proporcional ao tamanho do texto.",
+        key_types: &["Regex", "Captures", "RegexBuilder"],
+        key_methods: &[
+            "Regex::new(pattern)",
+            ".is_match(text) -> bool",
+            ".captures(text) -> Option<Captures>",
+            ".replace_all(text, rep)",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// regex = "1.10"
+
+fn main() {
+    let email_exemplo = "suporte@rust-lang.org";
+    println!("Validação por expressão regular:");
+    println!("Email a ser checado: {}", email_exemplo);
+    println!("Expressão típica: ^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"regex = "1.10""#),
+        docs_url: "https://docs.rs/regex/latest/regex/",
+    },
+    RustLibItem {
+        id: "crate_sha2",
+        name: "sha2",
+        category: LibCategory::Ecosystem,
+        summary: "Funções de hash criptográfico seguro da família SHA-2 (SHA-256 e SHA-512) com aceleração de hardware.",
+        description: "\
+O crate `sha2` implementa hashing criptográfico com suporte nativo a instruções de CPU (Intel SHA Extensions / ARMv8 Crypto).
+É o padrão utilizado em conferência de integridade binária, autenticação de releases e blockchains.",
+        key_types: &["Sha256", "Digest"],
+        key_methods: &[
+            "Sha256::new()",
+            ".update(data)",
+            ".finalize()",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// sha2 = "0.10"
+
+fn main() {
+    println!("SHA-256: hashing criptográfico seguro para conferência de instaladores e arquivos.");
+    println!("Uso com a trait Digest:");
+    println!("  let mut hasher = sha2::Sha256::new();");
+    println!("  hasher.update(b"meu arquivo binario");");
+    println!("  let hash = format!("{:x}", hasher.finalize());");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"sha2 = "0.10""#),
+        docs_url: "https://docs.rs/sha2/latest/sha2/",
+    },
+    RustLibItem {
+        id: "crate_indicatif",
+        name: "indicatif",
+        category: LibCategory::Ecosystem,
+        summary: "Barras de progresso e spinners animados para utilitários de linha de comando com estimativas de tempo.",
+        description: "\
+`indicatif` fornece barras de progresso visualmente elegantes no terminal com formatação de bytes (`12.5 MB / 100 MB`), ETA e contadores paralelos.",
+        key_types: &["ProgressBar", "ProgressStyle", "MultiProgress"],
+        key_methods: &[
+            "ProgressBar::new(total)",
+            ".set_style(style)",
+            ".inc(delta)",
+            ".finish_with_message(msg)",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// indicatif = "0.17"
+
+fn main() {
+    println!("indicatif: feedback visual com barras de progresso para ferramentas CLI.");
+    println!("  let bar = indicatif::ProgressBar::new(100);");
+    println!("  bar.inc(25);");
+    println!("  bar.finish_with_message("Download concluído!");");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"indicatif = "0.17""#),
+        docs_url: "https://docs.rs/indicatif/latest/indicatif/",
+    },
+    RustLibItem {
+        id: "crate_colored",
+        name: "colored",
+        category: LibCategory::Ecosystem,
+        summary: "Colorização e estilização de texto no terminal com sintaxe fluente e suporte a Windows 10/11 ANSI.",
+        description: "\
+Permite adicionar cores, negrito, sublinhado e fundos ao terminal com simples chamadas como `'Texto'.green().bold()`.",
+        key_types: &["Colorize"],
+        key_methods: &[
+            ".red()",
+            ".green()",
+            ".blue()",
+            ".bold()",
+            ".italic()",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// colored = "2.1"
+
+fn main() {
+    println!("colored: formatação colorida para terminais modernos no Windows, Linux e macOS.");
+    println!("Exemplo conceitual: println!("{}", "✔ Sucesso");");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"colored = "2.1""#),
+        docs_url: "https://docs.rs/colored/latest/colored/",
+    },
+    RustLibItem {
+        id: "crate_tempfile",
+        name: "tempfile",
+        category: LibCategory::FsIo,
+        summary: "Criação e limpeza automática de arquivos e pastas temporárias protegidas contra colisões de nome.",
+        description: "\
+`tempfile` gerencia arquivos na pasta `%TEMP%` do sistema que são automaticamente excluídos quando saem de escopo (RAII via trait `Drop`).",
+        key_types: &["NamedTempFile", "TempDir"],
+        key_methods: &[
+            "NamedTempFile::new()",
+            "TempDir::new()",
+            ".path()",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// tempfile = "3.10"
+
+fn main() {
+    println!("tempfile: cria arquivos descartáveis para testes ou processamento intermediário.");
+    println!("  let temp = tempfile::NamedTempFile::new()?;");
+    println!("  // Ao final do bloco, o arquivo é automaticamente apagado do disco.");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"tempfile = "3.10""#),
+        docs_url: "https://docs.rs/tempfile/latest/tempfile/",
+    },
+    RustLibItem {
+        id: "crate_toml",
+        name: "toml",
+        category: LibCategory::Ecosystem,
+        summary: "Parser e serializador para o formato TOML, o padrão oficial de arquivos de configuração em Rust.",
+        description: "\
+Utilizado pelo próprio Cargo para o `Cargo.toml`. Permite carregar e salvar configurações humanas e legíveis com validação via `serde`.",
+        key_types: &["toml::Value", "toml::from_str", "toml::to_string"],
+        key_methods: &[
+            "toml::from_str::<T>(content)",
+            "toml::to_string_pretty(&val)",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// toml = "0.8"
+
+fn main() {
+    let toml_texto = "[pacote]
+nome = "rrs"
+versao = "0.3.0"";
+    println!("Exemplo de configuração TOML:
+{}", toml_texto);
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"toml = "0.8""#),
+        docs_url: "https://docs.rs/toml/latest/toml/",
+    },
+    RustLibItem {
+        id: "crate_bincode",
+        name: "bincode",
+        category: LibCategory::Ecosystem,
+        summary: "Codificador e decodificador binário ultrarrápido e compacto para comunicação entre processos ou arquivos de save.",
+        description: "\
+Diferente de JSON ou XML, `bincode` grava structs na forma binária direta da memória.
+Gera arquivos mínimos sem overhead de texto, com velocidades de serialização na ordem de gigabytes por segundo.",
+        key_types: &["bincode::serialize", "bincode::deserialize"],
+        key_methods: &[
+            "bincode::serialize(&data)",
+            "bincode::deserialize::<T>(&bytes)",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// bincode = "1.3"
+
+fn main() {
+    println!("bincode: serialização binária com máxima densidade de dados e velocidade de gravação.");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"bincode = "1.3""#),
+        docs_url: "https://docs.rs/bincode/latest/bincode/",
+    },
+    RustLibItem {
+        id: "crate_sysinfo",
+        name: "sysinfo",
+        category: LibCategory::SystemOs,
+        summary: "Monitoramento de hardware multiplataforma: uso de CPU por núcleo, memória RAM/Swap, discos e processos.",
+        description: "\
+`sysinfo` permite inspecionar recursos do computador em tempo real.
+Ideal para diagnósticos de sistema, painéis de monitoramento e ferramentas de otimização de máquina.",
+        key_types: &["System", "Disks", "Networks", "Pid"],
+        key_methods: &[
+            "System::new_all()",
+            ".refresh_all()",
+            ".total_memory()",
+            ".used_memory()",
+            ".cpus()",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// sysinfo = "0.30"
+
+fn main() {
+    println!("sysinfo: coleta de métricas de CPU, RAM, discos e processos ativos do sistema operacional.");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"sysinfo = "0.30""#),
+        docs_url: "https://docs.rs/sysinfo/latest/sysinfo/",
+    },
+
+
 ];
 
 /// Busca bibliotecas por texto de pesquisa e categoria.
@@ -852,7 +1671,7 @@ mod tests {
 
     #[test]
     fn catalogo_de_bibliotecas_tem_itens_validos() {
-        assert!(RUST_LIBS.len() >= 20, "devem existir mais de 20 bibliotecas documentadas");
+        assert!(RUST_LIBS.len() >= 40, "devem existir mais de 40 bibliotecas documentadas (atual: {})", RUST_LIBS.len());
         let mut ids = std::collections::HashSet::new();
         for lib in RUST_LIBS {
             assert!(ids.insert(lib.id), "id repetido: {}", lib.id);
@@ -865,11 +1684,27 @@ mod tests {
     }
 
     #[test]
+    fn capitulos_do_livro_oficial_estao_completos() {
+        assert_eq!(RUST_BOOK_CHAPTERS.len(), 20, "o livro oficial tem 20 capítulos");
+        for ch in RUST_BOOK_CHAPTERS {
+            assert!(ch.number >= 1 && ch.number <= 20);
+            assert!(!ch.title.is_empty());
+            assert!(!ch.summary.is_empty());
+            assert!(!ch.topics.is_empty());
+            assert!(ch.web_url_en.starts_with("https://"));
+            assert!(ch.web_url_pt.starts_with("https://"));
+        }
+    }
+
+    #[test]
     fn busca_de_bibliotecas_funciona() {
         let hashmap_results = search_libs("hashmap", "todas");
         assert!(hashmap_results.iter().any(|lib| lib.id == "std_hashmap"));
 
         let sync_results = search_libs("", "concorrência");
-        assert!(sync_results.len() >= 3);
+        assert!(sync_results.len() >= 4);
+
+        let gamedev_results = search_libs("", "jogos");
+        assert!(gamedev_results.len() >= 2);
     }
 }

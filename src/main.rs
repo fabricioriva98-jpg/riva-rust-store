@@ -16,6 +16,7 @@ mod ide;
 mod launchers;
 mod learn;
 mod optimizer;
+mod performance;
 mod rust_lib;
 mod sandbox;
 mod saves;

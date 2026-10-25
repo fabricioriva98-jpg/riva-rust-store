@@ -38,6 +38,7 @@ impl StoreGui {
         ui.label(RichText::new(self.tr("⚙ Configurações")).size(21.0).strong().color(Color32::WHITE));
         ui.add_space(10.0);
         self.settings_theme(ui);
+        self.settings_performance(ui);
         self.settings_account(ui);
         self.settings_public_profile(ui);
         self.settings_community(ui);
@@ -135,6 +136,53 @@ impl StoreGui {
                     }
                 }
             });
+        });
+    }
+
+    // ─── Perfil de Desempenho & Taxa de Quadros (FPS) ───────────────────────
+
+    fn settings_performance(&mut self, ui: &mut egui::Ui) {
+        let title = self.tr("⚡ Perfil de Desempenho & Taxa de Quadros (FPS)");
+        card(ui, &title, |ui| {
+            ui.label(RichText::new(self.tr("Controle de Pacing de Renderização e Consumo de Recursos:")).strong().size(13.0));
+            ui.add_space(4.0);
+
+            ui.horizontal_wrapped(|ui| {
+                for mode in crate::performance::PerformanceMode::ALL {
+                    let is_active = self.performance_mode == *mode;
+                    let border = if is_active {
+                        Stroke::new(2.0_f32, Color32::from_rgb(80, 200, 120))
+                    } else {
+                        Stroke::new(1.0_f32, Color32::from_rgb(45, 55, 75))
+                    };
+                    let bg = if is_active {
+                        Color32::from_rgb(25, 45, 35)
+                    } else {
+                        Color32::from_rgb(18, 22, 30)
+                    };
+
+                    let resp = egui::Frame::NONE
+                        .fill(bg)
+                        .stroke(border)
+                        .corner_radius(CornerRadius::same(6))
+                        .inner_margin(egui::Margin::symmetric(12, 10))
+                        .show(ui, |ui| {
+                            ui.label(
+                                RichText::new(self.tr(mode.label()))
+                                    .strong()
+                                    .size(13.0)
+                                    .color(Color32::WHITE),
+                            );
+                        });
+
+                    if resp.response.interact(egui::Sense::click()).clicked() {
+                        self.set_performance_mode(*mode);
+                    }
+                }
+            });
+
+            ui.add_space(6.0);
+            hint(ui, &self.tr(self.performance_mode.description()));
         });
     }
 

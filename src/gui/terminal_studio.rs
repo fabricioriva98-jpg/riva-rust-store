@@ -69,6 +69,60 @@ impl StoreGui {
 
         ui.add_space(10.0);
 
+        // ─── BARRA DE DETECÇÃO DO AMBIENTE RUST (TOOLCHAIN & FERRAMENTAS) ──
+        if self.rust_env_info.is_none() {
+            self.rust_env_info = Some(terminal_studio::detect_rust_env());
+        }
+
+        let mut refresh_env = false;
+        if let Some(env_info) = self.rust_env_info.clone() {
+            egui::Frame::NONE
+                .fill(Color32::from_rgb(18, 24, 34))
+                .stroke(Stroke::new(1.0_f32, Color32::from_rgb(36, 48, 70)))
+                .corner_radius(CornerRadius::same(8))
+                .inner_margin(egui::Margin::symmetric(12, 9))
+                .show(ui, |ui| {
+                    ui.horizontal_wrapped(|ui| {
+                        ui.label(RichText::new(self.tr("🦀 Toolchain Rust do Sistema:")).strong().color(Color32::WHITE));
+                        ui.add_space(6.0);
+
+                        if let Some(ref v) = env_info.rustc_version {
+                            draw_pill(ui, v, Color32::from_rgb(30, 110, 60));
+                        } else {
+                            draw_pill(ui, &self.tr("rustc não detectado"), Color32::from_rgb(140, 40, 40));
+                        }
+
+                        if let Some(ref v) = env_info.cargo_version {
+                            draw_pill(ui, v, Color32::from_rgb(35, 75, 140));
+                        }
+
+                        if let Some(ref v) = env_info.rustup_version {
+                            draw_pill(ui, v, Color32::from_rgb(60, 60, 90));
+                        }
+
+                        if env_info.clippy_installed {
+                            draw_pill(ui, "clippy: ✔", Color32::from_rgb(40, 100, 70));
+                        }
+
+                        if env_info.rust_analyzer_installed {
+                            draw_pill(ui, "rust-analyzer: ✔", Color32::from_rgb(40, 100, 70));
+                        }
+
+                        ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
+                            if ui.button(self.tr("🔄 Atualizar")).clicked() {
+                                refresh_env = true;
+                            }
+                        });
+                    });
+                });
+
+            ui.add_space(8.0);
+        }
+
+        if refresh_env {
+            self.rust_env_info = Some(terminal_studio::detect_rust_env());
+        }
+
         // ─── PAINEL DE INTEGRAÇÃO COM IDES (VS CODE & ANTIGRAVITY) ──────────
         let ides = ide::detect_ides();
         egui::Frame::NONE
@@ -159,7 +213,104 @@ impl StoreGui {
                 });
             });
 
-        ui.add_space(10.0);
+        ui.add_space(8.0);
+
+        // ─── FERRAMENTAS RÁPIDAS: NOVO PROJETO CARGO & AVALIADOR SCRATCHPAD ─
+        egui::Frame::NONE
+            .fill(Color32::from_rgb(18, 22, 30))
+            .stroke(Stroke::new(1.0_f32, Color32::from_rgb(34, 42, 58)))
+            .corner_radius(CornerRadius::same(6))
+            .inner_margin(egui::Margin::symmetric(10, 8))
+            .show(ui, |ui| {
+                ui.horizontal_wrapped(|ui| {
+                    // GERADOR CARGO
+                    ui.label(RichText::new(self.tr("📦 Novo Projeto Cargo:")).strong().size(12.0).color(Color32::WHITE));
+                    let cargo_hint = self.tr("nome_do_projeto");
+                    ui.add(
+                        egui::TextEdit::singleline(&mut self.cargo_new_name)
+                            .hint_text(cargo_hint)
+                            .desired_width(120.0),
+                    );
+
+                    ui.radio_value(&mut self.cargo_new_is_bin, true, "--bin (App)");
+                    ui.radio_value(&mut self.cargo_new_is_bin, false, "--lib (Lib)");
+
+                    if ui
+                        .add_enabled(
+                            !self.cargo_new_name.trim().is_empty() && !self.terminal_is_running,
+                            egui::Button::new(RichText::new(self.tr("➕ Criar")).strong()),
+                        )
+                        .clicked()
+                    {
+                        let name = self.cargo_new_name.trim().to_string();
+                        match terminal_studio::create_cargo_project(&self.terminal_working_dir, &name, self.cargo_new_is_bin) {
+                            Ok(msg) => {
+                                self.terminal_logs.push((
+                                    terminal_studio::TerminalLineKind::SystemInfo,
+                                    format!("✔ {}", msg),
+                                ));
+                                self.status_msg = msg;
+                                self.status_is_error = false;
+                                self.cargo_new_name.clear();
+                            }
+                            Err(e) => {
+                                self.terminal_logs.push((
+                                    terminal_studio::TerminalLineKind::Stderr,
+                                    format!("❌ {}", e),
+                                ));
+                                self.status_msg = e;
+                                self.status_is_error = true;
+                            }
+                        }
+                    }
+
+                    ui.add_space(8.0);
+                    ui.separator();
+                    ui.add_space(8.0);
+
+                    // AVALIADOR REPL EXPRESSÕES
+                    ui.label(RichText::new(self.tr("⚡ Scratchpad REPL:")).strong().size(12.0).color(Color32::WHITE));
+                    let repl_hint = self.tr("Expressão Rust (ex: 2 + 2 * 10)");
+                    let repl_resp = ui.add(
+                        egui::TextEdit::singleline(&mut self.terminal_repl_input)
+                            .hint_text(repl_hint)
+                            .desired_width(170.0),
+                    );
+
+                    let eval_enter = repl_resp.lost_focus() && ui.input(|i| i.key_pressed(egui::Key::Enter));
+                    let eval_clicked = ui
+                        .add_enabled(
+                            !self.terminal_repl_input.trim().is_empty(),
+                            egui::Button::new(RichText::new(self.tr("▶ Avaliar")).strong()),
+                        )
+                        .clicked();
+
+                    if (eval_enter || eval_clicked) && !self.terminal_repl_input.trim().is_empty() {
+                        let expr = self.terminal_repl_input.clone();
+                        self.terminal_logs.push((
+                            terminal_studio::TerminalLineKind::Command,
+                            format!(">> eval: {}", expr.trim()),
+                        ));
+                        let out = terminal_studio::eval_rust_expression(&expr);
+                        if out.success {
+                            if !out.stdout.trim().is_empty() {
+                                self.terminal_logs.push((
+                                    terminal_studio::TerminalLineKind::Stdout,
+                                    format!("=> {} ({}ms)", out.stdout.trim(), out.elapsed_ms),
+                                ));
+                            }
+                        } else {
+                            self.terminal_logs.push((
+                                terminal_studio::TerminalLineKind::Stderr,
+                                format!("❌ {}\n{}", out.stderr.trim(), out.stdout.trim()),
+                            ));
+                        }
+                        self.terminal_repl_input.clear();
+                    }
+                });
+            });
+
+        ui.add_space(8.0);
 
         // ─── DIRETÓRIO DE TRABALHO E ATALHOS RÁPIDOS ───────────────────────
         egui::Frame::NONE
@@ -217,7 +368,7 @@ impl StoreGui {
         ui.add_space(8.0);
 
         // ─── CONSOLE DO TERMINAL INTEGRADO (SAÍDA COLORIDA) ────────────────
-        let available_h = (ui.available_height() - 55.0).max(220.0);
+        let available_h = (ui.available_height() - 55.0).max(200.0);
         egui::Frame::NONE
             .fill(Color32::from_rgb(10, 12, 16))
             .stroke(Stroke::new(1.0_f32, Color32::from_rgb(26, 32, 44)))

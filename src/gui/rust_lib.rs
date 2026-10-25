@@ -1,19 +1,17 @@
-//! Interface gráfica do Catálogo e Referência Completa da Biblioteca Rust (std & Crates).
+//! Interface gráfica do Catálogo e Referência Completa da Biblioteca Rust (std & Crates)
+//! e do Livro Oficial de Rust (The Rust Programming Language).
 //! Exibe documentação em português, tipos essenciais, métodos principais e permite testar códigos no editor.
 
 use super::{draw_pill, NavSection, StoreGui};
 use crate::brand;
-use crate::rust_lib::{self, RUST_LIBS};
+use crate::rust_lib::{
+    self, RUST_BOOK_CHAPTERS, RUST_BOOK_EN_URL, RUST_BOOK_PDF_URL, RUST_BOOK_PT_URL, RUST_LIBS,
+};
 use eframe::egui::{self, Color32, CornerRadius, RichText, Stroke};
 
 impl StoreGui {
     /// Renderiza a tela de referência e exploração da Biblioteca Rust.
     pub(super) fn render_rust_lib_browser(&mut self, ui: &mut egui::Ui) {
-        if self.rust_lib_selected_idx >= RUST_LIBS.len() {
-            self.rust_lib_selected_idx = 0;
-        }
-        let current_lib = &RUST_LIBS[self.rust_lib_selected_idx];
-
         // ─── CABEÇALHO DA BIBLIOTECA ───────────────────────────────────────
         ui.horizontal(|ui| {
             brand::logo_badge(ui, 18.0);
@@ -39,6 +37,47 @@ impl StoreGui {
         });
 
         ui.add_space(10.0);
+
+        // ─── SELETOR DE ABAS DA BIBLIOTECA ─────────────────────────────────
+        ui.horizontal(|ui| {
+            if ui
+                .selectable_label(
+                    self.rust_lib_active_tab == 0,
+                    RichText::new(self.tr("📚 Módulos & Crates (45+)")).strong().size(13.5),
+                )
+                .clicked()
+            {
+                self.rust_lib_active_tab = 0;
+            }
+
+            ui.add_space(8.0);
+
+            if ui
+                .selectable_label(
+                    self.rust_lib_active_tab == 1,
+                    RichText::new(self.tr("📖 O Livro Oficial de Rust (PDF & Web)")).strong().size(13.5),
+                )
+                .clicked()
+            {
+                self.rust_lib_active_tab = 1;
+            }
+        });
+
+        ui.add_space(8.0);
+
+        if self.rust_lib_active_tab == 1 {
+            self.render_rust_book_section(ui);
+        } else {
+            self.render_rust_crates_section(ui);
+        }
+    }
+
+    /// Renderiza a seção de Módulos e Crates (45+).
+    fn render_rust_crates_section(&mut self, ui: &mut egui::Ui) {
+        if self.rust_lib_selected_idx >= RUST_LIBS.len() {
+            self.rust_lib_selected_idx = 0;
+        }
+        let current_lib = &RUST_LIBS[self.rust_lib_selected_idx];
 
         // ─── BARRA DE BUSCA E FILTROS ──────────────────────────────────────
         let search_hint = self.tr("Buscar por módulo, tipo ou crate (ex: HashMap, Arc, Mutex, serde, tokio)...");
@@ -69,6 +108,8 @@ impl StoreGui {
                         ("Redes", "redes"),
                         ("Sistema & SO", "processos"),
                         ("Memória & Tipos", "memória"),
+                        ("Bancos de Dados", "banco"),
+                        ("Jogos & Gráficos", "jogos"),
                         ("Ecossistema Crates", "crates"),
                     ];
 
@@ -283,5 +324,147 @@ impl StoreGui {
                     });
             });
         });
+    }
+
+    /// Renderiza o diretório completo e opções do Livro Oficial de Rust (PDF & Web).
+    fn render_rust_book_section(&mut self, ui: &mut egui::Ui) {
+        // ─── CARD PRINCIPAL DO LIVRO ───────────────────────────────────────
+        egui::Frame::NONE
+            .fill(Color32::from_rgb(20, 26, 38))
+            .stroke(Stroke::new(1.0_f32, Color32::from_rgb(42, 54, 76)))
+            .corner_radius(CornerRadius::same(8))
+            .inner_margin(egui::Margin::same(14))
+            .show(ui, |ui| {
+                ui.horizontal(|ui| {
+                    ui.label(
+                        RichText::new(self.tr("📖 O Livro da Linguagem Rust (The Official Rust Book)"))
+                            .strong()
+                            .size(16.5)
+                            .color(Color32::WHITE),
+                    );
+                    draw_pill(ui, "Rust Foundation", Color32::from_rgb(220, 105, 30));
+                });
+
+                ui.add_space(4.0);
+                ui.label(
+                    RichText::new(self.tr(
+                        "Escrito por Steve Klabnik e Carol Nichols, com contribuições de toda a comunidade Rust. O guia definitivo e oficial para aprender todos os conceitos da linguagem.",
+                    ))
+                    .size(12.5)
+                    .color(Color32::from_rgb(170, 185, 210)),
+                );
+
+                ui.add_space(10.0);
+
+                // BOTÕES DE ACESSO RÁPIDO (PT-BR, EN, PDF)
+                ui.horizontal_wrapped(|ui| {
+                    if ui
+                        .add(egui::Button::new(RichText::new(self.tr("🇧🇷 Ler Online em Português (PT-BR) ↗")).strong()))
+                        .on_hover_text(self.tr("Abre a tradução colaborativa da comunidade brasileira oficial."))
+                        .clicked()
+                    {
+                        let _ = crate::downloader::open_url(RUST_BOOK_PT_URL);
+                    }
+
+                    if ui
+                        .add(egui::Button::new(RichText::new(self.tr("🇺🇸 Ler Oficial em Inglês (Web) ↗")).strong()))
+                        .on_hover_text(self.tr("Abre a versão oficial no site doc.rust-lang.org."))
+                        .clicked()
+                    {
+                        let _ = crate::downloader::open_url(RUST_BOOK_EN_URL);
+                    }
+
+                    if ui
+                        .add(egui::Button::new(
+                            RichText::new(self.tr("📄 Versão para Impressão & Salvar PDF ↗"))
+                                .strong()
+                                .color(Color32::from_rgb(80, 220, 120)),
+                        ))
+                        .on_hover_text(self.tr("Página oficial completa em formato contínuo: no navegador, pressione Ctrl+P para salvar como PDF offline."))
+                        .clicked()
+                    {
+                        let _ = crate::downloader::open_url(RUST_BOOK_PDF_URL);
+                    }
+                });
+
+                ui.add_space(6.0);
+                ui.label(
+                    RichText::new(self.tr(
+                        "💡 Dica de Leitura Offline: Clique no botão 'Versão para Impressão & Salvar PDF' acima e utilize 'Salvar como PDF' (Ctrl+P) no seu navegador para ter o livro completo no seu computador!",
+                    ))
+                    .size(11.5)
+                    .color(Color32::from_rgb(130, 200, 160)),
+                );
+            });
+
+        ui.add_space(12.0);
+        ui.label(
+            RichText::new(format!(
+                "{} ({} {})",
+                self.tr("Índice de Capítulos do Livro"),
+                RUST_BOOK_CHAPTERS.len(),
+                self.tr("capítulos")
+            ))
+            .strong()
+            .size(14.0)
+            .color(Color32::WHITE),
+        );
+
+        ui.add_space(6.0);
+
+        // ─── LISTA DE CAPÍTULOS ─────────────────────────────────────────────
+        egui::ScrollArea::vertical()
+            .id_salt("rust_book_chapters_scroll")
+            .show(ui, |ui| {
+                for ch in RUST_BOOK_CHAPTERS {
+                    egui::Frame::NONE
+                        .fill(Color32::from_rgb(16, 20, 28))
+                        .stroke(Stroke::new(1.0_f32, Color32::from_rgb(32, 40, 56)))
+                        .corner_radius(CornerRadius::same(6))
+                        .inner_margin(egui::Margin::same(10))
+                        .show(ui, |ui| {
+                            ui.set_width(ui.available_width());
+                            ui.horizontal(|ui| {
+                                draw_pill(
+                                    ui,
+                                    &format!("Capítulo {:02}", ch.number),
+                                    Color32::from_rgb(35, 75, 140),
+                                );
+                                ui.add_space(4.0);
+                                ui.label(
+                                    RichText::new(ch.title)
+                                        .strong()
+                                        .size(13.5)
+                                        .color(Color32::WHITE),
+                                );
+
+                                ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
+                                    if ui.button(self.tr("🇺🇸 EN ↗")).clicked() {
+                                        let _ = crate::downloader::open_url(ch.web_url_en);
+                                    }
+                                    if ui.button(self.tr("🇧🇷 PT-BR ↗")).clicked() {
+                                        let _ = crate::downloader::open_url(ch.web_url_pt);
+                                    }
+                                });
+                            });
+
+                            ui.add_space(4.0);
+                            ui.label(
+                                RichText::new(ch.summary)
+                                    .size(12.0)
+                                    .color(Color32::from_rgb(165, 180, 200)),
+                            );
+
+                            ui.add_space(6.0);
+                            ui.horizontal_wrapped(|ui| {
+                                for topic in ch.topics {
+                                    draw_pill(ui, topic, Color32::from_rgb(28, 42, 60));
+                                }
+                            });
+                        });
+
+                    ui.add_space(6.0);
+                }
+            });
     }
 }
