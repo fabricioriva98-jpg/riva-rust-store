@@ -18,6 +18,8 @@ mod optimizer;
 mod phase3;
 mod settings;
 mod social;
+mod rust_lib;
+mod terminal_studio;
 mod tv;
 
 /// Etapas do login com o GitHub (código no navegador ou token pessoal).
@@ -45,6 +47,8 @@ enum NavSection {
     Settings,
     CppToRust,
     LearnRust,
+    RustLib,
+    TerminalStudio,
     Optimizer,
 }
 
@@ -115,6 +119,7 @@ enum BgEvent {
         actions: Vec<crate::optimizer::OptimizationItem>,
     },
     OptimizerActionFinished(Result<String, String>),
+    TerminalCommandFinished(crate::terminal_studio::TerminalOutput),
     /// Evento de conquista vindo de uma tarefa em segundo plano.
     Stat(&'static str),
     Error(String),
@@ -292,6 +297,17 @@ pub struct StoreGui {
     optimizer_tab: usize,
     external_store_filter: Option<crate::launchers::Store>,
 
+    // Biblioteca Rust (std & Crates)
+    rust_lib_selected_idx: usize,
+    rust_lib_search: String,
+    rust_lib_category_filter: String,
+
+    // Terminal Integrado & Espelho de IDEs
+    terminal_logs: Vec<(crate::terminal_studio::TerminalLineKind, String)>,
+    terminal_working_dir: PathBuf,
+    terminal_cmd_input: String,
+    terminal_is_running: bool,
+
     // Tarefas em segundo plano
     downloads: downloader::DownloadManager,
     bg_events: Arc<Mutex<Vec<BgEvent>>>,
@@ -444,6 +460,13 @@ impl StoreGui {
             optimizer_program_search: String::new(),
             optimizer_tab: 0,
             external_store_filter: None,
+            rust_lib_selected_idx: 0,
+            rust_lib_search: String::new(),
+            rust_lib_category_filter: "todas".to_string(),
+            terminal_logs: Vec::new(),
+            terminal_working_dir: PathBuf::new(),
+            terminal_cmd_input: String::new(),
+            terminal_is_running: false,
             downloads: downloader::DownloadManager::default(),
             bg_events: Arc::new(Mutex::new(Vec::new())),
             busy_task: None,
@@ -633,7 +656,7 @@ impl StoreGui {
                     NavSection::AiAndApps => k == "ai-app" || k == "app",
                     NavSection::Tools => k == "tool" || k == "re-app",
                     NavSection::Library => a.installed.is_some(),
-                    NavSection::CppToRust | NavSection::LearnRust | NavSection::Optimizer => true,
+                    NavSection::CppToRust | NavSection::LearnRust | NavSection::RustLib | NavSection::TerminalStudio | NavSection::Optimizer => true,
                 };
                 section_ok && self.matches_global_filters(a)
             })
@@ -902,6 +925,37 @@ impl StoreGui {
                             self.status_is_error = true;
                         }
                     }
+                }
+                BgEvent::TerminalCommandFinished(out) => {
+                    self.terminal_is_running = false;
+                    self.busy_task = None;
+                    if !out.stdout.is_empty() {
+                        for line in out.stdout.lines() {
+                            self.terminal_logs.push((
+                                crate::terminal_studio::TerminalLineKind::Stdout,
+                                line.to_string(),
+                            ));
+                        }
+                    }
+                    if !out.stderr.is_empty() {
+                        for line in out.stderr.lines() {
+                            self.terminal_logs.push((
+                                crate::terminal_studio::TerminalLineKind::Stderr,
+                                line.to_string(),
+                            ));
+                        }
+                    }
+                    let status_txt = if out.success {
+                        format!("✔ {} ({:.2}s)", self.tr("Comando concluído"), (out.elapsed_ms as f64) / 1000.0)
+                    } else {
+                        format!("❌ {} ({:.2}s)", self.tr("Comando falhou"), (out.elapsed_ms as f64) / 1000.0)
+                    };
+                    self.terminal_logs.push((
+                        crate::terminal_studio::TerminalLineKind::SystemInfo,
+                        status_txt.clone(),
+                    ));
+                    self.status_msg = status_txt;
+                    self.status_is_error = !out.success;
                 }
                 BgEvent::Stat(key) => self.record_stat(key),
                 BgEvent::CrateResolved(res) => {
@@ -1414,6 +1468,18 @@ impl eframe::App for StoreGui {
                     NavSection::LearnRust,
                     &tr(self.lang, "📖  Aprender & Programar"),
                 );
+                nav_button(
+                    ui,
+                    &mut self.section,
+                    NavSection::RustLib,
+                    &tr(self.lang, "📚  Biblioteca Rust (std & Crates)"),
+                );
+                nav_button(
+                    ui,
+                    &mut self.section,
+                    NavSection::TerminalStudio,
+                    &tr(self.lang, "💻  Terminal & IDEs (Espelho)"),
+                );
 
                 ui.add_space(14.0);
                 ui.separator();
@@ -1628,7 +1694,16 @@ impl eframe::App for StoreGui {
             });
 
         // ─── PAINEL DIREITO: Ficha da Loja, Precedentes e Download ─────────
-        if !matches!(self.section, NavSection::CppToRust | NavSection::LearnRust | NavSection::Optimizer | NavSection::Settings | NavSection::Profile) {
+        if !matches!(
+            self.section,
+            NavSection::CppToRust
+                | NavSection::LearnRust
+                | NavSection::RustLib
+                | NavSection::TerminalStudio
+                | NavSection::Optimizer
+                | NavSection::Settings
+                | NavSection::Profile
+        ) {
             let selected_app = self
                 .selected_repo
                 .as_ref()
@@ -1667,6 +1742,14 @@ impl eframe::App for StoreGui {
                 }
                 if self.section == NavSection::LearnRust {
                     self.render_learn_rust(ui);
+                    return;
+                }
+                if self.section == NavSection::RustLib {
+                    self.render_rust_lib_browser(ui);
+                    return;
+                }
+                if self.section == NavSection::TerminalStudio {
+                    self.render_terminal_studio(ui);
                     return;
                 }
                 if self.section == NavSection::Optimizer {
@@ -1982,6 +2065,8 @@ impl StoreGui {
             ),
             NavSection::CppToRust => ("🦀 Tradutor C/C++ ➔ Rust", ""),
             NavSection::LearnRust => ("📖 Aprender & Programar em Rust", ""),
+            NavSection::RustLib => ("📚  Biblioteca Rust (std & Crates)", ""),
+            NavSection::TerminalStudio => ("💻  Terminal & IDEs (Espelho)", ""),
             NavSection::Optimizer => ("⚡  Otimizador do PC", ""),
         };
 
