@@ -54,8 +54,6 @@ pub static TABLE: &[(&str, &str)] = &[
     ("🦀  Tradutor C/C++ ➔ Rust", "🦀  C/C++ ➔ Rust Translator"),
     ("🛡 Só Verificados (70+)", "🛡 Trusted only (70+)"),
     ("🔄 Checar Atualizações", "🔄 Check for Updates"),
-    ("✖ Fechar Chaves API", "✖ Close Settings"),
-    ("⚙ Configurar Chaves API", "⚙ Settings & API Keys"),
     ("📌 Instalar RRS no PC", "📌 Install RRS on this PC"),
     (
         "Instala a RRS no Windows e cria atalhos na Área de Trabalho, Menu Iniciar e terminal (comando 'rrs').",
@@ -79,11 +77,8 @@ pub static TABLE: &[(&str, &str)] = &[
     ("Opcional (5000 req/h no GitHub)", "Optional (5000 req/h on GitHub)"),
     ("Opcional (consulta VirusTotal)", "Optional (VirusTotal lookups)"),
     ("💾 Salvar Chaves", "💾 Save Keys"),
-    ("🌍 Idioma:", "🌍 Language:"),
-    ("🌐 Catálogo online:", "🌐 Online catalog:"),
     ("https://.../catalog.json (com catalog.json.sig ao lado)", "https://.../catalog.json (with catalog.json.sig next to it)"),
     ("🔄 Salvar e atualizar", "🔄 Save and update"),
-    ("📚 Biblioteca:", "📚 Library:"),
     ("Arquivo rrs-biblioteca.json", "rrs-biblioteca.json file"),
     ("📤 Exportar biblioteca", "📤 Export library"),
     (
@@ -100,7 +95,6 @@ pub static TABLE: &[(&str, &str)] = &[
     ("📤 Exportar Catálogo JSON", "📤 Export catalog JSON"),
     ("📥 Reimportar catalog.json", "📥 Reimport catalog.json"),
     ("📁 Abrir Pasta do Catálogo", "📁 Open catalog folder"),
-    ("✖ Fechar", "✖ Close"),
     // Rodapé
     ("na fila", "queued"),
     ("projetos verificados no catálogo", "verified projects in the catalog"),
@@ -396,7 +390,7 @@ pub static TABLE: &[(&str, &str)] = &[
         "Envia o código para a API do Claude com a sua chave (cada tradução é cobrada), compila com o rustc e devolve os erros ao modelo até compilar (até 4 tentativas).",
         "Sends the code to the Claude API with your key (each translation is billed), compiles it with rustc and sends the errors back to the model until it compiles (up to 4 attempts).",
     ),
-    ("Para usar, salve a chave da API do Claude em Configurar Chaves API.", "To use it, save your Claude API key in Settings & API Keys."),
+    ("Para usar, salve a chave da API do Claude em Configurações.", "To use it, save your Claude API key in Settings."),
     ("Traduzido com IA:", "Translated with AI:"),
     ("rodada(s)", "round(s)"),
     ("✔ Compila no rustc (verificado pela RRS).", "✔ Compiles with rustc (checked by RRS)."),
@@ -405,16 +399,194 @@ pub static TABLE: &[(&str, &str)] = &[
     ("✔ Código Rust validado pelo rustc.", "✔ Rust code checked by rustc."),
     ("Tradução com IA concluída.", "AI translation finished."),
     ("Tradução com IA falhou:", "AI translation failed:"),
+    // Configurações, conta do GitHub, perfil, conquistas e comunidade
+    ("A nota de confiança é um indicador de precedentes, não uma garantia de segurança.", "The trust score is an indicator of track record, not a guarantee of safety."),
+    ("Abrir Issues ↗", "Open Issues ↗"),
+    ("Abrir no GitHub ↗", "Open on GitHub ↗"),
+    (
+        "Ainda não há repositório da comunidade RRS. Crie um repositório público no GitHub, ligue as Discussions e informe em Configurações › Central de bate-papo. As conversas de cada app já funcionam pela aba do app selecionado.",
+        "There is no RRS community repository yet. Create a public repository on GitHub, turn on Discussions and enter it in Settings › Chat hub. Each app's conversations already work from the selected app's tab.",
+    ),
+    ("Apaga o Gist do perfil na sua conta; os amigos deixam de ver o seu nível e conquistas.", "Deletes the profile Gist from your account; friends will no longer see your level and achievements."),
+    ("Apps instalados", "Installed apps"),
+    ("Cancelar", "Cancel"),
+    ("Carregar amigos", "Load friends"),
+    ("Chaves de API salvas no banco local.", "API keys saved in the local database."),
+    ("Client ID do OAuth App:", "OAuth App Client ID:"),
+    ("Como registrar o OAuth App (uma vez, uns 5 minutos)", "How to register the OAuth App (once, about 5 minutes)"),
+    ("1. No GitHub: Settings › Developer settings › OAuth Apps › New OAuth App.", "1. On GitHub: Settings › Developer settings › OAuth Apps › New OAuth App."),
+    (
+        "2. Nome: RRS - Riva Rust Store. Homepage URL: o seu perfil (https://github.com/seu-usuario). Authorization callback URL: http://127.0.0.1 (não é usado).",
+        "2. Name: RRS - Riva Rust Store. Homepage URL: your profile (https://github.com/your-user). Authorization callback URL: http://127.0.0.1 (not used).",
+    ),
+    ("3. Marque \"Enable Device Flow\" e clique em Register application.", "3. Tick \"Enable Device Flow\" and click Register application."),
+    (
+        "4. Copie o Client ID (não é segredo) e cole no campo acima. Não é preciso gerar Client secret.",
+        "4. Copy the Client ID (it is not a secret) and paste it in the field above. No Client secret is needed.",
+    ),
+    ("Compartilhar com amigos por link", "Share with friends by link"),
+    ("Conectado ao GitHub como", "Connected to GitHub as"),
+    ("Conquista:", "Achievement:"),
+    ("Conquistas", "Achievements"),
+    ("conquistas", "achievements"),
+    (
+        "Conversas no GitHub Discussions. Ler é aqui; responder e abrir conversa nova é no site do GitHub.",
+        "Conversations on GitHub Discussions. You read them here; replying and starting a new one happen on the GitHub site.",
+    ),
+    ("Copia um texto com o nome, a descrição e o link do app para mandar a um amigo.", "Copies a text with the app's name, description and link to send to a friend."),
+    ("Cria um Gist secreto na sua conta (só quem tiver o link vê) e copia o link.", "Creates a secret Gist in your account (only people with the link can see it) and copies the link."),
+    ("Criar link exige entrar com o GitHub; importar de um link funciona sem conta.", "Creating a link requires signing in with GitHub; importing from a link works without an account."),
+    ("Crie em github.com/settings/tokens (token clássico) marcando read:user e gist.", "Create it at github.com/settings/tokens (classic token) with read:user and gist checked."),
+    (
+        "Desligado, nada sai deste PC. Ligado, a RRS publica num Gist público da sua conta: nível, título, conquistas e os 10 apps mais usados com as horas. Não publica caminhos, hashes nem chaves.",
+        "When off, nothing leaves this PC. When on, RRS publishes a public Gist in your account: level, title, achievements and the 10 most used apps with their hours. It never publishes paths, hashes or keys.",
+    ),
+    ("Despublicar", "Unpublish"),
+    ("Digite este código no GitHub:", "Enter this code on GitHub:"),
+    ("Downloads", "Downloads"),
+    ("Entrar com o GitHub", "Sign in with GitHub"),
+    (
+        "Entrar com o GitHub libera o perfil, os amigos, o compartilhamento por link e a central de bate-papo. A RRS pede só leitura do perfil e permissão de criar gists.",
+        "Signing in with GitHub unlocks the profile, friends, sharing by link and the chat hub. RRS only asks to read your profile and to create gists.",
+    ),
+    ("Entrar com token", "Sign in with token"),
+    ("Entre com o GitHub (acima) para publicar.", "Sign in with GitHub (above) to publish."),
+    (
+        "Entre com o GitHub para ler as conversas aqui (a API de conversas do GitHub exige login).",
+        "Sign in with GitHub to read the conversations here (GitHub's discussions API requires sign-in).",
+    ),
+    ("Entre com o GitHub para ter nome, foto, amigos e perfil público.", "Sign in with GitHub to get a name, photo, friends and a public profile."),
+    ("Esperando você autorizar no navegador...", "Waiting for you to authorize in the browser..."),
+    ("Este repositório não usa o GitHub Discussions. As conversas dele ficam nas Issues.", "This repository does not use GitHub Discussions. Its conversations are in the Issues."),
+    (
+        "Ficam no banco local da RRS (texto puro). Com a conta do GitHub conectada, o token do GitHub abaixo não é necessário.",
+        "They stay in the local RRS database (plain text). With the GitHub account connected, the GitHub token below is not needed.",
+    ),
+    ("GitHub ↗", "GitHub ↗"),
+    ("Horas jogadas", "Hours played"),
+    ("Jogador local", "Local player"),
+    ("Link copiado:", "Link copied:"),
+    ("Link recebido de um amigo (gist.github.com/...)", "Link received from a friend (gist.github.com/...)"),
+    ("Nenhuma conversa ainda. Que tal abrir a primeira?", "No conversations yet. How about starting the first one?"),
+    ("Nível", "Level"),
+    ("O token fica no Gerenciador de Credenciais do Windows, não no banco da RRS.", "The token is kept in Windows Credential Manager, not in the RRS database."),
+    ("Opção 1 — código no navegador (recomendado)", "Option 1 — code in the browser (recommended)"),
+    ("Opção 2 — token pessoal", "Option 2 — personal token"),
+    ("Pasta de dados:", "Data folder:"),
+    ("Quem você segue no GitHub. Aparece o nível de quem também publicou o perfil da RRS.", "People you follow on GitHub. The level shows for those who also published their RRS profile."),
+    ("Repositório da comunidade:", "Community repository:"),
+    ("Sair da conta", "Sign out"),
+    ("Salvar", "Save"),
+    (
+        "Só importa se a assinatura for de uma chave confiável, a versão não for mais antiga que a atual e a validade não tiver vencido. Confere uma vez por dia ao abrir.",
+        "It only imports when the signature comes from a trusted key, the version is not older than the current one and it has not expired. Checks once a day on startup.",
+    ),
+    ("Token com os escopos read:user e gist", "Token with the read:user and gist scopes"),
+    ("Traduções", "Translations"),
+    (
+        "Usa o GitHub Discussions: as conversas de cada app ficam no repositório dele; a comunidade geral da RRS precisa de um repositório público com Discussions ligadas.",
+        "Uses GitHub Discussions: each app's conversations live in its own repository; the general RRS community needs a public repository with Discussions turned on.",
+    ),
+    ("Verificações", "Checks"),
+    ("Você ainda não segue ninguém no GitHub.", "You don't follow anyone on GitHub yet."),
+    ("Você saiu da conta do GitHub (o token foi removido do Gerenciador de Credenciais).", "You signed out of GitHub (the token was removed from Credential Manager)."),
+    ("em comum", "in common"),
+    ("não publicou perfil da RRS", "has not published an RRS profile"),
+    ("para o nível", "to level"),
+    ("respostas", "replies"),
+    ("ℹ Sobre", "ℹ About"),
+    ("← Voltar para a lista", "← Back to the list"),
+    ("↩ Responder no GitHub ↗", "↩ Reply on GitHub ↗"),
+    ("⏳ Carregando conversas...", "⏳ Loading conversations..."),
+    ("⏳ Entrando...", "⏳ Signing in..."),
+    ("⚙  Configurações", "⚙  Settings"),
+    ("⚙ Abrir Configurações", "⚙ Open Settings"),
+    ("⚙ Configurações", "⚙ Settings"),
+    ("⚠ Confirmar despublicação", "⚠ Confirm unpublishing"),
+    ("✏ Nova conversa no GitHub ↗", "✏ New conversation on GitHub ↗"),
+    ("✔ Perfil despublicado (o Gist foi apagado da sua conta).", "✔ Profile unpublished (the Gist was deleted from your account)."),
+    ("✔ Perfil publicado", "✔ Profile published"),
+    ("✔ Perfil publicado no seu GitHub (Gist público).", "✔ Profile published on your GitHub (public Gist)."),
+    ("✔ Repositório da comunidade salvo.", "✔ Community repository saved."),
+    ("🌍 Idioma", "🌍 Language"),
+    ("🌐 Abrir github.com/login/device", "🌐 Open github.com/login/device"),
+    ("🌐 Catálogo online assinado", "🌐 Signed online catalog"),
+    ("🌐 Perfil público (opcional)", "🌐 Public profile (optional)"),
+    ("🌐 Publicar meu perfil", "🌐 Publish my profile"),
+    ("🏆  Perfil & Conquistas", "🏆  Profile & Achievements"),
+    ("🏠 Comunidade RRS", "🏠 RRS Community"),
+    ("👤 Conta do GitHub", "👤 GitHub account"),
+    ("👤 Ver meu perfil", "👤 View my profile"),
+    ("👥 Amigos", "👥 Friends"),
+    ("💬  Comunidade", "💬  Community"),
+    ("💬 Central de bate-papo", "💬 Chat hub"),
+    ("💬 Conversas sobre este app", "💬 Conversations about this app"),
+    ("💬 Sobre", "💬 About"),
+    ("📋 Copiar código", "📋 Copy code"),
+    ("📚 Biblioteca", "📚 Library"),
+    ("📥 Importar do link", "📥 Import from link"),
+    ("🔄 Atualizar", "🔄 Refresh"),
+    ("🔄 Atualizar agora", "🔄 Update now"),
+    ("🔑 Chaves de API (opcionais)", "🔑 API keys (optional)"),
+    ("🔗 Compartilhar", "🔗 Share"),
+    ("🔗 Criar link da minha biblioteca", "🔗 Create a link to my library"),
+    ("🔗 Texto do app copiado; cole na conversa com o seu amigo.", "🔗 App text copied; paste it in the chat with your friend."),
+    // Títulos de nível e conquistas (o texto vem de achievements.rs)
+    ("Novato", "Rookie"),
+    ("Explorador", "Explorer"),
+    ("Colecionador", "Collector"),
+    ("Veterano", "Veteran"),
+    ("Lenda da RRS", "RRS Legend"),
+    ("Primeiro download", "First download"),
+    ("Baixe e instale o primeiro app pela RRS.", "Download and install your first app with RRS."),
+    ("Tenha 10 apps instalados.", "Have 10 apps installed."),
+    ("Rustáceo", "Rustacean"),
+    ("Instale 3 apps feitos em Rust.", "Install 3 apps made in Rust."),
+    ("Desconfiado", "Skeptic"),
+    ("Revalide 10 repositórios no GitHub.", "Recheck 10 repositories on GitHub."),
+    ("Segunda opinião", "Second opinion"),
+    ("Consulte um arquivo no VirusTotal.", "Look up a file on VirusTotal."),
+    ("Vigilante", "Watchful"),
+    ("Faça 5 varreduras com o Windows Defender.", "Run 5 Windows Defender scans."),
+    ("Atestado em dia", "Attested"),
+    ("Instale um app com atestado de build do GitHub.", "Install an app with a GitHub build attestation."),
+    ("Arqueólogo", "Archaeologist"),
+    ("Instale uma versão anterior de um app.", "Install an older version of an app."),
+    ("Maratonista", "Marathoner"),
+    ("Jogue 10 horas somando todos os jogos.", "Play 10 hours across all games."),
+    ("Retrô", "Retro"),
+    ("Instale um emulador.", "Install an emulator."),
+    ("Engenheiro reverso", "Reverse engineer"),
+    ("Instale um port feito por engenharia reversa.", "Install a reverse-engineered port."),
+    ("Tradutor", "Translator"),
+    ("Traduza 5 códigos de C/C++ para Rust.", "Translate 5 C/C++ snippets to Rust."),
+    ("Parceria com IA", "AI partnership"),
+    ("Faça uma tradução com IA que compile no rustc.", "Make an AI translation that compiles with rustc."),
+    ("Terminal raiz", "Terminal native"),
+    ("Instale uma ferramenta de terminal em Rust.", "Install a Rust terminal tool."),
+    ("Precavido", "Prepared"),
+    ("Faça um backup de saves.", "Back up your saves."),
+    ("Mudança de casa", "Moving house"),
+    ("Exporte ou compartilhe a sua biblioteca.", "Export or share your library."),
+    ("Modo sofá", "Couch mode"),
+    ("Abra o Modo TV.", "Open TV Mode."),
+    ("Social", "Social"),
+    ("Publique o seu perfil para os amigos.", "Publish your profile for your friends."),
+    ("Boa conversa", "Good talk"),
+    ("Abra a central de bate-papo da comunidade.", "Open the community chat hub."),
+    ("Indicação", "Referral"),
+    ("Compartilhe um app com alguém.", "Share an app with someone."),
 ];
 
 #[cfg(test)]
 mod tests {
     use super::*;
 
-    /// Textos literais passados para `tr(self.lang, "...")`, `tr(lang, "...")` ou `self.tr("...")`.
+    /// Textos literais passados para `tr(self.lang, "...")`, `tr(lang, "...")` ou `self.tr("...")`,
+    /// inclusive quando o texto começa na linha seguinte.
     fn tr_calls(src: &str) -> Vec<String> {
         let mut out = Vec::new();
-        for prefix in ["tr(self.lang, \"", "tr(lang, \"", "self.tr(\""] {
+        for prefix in ["tr(self.lang,", "tr(lang,", "self.tr("] {
             out.extend(literals_after(src, prefix));
         }
         out
@@ -424,7 +596,11 @@ mod tests {
         let mut out = Vec::new();
         let mut rest = src;
         while let Some(i) = rest.find(prefix) {
-            let after = &rest[i + prefix.len()..];
+            let after_prefix = rest[i + prefix.len()..].trim_start();
+            let Some(after) = after_prefix.strip_prefix('"') else {
+                rest = &rest[i + prefix.len()..];
+                continue;
+            };
             let mut text = String::new();
             let mut escaped = false;
             let mut end = after.len();
@@ -456,6 +632,9 @@ mod tests {
             include_str!("gui/extras.rs"),
             include_str!("gui/phase3.rs"),
             include_str!("gui/tv.rs"),
+            include_str!("gui/settings.rs"),
+            include_str!("gui/social.rs"),
+            include_str!("achievements.rs"),
         ]
     }
 
@@ -475,12 +654,16 @@ mod tests {
     fn tabela_sem_repeticao_nem_sobra() {
         // Também vale texto que chega ao `tr` por variável (títulos de seção, coleções, selos)
         let all: String = sources().concat();
+        let mut unused = Vec::new();
         for (i, (k, en)) in TABLE.iter().enumerate() {
             assert!(!en.trim().is_empty(), "tradução vazia para {k:?}");
             assert!(!TABLE[..i].iter().any(|(k2, _)| k2 == k), "repetida: {k:?}");
             let literal = format!("\"{}\"", k.replace('\\', "\\\\").replace('"', "\\\"").replace('\n', "\\n"));
-            assert!(all.contains(&literal), "entrada sem uso no código: {k:?}");
+            if !all.contains(&literal) {
+                unused.push(*k);
+            }
         }
+        assert!(unused.is_empty(), "entradas sem uso no código: {unused:#?}");
     }
 
     #[test]

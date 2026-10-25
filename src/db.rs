@@ -232,6 +232,14 @@ pub fn open(path: &str) -> Result<Connection> {
             playtime_seconds INTEGER NOT NULL DEFAULT 0,
             last_played      TEXT,
             added_at         TEXT NOT NULL
+        );
+        CREATE TABLE IF NOT EXISTS stats (
+            key   TEXT PRIMARY KEY,
+            value INTEGER NOT NULL DEFAULT 0
+        );
+        CREATE TABLE IF NOT EXISTS achievements (
+            id          TEXT PRIMARY KEY,
+            unlocked_at TEXT NOT NULL
         );",
     )?;
 
@@ -563,6 +571,40 @@ pub fn relativize_installed_paths(conn: &Connection, base_dir: &Path) -> Result<
         }
     }
     Ok(changed)
+}
+
+// ─── Estatísticas e conquistas ────────────────────────────────────────────
+
+/// Soma `by` ao contador `key` e devolve o novo valor.
+pub fn bump_stat(conn: &Connection, key: &str, by: i64) -> Result<i64> {
+    conn.execute(
+        "INSERT INTO stats (key, value) VALUES (?1, ?2)
+         ON CONFLICT(key) DO UPDATE SET value = value + excluded.value",
+        params![key, by],
+    )?;
+    Ok(conn.query_row("SELECT value FROM stats WHERE key = ?1", [key], |r| r.get(0))?)
+}
+
+pub fn get_stats(conn: &Connection) -> Result<std::collections::HashMap<String, i64>> {
+    let mut st = conn.prepare("SELECT key, value FROM stats")?;
+    let rows = st.query_map([], |r| Ok((r.get::<_, String>(0)?, r.get::<_, i64>(1)?)))?;
+    Ok(rows.collect::<rusqlite::Result<_>>()?)
+}
+
+/// Conquistas já desbloqueadas: (id, data).
+pub fn unlocked_achievements(conn: &Connection) -> Result<Vec<(String, String)>> {
+    let mut st = conn.prepare("SELECT id, unlocked_at FROM achievements ORDER BY unlocked_at")?;
+    let rows = st.query_map([], |r| Ok((r.get(0)?, r.get(1)?)))?;
+    Ok(rows.collect::<rusqlite::Result<_>>()?)
+}
+
+/// Marca a conquista; `true` se ela foi desbloqueada agora.
+pub fn unlock_achievement(conn: &Connection, id: &str) -> Result<bool> {
+    let n = conn.execute(
+        "INSERT OR IGNORE INTO achievements (id, unlocked_at) VALUES (?1, ?2)",
+        params![id, chrono::Utc::now().to_rfc3339()],
+    )?;
+    Ok(n > 0)
 }
 
 // ─── Exportar / importar a biblioteca ──────────────────────────────────────

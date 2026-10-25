@@ -116,6 +116,9 @@ impl StoreGui {
                         ),
                         Err(e) => (format!("{e:#}"), true),
                     };
+                if !self.status_is_error {
+                    self.record_stat(crate::achievements::STAT_CLI);
+                }
             }
         });
         if let Some((repo, result)) = &self.gh_verify_status {
@@ -167,7 +170,7 @@ impl StoreGui {
             }
             if !has_key {
                 ui.label(
-                    RichText::new(self.tr("Para usar, salve a chave da API do Claude em Configurar Chaves API."))
+                    RichText::new(self.tr("Para usar, salve a chave da API do Claude em Configurações."))
                         .size(11.5)
                         .color(Color32::GRAY),
                 );
@@ -188,6 +191,7 @@ impl StoreGui {
                     self.tr("rodada(s)")
                 )];
                 if t.compiled {
+                    self.record_stat(crate::achievements::STAT_AI_OK);
                     notes.push(self.tr("✔ Compila no rustc (verificado pela RRS)."));
                 } else {
                     notes.push(self.tr("✘ Não compilou depois de todas as tentativas; veja o diagnóstico abaixo."));

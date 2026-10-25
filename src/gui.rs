@@ -14,7 +14,18 @@ use std::sync::{Arc, Mutex};
 
 mod extras;
 mod phase3;
+mod settings;
+mod social;
 mod tv;
+
+/// Etapas do login com o GitHub (código no navegador ou token pessoal).
+#[derive(Debug, Clone, PartialEq)]
+enum LoginState {
+    Idle,
+    Working,
+    WaitingCode { user_code: String, verification_uri: String },
+    Failed(String),
+}
 
 #[derive(PartialEq, Clone, Copy)]
 enum NavSection {
@@ -27,6 +38,9 @@ enum NavSection {
     Tools,
     Library,
     Terminal,
+    Profile,
+    Community,
+    Settings,
     CppToRust,
 }
 
@@ -41,7 +55,7 @@ enum SortBy {
 enum BgEvent {
     Status(String),
     AppUpdated {
-        app: App,
+        app: Box<App>,
         message: String,
     },
     SyncFinished {
@@ -74,6 +88,23 @@ enum BgEvent {
     },
     AiTranslated(Result<crate::translator_ai::AiTranslation, String>),
     CrateResolved(Result<String, String>),
+    DeviceCode {
+        user_code: String,
+        verification_uri: String,
+    },
+    LoggedIn(Result<(String, crate::github_auth::GithubUser), String>),
+    ProfilePublished(Result<String, String>),
+    ProfileUnpublished(Result<(), String>),
+    FriendsLoaded(Result<Vec<crate::social::Friend>, String>),
+    LibraryShared(Result<String, String>),
+    LibraryImported(Result<db::LibraryImport, String>),
+    CommunityList {
+        repo: String,
+        result: Result<(bool, Vec<crate::community::DiscussionSummary>), String>,
+    },
+    CommunityThread(Result<crate::community::DiscussionThread, String>),
+    /// Evento de conquista vindo de uma tarefa em segundo plano.
+    Stat(&'static str),
     Error(String),
 }
 
@@ -176,6 +207,26 @@ pub struct StoreGui {
     tv_index: usize,
     gamepads: Option<gilrs::Gilrs>,
     tv_stick: (i8, i8),
+    login_state: LoginState,
+    login_cancel: Arc<std::sync::atomic::AtomicBool>,
+    oauth_client_id: String,
+    pat_input: String,
+    /// Token do login (Gerenciador de Credenciais do Windows).
+    auth_token: Option<String>,
+    github_user: Option<crate::github_auth::GithubUser>,
+    profile_gist_id: Option<String>,
+    unpublish_confirm: bool,
+    community_repo: String,
+    /// `None` = comunidade geral da RRS; `Some(repo)` = conversas do app.
+    community_target: Option<String>,
+    community_list: Option<(String, Result<(bool, Vec<crate::community::DiscussionSummary>), String>)>,
+    community_thread: Option<Result<crate::community::DiscussionThread, String>>,
+    community_visited: bool,
+    friends: Option<Result<Vec<crate::social::Friend>, String>>,
+    import_link_input: String,
+    progress: Option<crate::achievements::Progress>,
+    /// Avisos de conquista (texto, instante em que apareceu).
+    toasts: Vec<(String, Option<f64>)>,
 
     // Navegação e filtros
     section: NavSection,
@@ -200,7 +251,6 @@ pub struct StoreGui {
     add_repo_input: String,
 
     // Configurações (Tokens opcionais)
-    show_settings: bool,
     github_token_input: String,
     vt_key_input: String,
 
@@ -243,11 +293,20 @@ impl StoreGui {
         let mut catalog_due = false;
         let mut lang = Lang::Pt;
         let mut anthropic_key_input = std::env::var("ANTHROPIC_API_KEY").unwrap_or_default();
+        let mut oauth_client_id = String::new();
+        let mut github_user = None;
+        let mut profile_gist_id = None;
+        let mut community_repo = String::new();
 
         if let Ok(conn) = db::open(&db_path) {
             if anthropic_key_input.is_empty() {
                 anthropic_key_input = db::get_setting(&conn, crate::translator_ai::SETTING_KEY).unwrap_or_default();
             }
+            oauth_client_id = db::get_setting(&conn, crate::github_auth::SETTING_CLIENT_ID).unwrap_or_default();
+            github_user = db::get_setting(&conn, crate::github_auth::SETTING_PROFILE_CACHE)
+                .and_then(|j| serde_json::from_str::<crate::github_auth::GithubUser>(&j).ok());
+            profile_gist_id = db::get_setting(&conn, crate::social::SETTING_PROFILE_GIST);
+            community_repo = db::get_setting(&conn, crate::community::SETTING_COMMUNITY_REPO).unwrap_or_default();
             lang = Lang::from_setting(db::get_setting(&conn, crate::i18n::SETTING_LANG).as_deref());
             catalog_url = db::get_setting(&conn, crate::catalog_sign::SETTING_URL).unwrap_or_default();
             // Catálogo online: confere no máximo uma vez por dia ao abrir
@@ -302,6 +361,23 @@ impl StoreGui {
             tv_index: 0,
             gamepads: None,
             tv_stick: (0, 0),
+            login_state: LoginState::Idle,
+            login_cancel: Arc::new(std::sync::atomic::AtomicBool::new(false)),
+            oauth_client_id,
+            pat_input: String::new(),
+            auth_token: crate::github_auth::load_token(),
+            github_user,
+            profile_gist_id,
+            unpublish_confirm: false,
+            community_repo,
+            community_target: None,
+            community_list: None,
+            community_thread: None,
+            community_visited: false,
+            friends: None,
+            import_link_input: String::new(),
+            progress: None,
+            toasts: Vec::new(),
             section: NavSection::Discover,
             grid_view: true,
             featured_idx: 0,
@@ -316,7 +392,6 @@ impl StoreGui {
             defender_scan_status: None,
             authenticode_status: None,
             add_repo_input: String::new(),
-            show_settings: false,
             github_token_input,
             vt_key_input,
             cpp_input: default_cpp,
@@ -375,6 +450,15 @@ impl StoreGui {
             };
             events.lock().unwrap().push(ev);
         });
+    }
+
+    /// Token para a API do GitHub: o informado em Chaves de API ou, se vazio, o do login.
+    fn api_token(&self) -> String {
+        if !self.github_token_input.trim().is_empty() {
+            self.github_token_input.clone()
+        } else {
+            self.auth_token.clone().unwrap_or_default()
+        }
     }
 
     /// Texto no idioma escolhido (ver `i18n.rs`).
@@ -490,6 +574,7 @@ impl StoreGui {
                     NavSection::Discover => true,
                     NavSection::MadeInRust => a.is_rust(),
                     NavSection::Terminal => k == "cli",
+                    NavSection::Profile | NavSection::Community | NavSection::Settings => false,
                     NavSection::ReverseEngineering => {
                         if self.re_subfilter == "re-game" {
                             k == "re-game"
@@ -538,6 +623,7 @@ impl StoreGui {
         let finished = self.downloads.take_finished();
         if !finished.is_empty() {
             self.reload_from_db();
+            self.check_achievements();
             for job in finished {
                 match job.state {
                     JobState::Finished { message } => {
@@ -561,6 +647,7 @@ impl StoreGui {
                     self.status_is_error = false;
                 }
                 BgEvent::AppUpdated { mut app, message } => {
+                    self.record_stat(crate::achievements::STAT_VERIFIES);
                     let name = app.full_name.clone();
                     // Veio do crates.io: entra no catálogo como ferramenta de terminal
                     if self.pending_cli.as_deref().is_some_and(|p| p.eq_ignore_ascii_case(&name)) {
@@ -570,6 +657,7 @@ impl StoreGui {
                             app.category = Some("Terminal • Rust".into());
                         }
                         self.section = NavSection::Terminal;
+                        self.record_stat(crate::achievements::STAT_CLI);
                     }
                     if let Ok(conn) = db::open(&self.db_path) {
                         let _ = db::upsert(&conn, &app);
@@ -601,6 +689,7 @@ impl StoreGui {
                     self.status_is_error = false;
                 }
                 BgEvent::SecurityScanResult { repo, defender_verdict, defender_msg, authenticode } => {
+                    self.record_stat(crate::achievements::STAT_DEFENDER);
                     if self.selected_repo.as_deref() == Some(repo.as_str()) {
                         self.defender_scan_status = Some((defender_msg, defender_verdict));
                         self.authenticode_status = Some(authenticode);
@@ -614,6 +703,7 @@ impl StoreGui {
                     self.busy_task = None;
                 }
                 BgEvent::WindowsScan(programs) => {
+                    self.record_stat(crate::achievements::STAT_WINDOWS_SCAN);
                     self.busy_task = None;
                     self.windows_programs = Some(programs);
                     self.refresh_windows_matches();
@@ -640,6 +730,95 @@ impl StoreGui {
                     self.gh_verify_status = Some((repo, result));
                 }
                 BgEvent::AiTranslated(res) => self.apply_ai_result(res),
+                BgEvent::DeviceCode { user_code, verification_uri } => {
+                    self.login_state = LoginState::WaitingCode { user_code, verification_uri };
+                }
+                BgEvent::LoggedIn(res) => match res {
+                    Ok((token, user)) => {
+                        if let Ok(conn) = db::open(&self.db_path) {
+                            if let Ok(j) = serde_json::to_string(&user) {
+                                let _ = db::set_setting(&conn, crate::github_auth::SETTING_PROFILE_CACHE, &j);
+                            }
+                        }
+                        self.status_msg = format!("✔ {} @{}", self.tr("Conectado ao GitHub como"), user.login);
+                        self.status_is_error = false;
+                        self.auth_token = Some(token);
+                        self.github_user = Some(user);
+                        self.login_state = LoginState::Idle;
+                        self.section = NavSection::Profile;
+                    }
+                    Err(e) => self.login_state = LoginState::Failed(e),
+                },
+                BgEvent::ProfilePublished(res) => {
+                    self.busy_task = None;
+                    match res {
+                        Ok(id) => {
+                            if let Ok(conn) = db::open(&self.db_path) {
+                                let _ = db::set_setting(&conn, crate::social::SETTING_PROFILE_GIST, &id);
+                            }
+                            let first = self.profile_gist_id.is_none();
+                            self.profile_gist_id = Some(id);
+                            self.status_msg = self.tr("✔ Perfil publicado no seu GitHub (Gist público).");
+                            self.status_is_error = false;
+                            if first {
+                                self.record_stat(crate::achievements::STAT_PROFILE_PUBLISHED);
+                            }
+                        }
+                        Err(e) => {
+                            self.status_msg = e;
+                            self.status_is_error = true;
+                        }
+                    }
+                }
+                BgEvent::ProfileUnpublished(res) => {
+                    self.busy_task = None;
+                    match res {
+                        Ok(()) => {
+                            if let Ok(conn) = db::open(&self.db_path) {
+                                let _ = db::set_setting(&conn, crate::social::SETTING_PROFILE_GIST, "");
+                            }
+                            self.profile_gist_id = None;
+                            self.status_msg = self.tr("✔ Perfil despublicado (o Gist foi apagado da sua conta).");
+                            self.status_is_error = false;
+                        }
+                        Err(e) => {
+                            self.status_msg = e;
+                            self.status_is_error = true;
+                        }
+                    }
+                }
+                BgEvent::FriendsLoaded(res) => {
+                    self.busy_task = None;
+                    self.friends = Some(res);
+                }
+                BgEvent::LibraryShared(res) => {
+                    self.busy_task = None;
+                    match res {
+                        Ok(url) => {
+                            ctx.copy_text(url.clone());
+                            self.status_msg = format!("🔗 {} {url}", self.tr("Link copiado:"));
+                            self.status_is_error = false;
+                            self.record_stat(crate::achievements::STAT_LIBRARY_EXPORT);
+                        }
+                        Err(e) => {
+                            self.status_msg = e;
+                            self.status_is_error = true;
+                        }
+                    }
+                }
+                BgEvent::LibraryImported(res) => {
+                    self.busy_task = None;
+                    self.show_import_result(res.map_err(|e| anyhow::anyhow!(e)));
+                }
+                BgEvent::CommunityList { repo, result } => {
+                    self.busy_task = None;
+                    self.community_list = Some((repo, result));
+                }
+                BgEvent::CommunityThread(res) => {
+                    self.busy_task = None;
+                    self.community_thread = Some(res);
+                }
+                BgEvent::Stat(key) => self.record_stat(key),
                 BgEvent::CrateResolved(res) => {
                     self.busy_task = None;
                     match res {
@@ -691,7 +870,7 @@ impl StoreGui {
         self.status_msg = format!("Verificando precedentes e releases de {clean} no GitHub...");
         self.status_is_error = false;
 
-        let gh_token = self.github_token_input.clone();
+        let gh_token = self.api_token();
         let vt_key = self.vt_key_input.clone();
         let events = Arc::clone(&self.bg_events);
         let existing = self
@@ -811,7 +990,7 @@ impl StoreGui {
 
             match res {
                 Ok((app, message)) => {
-                    events.lock().unwrap().push(BgEvent::AppUpdated { app, message });
+                    events.lock().unwrap().push(BgEvent::AppUpdated { app: Box::new(app), message });
                 }
                 Err(e) => {
                     events.lock().unwrap().push(BgEvent::Error(format!("{e:#}")));
@@ -839,7 +1018,7 @@ impl StoreGui {
         }
 
         self.busy_task = Some("Checando atualizações...".into());
-        let gh_token = self.github_token_input.clone();
+        let gh_token = self.api_token();
         let db_path = self.db_path.clone();
         let catalog_path = self.catalog_path.clone();
         let events = Arc::clone(&self.bg_events);
@@ -929,7 +1108,10 @@ impl StoreGui {
                     let elapsed = start.elapsed().as_secs();
                     if let Some(dir) = save_dir {
                         let ev = match crate::saves::backup(&base_dir, &repo_name, std::path::Path::new(&dir), None) {
-                            Ok(zip) => BgEvent::Status(format!("💾 Backup dos saves: {}", zip.display())),
+                            Ok(zip) => {
+                                events.lock().unwrap().push(BgEvent::Stat(crate::achievements::STAT_SAVES));
+                                BgEvent::Status(format!("💾 Backup dos saves: {}", zip.display()))
+                            }
                             Err(e) => BgEvent::Error(format!("Backup dos saves não feito: {e:#}")),
                         };
                         events.lock().unwrap().push(ev);
@@ -953,7 +1135,7 @@ impl StoreGui {
             return;
         }
         self.busy_task = Some(format!("Carregando versões de {}...", friendly_title(&repo)));
-        let gh_token = self.github_token_input.clone();
+        let gh_token = self.api_token();
         let events = Arc::clone(&self.bg_events);
         self.rt.spawn(async move {
             let res = async { Forge::new(Some(&gh_token))?.releases(&repo, 15).await }.await;
@@ -1049,6 +1231,8 @@ impl eframe::App for StoreGui {
                     &tr(self.lang, "🛡 CATÁLOGO VERIFICADO"),
                     Color32::from_rgb(24, 105, 65),
                 );
+                ui.add_space(8.0);
+                self.render_profile_chip(ui);
 
                 ui.add_space(16.0);
                 ui.label(
@@ -1125,6 +1309,8 @@ impl eframe::App for StoreGui {
                     format!("📦  {} ({installed_count})", tr(self.lang, "Minha Biblioteca"))
                 };
                 nav_button(ui, &mut self.section, NavSection::Library, &lib_label);
+                nav_button(ui, &mut self.section, NavSection::Profile, &tr(self.lang, "🏆  Perfil & Conquistas"));
+                nav_button(ui, &mut self.section, NavSection::Community, &tr(self.lang, "💬  Comunidade"));
 
                 ui.add_space(12.0);
                 ui.label(
@@ -1175,16 +1361,7 @@ impl eframe::App for StoreGui {
                 }
 
                 ui.add_space(4.0);
-                if ui
-                    .button(if self.show_settings {
-                        tr(self.lang, "✖ Fechar Chaves API")
-                    } else {
-                        tr(self.lang, "⚙ Configurar Chaves API")
-                    })
-                    .clicked()
-                {
-                    self.show_settings = !self.show_settings;
-                }
+                nav_button(ui, &mut self.section, NavSection::Settings, &tr(self.lang, "⚙  Configurações"));
 
                 ui.add_space(4.0);
                 if ui
@@ -1294,211 +1471,6 @@ impl eframe::App for StoreGui {
                     }
                 });
 
-                if self.show_settings {
-                    ui.add_space(8.0);
-                    egui::Frame::NONE
-                        .fill(Color32::from_rgb(28, 33, 44))
-                        .corner_radius(CornerRadius::same(6))
-                        .inner_margin(egui::Margin::same(10))
-                        .show(ui, |ui| {
-                            ui.vertical(|ui| {
-                                ui.horizontal_wrapped(|ui| {
-                                    ui.label(RichText::new(tr(self.lang, "🔑 GITHUB_TOKEN:")).strong());
-                                    ui.add(
-                                        egui::TextEdit::singleline(&mut self.github_token_input)
-                                            .password(true)
-                                            .hint_text(tr(self.lang, "Opcional (5000 req/h no GitHub)"))
-                                            .desired_width(200.0),
-                                    );
-                                    ui.add_space(8.0);
-                                    ui.label(RichText::new("VIRUSTOTAL_API_KEY:").strong());
-                                    ui.add(
-                                        egui::TextEdit::singleline(&mut self.vt_key_input)
-                                            .password(true)
-                                            .hint_text(tr(self.lang, "Opcional (consulta VirusTotal)"))
-                                            .desired_width(200.0),
-                                    );
-                                    ui.label(RichText::new("ANTHROPIC_API_KEY:").strong());
-                                    ui.add(
-                                        egui::TextEdit::singleline(&mut self.anthropic_key_input)
-                                            .password(true)
-                                            .hint_text(tr(self.lang, "Opcional (tradutor com IA)"))
-                                            .desired_width(200.0),
-                                    );
-                                    if ui.button(tr(self.lang, "💾 Salvar Chaves")).clicked() {
-                                        if let Ok(conn) = db::open(&self.db_path) {
-                                            let _ = db::set_setting(&conn, crate::translator_ai::SETTING_KEY, &self.anthropic_key_input);
-                                            let _ = db::set_setting(&conn, "github_token", &self.github_token_input);
-                                            let _ = db::set_setting(&conn, "virustotal_api_key", &self.vt_key_input);
-                                            self.status_msg = "Chaves de API salvas localmente no SQLite.".into();
-                                            self.status_is_error = false;
-                                        }
-                                    }
-                                });
-
-                                ui.add_space(6.0);
-                                ui.separator();
-                                ui.add_space(6.0);
-
-                                ui.horizontal_wrapped(|ui| {
-                                    ui.label(RichText::new(self.tr("🌍 Idioma:")).strong());
-                                    for (lang, label) in [(Lang::Pt, "Português"), (Lang::En, "English")] {
-                                        if ui.selectable_label(self.lang == lang, label).clicked() && self.lang != lang {
-                                            self.lang = lang;
-                                            if let Ok(conn) = db::open(&self.db_path) {
-                                                let _ = db::set_setting(&conn, crate::i18n::SETTING_LANG, lang.code());
-                                            }
-                                        }
-                                    }
-                                    if self.lang == Lang::En {
-                                        ui.label(
-                                            RichText::new("App summaries come from each project's GitHub description.")
-                                                .size(11.0)
-                                                .color(Color32::GRAY),
-                                        );
-                                    }
-                                });
-
-                                ui.add_space(6.0);
-
-                                ui.horizontal_wrapped(|ui| {
-                                    ui.label(RichText::new(tr(self.lang, "🌐 Catálogo online:")).strong());
-                                    ui.add(
-                                        egui::TextEdit::singleline(&mut self.catalog_url)
-                                            .hint_text(tr(self.lang, "https://.../catalog.json (com catalog.json.sig ao lado)"))
-                                            .desired_width(280.0),
-                                    );
-                                    if ui
-                                        .add_enabled(
-                                            self.busy_task.is_none() && !self.catalog_url.trim().is_empty(),
-                                            egui::Button::new(tr(self.lang, "🔄 Salvar e atualizar")),
-                                        )
-                                        .on_hover_text(
-                                            "Baixa o catálogo e a assinatura; só importa se a assinatura for de uma chave confiável, \
-                                             a versão não for mais antiga que a atual e a validade não tiver vencido.",
-                                        )
-                                        .clicked()
-                                    {
-                                        if let Ok(conn) = db::open(&self.db_path) {
-                                            let _ = db::set_setting(
-                                                &conn,
-                                                crate::catalog_sign::SETTING_URL,
-                                                self.catalog_url.trim(),
-                                            );
-                                        }
-                                        self.spawn_catalog_update();
-                                    }
-                                });
-
-                                ui.add_space(6.0);
-
-                                ui.horizontal_wrapped(|ui| {
-                                    ui.label(RichText::new(tr(self.lang, "📚 Biblioteca:")).strong());
-                                    ui.add(
-                                        egui::TextEdit::singleline(&mut self.library_path)
-                                            .hint_text(tr(self.lang, "Arquivo rrs-biblioteca.json"))
-                                            .desired_width(280.0),
-                                    );
-                                    if ui
-                                        .button(tr(self.lang, "📤 Exportar biblioteca"))
-                                        .on_hover_text(tr(self.lang, "Salva a lista de apps instalados e o tempo de jogo, para reinstalar em outro PC"))
-                                        .clicked()
-                                    {
-                                        let path = PathBuf::from(self.library_path.trim());
-                                        let res = db::open(&self.db_path).and_then(|c| db::export_library(&c, &path));
-                                        (self.status_msg, self.status_is_error) = match res {
-                                            Ok(n) => (format!("✔ Biblioteca com {n} app(s) salva em {}", path.display()), false),
-                                            Err(e) => (format!("Erro ao exportar a biblioteca: {e:#}"), true),
-                                        };
-                                    }
-                                    if ui
-                                        .button(tr(self.lang, "📥 Importar biblioteca"))
-                                        .on_hover_text(tr(self.lang, "Lê um rrs-biblioteca.json de outro PC: os apps entram em Biblioteca › Para reinstalar"))
-                                        .clicked()
-                                    {
-                                        let path = PathBuf::from(self.library_path.trim());
-                                        let res = db::open(&self.db_path).and_then(|c| db::import_library(&c, &path));
-                                        (self.status_msg, self.status_is_error) = match res {
-                                            Ok(rep) => (
-                                                format!(
-                                                    "✔ {} app(s) em Biblioteca › Para reinstalar; {} já instalado(s) aqui{}",
-                                                    rep.to_reinstall,
-                                                    rep.merged,
-                                                    if rep.not_in_catalog.is_empty() {
-                                                        String::new()
-                                                    } else {
-                                                        format!("; {} fora do catálogo", rep.not_in_catalog.len())
-                                                    }
-                                                ),
-                                                false,
-                                            ),
-                                            Err(e) => (format!("Erro ao importar a biblioteca: {e:#}"), true),
-                                        };
-                                        self.reload_from_db();
-                                    }
-                                });
-
-                                ui.add_space(6.0);
-                                ui.separator();
-                                ui.add_space(6.0);
-
-                                ui.horizontal(|ui| {
-                                    ui.label(RichText::new(tr(self.lang, "📦 Catálogo Local:")).strong());
-                                    ui.label(
-                                        RichText::new(format!("{} {}", self.apps.len(), tr(self.lang, "itens carregados")))
-                                            .color(Color32::from_rgb(170, 185, 205)),
-                                    );
-
-                                    ui.add_space(10.0);
-                                    if ui.button(tr(self.lang, "📤 Exportar Catálogo JSON")).clicked() {
-                                        if let Ok(conn) = db::open(&self.db_path) {
-                                            match db::export_catalog(&conn, &self.catalog_path) {
-                                                Ok(n) => {
-                                                    self.status_msg = format!(
-                                                        "✔ {n} itens exportados com sucesso para {}",
-                                                        self.catalog_path.display()
-                                                    );
-                                                    self.status_is_error = false;
-                                                }
-                                                Err(e) => {
-                                                    self.status_msg = format!("Erro ao exportar catálogo: {e}");
-                                                    self.status_is_error = true;
-                                                }
-                                            }
-                                        }
-                                    }
-
-                                    if ui.button(tr(self.lang, "📥 Reimportar catalog.json")).clicked() {
-                                        if let Ok(conn) = db::open(&self.db_path) {
-                                            match db::import_catalog(&conn, &self.catalog_path) {
-                                                Ok(n) => {
-                                                    self.reload_from_db();
-                                                    self.status_msg = format!("✔ {n} itens reimportados do catalog.json!");
-                                                    self.status_is_error = false;
-                                                }
-                                                Err(e) => {
-                                                    self.status_msg = format!("Erro ao importar catálogo: {e}");
-                                                    self.status_is_error = true;
-                                                }
-                                            }
-                                        }
-                                    }
-
-                                    if ui.button(tr(self.lang, "📁 Abrir Pasta do Catálogo")).clicked() {
-                                        if let Some(parent) = self.catalog_path.parent().or_else(|| std::path::Path::new(".").into()) {
-                                            let _ = std::process::Command::new("explorer").arg(parent).spawn();
-                                        }
-                                    }
-
-                                    ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-                                        if ui.small_button(tr(self.lang, "✖ Fechar")).clicked() {
-                                            self.show_settings = false;
-                                        }
-                                    });
-                                });
-                            });
-                        });
-                }
             });
 
         // ─── RODAPÉ: Barra de Status e Progresso de Download ───────────────
@@ -1568,7 +1540,7 @@ impl eframe::App for StoreGui {
             });
 
         // ─── PAINEL DIREITO: Ficha da Loja, Precedentes e Download ─────────
-        if self.section != NavSection::CppToRust {
+        if !matches!(self.section, NavSection::CppToRust | NavSection::Settings | NavSection::Profile) {
             let selected_app = self
                 .selected_repo
                 .as_ref()
@@ -1606,6 +1578,12 @@ impl eframe::App for StoreGui {
                     return;
                 }
                 egui::ScrollArea::vertical().show(ui, |ui| {
+                    match self.section {
+                        NavSection::Settings => return self.render_settings_section(ui),
+                        NavSection::Profile => return self.render_profile_section(ui),
+                        NavSection::Community => return self.render_community_section(ui),
+                        _ => {}
+                    }
                     let has_active_search = !self.search.trim().is_empty()
                         || self.platform_filter != "todas"
                         || self.category_filter != "todas";
@@ -1617,6 +1595,7 @@ impl eframe::App for StoreGui {
                     }
                 });
             });
+        self.render_toasts(ctx);
     }
 }
 
@@ -1872,6 +1851,7 @@ impl StoreGui {
     fn render_section_catalog(&mut self, ui: &mut egui::Ui) {
         let (title, subtitle) = match self.section {
             NavSection::Discover => ("🔎 Resultados da Busca", "Projetos verificados encontrados no catálogo."),
+            NavSection::Profile | NavSection::Community | NavSection::Settings => ("", ""),
             NavSection::Terminal => (
                 "⌨ Terminal (Rust)",
                 "Ferramentas de linha de comando já compiladas, baixadas da release oficial e conferidas pelo SHA-256.",
@@ -2377,6 +2357,8 @@ impl StoreGui {
             }
         });
 
+        self.render_share_buttons(ui, app);
+
         // Selos: linguagem e atestado de build do GitHub
         ui.add_space(4.0);
         ui.horizontal_wrapped(|ui| {
@@ -2804,8 +2786,10 @@ impl StoreGui {
                                     )
                                     .on_hover_text(hint)
                                     .clicked()
+                                    && self.start_download(app.full_name.clone(), rel.tag_name.clone(), asset.clone())
+                                    && rel.tag_name != app.latest_tag
                                 {
-                                    self.start_download(app.full_name.clone(), rel.tag_name.clone(), asset.clone());
+                                    self.record_stat(crate::achievements::STAT_OLD_VERSION);
                                 }
                             }
                             None => {
@@ -2867,6 +2851,7 @@ impl StoreGui {
                         .on_hover_text(tr(self.lang, "Consulta os hashes oficiais da Release no VirusTotal sem baixar o arquivo"))
                         .clicked()
                     {
+                        self.record_stat(crate::achievements::STAT_VT);
                         self.spawn_fetch_or_verify(app.full_name.clone(), true);
                     }
                 });
@@ -2955,6 +2940,7 @@ impl StoreGui {
                         .clicked()
                     {
                         trigger_retranslate = true;
+                        self.record_stat(crate::achievements::STAT_TRANSLATIONS);
                     }
 
                     if ui
