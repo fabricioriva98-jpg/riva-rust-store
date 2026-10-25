@@ -44,6 +44,7 @@ impl StoreGui {
         self.settings_community(ui);
         self.settings_language(ui);
         self.settings_keys(ui);
+        self.settings_github_sync(ui);
         self.settings_catalog_online(ui);
         self.settings_library(ui);
         self.settings_local_catalog(ui);
@@ -521,6 +522,72 @@ impl StoreGui {
                     self.status_is_error = false;
                 }
             }
+        });
+    }
+
+    // ─── Sincronização com o GitHub & Atualizações Diárias ──────────────────
+
+    fn settings_github_sync(&mut self, ui: &mut egui::Ui) {
+        let title = self.tr("🌐 Sincronização com o GitHub & Atualizações Diárias");
+        card(ui, &title, |ui| {
+            // Status do Token de API
+            let has_token = !self.api_token().trim().is_empty();
+            if has_token {
+                ui.label(
+                    RichText::new(self.tr("✔ Token do GitHub ativo (limite alto: até 5.000 requisições/hora)"))
+                        .color(Color32::from_rgb(100, 220, 120))
+                        .size(12.5),
+                );
+            } else {
+                ui.label(
+                    RichText::new(self.tr("ℹ Modo anônimo (limite padrão do GitHub: 60 requisições/hora). Adicione um token em 'Chaves de API' para limite expandido."))
+                        .color(Color32::from_rgb(220, 180, 100))
+                        .size(12.5),
+                );
+            }
+            ui.add_space(6.0);
+
+            // Informação da última sincronização
+            let sync_info = match self.last_daily_sync {
+                Some(dt) => format!(
+                    "{} {}",
+                    self.tr("Última sincronização diária:"),
+                    dt.format("%d/%m/%Y às %H:%M:%S UTC")
+                ),
+                None => format!("{} {}", self.tr("Última sincronização diária:"), self.tr("Nunca realizada")),
+            };
+            ui.label(RichText::new(sync_info).size(12.5).color(Color32::from_rgb(180, 190, 210)));
+            ui.add_space(8.0);
+
+            // Toggle automático diário
+            let mut auto_sync = self.auto_sync_daily;
+            if ui.checkbox(&mut auto_sync, self.tr("Atualizar e sincronizar automaticamente todos os dias ao abrir a RRS")).changed() {
+                self.auto_sync_daily = auto_sync;
+                if let Ok(conn) = db::open(&self.db_path) {
+                    let _ = db::set_setting(&conn, db::SETTING_AUTO_SYNC_DAILY, if auto_sync { "true" } else { "false" });
+                }
+            }
+            ui.add_space(8.0);
+
+            // Botão de sincronização sob demanda
+            ui.horizontal_wrapped(|ui| {
+                if ui
+                    .add_enabled(
+                        self.busy_task.is_none(),
+                        egui::Button::new(self.tr("🔄 Sincronizar Agora com o GitHub")),
+                    )
+                    .on_hover_text(self.tr("Busca atualizações de releases para seus apps instalados e descobre novos aplicativos populares em Rust"))
+                    .clicked()
+                {
+                    self.spawn_github_sync(true);
+                }
+            });
+
+            ui.add_space(4.0);
+            hint(
+                ui,
+                &self.tr("Verifica releases recentes dos apps instalados e do catálogo, descobre novos apps em alta no GitHub e atualiza o catálogo local sem travar o programa."),
+            );
         });
     }
 

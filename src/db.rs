@@ -474,6 +474,35 @@ pub fn set_setting(conn: &Connection, key: &str, value: &str) -> Result<()> {
     Ok(())
 }
 
+pub const SETTING_AUTO_SYNC_DAILY: &str = "auto_sync_daily";
+pub const SETTING_LAST_DAILY_SYNC: &str = "last_daily_sync";
+
+/// Verifica se a sincronização diária com o GitHub deve ser executada (intervalo >= 24h ou nunca executada, e configuração ativa).
+pub fn should_run_daily_sync(conn: &Connection) -> bool {
+    let enabled = get_setting(conn, SETTING_AUTO_SYNC_DAILY)
+        .as_deref()
+        .map(|v| v != "false" && v != "0")
+        .unwrap_or(true);
+    if !enabled {
+        return false;
+    }
+    match get_setting(conn, SETTING_LAST_DAILY_SYNC) {
+        None => true,
+        Some(s) => match chrono::DateTime::parse_from_rfc3339(&s) {
+            Err(_) => true,
+            Ok(dt) => {
+                let diff = chrono::Utc::now().signed_duration_since(dt.with_timezone(&chrono::Utc));
+                diff >= chrono::Duration::hours(24)
+            }
+        },
+    }
+}
+
+/// Grava o timestamp UTC da sincronização diária no banco de dados.
+pub fn record_daily_sync(conn: &Connection) -> Result<()> {
+    set_setting(conn, SETTING_LAST_DAILY_SYNC, &chrono::Utc::now().to_rfc3339())
+}
+
 pub fn list_all(conn: &Connection) -> Result<Vec<App>> {
     let sql = format!("{SELECT_SQL} ORDER BY a.stars DESC");
     let mut st = conn.prepare(&sql)?;
@@ -1013,5 +1042,29 @@ mod tests {
         let sem: Vec<_> = entries.iter().filter(|e| e.language.is_empty()).map(|e| &e.full_name).collect();
         assert!(sem.is_empty(), "sem linguagem: {sem:?}");
         assert!(entries.iter().any(|e| crate::github::is_rust_language(&e.language)));
+    }
+
+    #[test]
+    fn sincronizacao_diaria_deve_respeitar_tempo_e_toggle() {
+        let c = mem();
+        // Inicialmente sem registro de sync: deve executar
+        assert!(should_run_daily_sync(&c));
+
+        // Desativado pelo usuário: não deve executar
+        set_setting(&c, SETTING_AUTO_SYNC_DAILY, "false").unwrap();
+        assert!(!should_run_daily_sync(&c));
+
+        // Reativado: volta a ser elegível
+        set_setting(&c, SETTING_AUTO_SYNC_DAILY, "true").unwrap();
+        assert!(should_run_daily_sync(&c));
+
+        // Registra sync recente: não deve rodar novamente nas 24h
+        record_daily_sync(&c).unwrap();
+        assert!(!should_run_daily_sync(&c));
+
+        // Se o último sync foi há 25 horas: deve rodar
+        let ontem = (chrono::Utc::now() - chrono::Duration::hours(25)).to_rfc3339();
+        set_setting(&c, SETTING_LAST_DAILY_SYNC, &ontem).unwrap();
+        assert!(should_run_daily_sync(&c));
     }
 }

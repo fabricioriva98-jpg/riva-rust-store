@@ -324,9 +324,11 @@ pub struct StoreGui {
     // Adicionar repositório avulso
     add_repo_input: String,
 
-    // Configurações (Tokens opcionais)
+    // Configurações (Tokens opcionais e sincronização)
     github_token_input: String,
     vt_key_input: String,
+    auto_sync_daily: bool,
+    last_daily_sync: Option<chrono::DateTime<chrono::Utc>>,
 
     // Tradutor C/C++ -> Rust embutido
     cpp_input: String,
@@ -428,6 +430,9 @@ impl StoreGui {
         let mut vt_key_input = std::env::var("VIRUSTOTAL_API_KEY").unwrap_or_default();
         let mut catalog_url = String::new();
         let mut catalog_due = false;
+        let mut auto_sync_daily = true;
+        let mut last_daily_sync: Option<chrono::DateTime<chrono::Utc>> = None;
+        let mut daily_sync_due = false;
         let mut lang = Lang::Pt;
         let mut anthropic_key_input = std::env::var("ANTHROPIC_API_KEY").unwrap_or_default();
         let mut oauth_client_id = String::new();
@@ -471,6 +476,11 @@ impl StoreGui {
                     vt_key_input = k;
                 }
             }
+            auto_sync_daily = db::get_setting(&conn, db::SETTING_AUTO_SYNC_DAILY).as_deref() != Some("false");
+            last_daily_sync = db::get_setting(&conn, db::SETTING_LAST_DAILY_SYNC)
+                .and_then(|t| chrono::DateTime::parse_from_rfc3339(&t).ok())
+                .map(|t| t.with_timezone(&chrono::Utc));
+            daily_sync_due = db::should_run_daily_sync(&conn);
         }
 
         theme.apply(&cc.egui_ctx, accent_color);
@@ -542,6 +552,8 @@ impl StoreGui {
             add_repo_input: String::new(),
             github_token_input,
             vt_key_input,
+            auto_sync_daily,
+            last_daily_sync,
             cpp_input: default_cpp,
             rust_output: initial_tr.rust_code,
             translate_mode: TranslateMode::SafeRust,
@@ -604,6 +616,9 @@ impl StoreGui {
         }
         if catalog_due {
             gui.spawn_catalog_update();
+        }
+        if daily_sync_due {
+            gui.spawn_github_sync(false);
         }
         gui
     }
@@ -722,6 +737,10 @@ impl StoreGui {
             if let Ok(w) = db::wishlist(&conn) {
                 self.wishlist = w;
             }
+            self.auto_sync_daily = db::get_setting(&conn, db::SETTING_AUTO_SYNC_DAILY).as_deref() != Some("false");
+            self.last_daily_sync = db::get_setting(&conn, db::SETTING_LAST_DAILY_SYNC)
+                .and_then(|t| chrono::DateTime::parse_from_rfc3339(&t).ok())
+                .map(|t| t.with_timezone(&chrono::Utc));
         }
         self.refresh_windows_matches();
         let mut cats: Vec<String> = self
@@ -1391,6 +1410,152 @@ impl StoreGui {
                     message: "Verificação de novas versões concluída".into(),
                 }),
                 Err(e) => events.lock().unwrap().push(BgEvent::Error(format!("{e:#}"))),
+            }
+        });
+    }
+
+    /// Sincronização diária automática ou sob demanda com o GitHub:
+    /// - Atualiza releases dos apps instalados e dos apps populares da loja.
+    /// - Descobre novos projetos em Rust com binários disponíveis (`topic:rust stars:>1000`).
+    /// - Registra o timestamp em `last_daily_sync` e exporta o `catalog.json` atualizado.
+    pub(super) fn spawn_github_sync(&mut self, manual: bool) {
+        if self.busy_task.is_some() {
+            return;
+        }
+
+        self.busy_task = Some(if manual {
+            "Sincronizando com o GitHub...".into()
+        } else {
+            "Sincronização diária em segundo plano...".into()
+        });
+
+        let gh_token = self.api_token();
+        let has_token = !gh_token.trim().is_empty();
+        let db_path = self.db_path.clone();
+        let catalog_path = self.catalog_path.clone();
+        let events = Arc::clone(&self.bg_events);
+
+        let mut targets: Vec<App> = self.apps.iter().filter(|a| a.installed.is_some()).cloned().collect();
+        let max_batch = if has_token { 25 } else { 12 };
+        for app in self.apps.iter().filter(|a| a.installed.is_none()) {
+            if targets.len() >= max_batch {
+                break;
+            }
+            targets.push(app.clone());
+        }
+
+        self.rt.spawn(async move {
+            let res: anyhow::Result<(usize, usize)> = async {
+                let gh = Forge::new(if has_token { Some(&gh_token) } else { None })?;
+                let conn = db::open(&db_path)?;
+                let mut updated_releases = 0;
+
+                for mut app in targets {
+                    events.lock().unwrap().push(BgEvent::Status(format!(
+                        "Checando release de {}...",
+                        app.full_name
+                    )));
+                    if let Ok(Some(rel)) = gh.latest_release(&app.full_name).await {
+                        let assets: Vec<_> = rel
+                            .assets
+                            .iter()
+                            .filter(|a| github::platform_of(&a.name).is_some())
+                            .cloned()
+                            .collect();
+                        if !assets.is_empty() {
+                            if app.latest_tag != rel.tag_name {
+                                app.attestation.clear();
+                            }
+                            app.latest_tag = rel.tag_name;
+                            app.released_at = rel.published_at.unwrap_or_default();
+                            app.assets = assets;
+                            app.recompute_trust(None, &[]);
+                            db::upsert(&conn, &app)?;
+                            updated_releases += 1;
+                        }
+                    }
+                }
+
+                let mut discovered_new = 0;
+                if manual || has_token {
+                    events.lock().unwrap().push(BgEvent::Status(
+                        "Descobrindo novos aplicativos populares em Rust no GitHub...".into(),
+                    ));
+                    if let Ok(found) = gh.search_repos("topic:rust stars:>1000", 1).await {
+                        for repo in found {
+                            if db::get(&conn, &repo.full_name).ok().flatten().is_none() {
+                                if let Ok(Some(rel)) = gh.latest_release(&repo.full_name).await {
+                                    let assets: Vec<_> = rel
+                                        .assets
+                                        .iter()
+                                        .filter(|a| github::platform_of(&a.name).is_some())
+                                        .cloned()
+                                        .collect();
+                                    if !assets.is_empty() {
+                                        let mut plats: Vec<&str> = assets
+                                            .iter()
+                                            .filter_map(|a| github::platform_of(&a.name))
+                                            .collect();
+                                        plats.sort();
+                                        plats.dedup();
+                                        let rep = verify::evaluate(&repo, Some(&rel), None, &[]);
+                                        let new_app = App {
+                                            full_name: repo.full_name.clone(),
+                                            description: repo.description.unwrap_or_default(),
+                                            url: repo.html_url,
+                                            stars: repo.stargazers_count,
+                                            license: repo.license.and_then(|l| l.spdx_id).unwrap_or_default(),
+                                            topics: repo.topics.join(","),
+                                            language: repo.language.unwrap_or_default(),
+                                            created_at: repo.created_at,
+                                            pushed_at: repo.pushed_at.unwrap_or_default(),
+                                            fork: repo.fork,
+                                            archived: repo.archived,
+                                            has_issues: repo.has_issues,
+                                            latest_tag: rel.tag_name,
+                                            released_at: rel.published_at.unwrap_or_default(),
+                                            platforms: plats.join(","),
+                                            assets,
+                                            kind: Some("ferramenta".into()),
+                                            category: Some("Utilitários Rust".into()),
+                                            tags: Some("rust,github,descoberta".into()),
+                                            summary: None,
+                                            trust_score: rep.score,
+                                            trust_level: rep.level.to_string(),
+                                            trust_notes: rep.notes,
+                                            attestation: String::new(),
+                                            installed: None,
+                                        };
+                                        if db::upsert(&conn, &new_app).is_ok() {
+                                            discovered_new += 1;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                let _ = db::record_daily_sync(&conn);
+                let _ = db::export_catalog(&conn, &catalog_path);
+                Ok((updated_releases, discovered_new))
+            }
+            .await;
+
+            match res {
+                Ok((updated, discovered)) => {
+                    events.lock().unwrap().push(BgEvent::SyncFinished {
+                        updated: updated + discovered,
+                        message: if discovered > 0 {
+                            format!("✔ Sincronização GitHub concluída ({updated} atualizados, {discovered} novos descobertos)")
+                        } else {
+                            format!("✔ Sincronização GitHub concluída ({updated} atualizados)")
+                        },
+                    });
+                }
+                Err(e) => {
+                    events.lock().unwrap().push(BgEvent::Error(format!("Erro na sincronização GitHub: {e:#}")));
+                }
             }
         });
     }

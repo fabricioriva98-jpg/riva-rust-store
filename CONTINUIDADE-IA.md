@@ -106,7 +106,16 @@ Linha de comando útil: `search`, `show dono/repo`, `verify dono/repo`, `downloa
 - Otimizador não inventa valor: dado que não foi lido aparece como `optimizer::NOT_READ`.
 - Nenhum caminho deste PC (`E:\Fabricio`, `C:\Users\fabri`) no código (`codigo_distribuido_nao_tem_caminhos_deste_pc`).
 
-Feito e testado: avaliação, correções G1–G3, fases 1, 2 e 3 do `IDEIAS-MELHORIAS-24.10.26.md` (resumo lá), rodada social e identidade visual com espaço educacional interativo. Catálogo com 88 itens (16 em Rust, 6 ferramentas de terminal). Testes automatizados aumentados para 116 (todos passando).
+Feito e testado: avaliação, correções G1–G3, fases 1, 2 e 3 do `IDEIAS-MELHORIAS-24.10.26.md` (resumo lá), rodada social e identidade visual com espaço educacional interativo. Catálogo com 133 itens. Testes automatizados aumentados para 138 (todos passando).
+
+Rodada Sincronização Diária com o GitHub & Atualizações sob Demanda (25/10, fim de tarde — Antigravity / Gemini):
+- **Sincronização Diária Automática e sob Demanda com GitHub (`db.rs`, `gui.rs`, `gui/settings.rs`)**:
+  - **Mecanismo Automático de 24h**: ao abrir a RRS, `should_run_daily_sync(&conn)` verifica se a sincronização diária está ativa (`auto_sync_daily`, padrão ligada) e se já se passaram >= 24h desde `last_daily_sync`. Se devido, dispara automaticamente `spawn_github_sync(false)` em segundo plano sem travar a interface da loja nem estourar os limites de taxa da API.
+  - **Priorização Inteligente de Lotes & Proteção de Rate Limits**: checa primeiro os apps instalados (para alertar sobre novas versões) e depois os principais apps do catálogo (lote seguro de 12 requisições no modo anônimo de 60 req/h; até 25 requisições no modo autenticado de 5.000 req/h).
+  - **Descoberta Automática de Novos Aplicativos em Rust**: quando executado manualmente ou com token autenticado, busca repositórios populares em alta no GitHub (`topic:rust stars:>1000`). Novos projetos com binários compatíveis são avaliados com score de confiança, inseridos no SQLite e salvos em `catalog.json`.
+  - **Painel em Configurações (`settings.rs`)**: novo card dedicado `🌐 Sincronização com o GitHub & Atualizações Diárias` contendo status do token e limites de requisições, data e hora da última sincronização, checkbox para ligar/desligar a sincronização diária automática ao abrir, e botão interativo `🔄 Sincronizar Agora com o GitHub` com hover explicativo.
+  - **Internacionalização e Testes**: paridade rigorosa na tabela `i18n.rs::TABLE` com 9 novas chaves de tradução. Total de **138 testes automatizados passando 100%** (incluindo novo teste `sincronizacao_diaria_deve_respeitar_tempo_e_toggle`), 0 novos avisos no Clippy.
+  - **Binários de Release**: executáveis `RRS - Riva Rust Store.exe` e `Instalador - RRS Riva Rust Store.exe` recompilados em modo release (18.045.440 bytes) e validados por CLI (`search "rust"`). Backups prévios em `Obsoleto\gitstore-exe-antes-sync-diario-github-25.10.26`.
 
 Rodada Expansão Vasta do Catálogo de Aplicativos (88 ➔ 133 Itens) (25/10, tarde — Antigravity / Gemini):
 - **Expansão Massiva do Catálogo (`catalog.json`)**:
