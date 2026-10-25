@@ -308,6 +308,10 @@ pub struct StoreGui {
     terminal_cmd_input: String,
     terminal_is_running: bool,
 
+    // Temas e Aparência
+    theme: crate::theme::AppTheme,
+    accent_color: crate::theme::AccentColor,
+
     // Tarefas em segundo plano
     downloads: downloader::DownloadManager,
     bg_events: Arc<Mutex<Vec<BgEvent>>>,
@@ -324,7 +328,6 @@ impl StoreGui {
         rt: tokio::runtime::Handle,
     ) -> Self {
         egui_extras::install_image_loaders(&cc.egui_ctx);
-        configure_theme(&cc.egui_ctx);
         configure_fonts(&cc.egui_ctx);
         let library_path = catalog_path
             .parent()
@@ -333,6 +336,8 @@ impl StoreGui {
             .to_string_lossy()
             .to_string();
 
+        let mut theme = crate::theme::AppTheme::Antigravity;
+        let mut accent_color = crate::theme::AccentColor::NeonCyan;
         let mut github_token_input = std::env::var("GITHUB_TOKEN").unwrap_or_default();
         let mut vt_key_input = std::env::var("VIRUSTOTAL_API_KEY").unwrap_or_default();
         let mut catalog_url = String::new();
@@ -345,6 +350,12 @@ impl StoreGui {
         let mut community_repo = String::new();
 
         if let Ok(conn) = db::open(&db_path) {
+            if let Some(t) = db::get_setting(&conn, crate::theme::SETTING_THEME) {
+                theme = crate::theme::AppTheme::from_id(&t);
+            }
+            if let Some(a) = db::get_setting(&conn, crate::theme::SETTING_ACCENT) {
+                accent_color = crate::theme::AccentColor::from_id(&a);
+            }
             if anthropic_key_input.is_empty() {
                 anthropic_key_input = db::get_setting(&conn, crate::translator_ai::SETTING_KEY).unwrap_or_default();
             }
@@ -372,6 +383,8 @@ impl StoreGui {
                 }
             }
         }
+
+        theme.apply(&cc.egui_ctx, accent_color);
 
         let default_cpp = translator::EXAMPLES[0].cpp_code.to_string();
         let initial_tr = translator::translate_c_cpp_to_rust(&default_cpp, TranslateMode::SafeRust);
@@ -467,6 +480,8 @@ impl StoreGui {
             terminal_working_dir: PathBuf::new(),
             terminal_cmd_input: String::new(),
             terminal_is_running: false,
+            theme,
+            accent_color,
             downloads: downloader::DownloadManager::default(),
             bg_events: Arc::new(Mutex::new(Vec::new())),
             busy_task: None,
@@ -487,6 +502,33 @@ impl StoreGui {
             gui.spawn_catalog_update();
         }
         gui
+    }
+
+    /// Altera o tema visual da loja e persiste a escolha no banco de dados.
+    pub fn set_theme(&mut self, ctx: &egui::Context, theme: crate::theme::AppTheme) {
+        self.theme = theme;
+        self.theme.apply(ctx, self.accent_color);
+        if let Ok(conn) = db::open(&self.db_path) {
+            let _ = db::set_setting(&conn, crate::theme::SETTING_THEME, theme.id());
+        }
+        self.status_msg = format!("{} {}", self.tr("Tema aplicado:"), self.tr(theme.label()));
+        self.status_is_error = false;
+    }
+
+    /// Altera a cor de destaque (acentos) e persiste a escolha no banco de dados.
+    pub fn set_accent_color(&mut self, ctx: &egui::Context, accent: crate::theme::AccentColor) {
+        self.accent_color = accent;
+        self.theme.apply(ctx, self.accent_color);
+        if let Ok(conn) = db::open(&self.db_path) {
+            let _ = db::set_setting(&conn, crate::theme::SETTING_ACCENT, accent.id());
+        }
+        self.status_msg = format!("{} {}", self.tr("Cor de destaque aplicada:"), self.tr(accent.label()));
+        self.status_is_error = false;
+    }
+
+    /// Retorna a paleta calculada para o tema e acento atuais.
+    pub fn palette(&self) -> crate::theme::ThemePalette {
+        self.theme.palette(self.accent_color)
     }
 
     /// Baixa o catálogo online assinado e importa se a assinatura, a versão e a validade conferirem.
@@ -1340,13 +1382,14 @@ impl eframe::App for StoreGui {
         let cli_count = self.apps.iter().filter(|a| a.kind.as_deref() == Some("cli")).count();
 
         // ─── BARRA LATERAL ESQUERDA (Estilo Steam / Microsoft Store) ───────
+        let p = self.palette();
         egui::SidePanel::left("left_nav")
             .resizable(false)
             .exact_width(210.0)
             .frame(
                 egui::Frame::NONE
-                    .fill(Color32::from_rgb(18, 21, 28))
-                    .stroke(Stroke::new(1.0_f32, Color32::from_rgb(32, 38, 50)))
+                    .fill(p.bg_sidebar)
+                    .stroke(Stroke::new(1.0_f32, p.border_subtle))
                     .inner_margin(egui::Margin::symmetric(12, 14)),
             )
             .show(ctx, |ui| {
@@ -1557,8 +1600,8 @@ impl eframe::App for StoreGui {
         egui::TopBottomPanel::top("top_search_bar")
             .frame(
                 egui::Frame::NONE
-                    .fill(Color32::from_rgb(20, 24, 32))
-                    .stroke(Stroke::new(1.0_f32, Color32::from_rgb(32, 38, 50)))
+                    .fill(p.bg_topbar)
+                    .stroke(Stroke::new(1.0_f32, p.border_subtle))
                     .inner_margin(egui::Margin::symmetric(16, 10)),
             )
             .show(ctx, |ui| {
@@ -1623,6 +1666,19 @@ impl eframe::App for StoreGui {
                         self.add_repo_input.clear();
                         self.spawn_fetch_or_verify(target, false);
                     }
+
+                    ui.separator();
+                    ui.label("🎨");
+                    egui::ComboBox::from_id_salt("quick_theme_selector")
+                        .selected_text(tr(self.lang, self.theme.label()))
+                        .width(140.0)
+                        .show_ui(ui, |ui| {
+                            for theme in crate::theme::AppTheme::ALL {
+                                if ui.selectable_label(self.theme == *theme, tr(self.lang, theme.label())).clicked() {
+                                    self.set_theme(ctx, *theme);
+                                }
+                            }
+                        });
                 });
 
             });
@@ -1631,7 +1687,8 @@ impl eframe::App for StoreGui {
         egui::TopBottomPanel::bottom("bottom_status")
             .frame(
                 egui::Frame::NONE
-                    .fill(Color32::from_rgb(16, 18, 24))
+                    .fill(p.bg_status)
+                    .stroke(Stroke::new(1.0_f32, p.border_subtle))
                     .inner_margin(egui::Margin::symmetric(16, 7)),
             )
             .show(ctx, |ui| {
@@ -1716,8 +1773,8 @@ impl eframe::App for StoreGui {
                     .min_width(340.0)
                     .frame(
                         egui::Frame::NONE
-                            .fill(Color32::from_rgb(21, 25, 34))
-                            .stroke(Stroke::new(1.0_f32, Color32::from_rgb(34, 40, 54)))
+                            .fill(p.bg_card)
+                            .stroke(Stroke::new(1.0_f32, p.border_card))
                             .inner_margin(egui::Margin::same(16)),
                     )
                     .show(ctx, |ui| {
@@ -1732,7 +1789,7 @@ impl eframe::App for StoreGui {
         egui::CentralPanel::default()
             .frame(
                 egui::Frame::NONE
-                    .fill(Color32::from_rgb(14, 16, 22))
+                    .fill(p.bg_app)
                     .inner_margin(egui::Margin::same(16)),
             )
             .show(ctx, |ui| {
@@ -3415,24 +3472,22 @@ fn font_definitions() -> egui::FontDefinitions {
     fonts
 }
 
+#[allow(dead_code)]
 fn configure_theme(ctx: &egui::Context) {
-    let mut visuals = egui::Visuals::dark();
-    visuals.window_fill = Color32::from_rgb(16, 19, 26);
-    visuals.panel_fill = Color32::from_rgb(14, 16, 22);
-    ctx.set_visuals(visuals);
+    crate::theme::AppTheme::default().apply(ctx, crate::theme::AccentColor::default());
 }
 
 fn nav_button(ui: &mut egui::Ui, current: &mut NavSection, target: NavSection, label: &str) {
     let active = *current == target;
     let fill = if active {
-        Color32::from_rgb(35, 85, 155)
+        ui.visuals().selection.bg_fill
     } else {
         Color32::TRANSPARENT
     };
     let text_col = if active {
         Color32::WHITE
     } else {
-        Color32::from_rgb(185, 195, 210)
+        ui.visuals().widgets.noninteractive.fg_stroke.color
     };
     if ui
         .add(

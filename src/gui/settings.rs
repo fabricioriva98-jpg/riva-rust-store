@@ -11,14 +11,17 @@ use std::sync::Arc;
 
 /// Cartão com título usado em cada grupo da página.
 fn card(ui: &mut egui::Ui, title: &str, add: impl FnOnce(&mut egui::Ui)) {
+    let fill = ui.visuals().window_fill;
+    let stroke = ui.visuals().widgets.noninteractive.bg_stroke;
+    let text_color = ui.visuals().override_text_color.unwrap_or(Color32::WHITE);
     egui::Frame::NONE
-        .fill(Color32::from_rgb(22, 26, 35))
-        .stroke(Stroke::new(1.0_f32, Color32::from_rgb(38, 45, 60)))
+        .fill(fill)
+        .stroke(stroke)
         .corner_radius(CornerRadius::same(8))
         .inner_margin(egui::Margin::same(14))
         .show(ui, |ui| {
             ui.set_min_width(ui.available_width());
-            ui.label(RichText::new(title).size(15.5).strong().color(Color32::WHITE));
+            ui.label(RichText::new(title).size(15.5).strong().color(text_color));
             ui.add_space(6.0);
             add(ui);
         });
@@ -26,13 +29,15 @@ fn card(ui: &mut egui::Ui, title: &str, add: impl FnOnce(&mut egui::Ui)) {
 }
 
 fn hint(ui: &mut egui::Ui, text: &str) {
-    ui.label(RichText::new(text).size(11.5).color(Color32::from_rgb(150, 160, 180)));
+    let col = ui.visuals().widgets.noninteractive.fg_stroke.color;
+    ui.label(RichText::new(text).size(11.5).color(col));
 }
 
 impl StoreGui {
     pub(super) fn render_settings_section(&mut self, ui: &mut egui::Ui) {
         ui.label(RichText::new(self.tr("⚙ Configurações")).size(21.0).strong().color(Color32::WHITE));
         ui.add_space(10.0);
+        self.settings_theme(ui);
         self.settings_account(ui);
         self.settings_public_profile(ui);
         self.settings_community(ui);
@@ -42,6 +47,95 @@ impl StoreGui {
         self.settings_library(ui);
         self.settings_local_catalog(ui);
         self.settings_about(ui);
+    }
+
+    // ─── Aparência, Temas & Cores ──────────────────────────────────────────
+
+    fn settings_theme(&mut self, ui: &mut egui::Ui) {
+        let title = self.tr("🎨 Aparência, Temas & Cores");
+        card(ui, &title, |ui| {
+            ui.label(RichText::new(self.tr("Tema Visual:")).strong().size(13.0));
+            ui.add_space(4.0);
+
+            // Grade de seleção de temas com preview
+            ui.horizontal_wrapped(|ui| {
+                for theme in crate::theme::AppTheme::ALL {
+                    let is_active = self.theme == *theme;
+                    let p = theme.palette(self.accent_color);
+                    let border = if is_active {
+                        Stroke::new(2.0_f32, p.accent)
+                    } else {
+                        Stroke::new(1.0_f32, p.border_subtle)
+                    };
+
+                    let resp = egui::Frame::NONE
+                        .fill(p.bg_card)
+                        .stroke(border)
+                        .corner_radius(CornerRadius::same(6))
+                        .inner_margin(egui::Margin::symmetric(10, 8))
+                        .show(ui, |ui| {
+                            ui.horizontal(|ui| {
+                                let (rect, _) = ui.allocate_exact_size(egui::vec2(12.0, 12.0), egui::Sense::hover());
+                                ui.painter().circle_filled(rect.center(), 5.0, p.accent);
+                                ui.label(
+                                    RichText::new(self.tr(theme.label()))
+                                        .strong()
+                                        .size(12.5)
+                                        .color(p.text_primary),
+                                );
+                            });
+                        });
+
+                    if resp.response.interact(egui::Sense::click()).clicked() {
+                        self.set_theme(ui.ctx(), *theme);
+                    }
+                }
+            });
+
+            ui.add_space(4.0);
+            hint(ui, &self.tr(self.theme.description()));
+
+            ui.add_space(10.0);
+            ui.separator();
+            ui.add_space(8.0);
+
+            ui.label(RichText::new(self.tr("Cor de Destaque (Acentos & Realces):")).strong().size(13.0));
+            ui.add_space(4.0);
+
+            ui.horizontal_wrapped(|ui| {
+                for accent in crate::theme::AccentColor::ALL {
+                    let is_active = self.accent_color == *accent;
+                    let color = accent.color(self.theme);
+                    let border = if is_active {
+                        Stroke::new(2.5_f32, Color32::WHITE)
+                    } else {
+                        Stroke::new(1.0_f32, Color32::from_rgb(30, 36, 48))
+                    };
+
+                    let resp = egui::Frame::NONE
+                        .fill(Color32::from_rgba_unmultiplied(color.r(), color.g(), color.b(), 40))
+                        .stroke(border)
+                        .corner_radius(CornerRadius::same(6))
+                        .inner_margin(egui::Margin::symmetric(10, 6))
+                        .show(ui, |ui| {
+                            ui.horizontal(|ui| {
+                                let (rect, _) = ui.allocate_exact_size(egui::vec2(14.0, 14.0), egui::Sense::hover());
+                                ui.painter().circle_filled(rect.center(), 6.0, color);
+                                ui.label(
+                                    RichText::new(self.tr(accent.label()))
+                                        .strong()
+                                        .size(12.0)
+                                        .color(color),
+                                );
+                            });
+                        });
+
+                    if resp.response.interact(egui::Sense::click()).clicked() {
+                        self.set_accent_color(ui.ctx(), *accent);
+                    }
+                }
+            });
+        });
     }
 
     // ─── Conta do GitHub ───────────────────────────────────────────────────

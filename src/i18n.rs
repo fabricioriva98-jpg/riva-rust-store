@@ -697,6 +697,32 @@ pub static TABLE: &[(&str, &str)] = &[
     ("🚀 Programas de Codificação Detectados:", "🚀 Detected Coding Editors:"),
     ("🟦 Abrir no VS Code", "🟦 Open in VS Code"),
     ("🧹 Limpar Saída", "🧹 Clear Output"),
+    // Temas e Cores (Antigravity, Cyberpunk Neon, etc.)
+    ("Cor de Destaque (Acentos & Realces):", "Accent Color (Highlights & Accents):"),
+    ("Cor de destaque aplicada:", "Accent color applied:"),
+    ("Tema Visual:", "Visual Theme:"),
+    ("Tema aplicado:", "Theme applied:"),
+    ("🎨 Aparência, Temas & Cores", "🎨 Appearance, Themes & Colors"),
+    ("🦀 Escuro Clássico (Rust Dark)", "🦀 Dark Classic (Rust Dark)"),
+    ("🌌 Antigravity (Deep Space)", "🌌 Antigravity (Deep Space)"),
+    ("⚡ Cyberpunk 2077 (Neon High-Tech)", "⚡ Cyberpunk 2077 (Neon High-Tech)"),
+    ("🟢 Matrix Terminal (Phosphor)", "🟢 Matrix Terminal (Phosphor)"),
+    ("🔮 Dracula Synthwave (Violeta)", "🔮 Dracula Synthwave (Violet)"),
+    ("☀️ Claro (Clean Light)", "☀️ Clean Light"),
+    ("Visual dark grafite clássico com os acentos oficiais em tom ferrugem de Rust.", "Classic dark graphite look with official Rust rust-toned accents."),
+    ("Inspirado no Google Antigravity: azul cósmico profundo com acabamento futurista.", "Inspired by Google Antigravity: deep cosmic blue with a futuristic finish."),
+    ("Estilo Cyberpunk Neon: preto absoluto, ciano elétrico, magenta vibrante e contornos brilhantes.", "Cyberpunk Neon style: pitch black, electric cyan, vibrant magenta and glowing outlines."),
+    ("Visual de terminal retrô: preto fosco com fósforo verde neon e código puro.", "Retro terminal look: matte black with phosphor neon green and pure code."),
+    ("Tons elegantes de violeta noturno, lilás e rosa neon no estilo synthwave.", "Elegant tones of night violet, lilac and neon pink in synthwave style."),
+    ("Tema claro, limpo e de alto contraste para ambientes com muita luz.", "Clean, high-contrast light theme for bright environments."),
+    ("🦀 Laranja Rust (Oficial)", "🦀 Rust Orange (Official)"),
+    ("💎 Ciano Neon (Antigravity)", "💎 Neon Cyan (Antigravity)"),
+    ("💖 Magenta Cyberpunk", "💖 Cyberpunk Magenta"),
+    ("❇️ Verde Matrix", "❇️ Matrix Green"),
+    ("⚡ Azul Elétrico", "⚡ Electric Blue"),
+    ("👑 Dourado Âmbar", "👑 Golden Amber"),
+    ("🔮 Roxo Neon", "🔮 Neon Purple"),
+
 
 
 ];
@@ -761,6 +787,7 @@ mod tests {
             include_str!("gui/optimizer.rs"),
             include_str!("gui/rust_lib.rs"),
             include_str!("gui/terminal_studio.rs"),
+            include_str!("theme.rs"),
             include_str!("achievements.rs"),
         ]
     }

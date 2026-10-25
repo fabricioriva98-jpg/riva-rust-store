@@ -21,6 +21,7 @@ mod sandbox;
 mod saves;
 mod social;
 mod terminal_studio;
+mod theme;
 mod translator;
 mod translator_ai;
 mod verify;
