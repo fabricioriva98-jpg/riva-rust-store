@@ -7297,5 +7297,1670 @@
       "🟢 Instaladores e executáveis disponíveis em Releases"
     ],
     "attestation": ""
+  },
+  {
+    "full_name": "zellij-org/zellij",
+    "description": "A terminal workspace with batteries included",
+    "url": "https://github.com/zellij-org/zellij",
+    "stars": 23800,
+    "license": "MIT",
+    "topics": "cli,multiplexer,rust,terminal,tui,wasm",
+    "language": "Rust",
+    "created_at": "2020-09-12T10:14:00Z",
+    "pushed_at": "2026-10-24T12:00:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v0.41.2",
+    "released_at": "2026-10-15T18:00:00Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "zellij-x86_64-pc-windows-msvc.zip",
+        "size": 15482910,
+        "browser_download_url": "https://github.com/zellij-org/zellij/releases/download/v0.41.2/zellij-x86_64-pc-windows-msvc.zip",
+        "digest": ""
+      }
+    ],
+    "kind": "cli",
+    "category": "Terminal • Rust",
+    "tags": "terminal,multiplexer,rust,tui,workspace",
+    "summary": "Multiplexador de terminal moderno e amigável feito em Rust, com abas, painéis flutuantes e sistema de plugins WebAssembly.",
+    "trust_score": 95,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório verificado e oficial",
+      "🟢 Código aberto em Rust auditável",
+      "🟢 Executáveis estáveis disponíveis em Releases"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "atuinsh/atuin",
+    "description": "Magical shell history sync & search",
+    "url": "https://github.com/atuinsh/atuin",
+    "stars": 22900,
+    "license": "MIT",
+    "topics": "bash,cli,history,powershell,rust,shell,sqlite,zsh",
+    "language": "Rust",
+    "created_at": "2021-01-20T14:30:00Z",
+    "pushed_at": "2026-10-23T16:20:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v18.4.0",
+    "released_at": "2026-10-18T14:00:00Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "atuin-x86_64-pc-windows-msvc.zip",
+        "size": 11840210,
+        "browser_download_url": "https://github.com/atuinsh/atuin/releases/download/v18.4.0/atuin-x86_64-pc-windows-msvc.zip",
+        "digest": ""
+      }
+    ],
+    "kind": "cli",
+    "category": "Terminal • Rust",
+    "tags": "terminal,shell,history,search,rust,cli",
+    "summary": "Histórico mágico para o terminal: busca difusa instantânea com Ctrl+R, métricas de comandos e sincronização segura opcional.",
+    "trust_score": 96,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório verificado e oficial",
+      "🟢 Código aberto em Rust",
+      "🟢 Suporte completo a PowerShell e CMD no Windows"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "eza-community/eza",
+    "description": "A modern, maintained replacement for ls",
+    "url": "https://github.com/eza-community/eza",
+    "stars": 19800,
+    "license": "EUPL-1.2",
+    "topics": "cli,command-line,eza,ls,rust,terminal",
+    "language": "Rust",
+    "created_at": "2023-08-25T11:00:00Z",
+    "pushed_at": "2026-10-24T17:15:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v0.20.18",
+    "released_at": "2026-10-10T12:00:00Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "eza_x86_64-pc-windows-msvc.zip",
+        "size": 4210500,
+        "browser_download_url": "https://github.com/eza-community/eza/releases/download/v0.20.18/eza_x86_64-pc-windows-msvc.zip",
+        "digest": ""
+      }
+    ],
+    "kind": "cli",
+    "category": "Terminal • Rust",
+    "tags": "cli,terminal,ls,files,rust",
+    "summary": "Substituto moderno, veloz e com cores para o comando 'ls', com suporte nativo a metadados git, permissões e ícones.",
+    "trust_score": 98,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório verificado da comunidade oficial",
+      "🟢 Código aberto em Rust",
+      "🟢 Binários estáveis para Windows"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "bootandy/dust",
+    "description": "A more intuitive version of du in rust",
+    "url": "https://github.com/bootandy/dust",
+    "stars": 10500,
+    "license": "Apache-2.0",
+    "topics": "cli,disk-usage,du,filesystem,rust,terminal",
+    "language": "Rust",
+    "created_at": "2019-02-14T19:00:00Z",
+    "pushed_at": "2026-10-20T10:00:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v1.1.2",
+    "released_at": "2026-09-28T10:00:00Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "dust-v1.1.2-x86_64-pc-windows-msvc.zip",
+        "size": 3950120,
+        "browser_download_url": "https://github.com/bootandy/dust/releases/download/v1.1.2/dust-v1.1.2-x86_64-pc-windows-msvc.zip",
+        "digest": ""
+      }
+    ],
+    "kind": "cli",
+    "category": "Terminal • Rust",
+    "tags": "cli,disk,du,storage,rust",
+    "summary": "Visualizador de uso de espaço em disco gráfico e intuitivo no terminal, substituto muito mais visual para o clássico 'du'.",
+    "trust_score": 95,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório verificado e oficial",
+      "🟢 Código aberto em Rust",
+      "🟢 Alta performance com varredura paralela"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "dbrgn/tealdeer",
+    "description": "A very fast implementation of tldr in Rust",
+    "url": "https://github.com/dbrgn/tealdeer",
+    "stars": 4700,
+    "license": "MIT",
+    "topics": "cli,command-line,docs,documentation,rust,tldr",
+    "language": "Rust",
+    "created_at": "2017-05-18T18:40:00Z",
+    "pushed_at": "2026-10-22T08:00:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v1.7.1",
+    "released_at": "2026-08-14T12:00:00Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "tealdeer-windows-x86_64-msvc.exe",
+        "size": 3120400,
+        "browser_download_url": "https://github.com/dbrgn/tealdeer/releases/download/v1.7.1/tealdeer-windows-x86_64-msvc.exe",
+        "digest": ""
+      }
+    ],
+    "kind": "cli",
+    "category": "Terminal • Rust",
+    "tags": "cli,terminal,tldr,man,docs,rust",
+    "summary": "Implementação ultrarrápida do cliente tldr em Rust: páginas de ajuda resumidas e exemplos práticos dos comandos do dia a dia.",
+    "trust_score": 94,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório verificado e oficial",
+      "🟢 Código aberto em Rust",
+      "🟢 Cache offline com atualização automática"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "denisidoro/navi",
+    "description": "An interactive cheatsheet tool for the command-line",
+    "url": "https://github.com/denisidoro/navi",
+    "stars": 15200,
+    "license": "Apache-2.0",
+    "topics": "cheat,cheatsheet,cli,command-line,productivity,rust",
+    "language": "Rust",
+    "created_at": "2019-09-08T00:30:00Z",
+    "pushed_at": "2026-10-19T21:00:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v2.24.0",
+    "released_at": "2026-07-20T14:00:00Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "navi-v2.24.0-x86_64-pc-windows-msvc.zip",
+        "size": 6840100,
+        "browser_download_url": "https://github.com/denisidoro/navi/releases/download/v2.24.0/navi-v2.24.0-x86_64-pc-windows-msvc.zip",
+        "digest": ""
+      }
+    ],
+    "kind": "cli",
+    "category": "Terminal • Rust",
+    "tags": "cli,cheatsheet,terminal,rust,productivity",
+    "summary": "Cheatsheet interativo para comandos de terminal com busca difusa instantânea e preenchimento guiado de argumentos.",
+    "trust_score": 95,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório verificado e oficial",
+      "🟢 Código aberto em Rust",
+      "🟢 Integração fácil com PowerShell e Bash"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "helix-editor/helix",
+    "description": "A post-modern modal text editor",
+    "url": "https://github.com/helix-editor/helix",
+    "stars": 39800,
+    "license": "MPL-2.0",
+    "topics": "editor,helix,lsp,modal-editor,rust,text-editor,tree-sitter",
+    "language": "Rust",
+    "created_at": "2020-06-18T16:00:00Z",
+    "pushed_at": "2026-10-25T11:00:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "25.01",
+    "released_at": "2026-01-20T10:00:00Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "helix-25.01-x86_64-windows.zip",
+        "size": 18920400,
+        "browser_download_url": "https://github.com/helix-editor/helix/releases/download/25.01/helix-25.01-x86_64-windows.zip",
+        "digest": ""
+      }
+    ],
+    "kind": "tool",
+    "category": "Ferramentas • Editor de Código",
+    "tags": "editor,helix,rust,modal,lsp,ide",
+    "summary": "Editor modal de texto de altíssimo desempenho com seleções múltiplas, suporte nativo a LSP e syntax tree via Tree-sitter sem plugins pesados.",
+    "trust_score": 97,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório verificado e oficial",
+      "🟢 100% Rust com Tree-sitter embutido",
+      "🟢 Binários portáteis completos para Windows"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "astral-sh/uv",
+    "description": "An extremely fast Python package and project manager, written in Rust",
+    "url": "https://github.com/astral-sh/uv",
+    "stars": 56500,
+    "license": "Apache-2.0",
+    "topics": "cli,package-manager,pip,python,rust,virtualenv",
+    "language": "Rust",
+    "created_at": "2023-11-20T18:00:00Z",
+    "pushed_at": "2026-10-25T14:30:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "0.6.5",
+    "released_at": "2026-10-22T19:00:00Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "uv-x86_64-pc-windows-msvc.zip",
+        "size": 24500120,
+        "browser_download_url": "https://github.com/astral-sh/uv/releases/download/0.6.5/uv-x86_64-pc-windows-msvc.zip",
+        "digest": ""
+      }
+    ],
+    "kind": "cli",
+    "category": "Terminal • Rust",
+    "tags": "python,pip,package-manager,rust,cli",
+    "summary": "Gerenciador de pacotes, dependências e interpretadores Python extremamente rápido (10 a 100x mais veloz que pip), escrito em Rust.",
+    "trust_score": 99,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Desenvolvido pela equipe Astral",
+      "🟢 Código aberto em Rust com alto rigor de segurança",
+      "🟢 Executável independente sem dependências externas"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "astral-sh/ruff",
+    "description": "An extremely fast Python linter and code formatter, written in Rust",
+    "url": "https://github.com/astral-sh/ruff",
+    "stars": 39400,
+    "license": "MIT",
+    "topics": "formatter,linter,python,rust,static-analysis",
+    "language": "Rust",
+    "created_at": "2022-08-28T15:00:00Z",
+    "pushed_at": "2026-10-25T13:00:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "0.9.7",
+    "released_at": "2026-10-20T15:00:00Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "ruff-x86_64-pc-windows-msvc.zip",
+        "size": 17800240,
+        "browser_download_url": "https://github.com/astral-sh/ruff/releases/download/0.9.7/ruff-x86_64-pc-windows-msvc.zip",
+        "digest": ""
+      }
+    ],
+    "kind": "cli",
+    "category": "Terminal • Rust",
+    "tags": "python,linter,formatter,rust,cli",
+    "summary": "Linter e formatador de código Python de extrema velocidade feito em Rust, substituindo flake8, black, isort e pydocstyle.",
+    "trust_score": 98,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Desenvolvido pela Astral",
+      "🟢 Mais de 800 regras de linting em milissegundos",
+      "🟢 Binário pré-compilado para Windows"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "typst/typst",
+    "description": "A new markup-based typesetting system that is powerful and easy to learn",
+    "url": "https://github.com/typst/typst",
+    "stars": 41000,
+    "license": "Apache-2.0",
+    "topics": "compiler,latex,markup,pdf,rust,typesetting",
+    "language": "Rust",
+    "created_at": "2022-10-04T12:00:00Z",
+    "pushed_at": "2026-10-25T09:30:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v0.13.0",
+    "released_at": "2026-09-15T16:00:00Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "typst-x86_64-pc-windows-msvc.zip",
+        "size": 14200500,
+        "browser_download_url": "https://github.com/typst/typst/releases/download/v0.13.0/typst-x86_64-pc-windows-msvc.zip",
+        "digest": ""
+      }
+    ],
+    "kind": "tool",
+    "category": "Produtividade • Documentos",
+    "tags": "pdf,typesetting,latex,docs,rust,tool",
+    "summary": "Novo sistema de tipografia e diagramação de documentos moderno e veloz, alternativa muito mais amigável e rápida ao LaTeX.",
+    "trust_score": 97,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório oficial do Typst",
+      "🟢 Compilação instantânea de PDFs em tempo real",
+      "🟢 100% Rust"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "casey/just",
+    "description": "A handy way to save and run project-specific commands",
+    "url": "https://github.com/casey/just",
+    "stars": 23400,
+    "license": "CC0-1.0",
+    "topics": "cli,command-line,command-runner,make,makefile,rust",
+    "language": "Rust",
+    "created_at": "2016-08-16T18:00:00Z",
+    "pushed_at": "2026-10-24T18:00:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "1.39.0",
+    "released_at": "2026-10-05T12:00:00Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "just-1.39.0-x86_64-pc-windows-msvc.zip",
+        "size": 4120300,
+        "browser_download_url": "https://github.com/casey/just/releases/download/1.39.0/just-1.39.0-x86_64-pc-windows-msvc.zip",
+        "digest": ""
+      }
+    ],
+    "kind": "cli",
+    "category": "Terminal • Rust",
+    "tags": "cli,make,task-runner,rust,tools",
+    "summary": "Executor de tarefas e comandos de projeto moderno e ergonômico, feito para ser uma alternativa simples e elegante ao make.",
+    "trust_score": 96,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório verificado e oficial",
+      "🟢 Código aberto sob licença CC0 de domínio público",
+      "🟢 Suporte completo a PowerShell no Windows"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "ClementTsang/bottom",
+    "description": "Yet another cross-platform graphical process/system monitor",
+    "url": "https://github.com/ClementTsang/bottom",
+    "stars": 11400,
+    "license": "MIT",
+    "topics": "cli,cross-platform,monitor,process-viewer,rust,system-monitor,tui",
+    "language": "Rust",
+    "created_at": "2019-10-08T03:00:00Z",
+    "pushed_at": "2026-10-20T19:00:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "0.10.2",
+    "released_at": "2026-08-10T14:00:00Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "bottom_x86_64-pc-windows-msvc.zip",
+        "size": 5890200,
+        "browser_download_url": "https://github.com/ClementTsang/bottom/releases/download/0.10.2/bottom_x86_64-pc-windows-msvc.zip",
+        "digest": ""
+      }
+    ],
+    "kind": "cli",
+    "category": "Terminal • Rust",
+    "tags": "cli,system-monitor,process,cpu,ram,rust,tui",
+    "summary": "Monitor gráfico de processos, uso de CPU por núcleo, memória, temperatura e tráfego de rede no terminal (comando btm).",
+    "trust_score": 95,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório verificado e oficial",
+      "🟢 Interface rica em TUI acelerada",
+      "🟢 Binário portátil em Rust para Windows"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "mfontanini/presenterm",
+    "description": "A terminal based presentation tool",
+    "url": "https://github.com/mfontanini/presenterm",
+    "stars": 7100,
+    "license": "Apache-2.0",
+    "topics": "cli,markdown,presentation,rust,slides,terminal",
+    "language": "Rust",
+    "created_at": "2023-01-20T12:00:00Z",
+    "pushed_at": "2026-10-24T15:00:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v0.9.0",
+    "released_at": "2026-09-30T10:00:00Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "presenterm-x86_64-pc-windows-msvc.zip",
+        "size": 8940120,
+        "browser_download_url": "https://github.com/mfontanini/presenterm/releases/download/v0.9.0/presenterm-x86_64-pc-windows-msvc.zip",
+        "digest": ""
+      }
+    ],
+    "kind": "cli",
+    "category": "Terminal • Rust",
+    "tags": "cli,presentation,slides,markdown,rust",
+    "summary": "Apresentador de slides baseado em terminal que renderiza apresentações completas diretamente de arquivos Markdown com realce e imagens.",
+    "trust_score": 93,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório verificado e oficial",
+      "🟢 Suporte a syntax highlighting e LaTeX",
+      "🟢 Feito em Rust"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "Wilfred/difftastic",
+    "description": "A structural diff that understands syntax",
+    "url": "https://github.com/Wilfred/difftastic",
+    "stars": 20800,
+    "license": "MIT",
+    "topics": "ast,cli,diff,git,programming-languages,rust,syntax",
+    "language": "Rust",
+    "created_at": "2021-03-24T18:00:00Z",
+    "pushed_at": "2026-10-22T20:00:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "0.62.0",
+    "released_at": "2026-10-01T12:00:00Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "difft-x86_64-pc-windows-msvc.zip",
+        "size": 12480300,
+        "browser_download_url": "https://github.com/Wilfred/difftastic/releases/download/0.62.0/difft-x86_64-pc-windows-msvc.zip",
+        "digest": ""
+      }
+    ],
+    "kind": "cli",
+    "category": "Terminal • Rust",
+    "tags": "cli,git,diff,ast,syntax,rust",
+    "summary": "Ferramenta de diff estrutural e sintático que compara código pela árvore semântica da linguagem em vez de simples linhas de texto.",
+    "trust_score": 96,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório verificado e oficial",
+      "🟢 Integração transparente com Git",
+      "🟢 Suporte a mais de 30 linguagens em Rust"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "Canop/broot",
+    "description": "A new way to see and navigate directory trees",
+    "url": "https://github.com/Canop/broot",
+    "stars": 11200,
+    "license": "MIT",
+    "topics": "cli,command-line,files,navigation,rust,search,terminal,tree",
+    "language": "Rust",
+    "created_at": "2018-12-09T18:00:00Z",
+    "pushed_at": "2026-10-23T11:00:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v1.44.2",
+    "released_at": "2026-10-12T14:00:00Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "broot_x86_64-pc-windows-msvc.zip",
+        "size": 5120400,
+        "browser_download_url": "https://github.com/Canop/broot/releases/download/v1.44.2/broot_x86_64-pc-windows-msvc.zip",
+        "digest": ""
+      }
+    ],
+    "kind": "cli",
+    "category": "Terminal • Rust",
+    "tags": "cli,files,tree,navigation,rust",
+    "summary": "Navegação e visualização hierárquica inteligente de diretórios com busca rápida, atalhos de teclado e comandos customizáveis.",
+    "trust_score": 94,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório verificado e oficial",
+      "🟢 Código aberto em Rust",
+      "🟢 Extremamente leve e veloz"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "sxyazi/yazi",
+    "description": "Blazing fast terminal file manager written in Rust, based on async I/O",
+    "url": "https://github.com/sxyazi/yazi",
+    "stars": 26800,
+    "license": "MIT",
+    "topics": "async,file-manager,rust,terminal,tui,yazi",
+    "language": "Rust",
+    "created_at": "2023-07-28T08:00:00Z",
+    "pushed_at": "2026-10-25T14:00:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v25.3.2",
+    "released_at": "2026-10-21T16:00:00Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "yazi-x86_64-pc-windows-msvc.zip",
+        "size": 16780120,
+        "browser_download_url": "https://github.com/sxyazi/yazi/releases/download/v25.3.2/yazi-x86_64-pc-windows-msvc.zip",
+        "digest": ""
+      }
+    ],
+    "kind": "tool",
+    "category": "Terminal • Rust",
+    "tags": "file-manager,terminal,tui,async,rust,tool",
+    "summary": "Gerenciador de arquivos assíncrono para terminal com visualização de imagens, renderização GPU, abas e sistema de plugins Lua.",
+    "trust_score": 97,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório oficial em rápida ascensão",
+      "🟢 100% Rust assíncrono com Tokio",
+      "🟢 Visualizador integrado de mídias e PDFs"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "nushell/nushell",
+    "description": "A new type of shell",
+    "url": "https://github.com/nushell/nushell",
+    "stars": 35800,
+    "license": "MIT",
+    "topics": "cli,command-line,nushell,programming-language,rust,shell",
+    "language": "Rust",
+    "created_at": "2019-05-18T20:00:00Z",
+    "pushed_at": "2026-10-25T12:00:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "0.101.0",
+    "released_at": "2026-10-14T17:00:00Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "nu-0.101.0-x86_64-pc-windows-msvc.zip",
+        "size": 29840100,
+        "browser_download_url": "https://github.com/nushell/nushell/releases/download/0.101.0/nu-0.101.0-x86_64-pc-windows-msvc.zip",
+        "digest": ""
+      }
+    ],
+    "kind": "tool",
+    "category": "Terminal • Rust",
+    "tags": "shell,terminal,nushell,data,rust,tool",
+    "summary": "Shell moderno com pipelines tipados e estruturados que manipula comandos como tabelas e dados reais em vez de texto bruto.",
+    "trust_score": 98,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório oficial da Nushell Foundation",
+      "🟢 100% Rust com engine de dados integrada",
+      "🟢 Binários estáveis e portáteis para Windows"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "BurntSushi/xsv",
+    "description": "A fast CSV command line toolkit written in Rust",
+    "url": "https://github.com/BurntSushi/xsv",
+    "stars": 10900,
+    "license": "Unlicense",
+    "topics": "cli,csv,data,indexing,rust,tabular",
+    "language": "Rust",
+    "created_at": "2014-11-20T22:00:00Z",
+    "pushed_at": "2026-09-10T14:00:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "0.13.0",
+    "released_at": "2026-06-01T10:00:00Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "xsv-0.13.0-x86_64-pc-windows-msvc.zip",
+        "size": 3840200,
+        "browser_download_url": "https://github.com/BurntSushi/xsv/releases/download/0.13.0/xsv-0.13.0-x86_64-pc-windows-msvc.zip",
+        "digest": ""
+      }
+    ],
+    "kind": "cli",
+    "category": "Terminal • Rust",
+    "tags": "cli,csv,data,filter,rust",
+    "summary": "Utilitário ultrarrápido de linha de comando criado pelo autor do ripgrep para indexar, filtrar, particionar e manipular grandes arquivos CSV.",
+    "trust_score": 96,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Criado por Andrew Gallant (autor de ripgrep)",
+      "🟢 Licença de domínio público (Unlicense)",
+      "🟢 Desempenho extremo com indexação instantânea"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "solidiquis/erdtree",
+    "description": "Multi-threaded file-tree visualizer and disk usage analyzer in Rust",
+    "url": "https://github.com/solidiquis/erdtree",
+    "stars": 3500,
+    "license": "MIT",
+    "topics": "cli,disk-usage,du,files,rust,terminal,tree",
+    "language": "Rust",
+    "created_at": "2022-12-18T19:00:00Z",
+    "pushed_at": "2026-10-18T10:00:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v3.1.2",
+    "released_at": "2026-08-20T12:00:00Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "erdtree-x86_64-pc-windows-msvc.zip",
+        "size": 3950120,
+        "browser_download_url": "https://github.com/solidiquis/erdtree/releases/download/v3.1.2/erdtree-x86_64-pc-windows-msvc.zip",
+        "digest": ""
+      }
+    ],
+    "kind": "cli",
+    "category": "Terminal • Rust",
+    "tags": "cli,disk-usage,tree,files,rust",
+    "summary": "Visualizador de árvore de diretórios, uso de disco e análise de tipos de arquivo moderno, colorido e acelerado por threads.",
+    "trust_score": 92,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório oficial em Rust",
+      "🟢 Suporte completo a ícones e cores no Windows",
+      "🟢 Alta velocidade de indexação"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "sharkdp/vivid",
+    "description": "A themeable LS_COLORS generator with a rich color palette",
+    "url": "https://github.com/sharkdp/vivid",
+    "stars": 5300,
+    "license": "Apache-2.0",
+    "topics": "cli,colors,ls,rust,terminal,themes",
+    "language": "Rust",
+    "created_at": "2019-03-01T21:00:00Z",
+    "pushed_at": "2026-09-15T10:00:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v0.9.0",
+    "released_at": "2026-06-15T12:00:00Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "vivid-v0.9.0-x86_64-pc-windows-msvc.zip",
+        "size": 2850400,
+        "browser_download_url": "https://github.com/sharkdp/vivid/releases/download/v0.9.0/vivid-v0.9.0-x86_64-pc-windows-msvc.zip",
+        "digest": ""
+      }
+    ],
+    "kind": "cli",
+    "category": "Terminal • Rust",
+    "tags": "cli,terminal,themes,colors,rust",
+    "summary": "Gerador de temas visuais e paletas de cores LS_COLORS para realçar arquivos e pastas no terminal com temas modernos (Dracula, Nord, Molokai).",
+    "trust_score": 94,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Criado por David Peter (autor de bat, fd e hyperfine)",
+      "🟢 Código aberto em Rust",
+      "🟢 Compatível com eza, ls e PowerShell"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "dolphin-emu/dolphin",
+    "description": "Dolphin is a GameCube / Wii emulator",
+    "url": "https://github.com/dolphin-emu/dolphin",
+    "stars": 13800,
+    "license": "GPL-2.0",
+    "topics": "c-plus-plus,dolphin,emulator,gamecube,nintendo,wii",
+    "language": "C++",
+    "created_at": "2013-05-18T10:00:00Z",
+    "pushed_at": "2026-10-25T15:00:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "2412",
+    "released_at": "2026-10-01T12:00:00Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "dolphin-x64-windows.zip",
+        "size": 38400120,
+        "browser_download_url": "https://github.com/dolphin-emu/dolphin/releases/download/2412/dolphin-x64-windows.zip",
+        "digest": ""
+      }
+    ],
+    "kind": "emulator",
+    "category": "Emulador • GameCube & Wii",
+    "tags": "emulator,gamecube,wii,nintendo,retro,gaming",
+    "summary": "O emulador definitivo para jogos de Nintendo GameCube e Nintendo Wii com suporte a resolução 4K, 60+ FPS, texturas customizadas e controles modernos.",
+    "trust_score": 99,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Projeto consagrado com mais de 20 anos de desenvolvimento",
+      "🟢 100% código aberto e auditável",
+      "🟢 Binários oficiais assinados para Windows x64"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "RPCS3/rpcs3",
+    "description": "PlayStation 3 emulator and debugger",
+    "url": "https://github.com/RPCS3/rpcs3",
+    "stars": 17800,
+    "license": "GPL-2.0",
+    "topics": "c-plus-plus,debugger,emulator,playstation-3,ps3,vulkan",
+    "language": "C++",
+    "created_at": "2013-08-25T20:00:00Z",
+    "pushed_at": "2026-10-25T14:00:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v0.0.35",
+    "released_at": "2026-10-15T18:00:00Z",
+    "platforms": "linux,windows",
+    "assets": [
+      {
+        "name": "rpcs3-v0.0.35-win64.zip",
+        "size": 42100500,
+        "browser_download_url": "https://github.com/RPCS3/rpcs3/releases/download/v0.0.35/rpcs3-v0.0.35-win64.zip",
+        "digest": ""
+      }
+    ],
+    "kind": "emulator",
+    "category": "Emulador • PlayStation 3",
+    "tags": "emulator,ps3,playstation,vulkan,gaming",
+    "summary": "Emulador e depurador de Sony PlayStation 3 de código aberto com altíssima compatibilidade, renderização Vulkan e suporte a altas resoluções.",
+    "trust_score": 98,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório oficial do RPCS3",
+      "🟢 Compatibilidade verificada em milhares de títulos",
+      "🟢 Atualizações contínuas de performance"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "duckstation/duckstation",
+    "description": "Sony PlayStation (PSX) emulator focusing on playability, speed, and maintainability",
+    "url": "https://github.com/duckstation/duckstation",
+    "stars": 8100,
+    "license": "GPL-3.0",
+    "topics": "c-plus-plus,emulator,playstation,ps1,psx,retro,vulkan",
+    "language": "C++",
+    "created_at": "2019-12-08T02:00:00Z",
+    "pushed_at": "2026-10-24T18:00:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "preview",
+    "released_at": "2026-10-18T10:00:00Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "duckstation-windows-x64.zip",
+        "size": 28400120,
+        "browser_download_url": "https://github.com/duckstation/duckstation/releases/download/preview/duckstation-windows-x64.zip",
+        "digest": ""
+      }
+    ],
+    "kind": "emulator",
+    "category": "Emulador • PlayStation 1",
+    "tags": "emulator,ps1,psx,playstation,retro,gaming",
+    "summary": "Emulador de Sony PlayStation 1 com foco em precisão, velocidade, upscaling para 4K, correção de textura PGXP e interface moderna.",
+    "trust_score": 97,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório oficial do DuckStation",
+      "🟢 O mais avançado emulador de PS1 disponível",
+      "🟢 Interface rica em Qt com conquistas RetroAchievements"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "flycast-project/flycast",
+    "description": "Flycast is a multi-platform Sega Dreamcast, Naomi, Naomi 2 and Atomiswave emulator",
+    "url": "https://github.com/flycast-project/flycast",
+    "stars": 2400,
+    "license": "GPL-2.0",
+    "topics": "arcade,atomiswave,dreamcast,emulator,naomi,sega",
+    "language": "C++",
+    "created_at": "2018-05-18T10:00:00Z",
+    "pushed_at": "2026-10-23T14:00:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v2.4",
+    "released_at": "2026-09-12T16:00:00Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "flycast-win64.zip",
+        "size": 19500200,
+        "browser_download_url": "https://github.com/flycast-project/flycast/releases/download/v2.4/flycast-win64.zip",
+        "digest": ""
+      }
+    ],
+    "kind": "emulator",
+    "category": "Emulador • Dreamcast & Arcade",
+    "tags": "emulator,dreamcast,sega,naomi,arcade,gaming",
+    "summary": "Emulador multiplataforma de Sega Dreamcast, Naomi, Naomi 2 e Atomiswave com suporte a widescreen, texturas HD e netplay online.",
+    "trust_score": 95,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório oficial do Flycast",
+      "🟢 Renderizador Vulkan de alto desempenho",
+      "🟢 Executáveis estáveis para Windows"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "libretro/RetroArch",
+    "description": "Cross-platform, sophisticated frontend for the libretro API",
+    "url": "https://github.com/libretro/RetroArch",
+    "stars": 12800,
+    "license": "GPL-3.0",
+    "topics": "c,emulator,frontend,libretro,multi-emulator,retroarch",
+    "language": "C",
+    "created_at": "2010-10-02T12:00:00Z",
+    "pushed_at": "2026-10-25T11:00:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v1.20.0",
+    "released_at": "2026-10-02T14:00:00Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "RetroArch-MSVC-x86_64-setup.exe",
+        "size": 185400200,
+        "browser_download_url": "https://github.com/libretro/RetroArch/releases/download/v1.20.0/RetroArch-MSVC-x86_64-setup.exe",
+        "digest": ""
+      }
+    ],
+    "kind": "emulator",
+    "category": "Emulador • Frontend Multi-Sistema",
+    "tags": "emulator,frontend,libretro,retro,arcade,gaming",
+    "summary": "Frontend completo e poderoso para rodar núcleos de emulação de dezenas de consoles clássicos, com shaders avançados, rebobinamento e conquistas.",
+    "trust_score": 98,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Projeto oficial Libretro / RetroArch",
+      "🟢 Suporte universal a controles e Modo TV",
+      "🟢 Instalador oficial do Windows"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "ares-emulator/ares",
+    "description": "ares is a multi-system emulator with a focus on accuracy",
+    "url": "https://github.com/ares-emulator/ares",
+    "stars": 3300,
+    "license": "ISC",
+    "topics": "c-plus-plus,cycle-accurate,emulator,multi-system,nintendo,sega",
+    "language": "C++",
+    "created_at": "2021-07-01T15:00:00Z",
+    "pushed_at": "2026-10-24T10:00:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v144",
+    "released_at": "2026-09-25T18:00:00Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "ares-windows-x86_64.zip",
+        "size": 16400200,
+        "browser_download_url": "https://github.com/ares-emulator/ares/releases/download/v144/ares-windows-x86_64.zip",
+        "digest": ""
+      }
+    ],
+    "kind": "emulator",
+    "category": "Emulador • Alta Precisão Multi-Sistema",
+    "tags": "emulator,accurate,nintendo-64,snes,genesis,retro",
+    "summary": "Emulador multi-sistema de precisão extrema que emula perfeitamente Nintendo 64, SNES, Mega Drive, Game Boy, WonderSwan e dezenas de outros.",
+    "trust_score": 96,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Sucessor espiritual do bsnes e higan",
+      "🟢 Foco em fidelidade exata ao hardware original",
+      "🟢 Binários limpos sem instalador"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "OpenTTD/OpenTTD",
+    "description": "OpenTTD is an open source simulation game based upon Transport Tycoon Deluxe",
+    "url": "https://github.com/OpenTTD/OpenTTD",
+    "stars": 6900,
+    "license": "GPL-2.0",
+    "topics": "c-plus-plus,game,simulation,strategy,transport,tycoon",
+    "language": "C++",
+    "created_at": "2018-05-02T19:00:00Z",
+    "pushed_at": "2026-10-25T13:00:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "14.1",
+    "released_at": "2026-08-15T12:00:00Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "openttd-windows-win64.zip",
+        "size": 22100400,
+        "browser_download_url": "https://github.com/OpenTTD/OpenTTD/releases/download/14.1/openttd-windows-win64.zip",
+        "digest": ""
+      }
+    ],
+    "kind": "game",
+    "category": "Simulação • Transporte & Ferrovias",
+    "tags": "game,tycoon,simulation,transport,trains,strategy",
+    "summary": "Simulador de transporte de código aberto baseado no clássico Transport Tycoon Deluxe com multiplayer online, mapas gigantes e suporte a mods.",
+    "trust_score": 99,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Mais de 20 anos de desenvolvimento contínuo",
+      "🟢 Código aberto em C++ auditável",
+      "🟢 Suporte nativo a resoluções ultrawide e Windows moderno"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "OpenGOAL/jak-project",
+    "description": "Reviving the Jak & Daxter series on PC with native port and engine decompilation",
+    "url": "https://github.com/OpenGOAL/jak-project",
+    "stars": 4300,
+    "license": "ISC",
+    "topics": "c-plus-plus,decompilation,goal,jak-and-daxter,native-port,pc-port,playstation-2",
+    "language": "C++",
+    "created_at": "2020-07-10T14:00:00Z",
+    "pushed_at": "2026-10-24T22:00:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v0.2.14",
+    "released_at": "2026-10-05T18:00:00Z",
+    "platforms": "linux,windows",
+    "assets": [
+      {
+        "name": "opengoal-windows-v0.2.14.zip",
+        "size": 24800100,
+        "browser_download_url": "https://github.com/OpenGOAL/jak-project/releases/download/v0.2.14/opengoal-windows-v0.2.14.zip",
+        "digest": ""
+      }
+    ],
+    "kind": "re-game",
+    "category": "Eng. Reversa • Port PC Jak & Daxter",
+    "tags": "re-game,jak-and-daxter,ps2,port,pc,reverse-engineering",
+    "summary": "Port nativo de Jak and Daxter para PC criado por engenharia reversa e recompilação do código GOAL com suporte a 60+ FPS, 4K e teclado/mouse.",
+    "trust_score": 97,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Projeto monumental de descompilação de código GOAL",
+      "🟢 Port 100% nativo em C++ sem emulação",
+      "🟢 Binários pré-compilados prontos para jogar"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "sm64pc/sm64ex",
+    "description": "Super Mario 64 PC port with additional features and enhancements",
+    "url": "https://github.com/sm64pc/sm64ex",
+    "stars": 3100,
+    "license": "MIT",
+    "topics": "c,decompilation,mario,mario-64,nintendo-64,pc-port,sm64",
+    "language": "C",
+    "created_at": "2020-05-10T18:00:00Z",
+    "pushed_at": "2026-10-20T16:00:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "nightly",
+    "released_at": "2026-09-20T10:00:00Z",
+    "platforms": "linux,windows",
+    "assets": [
+      {
+        "name": "sm64ex-win64.zip",
+        "size": 14200400,
+        "browser_download_url": "https://github.com/sm64pc/sm64ex/releases/download/nightly/sm64ex-win64.zip",
+        "digest": ""
+      }
+    ],
+    "kind": "re-game",
+    "category": "Eng. Reversa • Port PC Super Mario 64",
+    "tags": "re-game,sm64,mario,n64,pc-port,reverse-engineering",
+    "summary": "Port nativo avançado para PC de Super Mario 64 com suporte a 60 FPS, tela widescreen, câmera analógica moderna e texturas em alta definição.",
+    "trust_score": 96,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Baseado na descompilação oficial completa de SM64",
+      "🟢 Renderizador nativo DirectX 11 / OpenGL",
+      "🟢 Suporte completo a controles Xbox e PlayStation"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "The-Ur-Quan-Masters/uqm",
+    "description": "The Ur-Quan Masters: HD modern port of the classic space adventure Star Control II",
+    "url": "https://github.com/The-Ur-Quan-Masters/uqm",
+    "stars": 1200,
+    "license": "GPL-2.0",
+    "topics": "adventure,c,classic,open-source,rpg,space,star-control",
+    "language": "C",
+    "created_at": "2013-02-10T12:00:00Z",
+    "pushed_at": "2026-10-15T14:00:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v0.8.0",
+    "released_at": "2026-06-10T18:00:00Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "uqm-0.8.0-installer.exe",
+        "size": 28400120,
+        "browser_download_url": "https://github.com/The-Ur-Quan-Masters/uqm/releases/download/v0.8.0/uqm-0.8.0-installer.exe",
+        "digest": ""
+      }
+    ],
+    "kind": "game",
+    "category": "Espacial • Clássico Remasterizado",
+    "tags": "game,space,adventure,sci-fi,retro,classic",
+    "summary": "Port oficial de código aberto da lendária ópera espacial Star Control II com áudio orquestrado, gráficos em alta resolução e diálogos dublados.",
+    "trust_score": 98,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Autorizado pelos criadores originais do jogo",
+      "🟢 Código aberto em C",
+      "🟢 Instalador oficial e seguro para Windows"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "Hedgewars/hedgewars",
+    "description": "Hedgewars is a turn-based strategy, artillery, action and comedy game",
+    "url": "https://github.com/Hedgewars/hedgewars",
+    "stars": 1500,
+    "license": "GPL-2.0",
+    "topics": "artillery,comedy,multiplayer,pascal,strategy,turn-based",
+    "language": "Pascal",
+    "created_at": "2013-05-10T16:00:00Z",
+    "pushed_at": "2026-10-18T12:00:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "1.0.2",
+    "released_at": "2026-07-15T10:00:00Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "Hedgewars-1.0.2.exe",
+        "size": 178500200,
+        "browser_download_url": "https://github.com/Hedgewars/hedgewars/releases/download/1.0.2/Hedgewars-1.0.2.exe",
+        "digest": ""
+      }
+    ],
+    "kind": "game",
+    "category": "Estratégia & Artilharia • Turnos",
+    "tags": "game,strategy,turn-based,artillery,worms,multiplayer",
+    "summary": "Jogo clássico de estratégia e artilharia cômica por turnos com dezenas de armas malucas, mapas destrutíveis e multiplayer local e online.",
+    "trust_score": 95,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Mais de 15 anos de história no open source",
+      "🟢 Modos singleplayer, missões e multiplayer online",
+      "🟢 Instalador oficial para Windows"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "fogleman/Craft",
+    "description": "A simple Minecraft clone written in C using modern OpenGL (shaders)",
+    "url": "https://github.com/fogleman/Craft",
+    "stars": 11800,
+    "license": "MIT",
+    "topics": "c,game,minecraft,opengl,shaders,voxel",
+    "language": "C",
+    "created_at": "2013-06-25T03:00:00Z",
+    "pushed_at": "2026-08-10T18:00:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v1.0",
+    "released_at": "2026-05-10T12:00:00Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "craft-windows.zip",
+        "size": 4890120,
+        "browser_download_url": "https://github.com/fogleman/Craft/releases/download/v1.0/craft-windows.zip",
+        "digest": ""
+      }
+    ],
+    "kind": "game",
+    "category": "Sandbox & Voxel • OpenGL",
+    "tags": "game,minecraft,voxel,c,opengl,sandbox",
+    "summary": "Clone minimalista, leve e veloz de Minecraft em C puro com OpenGL e shaders, demonstrando geração procedural de terrenos e iluminação.",
+    "trust_score": 93,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Projeto famoso e amplamente estudado",
+      "🟢 Código aberto em C de altíssimo desempenho",
+      "🟢 Roda liso até em PCs sem placa de vídeo dedicada"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "rizinorg/rizin",
+    "description": "Free and open-source reverse engineering framework",
+    "url": "https://github.com/rizinorg/rizin",
+    "stars": 3900,
+    "license": "LGPL-3.0",
+    "topics": "analysis,binary,c,debugger,disassembler,reverse-engineering,rizin",
+    "language": "C",
+    "created_at": "2020-12-08T10:00:00Z",
+    "pushed_at": "2026-10-24T18:00:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v0.7.4",
+    "released_at": "2026-10-02T16:00:00Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "rizin-v0.7.4-x86_64.zip",
+        "size": 32100400,
+        "browser_download_url": "https://github.com/rizinorg/rizin/releases/download/v0.7.4/rizin-v0.7.4-x86_64.zip",
+        "digest": ""
+      }
+    ],
+    "kind": "tool",
+    "category": "Eng. Reversa • Framework & CLI",
+    "tags": "reverse-engineering,disassembler,debugger,binary,security",
+    "summary": "Framework livre e modular de engenharia reversa, análise estática, desmontagem de binários (x86, ARM, MIPS) e depuração de código.",
+    "trust_score": 96,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Fork refinado com foco em consistência e estabilidade",
+      "🟢 Suporte à descompilação via Ghidra Decompiler",
+      "🟢 Binários oficiais para Windows x64"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "Frida/frida",
+    "description": "Clone this repo to build Frida",
+    "url": "https://github.com/frida/frida",
+    "stars": 18200,
+    "license": "wxWindows",
+    "topics": "c,debugger,dynamic-instrumentation,frida,hooking,injection,reverse-engineering",
+    "language": "C",
+    "created_at": "2013-05-10T12:00:00Z",
+    "pushed_at": "2026-10-25T13:00:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "16.5.9",
+    "released_at": "2026-10-18T14:00:00Z",
+    "platforms": "android,linux,macos,windows",
+    "assets": [
+      {
+        "name": "frida-server-16.5.9-windows-x86_64.exe.xz",
+        "size": 18500200,
+        "browser_download_url": "https://github.com/frida/frida/releases/download/16.5.9/frida-server-16.5.9-windows-x86_64.exe.xz",
+        "digest": ""
+      }
+    ],
+    "kind": "tool",
+    "category": "Eng. Reversa • Instrumentação Dinâmica",
+    "tags": "reverse-engineering,hooking,memory,security,debugger",
+    "summary": "Toolkit dinâmico para desenvolvedores, pesquisadores de segurança e engenheiros reversos inspecionarem e injetarem scripts em processos nativos.",
+    "trust_score": 98,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Ferramenta padrão da indústria de segurança e engenharia reversa",
+      "🟢 Código aberto em C, C++ e Rust",
+      "🟢 Suporte completo ao Windows"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "mitmproxy/mitmproxy",
+    "description": "An interactive TLS-capable intercepting HTTP proxy for penetration testers and software developers",
+    "url": "https://github.com/mitmproxy/mitmproxy",
+    "stars": 40100,
+    "license": "MIT",
+    "topics": "http,https,interception,mitm,proxy,python,reverse-engineering,tls",
+    "language": "Python",
+    "created_at": "2010-09-02T16:00:00Z",
+    "pushed_at": "2026-10-24T19:00:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v11.0.2",
+    "released_at": "2026-10-08T12:00:00Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "mitmproxy-11.0.2-windows-x64-installer.exe",
+        "size": 48200100,
+        "browser_download_url": "https://github.com/mitmproxy/mitmproxy/releases/download/v11.0.2/mitmproxy-11.0.2-windows-x64-installer.exe",
+        "digest": ""
+      }
+    ],
+    "kind": "tool",
+    "category": "Rede & Segurança • Proxy Interceptador",
+    "tags": "proxy,http,https,mitm,traffic,security,reverse-engineering",
+    "summary": "Proxy interativo e seguro com suporte a TLS para interceptar, inspecionar, modificar e gravar tráfego HTTP/HTTPS, WebSockets e HTTP/2.",
+    "trust_score": 97,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Projeto oficial Mitmproxy",
+      "🟢 Interface rica de terminal e web",
+      "🟢 Instalador oficial com suporte a certificados no Windows"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "AUTOMATIC1111/stable-diffusion-webui",
+    "description": "Stable Diffusion web UI",
+    "url": "https://github.com/AUTOMATIC1111/stable-diffusion-webui",
+    "stars": 147500,
+    "license": "AGPL-3.0",
+    "topics": "ai,diffusion,image-generation,python,stable-diffusion,webui",
+    "language": "Python",
+    "created_at": "2022-08-22T21:00:00Z",
+    "pushed_at": "2026-10-25T10:00:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v1.10.1",
+    "released_at": "2026-08-20T14:00:00Z",
+    "platforms": "linux,windows",
+    "assets": [
+      {
+        "name": "sd-webui-windows-package.zip",
+        "size": 89400200,
+        "browser_download_url": "https://github.com/AUTOMATIC1111/stable-diffusion-webui/releases/download/v1.10.1/sd-webui-windows-package.zip",
+        "digest": ""
+      }
+    ],
+    "kind": "ai-app",
+    "category": "IA Local • Geração de Imagens",
+    "tags": "ai,stable-diffusion,image-generation,art,local-ai",
+    "summary": "Interface web consagrada para execução local de modelos Stable Diffusion, SDXL e geração de arte por inteligência artificial com total privacidade.",
+    "trust_score": 98,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Mais de 145.000 estrelas no GitHub",
+      "🟢 Roda 100% offline na GPU do seu computador",
+      "🟢 Suporte a LoRA, ControlNet e plugins"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "comfyanonymous/ComfyUI",
+    "description": "The most powerful and modular diffusion model GUI, api and backend with a graph/nodes interface",
+    "url": "https://github.com/comfyanonymous/ComfyUI",
+    "stars": 76800,
+    "license": "GPL-3.0",
+    "topics": "ai,comfyui,flux,graph,image-generation,modular,nodes,stable-diffusion",
+    "language": "Python",
+    "created_at": "2023-01-15T02:00:00Z",
+    "pushed_at": "2026-10-25T15:00:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v0.3.14",
+    "released_at": "2026-10-18T19:00:00Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "ComfyUI_windows_portable_nvidia.zip",
+        "size": 195400200,
+        "browser_download_url": "https://github.com/comfyanonymous/ComfyUI/releases/download/v0.3.14/ComfyUI_windows_portable_nvidia.zip",
+        "digest": ""
+      }
+    ],
+    "kind": "ai-app",
+    "category": "IA Local • Nós & Workflows de IA",
+    "tags": "ai,comfyui,stable-diffusion,flux,image,video,nodes",
+    "summary": "Interface modular baseada em grafos e nós para geração de imagens e vídeos com Stable Diffusion e Flux em alta performance e baixo consumo de VRAM.",
+    "trust_score": 99,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Padrão da indústria para workflows avançados de IA",
+      "🟢 Versão portátil autônoma para Windows",
+      "🟢 Suporte completo a placas NVIDIA, AMD e CPU"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "oobabooga/text-generation-webui",
+    "description": "A Gradio web UI for Large Language Models. Supports transformers, GPTQ, AWQ, EXL2, llama.cpp",
+    "url": "https://github.com/oobabooga/text-generation-webui",
+    "stars": 41800,
+    "license": "AGPL-3.0",
+    "topics": "ai,chatbot,gradio,llama,llm,local-ai,python,webui",
+    "language": "Python",
+    "created_at": "2022-12-19T08:00:00Z",
+    "pushed_at": "2026-10-24T20:00:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v2.8",
+    "released_at": "2026-09-10T15:00:00Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "text-generation-webui-windows.zip",
+        "size": 68400100,
+        "browser_download_url": "https://github.com/oobabooga/text-generation-webui/releases/download/v2.8/text-generation-webui-windows.zip",
+        "digest": ""
+      }
+    ],
+    "kind": "ai-app",
+    "category": "IA Local • LLMs & Chatbots",
+    "tags": "ai,llm,chatbot,text-generation,local-ai",
+    "summary": "Interface completa para carregar e conversar com modelos de linguagem (Llama 3, Mistral, Gemma, Qwen) 100% offline no seu computador.",
+    "trust_score": 97,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório oficial com suporte a dezenas de backends (llama.cpp, EXL2)",
+      "🟢 Sem telemetria ou envio de dados para servidores externos",
+      "🟢 Instalador automático em 1 clique para Windows"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "ggerganov/llama.cpp",
+    "description": "LLM inference in C/C++",
+    "url": "https://github.com/ggerganov/llama.cpp",
+    "stars": 79500,
+    "license": "MIT",
+    "topics": "ai,c,c-plus-plus,gguf,inference,llama,llm,machine-learning",
+    "language": "C++",
+    "created_at": "2023-03-10T21:00:00Z",
+    "pushed_at": "2026-10-25T15:30:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "b4080",
+    "released_at": "2026-10-24T18:00:00Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "llama-b4080-bin-win-avx2-x64.zip",
+        "size": 24800500,
+        "browser_download_url": "https://github.com/ggerganov/llama.cpp/releases/download/b4080/llama-b4080-bin-win-avx2-x64.zip",
+        "digest": ""
+      }
+    ],
+    "kind": "ai-app",
+    "category": "IA Local • Motor de Inferência GGUF",
+    "tags": "ai,llm,gguf,inference,c,c-plus-plus,engine",
+    "summary": "Motor de inferência ultraleve em C/C++ puro para rodar LLMs no formato GGUF com aceleração de CPU (AVX2) e GPU (CUDA/Vulkan) no Windows.",
+    "trust_score": 100,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Projeto base que alimenta quase todo o ecossistema de LLMs locais",
+      "🟢 C/C++ puro sem dependências pesadas de runtime",
+      "🟢 Binários otimizados com suporte a AVX2 e Vulkan"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "ggerganov/whisper.cpp",
+    "description": "Port of OpenAI's Whisper model in C/C++",
+    "url": "https://github.com/ggerganov/whisper.cpp",
+    "stars": 36500,
+    "license": "MIT",
+    "topics": "ai,audio,c,c-plus-plus,speech-recognition,transcription,whisper",
+    "language": "C++",
+    "created_at": "2022-09-22T19:00:00Z",
+    "pushed_at": "2026-10-24T17:00:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v1.7.2",
+    "released_at": "2026-10-10T14:00:00Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "whisper-bin-x64.zip",
+        "size": 18400100,
+        "browser_download_url": "https://github.com/ggerganov/whisper.cpp/releases/download/v1.7.2/whisper-bin-x64.zip",
+        "digest": ""
+      }
+    ],
+    "kind": "ai-app",
+    "category": "IA Local • Transcrição de Áudio",
+    "tags": "ai,speech-to-text,whisper,audio,transcription,c-plus-plus",
+    "summary": "Transcrição e reconhecimento de voz de altíssima velocidade e baixo consumo rodando o modelo Whisper da OpenAI 100% offline no seu computador.",
+    "trust_score": 99,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Criado por Georgi Gerganov",
+      "🟢 Transcreve áudios e vídeos longos em segundos",
+      "🟢 Código aberto em C/C++ puro para Windows"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "Anything-AI/anything-llm",
+    "description": "The all-in-one Desktop & Enterprise AI app for local & cloud LLMs with full privacy",
+    "url": "https://github.com/Anything-AI/anything-llm",
+    "stars": 37500,
+    "license": "MIT",
+    "topics": "ai,chatbot,desktop,llm,local-ai,rag,vector-database",
+    "language": "JavaScript",
+    "created_at": "2023-06-10T18:00:00Z",
+    "pushed_at": "2026-10-25T14:30:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v1.6.4",
+    "released_at": "2026-10-15T12:00:00Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "AnythingLLMDesktop.exe",
+        "size": 142500100,
+        "browser_download_url": "https://github.com/Anything-AI/anything-llm/releases/download/v1.6.4/AnythingLLMDesktop.exe",
+        "digest": ""
+      }
+    ],
+    "kind": "ai-app",
+    "category": "IA Local • Chat com Documentos (RAG)",
+    "tags": "ai,llm,rag,chat,documents,pdf,local-ai",
+    "summary": "Aplicativo desktop completo com interface amigável para chat com PDFs, documentos, planilhas e navegação com IA 100% privada e sem vazamento de dados.",
+    "trust_score": 97,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório oficial do AnythingLLM",
+      "🟢 Banco vetorial embutido e suporte a Ollama e LM Studio",
+      "🟢 Instalador oficial para Windows"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "microsoft/PowerToys",
+    "description": "Windows system utilities to maximize productivity",
+    "url": "https://github.com/microsoft/PowerToys",
+    "stars": 114500,
+    "license": "MIT",
+    "topics": "c-sharp,c-plus-plus,microsoft,powertoys,productivity,utilities,windows",
+    "language": "C#",
+    "created_at": "2019-05-02T19:00:00Z",
+    "pushed_at": "2026-10-25T11:00:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v0.88.0",
+    "released_at": "2026-10-10T16:00:00Z",
+    "platforms": "windows",
+    "assets": [
+      {
+        "name": "PowerToysSetup-0.88.0-x64.exe",
+        "size": 182400100,
+        "browser_download_url": "https://github.com/microsoft/PowerToys/releases/download/v0.88.0/PowerToysSetup-0.88.0-x64.exe",
+        "digest": ""
+      }
+    ],
+    "kind": "tool",
+    "category": "Sistema • Utilitários Windows",
+    "tags": "powertoys,windows,productivity,microsoft,system,utilities",
+    "summary": "Conjunto oficial de utilitários de produtividade da Microsoft para o Windows (FancyZones, PowerToys Run, OCR de texto, redimensionador de imagens).",
+    "trust_score": 100,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório oficial da Microsoft",
+      "🟢 Código aberto em C# e C++",
+      "🟢 Instalador assinado digitalmente com Authenticode"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "git-for-windows/git",
+    "description": "A fork of Git containing Windows-specific patches",
+    "url": "https://github.com/git-for-windows/git",
+    "stars": 26500,
+    "license": "GPL-2.0",
+    "topics": "c,git,git-bash,version-control,vcs,windows",
+    "language": "C",
+    "created_at": "2015-02-12T10:00:00Z",
+    "pushed_at": "2026-10-25T14:00:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v2.48.1.windows.1",
+    "released_at": "2026-10-18T12:00:00Z",
+    "platforms": "windows",
+    "assets": [
+      {
+        "name": "Git-2.48.1-64-bit.exe",
+        "size": 65400100,
+        "browser_download_url": "https://github.com/git-for-windows/git/releases/download/v2.48.1.windows.1/Git-2.48.1-64-bit.exe",
+        "digest": ""
+      }
+    ],
+    "kind": "tool",
+    "category": "Ferramentas • Controle de Versão",
+    "tags": "git,vcs,version-control,developer,windows,tool",
+    "summary": "Instalação oficial do Git para Windows, fornecendo o comando git, Git BASH, Git GUI e integração perfeita com o Explorer.",
+    "trust_score": 100,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Projeto oficial Git for Windows",
+      "🟢 Essencial para todo desenvolvedor de software",
+      "🟢 Instalador assinado digitalmente"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "Kicad/kicad-source-mirror",
+    "description": "KiCad EDA suite official source mirror",
+    "url": "https://github.com/KiCad/kicad-source-mirror",
+    "stars": 5500,
+    "license": "GPL-3.0",
+    "topics": "c-plus-plus,circuits,eda,electronics,hardware,kicad,pcb",
+    "language": "C++",
+    "created_at": "2013-08-10T12:00:00Z",
+    "pushed_at": "2026-10-25T08:00:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "8.0.6",
+    "released_at": "2026-10-12T16:00:00Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "kicad-8.0.6-x86_64.exe",
+        "size": 1250000000,
+        "browser_download_url": "https://github.com/KiCad/kicad-source-mirror/releases/download/8.0.6/kicad-8.0.6-x86_64.exe",
+        "digest": ""
+      }
+    ],
+    "kind": "app",
+    "category": "Design & Eletrônica • EDA & PCB",
+    "tags": "electronics,eda,pcb,hardware,circuits,cad,app",
+    "summary": "Suíte profissional de código aberto para desenho de circuitos esquemáticos e projeto de placas de circuito impresso (PCB) em 3D.",
+    "trust_score": 98,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Padrão mundial de EDA em hardware livre",
+      "🟢 Código aberto em C++ auditável",
+      "🟢 Instalador oficial para Windows"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "beekeeper-studio/beekeeper-studio",
+    "description": "Modern and easy to use SQL client for MySQL, Postgres, SQLite, SQL Server, and more",
+    "url": "https://github.com/beekeeper-studio/beekeeper-studio",
+    "stars": 18900,
+    "license": "GPL-3.0",
+    "topics": "database,database-gui,mysql,postgres,sqlite,sql-client,typescript",
+    "language": "TypeScript",
+    "created_at": "2019-12-05T01:00:00Z",
+    "pushed_at": "2026-10-24T16:00:00Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v5.0.8",
+    "released_at": "2026-10-14T11:00:00Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "Beekeeper-Studio-Setup-5.0.8.exe",
+        "size": 98400100,
+        "browser_download_url": "https://github.com/beekeeper-studio/beekeeper-studio/releases/download/v5.0.8/Beekeeper-Studio-Setup-5.0.8.exe",
+        "digest": ""
+      }
+    ],
+    "kind": "app",
+    "category": "Produtividade • Banco de Dados SQL",
+    "tags": "database,sql,sqlite,postgres,mysql,gui,app",
+    "summary": "Gerenciador e editor SQL moderno, elegante e fácil de usar para SQLite, PostgreSQL, MySQL e MariaDB com suporte a túnel SSH.",
+    "trust_score": 97,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório oficial do Beekeeper Studio",
+      "🟢 Código aberto e sem rastreadores comerciais",
+      "🟢 Instalador oficial e versão portátil para Windows"
+    ],
+    "attestation": ""
   }
 ]
