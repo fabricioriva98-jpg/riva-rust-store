@@ -1,5 +1,5 @@
-//! Interface gráfica do Terminal Integrado e Espelhamento de Editores de Codificação (VS Code & Google Antigravity).
-//! Executa comandos Cargo/Rust em segundo plano, monitora arquivos de projeto e conecta com IDEs com 1 clique.
+//! Interface gráfica do Terminal Dedicado e IDE do Rust e do Espelho de Editores Externos (VS Code & Google Antigravity).
+//! Fornece um ambiente completo de desenvolvimento 100% Rust independente, e uma opção separada para espelhamento em IDEs externas.
 
 use super::{draw_pill, BgEvent, StoreGui};
 use crate::brand;
@@ -53,8 +53,7 @@ impl StoreGui {
         });
     }
 
-    /// Detecta a toolchain Rust e os editores em segundo plano (são vários programas e arquivos;
-    /// na linha da interface travariam a tela).
+    /// Detecta a toolchain Rust e os editores em segundo plano.
     pub(super) fn spawn_dev_env_detection(&mut self) {
         if self.dev_env_detecting {
             return;
@@ -68,31 +67,34 @@ impl StoreGui {
         });
     }
 
-    /// Renderiza a tela completa de Terminal Integrado e Espelho de IDEs.
-    pub(super) fn render_terminal_studio(&mut self, ui: &mut egui::Ui) {
-        // Se a pasta de trabalho ainda não foi definida, usa o diretório do projeto ou base
+    // ─────────────────────────────────────────────────────────────────────────
+    // 1. TELA DEDICADA: TERMINAL & IDE DEDICADA DO RUST (100% RUST)
+    // ─────────────────────────────────────────────────────────────────────────
+
+    /// Renderiza a IDE e Terminal Dedicado do Rust (ambiente autônomo, nativo e isolado).
+    pub(super) fn render_rust_studio(&mut self, ui: &mut egui::Ui) {
         if self.terminal_working_dir.as_os_str().is_empty() {
             self.terminal_working_dir = terminal_studio::default_projects_dir();
             self.terminal_dir_input = self.terminal_working_dir.to_string_lossy().to_string();
         }
 
-        // ─── CABEÇALHO DO ESTÚDIO ──────────────────────────────────────────
+        // ─── CABEÇALHO DEDICADO DO RUST STUDIO ─────────────────────────────
         ui.horizontal(|ui| {
             brand::logo_badge(ui, 18.0);
             ui.add_space(6.0);
             ui.vertical(|ui| {
                 ui.horizontal(|ui| {
                     ui.label(
-                        RichText::new(self.tr("💻 Terminal Integrado & Espelho de IDEs (VS Code / Antigravity)"))
+                        RichText::new(self.tr("⚡ Terminal & IDE Dedicada do Rust"))
                             .size(20.0)
                             .strong()
                             .color(Color32::WHITE),
                     );
-                    draw_pill(ui, &self.tr("Ambiente de Desenvolvimento"), Color32::from_rgb(30, 120, 200));
+                    draw_pill(ui, &self.tr("Ambiente 100% Rust"), Color32::from_rgb(220, 105, 30));
                 });
                 ui.label(
                     RichText::new(self.tr(
-                        "Execute comandos Cargo/Rust em tempo real e conecte seus projetos instantaneamente aos seus programas de codificação.",
+                        "Ambiente autônomo e nativo para programar, compilar, testar e executar projetos Rust diretamente na RRS.",
                     ))
                     .size(12.5)
                     .color(Color32::from_rgb(145, 160, 185)),
@@ -100,9 +102,9 @@ impl StoreGui {
             });
         });
 
-        ui.add_space(10.0);
+        ui.add_space(8.0);
 
-        // ─── BARRA DE DETECÇÃO DO AMBIENTE RUST (TOOLCHAIN & FERRAMENTAS) ──
+        // ─── BARRA DA TOOLCHAIN RUST DO SISTEMA ────────────────────────────
         if self.rust_env_info.is_none() {
             self.spawn_dev_env_detection();
             ui.label(RichText::new(self.tr("⏳ Detectando a toolchain Rust e os editores...")).color(Color32::GRAY));
@@ -157,96 +159,75 @@ impl StoreGui {
             self.spawn_dev_env_detection();
         }
 
-        // ─── PAINEL DE INTEGRAÇÃO COM IDES (VS CODE & ANTIGRAVITY) ──────────
-        let ides = self.detected_ides.clone();
+        // ─── EDITOR DE CÓDIGO RUST INTEGRADO (IDE) ─────────────────────────
         egui::Frame::NONE
-            .fill(Color32::from_rgb(20, 24, 34))
-            .stroke(Stroke::new(1.0_f32, Color32::from_rgb(38, 46, 62)))
+            .fill(Color32::from_rgb(16, 20, 28))
+            .stroke(Stroke::new(1.0_f32, Color32::from_rgb(32, 42, 60)))
             .corner_radius(CornerRadius::same(8))
-            .inner_margin(egui::Margin::same(12))
+            .inner_margin(egui::Margin::same(10))
             .show(ui, |ui| {
                 ui.horizontal_wrapped(|ui| {
-                    ui.label(RichText::new(self.tr("🚀 Programas de Codificação Detectados:")).strong().color(Color32::WHITE));
-                    ui.add_space(8.0);
-
-                    for ide_item in &ides {
-                        if ide_item.is_installed {
-                            draw_pill(ui, &format!("{} (Pronto)", ide_item.badge), Color32::from_rgb(30, 110, 60));
-                        } else {
-                            draw_pill(ui, &format!("{} (Não detectado)", ide_item.badge), Color32::from_rgb(60, 66, 80));
-                        }
-                    }
-                });
-
-                ui.add_space(8.0);
-                ui.horizontal_wrapped(|ui| {
-                    let dir = self.terminal_working_dir.clone();
-
-                    if ui
-                        .add(egui::Button::new(RichText::new(self.tr("🟦 Abrir no VS Code")).strong()))
-                        .on_hover_text(self.tr("Abre a pasta atual do projeto no Visual Studio Code."))
-                        .clicked()
-                    {
-                        match ide::open_workspace_in_ide("vscode", &dir) {
-                            Ok(msg) => {
-                                self.status_msg = format!("✔ {msg}");
-                                self.status_is_error = false;
-                            }
-                            Err(e) => {
-                                self.status_msg = format!("❌ {e}");
-                                self.status_is_error = true;
-                            }
-                        }
-                    }
-
-                    if ui
-                        .add(egui::Button::new(RichText::new(self.tr("⚛ Abrir no Antigravity")).strong()))
-                        .on_hover_text(self.tr("Abre o workspace atual no Google Antigravity."))
-                        .clicked()
-                    {
-                        match ide::open_workspace_in_ide("antigravity", &dir) {
-                            Ok(msg) => {
-                                self.status_msg = format!("✔ {msg}");
-                                self.status_is_error = false;
-                            }
-                            Err(e) => {
-                                self.status_msg = format!("❌ {e}");
-                                self.status_is_error = true;
-                            }
-                        }
-                    }
-
-                    ui.add_space(6.0);
-                    ui.separator();
+                    ui.label(RichText::new(self.tr("💻 Editor de Código Rust (IDE):")).strong().size(13.0).color(Color32::WHITE));
                     ui.add_space(6.0);
 
-                    if ui
-                        .add_enabled(self.busy_task.is_none(), egui::Button::new(self.tr("⚙ Instalar rust-analyzer no VS Code")))
-                        .on_hover_text(self.tr("Instala a extensão oficial de autocompletar e conferência de tipos no VS Code."))
-                        .clicked()
-                    {
-                        // Leva de segundos a minutos (baixa a extensão): em segundo plano
-                        self.busy_task = Some(self.tr("Instalando rust-analyzer no VS Code..."));
-                        let events = Arc::clone(&self.bg_events);
-                        std::thread::spawn(move || {
-                            let res = ide::install_vscode_extension("rust-lang.rust-analyzer").map_err(|e| format!("{e:#}"));
-                            events.lock().unwrap().push(BgEvent::IdeActionFinished(res));
-                        });
+                    // Templates rápidos
+                    ui.label(RichText::new(self.tr("Templates Rápidos:")).size(12.0).color(Color32::from_rgb(160, 175, 200)));
+                    if ui.button(self.tr("Olá Mundo")).clicked() {
+                        self.rust_ide_code = "fn main() {\n    println!(\"Olá, mundo do Rust!\");\n}\n".to_string();
+                        self.status_msg = self.tr("Código do template carregado no editor.");
+                        self.status_is_error = false;
+                    }
+                    if ui.button(self.tr("Calculadora / Funções")).clicked() {
+                        self.rust_ide_code = "fn somar(a: i32, b: i32) -> i32 {\n    a + b\n}\n\nfn main() {\n    let x = 15;\n    let y = 27;\n    println!(\"{} + {} = {}\", x, y, somar(x, y));\n}\n".to_string();
+                        self.status_msg = self.tr("Código do template carregado no editor.");
+                        self.status_is_error = false;
+                    }
+                    if ui.button(self.tr("Concorrência / Threads")).clicked() {
+                        self.rust_ide_code = "use std::thread;\nuse std::time::Duration;\n\nfn main() {\n    let handle = thread::spawn(|| {\n        for i in 1..=3 {\n            println!(\"Thread filha: {}\", i);\n            thread::sleep(Duration::from_millis(50));\n        }\n    });\n    handle.join().unwrap();\n    println!(\"Thread principal finalizada!\");\n}\n".to_string();
+                        self.status_msg = self.tr("Código do template carregado no editor.");
+                        self.status_is_error = false;
                     }
 
-                    if ui
-                        .add(egui::Button::new(self.tr("📁 Abrir Pasta no Explorer")))
-                        .on_hover_text(self.tr("Abre a pasta atual no Windows Explorer."))
-                        .clicked()
-                    {
-                        let _ = crate::downloader::reveal_in_folder(&dir.to_string_lossy());
-                    }
+                    ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
+                        if ui.button(self.tr("🧹 Limpar")).clicked() {
+                            self.rust_ide_code.clear();
+                        }
+                        if ui.button(self.tr("📋 Copiar")).clicked() {
+                            ui.ctx().copy_text(self.rust_ide_code.clone());
+                            self.status_msg = self.tr("Código copiado para a área de transferência.");
+                            self.status_is_error = false;
+                        }
+                        if ui
+                            .add_enabled(!self.terminal_is_running && !self.rust_ide_code.trim().is_empty(), egui::Button::new(RichText::new(self.tr("▶ Executar Código")).strong().color(Color32::from_rgb(80, 220, 120))))
+                            .on_hover_text(self.tr("Compila e executa este código imediatamente com o compilador rustc em segundo plano."))
+                            .clicked()
+                        {
+                            let code = self.rust_ide_code.clone();
+                            self.spawn_terminal_eval(code);
+                        }
+                    });
                 });
+
+                ui.add_space(4.0);
+
+                // Área do editor de texto com fonte monospace
+                egui::ScrollArea::vertical()
+                    .id_salt("rust_ide_editor_scroll")
+                    .max_height(140.0)
+                    .show(ui, |ui| {
+                        ui.add(
+                            egui::TextEdit::multiline(&mut self.rust_ide_code)
+                                .font(egui::TextStyle::Monospace)
+                                .desired_width(ui.available_width())
+                                .desired_rows(6)
+                                .lock_focus(true),
+                        );
+                    });
             });
 
         ui.add_space(8.0);
 
-        // ─── FERRAMENTAS RÁPIDAS: NOVO PROJETO CARGO & AVALIADOR SCRATCHPAD ─
+        // ─── FERRAMENTAS CARGO & AVALIADOR SCRATCHPAD ──────────────────────
         egui::Frame::NONE
             .fill(Color32::from_rgb(18, 22, 30))
             .stroke(Stroke::new(1.0_f32, Color32::from_rgb(34, 42, 58)))
@@ -372,7 +353,7 @@ impl StoreGui {
 
         ui.add_space(8.0);
 
-        // ─── BOTÕES RÁPIDOS DE CARGO ───────────────────────────────────────
+        // ─── ATALHOS RÁPIDOS CARGO ─────────────────────────────────────────
         ui.horizontal_wrapped(|ui| {
             ui.label(RichText::new(self.tr("Atalhos Cargo:")).strong().size(12.0).color(Color32::WHITE));
 
@@ -398,8 +379,8 @@ impl StoreGui {
 
         ui.add_space(8.0);
 
-        // ─── CONSOLE DO TERMINAL INTEGRADO (SAÍDA COLORIDA) ────────────────
-        let available_h = (ui.available_height() - 55.0).max(200.0);
+        // ─── CONSOLE DO TERMINAL INTEGRADO ─────────────────────────────────
+        let available_h = (ui.available_height() - 55.0).max(180.0);
         egui::Frame::NONE
             .fill(Color32::from_rgb(10, 12, 16))
             .stroke(Stroke::new(1.0_f32, Color32::from_rgb(26, 32, 44)))
@@ -408,7 +389,7 @@ impl StoreGui {
             .show(ui, |ui| {
                 ui.set_height(available_h);
                 egui::ScrollArea::vertical()
-                    .id_salt("terminal_output_scroll")
+                    .id_salt("rust_studio_output_scroll")
                     .stick_to_bottom(true)
                     .show(ui, |ui| {
                         ui.set_width(ui.available_width());
@@ -484,5 +465,198 @@ impl StoreGui {
             .size(11.0)
             .color(Color32::from_rgb(140, 150, 170)),
         );
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // 2. TELA DEDICADA: ESPELHO DE IDES EXTERNAS (VS CODE / ANTIGRAVITY)
+    // ─────────────────────────────────────────────────────────────────────────
+
+    /// Renderiza a tela dedicada para espelhamento e integração com IDEs externas (VS Code & Google Antigravity).
+    pub(super) fn render_ide_mirror(&mut self, ui: &mut egui::Ui) {
+        if self.terminal_working_dir.as_os_str().is_empty() {
+            self.terminal_working_dir = terminal_studio::default_projects_dir();
+            self.terminal_dir_input = self.terminal_working_dir.to_string_lossy().to_string();
+        }
+
+        // ─── CABEÇALHO DO ESPELHO DE IDES ──────────────────────────────────
+        ui.horizontal(|ui| {
+            brand::logo_badge(ui, 18.0);
+            ui.add_space(6.0);
+            ui.vertical(|ui| {
+                ui.horizontal(|ui| {
+                    ui.label(
+                        RichText::new(self.tr("🖥️ Espelho de Programas & IDEs de Codificação"))
+                            .size(20.0)
+                            .strong()
+                            .color(Color32::WHITE),
+                    );
+                    draw_pill(ui, &self.tr("Espelho de IDEs"), Color32::from_rgb(30, 120, 200));
+                });
+                ui.label(
+                    RichText::new(self.tr(
+                        "Conecte seu projeto com editores externos instalados no computador (Visual Studio Code e Google Antigravity).",
+                    ))
+                    .size(12.5)
+                    .color(Color32::from_rgb(145, 160, 185)),
+                );
+            });
+        });
+
+        ui.add_space(10.0);
+
+        // ─── PAINEL DE PROGRAMAS DETECTADOS ────────────────────────────────
+        if self.detected_ides.is_empty() && !self.dev_env_detecting {
+            self.spawn_dev_env_detection();
+        }
+
+        let ides = self.detected_ides.clone();
+        egui::Frame::NONE
+            .fill(Color32::from_rgb(20, 24, 34))
+            .stroke(Stroke::new(1.0_f32, Color32::from_rgb(38, 46, 62)))
+            .corner_radius(CornerRadius::same(8))
+            .inner_margin(egui::Margin::same(14))
+            .show(ui, |ui| {
+                ui.horizontal_wrapped(|ui| {
+                    ui.label(RichText::new(self.tr("🚀 Programas de Codificação Detectados:")).strong().color(Color32::WHITE));
+                    ui.add_space(8.0);
+
+                    for ide_item in &ides {
+                        if ide_item.is_installed {
+                            draw_pill(ui, &format!("{} (Pronto)", ide_item.badge), Color32::from_rgb(30, 110, 60));
+                        } else {
+                            draw_pill(ui, &format!("{} (Não detectado)", ide_item.badge), Color32::from_rgb(60, 66, 80));
+                        }
+                    }
+
+                    ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
+                        if ui.button(self.tr("🔄 Atualizar")).clicked() {
+                            self.spawn_dev_env_detection();
+                        }
+                    });
+                });
+
+                ui.add_space(10.0);
+                ui.horizontal_wrapped(|ui| {
+                    let dir = self.terminal_working_dir.clone();
+
+                    if ui
+                        .add(egui::Button::new(RichText::new(self.tr("🟦 Abrir no VS Code")).strong()))
+                        .on_hover_text(self.tr("Abre a pasta atual do projeto no Visual Studio Code."))
+                        .clicked()
+                    {
+                        match ide::open_workspace_in_ide("vscode", &dir) {
+                            Ok(msg) => {
+                                self.status_msg = format!("✔ {msg}");
+                                self.status_is_error = false;
+                            }
+                            Err(e) => {
+                                self.status_msg = format!("❌ {e}");
+                                self.status_is_error = true;
+                            }
+                        }
+                    }
+
+                    if ui
+                        .add(egui::Button::new(RichText::new(self.tr("⚛ Abrir no Antigravity")).strong()))
+                        .on_hover_text(self.tr("Abre o workspace atual no Google Antigravity."))
+                        .clicked()
+                    {
+                        match ide::open_workspace_in_ide("antigravity", &dir) {
+                            Ok(msg) => {
+                                self.status_msg = format!("✔ {msg}");
+                                self.status_is_error = false;
+                            }
+                            Err(e) => {
+                                self.status_msg = format!("❌ {e}");
+                                self.status_is_error = true;
+                            }
+                        }
+                    }
+
+                    ui.add_space(6.0);
+                    ui.separator();
+                    ui.add_space(6.0);
+
+                    if ui
+                        .add_enabled(self.busy_task.is_none(), egui::Button::new(self.tr("⚙ Instalar rust-analyzer no VS Code")))
+                        .on_hover_text(self.tr("Instala a extensão oficial de autocompletar e conferência de tipos no VS Code."))
+                        .clicked()
+                    {
+                        self.busy_task = Some(self.tr("Instalando rust-analyzer no VS Code..."));
+                        let events = Arc::clone(&self.bg_events);
+                        std::thread::spawn(move || {
+                            let res = ide::install_vscode_extension("rust-lang.rust-analyzer").map_err(|e| format!("{e:#}"));
+                            events.lock().unwrap().push(BgEvent::IdeActionFinished(res));
+                        });
+                    }
+
+                    if ui
+                        .add(egui::Button::new(self.tr("📁 Abrir Pasta no Explorer")))
+                        .on_hover_text(self.tr("Abre a pasta atual no Windows Explorer."))
+                        .clicked()
+                    {
+                        let _ = crate::downloader::reveal_in_folder(&dir.to_string_lossy());
+                    }
+                });
+            });
+
+        ui.add_space(10.0);
+
+        // ─── CONFIGURAÇÃO DA PASTA DE TRABALHO DO PROJETO ──────────────────
+        egui::Frame::NONE
+            .fill(Color32::from_rgb(16, 20, 28))
+            .stroke(Stroke::new(1.0_f32, Color32::from_rgb(32, 40, 56)))
+            .corner_radius(CornerRadius::same(6))
+            .inner_margin(egui::Margin::symmetric(12, 10))
+            .show(ui, |ui| {
+                ui.horizontal_wrapped(|ui| {
+                    ui.label(RichText::new(self.tr("📂 Pasta de Trabalho do Workspace:")).strong().size(12.5).color(Color32::from_rgb(160, 175, 200)));
+                    ui.add(
+                        egui::TextEdit::singleline(&mut self.terminal_dir_input)
+                            .font(egui::TextStyle::Monospace)
+                            .desired_width(400.0),
+                    );
+                    if ui
+                        .add_enabled(!self.terminal_is_running, egui::Button::new(self.tr("Usar pasta")))
+                        .clicked()
+                    {
+                        let p = std::path::PathBuf::from(self.terminal_dir_input.trim());
+                        if p.is_dir() {
+                            self.terminal_working_dir = p;
+                        } else {
+                            self.status_msg = format!("❌ {} {}", self.tr("Pasta não encontrada:"), self.terminal_dir_input.trim());
+                            self.status_is_error = true;
+                        }
+                    }
+                    if ui
+                        .add_enabled(!self.terminal_is_running, egui::Button::new(self.tr("🔄 Resetar Pasta")))
+                        .on_hover_text(self.tr("Volta para a pasta Projetos Rust, dentro de Documentos."))
+                        .clicked()
+                    {
+                        self.terminal_working_dir = terminal_studio::default_projects_dir();
+                        self.terminal_dir_input = self.terminal_working_dir.to_string_lossy().to_string();
+                    }
+                });
+            });
+
+        ui.add_space(10.0);
+
+        // ─── CARTÃO EXPLICATIVO DE FLUXO DE TRABALHO ───────────────────────
+        egui::Frame::NONE
+            .fill(Color32::from_rgb(14, 18, 26))
+            .stroke(Stroke::new(1.0_f32, Color32::from_rgb(28, 36, 52)))
+            .corner_radius(CornerRadius::same(8))
+            .inner_margin(egui::Margin::same(14))
+            .show(ui, |ui| {
+                ui.label(RichText::new(self.tr("💡 Como Funciona o Espelhamento de Editores:")).strong().size(13.5).color(Color32::WHITE));
+                ui.add_space(6.0);
+                ui.label(
+                    RichText::new(self.tr(
+                        "Ao clicar em 'Abrir no VS Code' ou 'Abrir no Antigravity', a RRS passa o caminho da pasta de trabalho selecionada diretamente para o executável do editor com parâmetros seguros. Qualquer alteração feita nos arquivos é refletida imediatamente em ambos os ambientes sem conflitos.",
+                    ))
+                    .size(12.0)
+                    .color(Color32::from_rgb(170, 185, 210)),
+                );
+            });
     }
 }

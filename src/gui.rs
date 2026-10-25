@@ -48,7 +48,8 @@ enum NavSection {
     CppToRust,
     LearnRust,
     RustLib,
-    TerminalStudio,
+    RustStudio,
+    IdeMirror,
     Optimizer,
 }
 
@@ -380,6 +381,7 @@ pub struct StoreGui {
     terminal_cmd_input: String,
     terminal_is_running: bool,
     terminal_repl_input: String,
+    rust_ide_code: String,
     cargo_new_name: String,
     cargo_new_is_bin: bool,
     rust_env_info: Option<crate::terminal_studio::RustEnvInfo>,
@@ -576,6 +578,7 @@ impl StoreGui {
             terminal_cmd_input: String::new(),
             terminal_is_running: false,
             terminal_repl_input: String::new(),
+            rust_ide_code: "fn main() {\n    println!(\"🦀 Bem-vindo ao Terminal & IDE Dedicada do Rust!\");\n    let app = \"RRS - Riva Rust Store\";\n    println!(\"Ambiente pronto para programar, compilar e testar em: {}\", app);\n}\n".to_string(),
             cargo_new_name: String::new(),
             cargo_new_is_bin: true,
             rust_env_info: None,
@@ -809,7 +812,7 @@ impl StoreGui {
                     NavSection::AiAndApps => k == "ai-app" || k == "app",
                     NavSection::Tools => k == "tool" || k == "re-app",
                     NavSection::Library => a.installed.is_some(),
-                    NavSection::CppToRust | NavSection::LearnRust | NavSection::RustLib | NavSection::TerminalStudio | NavSection::Optimizer => true,
+                    NavSection::CppToRust | NavSection::LearnRust | NavSection::RustLib | NavSection::RustStudio | NavSection::IdeMirror | NavSection::Optimizer => true,
                 };
                 section_ok && self.matches_global_filters(a)
             })
@@ -1663,8 +1666,14 @@ impl eframe::App for StoreGui {
                 nav_button(
                     ui,
                     &mut self.section,
-                    NavSection::TerminalStudio,
-                    &tr(self.lang, "💻  Terminal & IDEs (Espelho)"),
+                    NavSection::RustStudio,
+                    &tr(self.lang, "⚡  Terminal & IDE Rust (Dedicado)"),
+                );
+                nav_button(
+                    ui,
+                    &mut self.section,
+                    NavSection::IdeMirror,
+                    &tr(self.lang, "🖥️  Espelho de IDEs (VS Code / Antigravity)"),
                 );
 
                 ui.add_space(14.0);
@@ -1912,7 +1921,8 @@ impl eframe::App for StoreGui {
             NavSection::CppToRust
                 | NavSection::LearnRust
                 | NavSection::RustLib
-                | NavSection::TerminalStudio
+                | NavSection::RustStudio
+                | NavSection::IdeMirror
                 | NavSection::Optimizer
                 | NavSection::Settings
                 | NavSection::Profile
@@ -1961,8 +1971,12 @@ impl eframe::App for StoreGui {
                     self.render_rust_lib_browser(ui);
                     return;
                 }
-                if self.section == NavSection::TerminalStudio {
-                    self.render_terminal_studio(ui);
+                if self.section == NavSection::RustStudio {
+                    self.render_rust_studio(ui);
+                    return;
+                }
+                if self.section == NavSection::IdeMirror {
+                    self.render_ide_mirror(ui);
                     return;
                 }
                 if self.section == NavSection::Optimizer {
@@ -2279,7 +2293,8 @@ impl StoreGui {
             NavSection::CppToRust => ("🦀 Tradutor C/C++ ➔ Rust", ""),
             NavSection::LearnRust => ("📖 Aprender & Programar em Rust", ""),
             NavSection::RustLib => ("📚  Biblioteca Rust (std & Crates)", ""),
-            NavSection::TerminalStudio => ("💻  Terminal & IDEs (Espelho)", ""),
+            NavSection::RustStudio => ("⚡  Terminal & IDE Rust (Dedicado)", ""),
+            NavSection::IdeMirror => ("🖥️  Espelho de IDEs (VS Code / Antigravity)", ""),
             NavSection::Optimizer => ("⚡  Otimizador do PC", ""),
         };
 
@@ -3952,9 +3967,12 @@ mod tests {
     fn tela_do_terminal_nao_detecta_ambiente_a_cada_quadro() {
         // A detecção roda em `spawn_dev_env_detection` (segundo plano); o desenho só lê o resultado guardado
         let src = include_str!("gui/terminal_studio.rs");
-        let render = &src[src.find("fn render_terminal_studio").unwrap()..];
-        assert!(!render.contains("detect_ides("), "detect_ides no desenho da tela");
-        assert!(!render.contains("detect_rust_env("), "detect_rust_env no desenho da tela");
+        let rust_studio = &src[src.find("fn render_rust_studio").unwrap()..];
+        assert!(!rust_studio.contains("detect_ides("), "detect_ides no desenho da tela");
+        assert!(!rust_studio.contains("detect_rust_env("), "detect_rust_env no desenho da tela");
+        let ide_mirror = &src[src.find("fn render_ide_mirror").unwrap()..];
+        assert!(!ide_mirror.contains("detect_ides("), "detect_ides no desenho da tela");
+        assert!(!ide_mirror.contains("detect_rust_env("), "detect_rust_env no desenho da tela");
     }
 
     #[test]
