@@ -65,7 +65,7 @@ impl StoreGui {
             .show(ui, |ui| {
                 ui.horizontal_wrapped(|ui| {
                     ui.label(RichText::new(self.tr("Nível:")).strong().color(Color32::WHITE));
-                    if ui.selectable_label(self.learn_level_filter == 0, self.tr("Todos (20)")).clicked() {
+                    if ui.selectable_label(self.learn_level_filter == 0, self.tr("Todos (30)")).clicked() {
                         self.learn_level_filter = 0;
                     }
                     if ui.selectable_label(self.learn_level_filter == 1, self.tr("🐣 Básico (1-10)")).clicked() {
@@ -78,9 +78,17 @@ impl StoreGui {
                     }
                     if ui.selectable_label(self.learn_level_filter == 2, self.tr("🚀 Intermediário (11-20)")).clicked() {
                         self.learn_level_filter = 2;
-                        if self.learn_lesson_idx < 10 {
+                        if self.learn_lesson_idx < 10 || self.learn_lesson_idx >= 20 {
                             self.learn_lesson_idx = 10;
                             self.learn_code_input = LESSONS[10].initial_code.to_string();
+                            self.learn_output = None;
+                        }
+                    }
+                    if ui.selectable_label(self.learn_level_filter == 3, self.tr("🔥 Avançado (21-30)")).clicked() {
+                        self.learn_level_filter = 3;
+                        if self.learn_lesson_idx < 20 {
+                            self.learn_lesson_idx = 20;
+                            self.learn_code_input = LESSONS[20].initial_code.to_string();
                             self.learn_output = None;
                         }
                     }
@@ -103,6 +111,9 @@ impl StoreGui {
                                 if self.learn_level_filter == 2 && l.level != "Intermediário" {
                                     continue;
                                 }
+                                if self.learn_level_filter == 3 && l.level != "Avançado" {
+                                    continue;
+                                }
                                 if ui.selectable_value(&mut self.learn_lesson_idx, idx, l.title).clicked() {
                                     // Se mudou de lição, carrega o código inicial correspondente
                                     if self.learn_lesson_idx != prev_idx {
@@ -112,6 +123,20 @@ impl StoreGui {
                                 }
                             }
                         });
+
+                    ui.add_space(4.0);
+                    let can_prev = self.learn_lesson_idx > 0;
+                    if ui.add_enabled(can_prev, egui::Button::new(self.tr("◀ Anterior"))).clicked() {
+                        self.learn_lesson_idx -= 1;
+                        self.learn_code_input = LESSONS[self.learn_lesson_idx].initial_code.to_string();
+                        self.learn_output = None;
+                    }
+                    let can_next = self.learn_lesson_idx + 1 < lesson_count;
+                    if ui.add_enabled(can_next, egui::Button::new(self.tr("Próxima ▶"))).clicked() {
+                        self.learn_lesson_idx += 1;
+                        self.learn_code_input = LESSONS[self.learn_lesson_idx].initial_code.to_string();
+                        self.learn_output = None;
+                    }
 
                     ui.add_space(8.0);
 
@@ -184,8 +209,10 @@ impl StoreGui {
                                         current_lesson.level,
                                         if current_lesson.level == "Básico" {
                                             Color32::from_rgb(30, 110, 60)
-                                        } else {
+                                        } else if current_lesson.level == "Intermediário" {
                                             Color32::from_rgb(180, 75, 25)
+                                        } else {
+                                            Color32::from_rgb(140, 45, 175)
                                         },
                                     );
                                     draw_pill(ui, current_lesson.category, Color32::from_rgb(35, 85, 155));

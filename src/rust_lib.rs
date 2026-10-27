@@ -1639,6 +1639,462 @@ fn main() {
         cargo_dep: Some(r#"sysinfo = "0.30""#),
         docs_url: "https://docs.rs/sysinfo/latest/sysinfo/",
     },
+    RustLibItem {
+        id: "crate_parking_lot",
+        name: "parking_lot",
+        category: LibCategory::SyncConcurrency,
+        summary: "Implementações compactas e significativamente mais rápidas de Mutex, RwLock e Condvar que a Standard Library.",
+        description: "\
+`parking_lot` substitui primitivas de sincronização da std por versões que ocupam apenas 1 byte por lock, não sofrem de envenenamento e oferecem timeouts e locks reentrantes.",
+        key_types: &["Mutex", "RwLock", "Condvar", "ReentrantMutex"],
+        key_methods: &[
+            "Mutex::new(val)",
+            ".lock()",
+            "RwLock::new(val)",
+            ".read()",
+            ".write()",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// parking_lot = "0.12"
+
+fn main() {
+    println!("parking_lot: Mutex e RwLock ultra rápidos e leves para concorrência de alta vazão.");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"parking_lot = "0.12""#),
+        docs_url: "https://docs.rs/parking_lot/latest/parking_lot/",
+    },
+    RustLibItem {
+        id: "crate_tower",
+        name: "tower",
+        category: LibCategory::Net,
+        summary: "Abstração modular de serviços cliente/servidor com middlewares de timeout, rate limit e retentativas.",
+        description: "\
+`tower` padroniza componentes reutilizáveis para redes e clientes HTTP/gRPC.
+Permite encadear middlewares de autenticação, limitação de taxa, tracing e fallback de forma totalmente combinável.",
+        key_types: &["Service", "ServiceBuilder", "Layer", "Timeout"],
+        key_methods: &[
+            "ServiceBuilder::new()",
+            ".timeout(Duration)",
+            ".rate_limit(100, Duration)",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// tower = "0.5"
+
+fn main() {
+    println!("tower: biblioteca de middlewares e composição modular de serviços de rede.");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"tower = "0.5""#),
+        docs_url: "https://docs.rs/tower/latest/tower/",
+    },
+    RustLibItem {
+        id: "crate_flume",
+        name: "flume",
+        category: LibCategory::SyncConcurrency,
+        summary: "Canais MPMC (multi-produtor multi-consumidor) ultrarrápidos com suporte simultâneo a código síncrono e assíncrono.",
+        description: "\
+`flume` é um canal seguro e extremamente performático que conecta tarefas síncronas e assíncronas (Tokio/async-std) sem overhead.",
+        key_types: &["Sender", "Receiver", "bounded", "unbounded"],
+        key_methods: &[
+            "flume::unbounded()",
+            "flume::bounded(cap)",
+            ".send(val)",
+            ".recv()",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// flume = "0.11"
+
+fn main() {
+    println!("flume: canais MPMC síncronos e assíncronos ultrarrápidos para troca de mensagens.");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"flume = "0.11""#),
+        docs_url: "https://docs.rs/flume/latest/flume/",
+    },
+    RustLibItem {
+        id: "crate_dialoguer",
+        name: "dialoguer",
+        category: LibCategory::SystemOs,
+        summary: "Prompts interativos no terminal: perguntas, seleções de menu com setas, confirmações e senhas.",
+        description: "\
+`dialoguer` torna CLIs interativas e amigáveis ao usuário como instaladores profissionais.
+Permite selecionar opções de listas interativas, solicitar confirmações [s/N] e digitar senhas ocultando os caracteres.",
+        key_types: &["Input", "Select", "MultiSelect", "Confirm", "Password"],
+        key_methods: &[
+            "Input::new().interact()",
+            "Select::new().items(&items).interact()",
+            "Confirm::new().interact()",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// dialoguer = "0.11"
+
+fn main() {
+    println!("dialoguer: prompts interativos e menus de seleção para ferramentas de linha de comando.");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"dialoguer = "0.11""#),
+        docs_url: "https://docs.rs/dialoguer/latest/dialoguer/",
+    },
+    RustLibItem {
+        id: "crate_dotenvy",
+        name: "dotenvy",
+        category: LibCategory::SystemOs,
+        summary: "Carregamento seguro e ergonômico de variáveis de ambiente a partir de arquivos .env no início da aplicação.",
+        description: "\
+`dotenvy` é a continuação moderna e auditada do clássico `dotenv`, facilitando carregar configurações locais de desenvolvimento para `std::env`.",
+        key_types: &["dotenv", "from_filename", "var"],
+        key_methods: &[
+            "dotenvy::dotenv()",
+            "dotenvy::var(\"KEY\")",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// dotenvy = "0.15"
+
+fn main() {
+    println!("dotenvy: carregamento de variáveis de ambiente a partir de arquivos .env.");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"dotenvy = "0.15""#),
+        docs_url: "https://docs.rs/dotenvy/latest/dotenvy/",
+    },
+    RustLibItem {
+        id: "crate_crossterm",
+        name: "crossterm",
+        category: LibCategory::SystemOs,
+        summary: "Manipulação avançada de terminal multiplataforma (Windows e Unix): modo raw, controle de cursor e eventos.",
+        description: "\
+`crossterm` é o motor por trás de gerenciadores TUI modernos como Ratatui e Yazi.
+Permite ler teclas em tempo real sem esperar Enter, mover o cursor para qualquer coordenada (x, y) e desenhar interfaces completas.",
+        key_types: &["terminal::enable_raw_mode", "event::read", "cursor::MoveTo", "style::Print"],
+        key_methods: &[
+            "execute!(stdout, MoveTo(x, y))",
+            "event::poll(duration)",
+            "event::read()",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// crossterm = "0.28"
+
+fn main() {
+    println!("crossterm: manipulação de cursor, eventos de teclado e interfaces TUI no console.");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"crossterm = "0.28""#),
+        docs_url: "https://docs.rs/crossterm/latest/crossterm/",
+    },
+    RustLibItem {
+        id: "crate_walkdir",
+        name: "walkdir",
+        category: LibCategory::FsIo,
+        summary: "Varredura e percorrimento recursivo de pastas no sistema de arquivos com alto desempenho e filtros.",
+        description: "\
+`walkdir` permite iterar recursivamente sobre diretórios de forma eficiente, tratando links simbólicos e erros de permissão graciosamente.",
+        key_types: &["WalkDir", "DirEntry", "IntoIter"],
+        key_methods: &[
+            "WalkDir::new(path)",
+            ".max_depth(3)",
+            ".into_iter()",
+            ".filter_map(Result::ok)",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// walkdir = "2.5"
+
+fn main() {
+    println!("walkdir: varredura e navegação recursiva de diretórios no sistema de arquivos.");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"walkdir = "2.5""#),
+        docs_url: "https://docs.rs/walkdir/latest/walkdir/",
+    },
+    RustLibItem {
+        id: "crate_csv",
+        name: "csv",
+        category: LibCategory::Ecosystem,
+        summary: "Processamento de arquivos tabulares CSV em streaming com velocidade extrema e suporte a Serde.",
+        description: "\
+Desenvolvido pelo criador de `ripgrep`, o crate `csv` processa gigabytes de dados sem estourar a memória RAM.
+Converte linhas CSV automaticamente para structs tipadas de Rust e oferece geração de relatórios com zero cópias desnecessárias.",
+        key_types: &["Reader", "Writer", "StringRecord", "ByteRecord"],
+        key_methods: &[
+            "Reader::from_path(path)",
+            ".deserialize()",
+            "Writer::from_writer(w)",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// csv = "1.3"
+
+fn main() {
+    println!("csv: ingestão e processamento de dados tabulares em alta velocidade com streaming.");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"csv = "1.3""#),
+        docs_url: "https://docs.rs/csv/latest/csv/",
+    },
+    RustLibItem {
+        id: "crate_uuid",
+        name: "uuid",
+        category: LibCategory::Ecosystem,
+        summary: "Geração e validação de identificadores únicos universais (UUIDs v4 aleatórios e v7 temporais).",
+        description: "\
+`uuid` é o padrão para geração de identificadores únicos no ecossistema Rust, essencial para chaves primárias em bancos de dados e sessões.",
+        key_types: &["Uuid", "Builder", "Version"],
+        key_methods: &[
+            "Uuid::new_v4()",
+            "Uuid::now_v7()",
+            "Uuid::parse_str(s)",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// uuid = { version = "1.8", features = ["v4", "v7", "fast-rng"] }
+
+fn main() {
+    println!("uuid: geração e parsing de identificadores únicos universais (v4 e v7).");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"uuid = { version = "1.8", features = ["v4", "v7"] }"#),
+        docs_url: "https://docs.rs/uuid/latest/uuid/",
+    },
+    RustLibItem {
+        id: "crate_futures",
+        name: "futures",
+        category: LibCategory::SyncConcurrency,
+        summary: "Abstrações fundamentais e utilitários assíncronos: Stream, Sink, join!, try_join! e FuturesUnordered.",
+        description: "\
+`futures` é a biblioteca fundamental que define as traits centrais do ecossistema assíncrono de Rust.
+Fornece combinadores funcionais para futures e streams, permitindo executar dezenas de tarefas em paralelo com `FuturesUnordered`.",
+        key_types: &["Stream", "Sink", "channel", "stream::FuturesUnordered"],
+        key_methods: &[
+            "join!",
+            "try_join!",
+            ".next().await",
+            "select!",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// futures = "0.3"
+
+fn main() {
+    println!("futures: combinadores, streams e abstrações essenciais para Rust assíncrono.");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"futures = "0.3""#),
+        docs_url: "https://docs.rs/futures/latest/futures/",
+    },
+    RustLibItem {
+        id: "crate_hex",
+        name: "hex",
+        category: LibCategory::Ecosystem,
+        summary: "Codificação e decodificação hexadecimal ultrarrápida de sequências de bytes e hashes.",
+        description: "\
+`hex` converte buffers binários em representações hexadecimais legíveis e vice-versa.
+Possui otimizações de vetorização para processar milhões de hashes por segundo com consumo mínimo de CPU.",
+        key_types: &["encode", "decode", "FromHex", "ToHex"],
+        key_methods: &[
+            "hex::encode(bytes)",
+            "hex::decode(string)",
+            "hex::encode_upper(bytes)",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// hex = "0.4"
+
+fn main() {
+    println!("hex: conversão rápida de hashes e chaves binárias para representação hexadecimal.");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"hex = "0.4""#),
+        docs_url: "https://docs.rs/hex/latest/hex/",
+    },
+    RustLibItem {
+        id: "crate_dashmap",
+        name: "dashmap",
+        category: LibCategory::Collections,
+        summary: "HashMap concorrente de alto desempenho baseado em múltiplos shards para evitar contenção de locks.",
+        description: "\
+`dashmap` oferece uma API similar a `std::collections::HashMap`, mas desenhada para acesso simultâneo por centenas de threads.
+Elimina o gargalo de `Mutex` ou `RwLock` globais particionando as chaves em shards independentes.",
+        key_types: &["DashMap", "DashSet"],
+        key_methods: &[
+            "DashMap::new()",
+            ".insert(k, v)",
+            ".get(&k)",
+            ".entry(k)",
+            ".remove(&k)",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// dashmap = "6.0"
+
+fn main() {
+    println!("dashmap: hashmap concorrente de alta vazão sem travamentos globais de thread.");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"dashmap = "6.0""#),
+        docs_url: "https://docs.rs/dashmap/latest/dashmap/",
+    },
+    RustLibItem {
+        id: "crate_crossbeam",
+        name: "crossbeam",
+        category: LibCategory::SyncConcurrency,
+        summary: "Ferramental avançado de concorrência: canais mpmc, scoped threads e estruturas lock-free.",
+        description: "\
+`crossbeam` é a fundação para sistemas paralelos complexos em Rust.
+Fornece scoped threads (threads que emprestam variáveis da pilha com segurança), canais multi-produtor multi-consumidor de baixa latência e coleções atômicas.",
+        key_types: &["channel::unbounded", "channel::bounded", "scope", "epoch"],
+        key_methods: &[
+            "channel::unbounded()",
+            "scope(|s| s.spawn(...))",
+            "select!",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// crossbeam = "0.8"
+
+fn main() {
+    println!("crossbeam: primitivas e estruturas concorrentes de alto desempenho para threads.");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"crossbeam = "0.8""#),
+        docs_url: "https://docs.rs/crossbeam/latest/crossbeam/",
+    },
+    RustLibItem {
+        id: "crate_itertools",
+        name: "itertools",
+        category: LibCategory::Collections,
+        summary: "Mais de 100 adaptadores e métodos utilitários extras para enriquecer os iteradores de Rust.",
+        description: "\
+`itertools` amplia a Standard Library com recursos expressivos como `.unique()`, `.sorted()`, `.group_by()`, `.combinations()` e `.join()`.
+Permite escrever processamentos complexos em estilo funcional elegante com abstrações de custo zero.",
+        key_types: &["Itertools", "GroupBy", "Chunks"],
+        key_methods: &[
+            ".unique()",
+            ".sorted()",
+            ".group_by()",
+            ".combinations(k)",
+            ".join(\", \")",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// itertools = "0.13"
+
+fn main() {
+    println!("itertools: biblioteca de adaptadores funcionais avançados para iteradores em Rust.");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"itertools = "0.13""#),
+        docs_url: "https://docs.rs/itertools/latest/itertools/",
+    },
+    RustLibItem {
+        id: "crate_image",
+        name: "image",
+        category: LibCategory::Ecosystem,
+        summary: "Processamento de imagens em Rust puro: carregamento, redimensionamento e gravação em PNG, JPEG, WebP e GIF.",
+        description: "\
+`image` é o padrão de facto para manipulação gráfica e carregamento de texturas em Rust.
+Oferece buffers de pixels tipados (`RgbaImage`, `RgbImage`), conversão de formatos e algoritmos de amostragem de alta qualidade sem depender de C/C++.",
+        key_types: &["DynamicImage", "RgbaImage", "GenericImageView", "imageops"],
+        key_methods: &[
+            "image::open(path)",
+            ".resize(w, h, filter)",
+            ".save(dest)",
+            ".dimensions()",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// image = "0.25"
+
+fn main() {
+    println!("image: decodificação, processamento e manipulação gráfica de imagens em Rust puro.");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"image = "0.25""#),
+        docs_url: "https://docs.rs/image/latest/image/",
+    },
+    RustLibItem {
+        id: "crate_rodio",
+        name: "rodio",
+        category: LibCategory::GameDev,
+        summary: "Reprodução de áudio, trilhas sonoras e efeitos em Rust puro multiplataforma (MP3, WAV, OGG, FLAC).",
+        description: "\
+`rodio` simplifica a reprodução sonora em jogos, ferramentas de notificação e reprodutores multimídia.
+Baseado no CPAL, gerencia saídas de áudio no Windows, Linux e macOS com controle de volume, canais independentes e efeitos espaciais.",
+        key_types: &["OutputStream", "Sink", "Decoder", "Source"],
+        key_methods: &[
+            "OutputStream::try_default()",
+            "Sink::try_new(&stream)",
+            ".append(source)",
+            ".set_volume()",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// rodio = "0.19"
+
+fn main() {
+    println!("rodio: reprodução de efeitos sonoros e músicas para jogos e aplicativos em Rust.");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"rodio = "0.19""#),
+        docs_url: "https://docs.rs/rodio/latest/rodio/",
+    },
+    RustLibItem {
+        id: "crate_thiserror",
+        name: "thiserror",
+        category: LibCategory::Ecosystem,
+        summary: "Macro derive padrão da indústria para implementar tipos de erro customizados expressivos com zero esforço.",
+        description: "\
+`thiserror` elimina o código repetitivo de implementar `std::fmt::Display` e `std::error::Error`.
+Permite formatar mensagens com anotações `#[error(\"...\")]`, encadear fontes de erro com `#[from]` e manter erros tipados e limpos.",
+        key_types: &["#[derive(Error)]", "#[error(\"...\")]", "#[from]"],
+        key_methods: &[
+            "#[error(\"...\")]",
+            "#[from] std::io::Error",
+            "#[source]",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// thiserror = "1.0"
+
+fn main() {
+    println!("thiserror: criação declarativa de enums de erro expressivos e idiomáticos em Rust.");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"thiserror = "1.0""#),
+        docs_url: "https://docs.rs/thiserror/latest/thiserror/",
+    },
+    RustLibItem {
+        id: "crate_tracing",
+        name: "tracing",
+        category: LibCategory::SystemOs,
+        summary: "Instrumentação estruturada, spans assíncronos e telemetria para diagnóstico em produção.",
+        description: "\
+Mantido pela equipe do Tokio, `tracing` é o sucessor moderno do crate `log`.
+Projetado especificamente para código assíncrono, vincula eventos a spans contextuais para rastrear o fluxo de requisições inteiras através de múltiplas tarefas e threads.",
+        key_types: &["info!", "warn!", "error!", "span!", "Level"],
+        key_methods: &[
+            "tracing_subscriber::fmt::init()",
+            "info!(\"mensagem\", campo = valor)",
+            "span!(Level::INFO, \"nome\")",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// tracing = "0.1"
+// tracing-subscriber = "0.3"
+
+fn main() {
+    println!("tracing: instrumentação, observabilidade e logs estruturados para Rust moderno.");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"tracing = "0.1""#),
+        docs_url: "https://docs.rs/tracing/latest/tracing/",
+    },
 
 
 ];
@@ -1671,7 +2127,7 @@ mod tests {
 
     #[test]
     fn catalogo_de_bibliotecas_tem_itens_validos() {
-        assert!(RUST_LIBS.len() >= 40, "devem existir mais de 40 bibliotecas documentadas (atual: {})", RUST_LIBS.len());
+        assert!(RUST_LIBS.len() >= 60, "devem existir mais de 60 bibliotecas documentadas (atual: {})", RUST_LIBS.len());
         let mut ids = std::collections::HashSet::new();
         for lib in RUST_LIBS {
             assert!(ids.insert(lib.id), "id repetido: {}", lib.id);

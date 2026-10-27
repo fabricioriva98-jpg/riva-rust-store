@@ -187,6 +187,21 @@ Rodada Biblioteca Rust Completa & Terminal Integrado / Espelho de IDEs (25/10, t
 - **Terminal Integrado & Espelho de IDEs (VS Code / Antigravity)**: novos módulos `ide.rs`, `terminal_studio.rs` e tela gráfica `gui/terminal_studio.rs`. Detecta automaticamente a instalação do Visual Studio Code e do Google Antigravity na máquina do Fabricio. Permite abrir pastas de projeto nas IDEs com 1 clique, instalar a extensão oficial `rust-analyzer` no VS Code, inspecionar arquivos e executar comandos Cargo (`cargo check`, `cargo build`, `cargo run`, `cargo test`, `rustc --version`, `rustup show`, `cargo clean` ou qualquer comando digitado) em tempo real sem travar a interface da loja.
 - **Internacionalização e Testes**: paridade rigorosa em `i18n.rs` com 40 novas traduções adicionadas (100% dos testes `todo_texto_traduzivel_tem_ingles`, `tabela_sem_repeticao_nem_sobra` e `troca_de_idioma` aprovados). Suite total expandida para 109 testes (todos passando), 0 novos avisos no Clippy e executáveis atualizados em release: `RRS - Riva Rust Store.exe` e `Instalador - RRS Riva Rust Store.exe`.
 
+Rodada Expansão Rust: 30 Lições de Aprendizado, 60 Crates e Novos Templates na IDE (26/10, noite — Antigravity / Gemini):
+- **10 Lições Avançadas de Rust no Estúdio do Iniciante (`learn.rs` e `gui/learn.rs`)**:
+  - Total expandido para **30 lições práticas completas** (10 Básico, 10 Intermediário, 10 Avançado).
+  - Novo filtro visual `🔥 Avançado (21-30)` com badge roxo e botões de navegação sequencial `◀ Anterior` e `Próxima ▶`.
+  - Lições 21 a 30: Tratamento Profissional de Erros (`std::error::Error`), Concorrência Segura com `Arc<Mutex<T>>`, Leituras/Escritas Otimizadas com `RwLock<T>`, Anotações de Tempo de Vida (Lifetimes `'a`), Metaprogramação com Macros (`macro_rules!`), Iteradores Avançados e Abstração de Custo Zero, Padrão Typestate (Segurança em Compilação), Interoperabilidade C / FFI (`extern "C"`), Unsafe Rust & Ponteiros Brutos (`*const`, `*mut`) e Mini-Projeto Avançado: Cache LRU Concorrente Thread-Safe.
+- **Expansão da Biblioteca Rust para 60 Módulos e Crates (`rust_lib.rs` e `gui/rust_lib.rs`)**:
+  - Catálogo ampliado de 42 para **60 módulos e crates fundamentais**, incluindo `parking_lot`, `flume`, `dotenvy`, `walkdir`, `uuid`, `futures`, `dialoguer`, `crossterm`, `csv`, `hex`, `dashmap`, `crossbeam`, `itertools`, `image`, `rodio`, `thiserror`, `tracing` e `tower`.
+  - Atualizada a aba para `📚 Módulos & Crates (60+)`.
+- **6 Novos Snippets e Templates na IDE / Terminal Studio (`gui/terminal_studio.rs`)**:
+  - Adicionados templates práticos prontos para teste: Busca Binária, Árvore Binária, Regex & Validação, Hash Criptográfico SHA-256, Web API REST com Axum e Barra de Progresso com Indicatif.
+- **Qualidade, Internacionalização e Binários**:
+  - Paridade total PT-BR e EN em `src/i18n.rs` (0 missing, 0 unused).
+  - 139 testes aprovados (100% de sucesso), zero novos alertas de clippy.
+  - Binários de release atualizados na raiz: `RRS - Riva Rust Store.exe` e `Instalador - RRS Riva Rust Store.exe` (18.354.688 bytes).
+
 Rodada Métricas da Biblioteca, Changelog de Releases e Diagnóstico de Dependências (26/10, noite — Antigravity / Gemini):
 - **Painel de Atividades & Estatísticas da Biblioteca**:
   - Implementado card estatístico no topo de `Biblioteca` (`NavSection::Library`): Horas totais de jogo/uso formatadas (`h e m`), total de aplicativos instalados, contagem de apps em Rust puro (`🦀 Feito em Rust`), aplicativo mais jogado e botão de ação rápida `⬆ Atualizar Todos` quando há atualizações pendentes.

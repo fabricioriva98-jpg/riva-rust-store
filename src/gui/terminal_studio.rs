@@ -268,6 +268,36 @@ impl StoreGui {
                                 self.status_msg = self.tr("Código do template carregado no editor.");
                                 self.status_is_error = false;
                             }
+                            if ui.button(self.tr("Busca Binária")).clicked() {
+                                self.rust_ide_code = "fn busca_binaria(arr: &[i32], alvo: i32) -> Option<usize> {\n    let mut ini = 0;\n    let mut fim = arr.len();\n    while ini < fim {\n        let meio = ini + (fim - ini) / 2;\n        if arr[meio] == alvo {\n            return Some(meio);\n        } else if arr[meio] < alvo {\n            ini = meio + 1;\n        } else {\n            fim = meio;\n        }\n    }\n    None\n}\n\nfn main() {\n    let numeros = [2, 5, 8, 12, 16, 23, 38, 56, 72, 91];\n    println!(\"Array ordenado: {:?}\", numeros);\n    let alvo = 23;\n    match busca_binaria(&numeros, alvo) {\n        Some(pos) => println!(\"Elemento {} encontrado no índice {}!\", alvo, pos),\n        None => println!(\"Elemento {} não encontrado.\", alvo),\n    }\n}\n".to_string();
+                                self.status_msg = self.tr("Código do template carregado no editor.");
+                                self.status_is_error = false;
+                            }
+                            if ui.button(self.tr("Árvore Binária")).clicked() {
+                                self.rust_ide_code = "struct No {\n    valor: i32,\n    esq: Option<Box<No>>,\n    dir: Option<Box<No>>,\n}\n\nimpl No {\n    fn folha(valor: i32) -> Self {\n        Self { valor, esq: None, dir: None }\n    }\n    fn inserir(&mut self, novo_val: i32) {\n        if novo_val < self.valor {\n            match &mut self.esq {\n                Some(ref mut n) => n.inserir(novo_val),\n                None => self.esq = Some(Box::new(No::folha(novo_val))),\n            }\n        } else {\n            match &mut self.dir {\n                Some(ref mut n) => n.inserir(novo_val),\n                None => self.dir = Some(Box::new(No::folha(novo_val))),\n            }\n        }\n    }\n    fn em_ordem(&self) {\n        if let Some(ref e) = self.esq { e.em_ordem(); }\n        print!(\"{} \", self.valor);\n        if let Some(ref d) = self.dir { d.em_ordem(); }\n    }\n}\n\nfn main() {\n    let mut raiz = No::folha(50);\n    for v in [30, 70, 20, 40, 60, 80] {\n        raiz.inserir(v);\n    }\n    print!(\"Árvore Binária ordenada (em-ordem): \");\n    raiz.em_ordem();\n    println!();\n}\n".to_string();
+                                self.status_msg = self.tr("Código do template carregado no editor.");
+                                self.status_is_error = false;
+                            }
+                            if ui.button(self.tr("Regex / Validação")).clicked() {
+                                self.rust_ide_code = "// Exemplo com crate regex\n// No Cargo.toml: regex = \"1.10\"\nuse regex::Regex;\n\nfn main() {\n    let re_email = Regex::new(r\"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$\").unwrap();\n    let testes = [\"usuario@rust-lang.org\", \"invalido@@email\", \"contato@rrs.app\", \"sem-arroba.com\"];\n    println!(\"=== Validador de E-mails com Regex ===\");\n    for email in testes {\n        let valido = re_email.is_match(email);\n        println!(\"{:<25} -> {}\", email, if valido { \"✔ Válido\" } else { \"❌ Inválido\" });\n    }\n}\n".to_string();
+                                self.status_msg = self.tr("Código do template carregado no editor.");
+                                self.status_is_error = false;
+                            }
+                            if ui.button(self.tr("Hash SHA-256")).clicked() {
+                                self.rust_ide_code = "// Exemplo com crate sha2 e hex\n// No Cargo.toml: sha2 = \"0.10\", hex = \"0.4\"\nuse sha2::{Sha256, Digest};\n\nfn main() {\n    let mensagem = \"RRS - Riva Rust Store: Integridade & Velocidade\";\n    let mut hasher = Sha256::new();\n    hasher.update(mensagem.as_bytes());\n    let resultado = hasher.finalize();\n    println!(\"Mensagem: {}\", mensagem);\n    println!(\"Hash SHA-256: {}\", hex::encode(resultado));\n}\n".to_string();
+                                self.status_msg = self.tr("Código do template carregado no editor.");
+                                self.status_is_error = false;
+                            }
+                            if ui.button(self.tr("Web API / Axum")).clicked() {
+                                self.rust_ide_code = "// Exemplo de Microserviço REST com Axum e Tokio\n// No Cargo.toml: axum = \"0.7\", tokio = { version = \"1.0\", features = [\"full\"] }, serde = { version = \"1.0\", features = [\"derive\"] }\nuse axum::{routing::get, Json, Router};\nuse serde::Serialize;\n\n#[derive(Serialize)]\nstruct StatusApp {\n    nome: &'static str,\n    versao: &'static str,\n    status: &'static str,\n}\n\nasync fn get_status() -> Json<StatusApp> {\n    Json(StatusApp {\n        nome: \"RRS Rust Service\",\n        versao: \"1.0.0\",\n        status: \"operacional\",\n    })\n}\n\n#[tokio::main]\nasync fn main() {\n    println!(\"Iniciando servidor Axum na porta 3000...\");\n    let app = Router::new().route(\"/api/status\", get(get_status));\n    println!(\"Rotas registradas: /api/status\");\n}\n".to_string();
+                                self.status_msg = self.tr("Código do template carregado no editor.");
+                                self.status_is_error = false;
+                            }
+                            if ui.button(self.tr("Barra de Progresso")).clicked() {
+                                self.rust_ide_code = "// Exemplo de feedback visual de progresso com indicatif\n// No Cargo.toml: indicatif = \"0.17\"\nuse indicatif::{ProgressBar, ProgressStyle};\nuse std::thread;\nuse std::time::Duration;\n\nfn main() {\n    let pb = ProgressBar::new(100);\n    pb.set_style(ProgressStyle::default_bar()\n        .template(\"{spinner:.green} [{elapsed_precise}] [{bar:40.cyan/blue}] {pos}/{len} ({eta})\")\n        .unwrap()\n        .progress_chars(\"#>- \"));\n    println!(\"Processando itens em background...\");\n    for _ in 0..100 {\n        pb.inc(1);\n        thread::sleep(Duration::from_millis(20));\n    }\n    pb.finish_with_message(\"✔ Tarefas finalizadas com sucesso!\");\n}\n".to_string();
+                                self.status_msg = self.tr("Código do template carregado no editor.");
+                                self.status_is_error = false;
+                            }
 
                             ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
                                 if ui.button(self.tr("🧹 Limpar")).clicked() {

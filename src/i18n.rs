@@ -684,7 +684,7 @@ pub static TABLE: &[(&str, &str)] = &[
     ("Sincroniza todos os seus jogos da Steam, Epic Games, GOG, Xbox, EA App, Ubisoft, Battle.net e Riot Games.", "Synchronizes all your games from Steam, Epic Games, GOG, Xbox, EA App, Ubisoft, Battle.net and Riot Games."),
     ("Sincronizando todas as lojas de games do PC...", "Synchronizing all PC game stores..."),
     ("Todas", "All"),
-    ("Todos (20)", "All (20)"),
+    ("Todos (30)", "All (30)"),
     ("VERSÃO", "VERSION"),
     ("em uso", "in use"),
     ("livres atualmente", "currently free"),
@@ -838,7 +838,7 @@ pub static TABLE: &[(&str, &str)] = &[
     ("📄 Versão para Impressão & Salvar PDF ↗", "📄 Print & Save PDF Version ↗"),
     ("📖 O Livro Oficial de Rust (PDF & Web)", "📖 The Official Rust Book (PDF & Web)"),
     ("📖 O Livro da Linguagem Rust (The Official Rust Book)", "📖 The Rust Programming Language (The Official Rust Book)"),
-    ("📚 Módulos & Crates (45+)", "📚 Modules & Crates (45+)"),
+    ("📚 Módulos & Crates (60+)", "📚 Modules & Crates (60+)"),
     ("📦 Novo Projeto Cargo:", "📦 New Cargo Project:"),
     ("🦀 Toolchain Rust do Sistema:", "🦀 System Rust Toolchain:"),
 
@@ -875,6 +875,16 @@ pub static TABLE: &[(&str, &str)] = &[
     ("Diagnóstico de Dependências:", "Dependency Diagnostics:"),
     ("🌳 Árvore de Dependências (cargo tree)", "🌳 Dependency Tree (cargo tree)"),
     ("🔄 Atualizar Dependências (cargo update)", "🔄 Update Dependencies (cargo update)"),
+
+    // Lições Avançadas e Novos Templates na IDE
+    ("🔥 Avançado (21-30)", "🔥 Advanced (21-30)"),
+    ("Próxima ▶", "Next ▶"),
+    ("Busca Binária", "Binary Search"),
+    ("Árvore Binária", "Binary Tree"),
+    ("Regex / Validação", "Regex / Validation"),
+    ("Hash SHA-256", "SHA-256 Hash"),
+    ("Web API / Axum", "Web API / Axum"),
+    ("Barra de Progresso", "Progress Bar"),
 ];
 
 #[cfg(test)]

@@ -811,6 +811,503 @@ fn main() {
 ",
         challenge: "Adicione uma função que conte quantas tarefas estão concluídas e quantas ainda estão pendentes.",
     },
+    Lesson {
+        id: "erros_customizados_std",
+        title: "21. Tratamento Profissional de Erros (`std::error::Error`)",
+        category: "Avançado",
+        level: "Avançado",
+        summary: "Crie seus próprios tipos de erro com enum, Display e a trait std::error::Error.",
+        explanation: "\
+Em projetos profissionais, retornar apenas String em Result<T, E> perde informações cruciais sobre a falha.\n\
+Rust permite criar tipos de erro expressivos através de `enum` e da trait `std::error::Error`.\n\
+Implementando `std::fmt::Display` e `std::error::Error`, seu erro pode ser propagado pelo operador `?`, integrado ao ecossistema e inspecionado programaticamente.\n\
+No ecossistema Cargo, crates famosos como `thiserror` automatizam essa implementação com macros derive, enquanto `anyhow` facilita erros genéricos em aplicações executáveis.",
+        initial_code: "\
+use std::fmt;
+use std::error::Error;
+
+#[derive(Debug)]
+enum BancoError {
+    SaldoInsuficiente { saldo: f64, saque: f64 },
+    ContaBloqueada(String),
+}
+
+impl fmt::Display for BancoError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            BancoError::SaldoInsuficiente { saldo, saque } => {
+                write!(f, \"Saldo insuficiente: você tem R${:.2}, mas tentou sacar R${:.2}\", saldo, saque)
+            }
+            BancoError::ContaBloqueada(motivo) => {
+                write!(f, \"Acesso negado: conta bloqueada por '{}'\", motivo)
+            }
+        }
+    }
+}
+
+impl Error for BancoError {}
+
+struct Conta {
+    titular: String,
+    saldo: f64,
+    bloqueada: bool,
+}
+
+impl Conta {
+    fn sacar(&mut self, valor: f64) -> Result<f64, BancoError> {
+        if self.bloqueada {
+            return Err(BancoError::ContaBloqueada(\"Suspeita de fraude\".into()));
+        }
+        if valor > self.saldo {
+            return Err(BancoError::SaldoInsuficiente {
+                saldo: self.saldo,
+                saque: valor,
+            });
+        }
+        self.saldo -= valor;
+        Ok(self.saldo)
+    }
+}
+
+fn main() {
+    let mut conta = Conta {
+        titular: \"Carlos\".into(),
+        saldo: 150.0,
+        bloqueada: false,
+    };
+
+    match conta.sacar(200.0) {
+        Ok(novo_saldo) => println!(\"Saque realizado! Novo saldo: R${:.2}\", novo_saldo),
+        Err(e) => println!(\"❌ Erro capturado com sucesso: {}\", e),
+    }
+}
+",
+        challenge: "Adicione um novo erro `ValorInvalido` que recusa saques de valores negativos ou zerados.",
+    },
+    Lesson {
+        id: "arc_mutex_concorrencia",
+        title: "22. Estado Compartilhado Concorrente (`Arc<Mutex<T>>`)",
+        category: "Avançado",
+        level: "Avançado",
+        summary: "Compartilhe e modifique dados em múltiplas threads com segurança garantida pelo compilador.",
+        explanation: "\
+Para que múltiplas threads possam ler e alterar o mesmo dado na memória sem risco de corrupção ou data races, Rust combina duas estruturas:\n\
+1. `Arc<T>` (Atomic Reference Counting): permite múltiplos donos (proprietários) do mesmo ponteiro em diferentes threads.\n\
+2. `Mutex<T>` (Mutual Exclusion): garante que apenas uma thread acesse o dado interno por vez através de um lock guardião.\n\
+Se uma thread esquecer de liberar o lock, o RAII de Rust libera automaticamente quando a variável guardiã sai de escopo!",
+        initial_code: "\
+use std::sync::{Arc, Mutex};
+use std::thread;
+
+fn main() {
+    let contador = Arc::new(Mutex::new(0));
+    let mut handles = vec![];
+
+    for id in 1..=5 {
+        let contador_clone = Arc::clone(&contador);
+        let handle = thread::spawn(move || {
+            for _ in 0..10 {
+                let mut num = contador_clone.lock().unwrap();
+                *num += 1;
+            }
+            println!(\"Thread #{} concluiu seus incrementos.\", id);
+        });
+        handles.push(handle);
+    }
+
+    for h in handles {
+        h.join().unwrap();
+    }
+
+    println!(\"Valor final do contador: {}\", *contador.lock().unwrap());
+    assert_eq!(*contador.lock().unwrap(), 50);
+}
+",
+        challenge: "Crie uma lista `Arc<Mutex<Vec<String>>>` e faça cada thread adicionar uma mensagem de log diferente.",
+    },
+    Lesson {
+        id: "rwlock_leitura_escrita",
+        title: "23. Otimização Concorrente com `RwLock<T>`",
+        category: "Avançado",
+        level: "Avançado",
+        summary: "Múltiplos leitores simultâneos ou um escritor exclusivo para máxima performance.",
+        explanation: "\
+Enquanto o `Mutex` bloqueia tudo (até leituras simultâneas), o `RwLock` (Read-Write Lock) permite:\n\
+• Múltiplas threads lendo ao mesmo tempo (`read()`).\n\
+• Apenas uma thread escrevendo com acesso exclusivo (`write()`).\n\
+Isso é perfeito para sistemas com muitas leituras e poucas escritas (ex: configurações de servidores, caches e tabelas de consulta).",
+        initial_code: "\
+use std::sync::{Arc, RwLock};
+use std::thread;
+use std::time::Duration;
+
+fn main() {
+    let config = Arc::new(RwLock::new(String::from(\"v1.0.0-PROD\")));
+    let mut leitores = vec![];
+
+    for i in 1..=4 {
+        let cfg = Arc::clone(&config);
+        leitores.push(thread::spawn(move || {
+            let valor = cfg.read().unwrap();
+            println!(\"Leitor #{} consultou versão: {}\", i, *valor);
+        }));
+    }
+
+    let cfg_escritor = Arc::clone(&config);
+    let escritor = thread::spawn(move || {
+        thread::sleep(Duration::from_millis(10));
+        let mut valor = cfg_escritor.write().unwrap();
+        *valor = String::from(\"v2.0.0-PROD\");
+        println!(\"🚀 Escritor atualizou a configuração!\");
+    });
+
+    for l in leitores { l.join().unwrap(); }
+    escritor.join().unwrap();
+
+    println!(\"Versão ativa final: {}\", *config.read().unwrap());
+}
+",
+        challenge: "Meça o comportamento adicionando mais leituras após a atualização do escritor.",
+    },
+    Lesson {
+        id: "lifetimes_anotacoes",
+        title: "24. Anotações de Tempo de Vida (Lifetimes `'a`)",
+        category: "Avançado",
+        level: "Avançado",
+        summary: "Como o compilador garante que nenhuma referência aponte para memória liberada (dangling pointer).",
+        explanation: "\
+Em Rust, todo empréstimo (`&`) possui um tempo de vida (lifetime). Na maioria das vezes, o compilador infere isso sozinho (lifetime elision).\n\
+Porém, quando uma função recebe duas referências e retorna uma delas, ou quando uma struct guarda referências, o compilador precisa saber qual tempo de vida governa o retorno.\n\
+A sintaxe `'a` indica uma relação: 'a referência retornada viverá pelo menos tanto tempo quanto a menor das entradas'.",
+        initial_code: "\
+fn maior_texto<'a>(x: &'a str, y: &'a str) -> &'a str {
+    if x.len() > y.len() {
+        x
+    } else {
+        y
+    }
+}
+
+struct Exibidor<'a> {
+    cabecalho: &'a str,
+}
+
+impl<'a> Exibidor<'a> {
+    fn mostrar(&self, conteudo: &str) {
+        println!(\"[{}] {}\", self.cabecalho, conteudo);
+    }
+}
+
+fn main() {
+    let t1 = \"Linguagem Rust\";
+    let t2 = \"C++ Moderno\";
+    let resultado = maior_texto(t1, t2);
+    println!(\"Maior texto: {}\", resultado);
+
+    let exibidor = Exibidor { cabecalho: \"AVISO\" };
+    exibidor.mostrar(\"Lifetimes evitam ponteiros soltos sem garbage collector!\");
+}
+",
+        challenge: "Crie uma função `primeira_palavra<'a>(texto: &'a str) -> &'a str` que retorne uma fatia até o primeiro espaço.",
+    },
+    Lesson {
+        id: "macros_declarativas",
+        title: "25. Metaprogramação com Macros (`macro_rules!`)",
+        category: "Avançado",
+        level: "Avançado",
+        summary: "Crie sua própria sintaxe e elimine repetição de código com macros declarativas.",
+        explanation: "\
+Macros em Rust não são simples substituições de texto como em C (`#define`). Elas operam na árvore sintática abstrata (AST) com segurança de higiene lexical (hygienic macros).\n\
+Com `macro_rules!`, você pode criar construções que aceitam número variável de argumentos, constroem mapas dinâmicos ou implementam testes de forma limpa.",
+        initial_code: "\
+macro_rules! mapa {
+    ( $( $chave:expr => $valor:expr ),* $(,)? ) => {{
+        let mut temp_map = std::collections::HashMap::new();
+        $(
+            temp_map.insert($chave, $valor);
+        )*
+        temp_map
+    }};
+}
+
+macro_rules! debug_info {
+    ($val:expr) => {
+        println!(\"[DEBUG: {} = {:?}]\", stringify!($val), $val);
+    };
+}
+
+fn main() {
+    let pontuacoes = mapa! {
+        \"Alice\" => 100,
+        \"Bob\" => 85,
+        \"Charlie\" => 92,
+    };
+
+    println!(\"Tamanho do mapa gerado pela macro: {}\", pontuacoes.len());
+    println!(\"Pontuação de Alice: {:?}\", pontuacoes.get(\"Alice\"));
+
+    let x = 42 * 2;
+    debug_info!(x);
+}
+",
+        challenge: "Crie uma macro `somar!(x, y, z)` que receba qualquer quantidade de números e retorne a soma total.",
+    },
+    Lesson {
+        id: "iteradores_avancados_zero_cost",
+        title: "26. Iteradores Avançados & Abstração de Custo Zero",
+        category: "Avançado",
+        level: "Avançado",
+        summary: "Construa pipelines de processamento velozes como loops C manuais e implemente a trait Iterator.",
+        explanation: "\
+Em Rust, iteradores são lazy (preguiçosos): nada é processado até você consumir com métodos como `collect`, `sum` ou `for`.\n\
+O compilador aplica otimizações agressivas (unrolling, vetorização SIMD e eliminação de checagem de limites), tornando iteradores funcionais tão rápidos ou mais rápidos que laços `for` manuais.\n\
+Você também pode implementar a trait `Iterator` para criar fluxos de dados infinitos ou geradores sob demanda.",
+        initial_code: "\
+struct Fibonacci {
+    atual: u64,
+    proximo: u64,
+}
+
+impl Fibonacci {
+    fn novo() -> Self {
+        Self { atual: 0, proximo: 1 }
+    }
+}
+
+impl Iterator for Fibonacci {
+    type Item = u64;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        let novo = self.atual + self.proximo;
+        self.atual = self.proximo;
+        self.proximo = novo;
+        Some(self.atual)
+    }
+}
+
+fn main() {
+    let fib_pares_soma: u64 = Fibonacci::novo()
+        .take(15)
+        .filter(|&n| n % 2 == 0)
+        .inspect(|&n| println!(\"Fibonacci par: {}\", n))
+        .sum();
+
+    println!(\"Soma dos primeiros pares de Fibonacci: {}\", fib_pares_soma);
+}
+",
+        challenge: "Crie um iterador `ContadorRegressivo` que conte de N até 1 e depois retorne `None`.",
+    },
+    Lesson {
+        id: "padrao_typestate",
+        title: "27. Padrão Typestate (Segurança em Compilação)",
+        category: "Avançado",
+        level: "Avançado",
+        summary: "Modele regras de negócio no sistema de tipos para tornar estados inválidos impossíveis de compilar.",
+        explanation: "\
+O padrão Typestate usa o sistema de tipos de Rust para garantir que certas ações só possam ser executadas quando o objeto está no estado correto.\n\
+Por exemplo: uma mensagem de e-mail em rascunho não pode ser enviada antes de ter um destinatário; um pedido não pode ser despachado antes de ser pago.\n\
+Em vez de checagens em tempo de execução com `if`, o próprio compilador rejeita o código se a ordem estiver errada!",
+        initial_code: "\
+struct Rascunho;
+struct ProntoParaEnvio { destinatario: String }
+
+struct Email<Estado> {
+    assunto: String,
+    corpo: String,
+    estado: Estado,
+}
+
+impl Email<Rascunho> {
+    fn novo(assunto: &str, corpo: &str) -> Self {
+        Self {
+            assunto: assunto.into(),
+            corpo: corpo.into(),
+            estado: Rascunho,
+        }
+    }
+
+    fn definir_destinatario(self, destino: &str) -> Email<ProntoParaEnvio> {
+        Email {
+            assunto: self.assunto,
+            corpo: self.corpo,
+            estado: ProntoParaEnvio { destinatario: destino.into() },
+        }
+    }
+}
+
+impl Email<ProntoParaEnvio> {
+    fn enviar(self) {
+        println!(\"📧 Enviando e-mail para: {}\", self.estado.destinatario);
+        println!(\"   Assunto: {}\", self.assunto);
+        println!(\"   Status: Enviado com sucesso!\");
+    }
+}
+
+fn main() {
+    let email = Email::novo(\"Boas-vindas RRS\", \"Aproveite a biblioteca de Rust!\");
+    let pronto = email.definir_destinatario(\"dev@rustlang.org\");
+    pronto.enviar();
+}
+",
+        challenge: "Adicione um estado `Enviado` retornado pelo método `enviar` para registrar o carimbo de envio.",
+    },
+    Lesson {
+        id: "interoperabilidade_c_ffi",
+        title: "28. Interoperabilidade com C (FFI & `extern \"C\"`)",
+        category: "Avançado",
+        level: "Avançado",
+        summary: "Chame bibliotecas C existentes e exporte funções Rust de alta velocidade.",
+        explanation: "\
+Rust possui excelente compatibilidade binária (ABI) com C.\n\
+Com blocos `extern \"C\"`, você pode chamar funções da biblioteca padrão C ou bibliotecas nativas de sistema operacional (como `puts`, `abs`, `sqrt`).\n\
+E com `#[no_mangle] pub extern \"C\" fn ...`, você pode compilar bibliotecas em Rust e chamá-las de Python, Node.js, C# ou C++ sem perda de desempenho!",
+        initial_code: "\
+extern \"C\" {
+    fn abs(i: i32) -> i32;
+}
+
+#[no_mangle]
+pub extern \"C\" fn somar_c(a: i32, b: i32) -> i32 {
+    a + b
+}
+
+fn main() {
+    let numero = -42;
+    let valor_absoluto = unsafe { abs(numero) };
+
+    println!(\"Número original: {}\", numero);
+    println!(\"Valor absoluto via C FFI (abs): {}\", valor_absoluto);
+    println!(\"Chamada da função com ABI C: {}\", somar_c(10, 32));
+}
+",
+        challenge: "Crie uma função segura (safe wrapper) em torno de uma chamada externa C.",
+    },
+    Lesson {
+        id: "unsafe_ponteiros_brutos",
+        title: "29. Unsafe Rust & Ponteiros Brutos (`*const`, `*mut`)",
+        category: "Avançado",
+        level: "Avançado",
+        summary: "Entenda quando e como usar Unsafe Rust com responsabilidade e controle rigoroso.",
+        explanation: "\
+Em mais de 99% do código Rust, o compilador garante segurança absoluta. No entanto, para criar estruturas fundamentais (como `Vec`, `std::sync` ou drivers de hardware), o Rust fornece o superpoder `unsafe`.\n\
+Dentro de um bloco `unsafe`, você pode:\n\
+• Desreferenciar ponteiros brutos (`*const T` e `*mut T`).\n\
+• Chamar funções unsafe ou FFI.\n\
+• Acessar campos de union.\n\
+Regra de ouro dos Rustáceos: sempre encapsule blocos unsafe dentro de APIs seguras (safe abstractions) para que o usuário da biblioteca nunca precise usar unsafe!",
+        initial_code: "\
+fn main() {
+    let mut x: i32 = 100;
+
+    let ptr_const: *const i32 = &x;
+    let ptr_mut: *mut i32 = &mut x;
+
+    println!(\"Endereço de memória constante: {:p}\", ptr_const);
+    println!(\"Endereço de memória mutável:  {:p}\", ptr_mut);
+
+    unsafe {
+        *ptr_mut += 50;
+        println!(\"Valor lido via ponteiro bruto após alteração: {}\", *ptr_const);
+    }
+
+    println!(\"Valor final na variável segura x: {}\", x);
+}
+",
+        challenge: "Crie uma função segura `swap_valores(a: &mut i32, b: &mut i32)` que use ponteiros para trocar dois valores.",
+    },
+    Lesson {
+        id: "mini_projeto_lru_cache",
+        title: "30. Mini-Projeto: Cache LRU Concorrente Thread-Safe",
+        category: "Projeto",
+        level: "Avançado",
+        summary: "Um Cache LRU (Least Recently Used) thread-safe de alta performance com HashMap e VecDeque.",
+        explanation: "\
+Parabéns por alcançar a lição 30 da RRS!\n\
+Neste projeto avançado, construímos um Cache LRU (Least Recently Used) thread-safe completo.\n\
+Ele armazena pares chave-valor com uma capacidade máxima definida. Quando a capacidade estoura, o item menos recentemente utilizado é descartado automaticamente.\n\
+O cache é protegido por `Arc<Mutex<...>>` para permitir leituras e escritas concorrentes por múltiplas threads simultâneas.\n\
+Você pode exportá-lo como um projeto Cargo completo com o botão acima!",
+        initial_code: "\
+use std::collections::{HashMap, VecDeque};
+use std::sync::{Arc, Mutex};
+use std::thread;
+
+struct LruCache<K, V> {
+    capacidade: usize,
+    mapa: HashMap<K, V>,
+    ordem: VecDeque<K>,
+}
+
+impl<K: Clone + std::hash::Hash + Eq + std::fmt::Debug, V: Clone + std::fmt::Debug> LruCache<K, V> {
+    fn novo(capacidade: usize) -> Self {
+        Self {
+            capacidade,
+            mapa: HashMap::new(),
+            ordem: VecDeque::new(),
+        }
+    }
+
+    fn inserir(&mut self, chave: K, valor: V) {
+        if self.mapa.contains_key(&chave) {
+            self.ordem.retain(|k| k != &chave);
+        } else if self.mapa.len() >= self.capacidade {
+            if let Some(chave_antiga) = self.ordem.pop_front() {
+                self.mapa.remove(&chave_antiga);
+                println!(\"  [Eviction LRU] Descartada chave antiga: {:?}\", chave_antiga);
+            }
+        }
+        self.ordem.push_back(chave.clone());
+        self.mapa.insert(chave, valor);
+    }
+
+    fn obter(&mut self, chave: &K) -> Option<V> {
+        if let Some(valor) = self.mapa.get(chave) {
+            let v_clonado = valor.clone();
+            self.ordem.retain(|k| k != chave);
+            self.ordem.push_back(chave.clone());
+            Some(v_clonado)
+        } else {
+            None
+        }
+    }
+}
+
+fn main() {
+    println!(\"=== RRS Thread-Safe LRU Cache ===\");
+    let cache = Arc::new(Mutex::new(LruCache::novo(3)));
+
+    let mut threads = vec![];
+
+    let c1 = Arc::clone(&cache);
+    threads.push(thread::spawn(move || {
+        let mut lock = c1.lock().unwrap();
+        lock.inserir(\"user:101\".to_string(), \"Alice\".to_string());
+        lock.inserir(\"user:102\".to_string(), \"Bob\".to_string());
+        lock.inserir(\"user:103\".to_string(), \"Charlie\".to_string());
+        println!(\"Thread 1 inseriu 3 usuários iniciais.\");
+    }));
+
+    let c2 = Arc::clone(&cache);
+    threads.push(thread::spawn(move || {
+        std::thread::sleep(std::time::Duration::from_millis(15));
+        let mut lock = c2.lock().unwrap();
+        let _ = lock.obter(&\"user:101\".to_string());
+        lock.inserir(\"user:104\".to_string(), \"Diana\".to_string());
+        println!(\"Thread 2 inseriu Diana.\");
+    }));
+
+    for t in threads { t.join().unwrap(); }
+
+    let mut lock = cache.lock().unwrap();
+    println!(\"\\nEstado final do cache (Capacidade 3):\");
+    println!(\"user:101 presente? {:?}\", lock.obter(&\"user:101\".to_string()));
+    println!(\"user:102 presente? {:?}\", lock.obter(&\"user:102\".to_string()));
+    println!(\"user:103 presente? {:?}\", lock.obter(&\"user:103\".to_string()));
+    println!(\"user:104 presente? {:?}\", lock.obter(&\"user:104\".to_string()));
+}
+",
+        challenge: "Adicione um método `limpar(&mut self)` e uma métrica de hits/misses para estatísticas de acerto do cache.",
+    },
 
 ];
 
@@ -1026,7 +1523,7 @@ mod tests {
 
     #[test]
     fn todas_as_licoes_tem_id_titulo_e_codigo() {
-        assert_eq!(LESSONS.len(), 20, "devem existir 20 lições (10 básico + 10 intermediário)");
+        assert_eq!(LESSONS.len(), 30, "devem existir 30 lições (10 básico + 10 intermediário + 10 avançado)");
         let mut ids = std::collections::HashSet::new();
         for l in LESSONS {
             assert!(ids.insert(l.id), "id de lição repetido: {}", l.id);
