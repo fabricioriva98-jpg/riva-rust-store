@@ -509,7 +509,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (6 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 2 dias)",
+      "🟢 Projeto ativo (atualizado há 3 dias)",
       "🟢 126818 estrelas no repositório",
       "🟢 Código aberto com licença AGPL-3.0",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
@@ -688,33 +688,33 @@
     "fork": false,
     "archived": false,
     "has_issues": true,
-    "latest_tag": "v0.102.2933.0",
-    "released_at": "2026-10-21T07:45:57Z",
+    "latest_tag": "v0.102.3001",
+    "released_at": "2026-10-27T10:10:02Z",
     "platforms": "windows",
     "assets": [
       {
-        "name": "PowerToysSetup-0.102.2933.0-arm64.exe",
-        "size": 311463528,
-        "browser_download_url": "https://github.com/microsoft/PowerToys/releases/download/v0.102.2933.0/PowerToysSetup-0.102.2933.0-arm64.exe",
-        "digest": "sha256:c98c741e283d13c8308491d9e185f287323f2727f1c3c1c9e59dc6843330b6cd"
+        "name": "PowerToysSetup-0.102.3001.0-arm64.exe",
+        "size": 311625952,
+        "browser_download_url": "https://github.com/microsoft/PowerToys/releases/download/v0.102.3001/PowerToysSetup-0.102.3001.0-arm64.exe",
+        "digest": "sha256:1d6a23e643b4e34ea1c3292ad4f8615bc1082ac938b0998d56899264dda5e2ad"
       },
       {
-        "name": "PowerToysSetup-0.102.2933.0-x64.exe",
-        "size": 323641880,
-        "browser_download_url": "https://github.com/microsoft/PowerToys/releases/download/v0.102.2933.0/PowerToysSetup-0.102.2933.0-x64.exe",
-        "digest": "sha256:ebaddacfa615614d8b8ec695009ea092c2b64d039ae629a4b9bf0b541e854c3d"
+        "name": "PowerToysSetup-0.102.3001.0-x64.exe",
+        "size": 323913184,
+        "browser_download_url": "https://github.com/microsoft/PowerToys/releases/download/v0.102.3001/PowerToysSetup-0.102.3001.0-x64.exe",
+        "digest": "sha256:3fb386e628296d6f960f8efc92b47fafa9e29c915c5efd774255a95190dcc87d"
       },
       {
-        "name": "PowerToysUserSetup-0.102.2933.0-arm64.exe",
-        "size": 311437584,
-        "browser_download_url": "https://github.com/microsoft/PowerToys/releases/download/v0.102.2933.0/PowerToysUserSetup-0.102.2933.0-arm64.exe",
-        "digest": "sha256:fdc0f3d06000264dc0947e7b0ae3ec63d682c5ba13198fbfbd49149ef69a94f5"
+        "name": "PowerToysUserSetup-0.102.3001.0-arm64.exe",
+        "size": 311603808,
+        "browser_download_url": "https://github.com/microsoft/PowerToys/releases/download/v0.102.3001/PowerToysUserSetup-0.102.3001.0-arm64.exe",
+        "digest": "sha256:074208c93541be77bb6e875d436a8a765e21649f2613196cee62d9ca936611f2"
       },
       {
-        "name": "PowerToysUserSetup-0.102.2933.0-x64.exe",
-        "size": 323616208,
-        "browser_download_url": "https://github.com/microsoft/PowerToys/releases/download/v0.102.2933.0/PowerToysUserSetup-0.102.2933.0-x64.exe",
-        "digest": "sha256:ec0fd364ae1689a5e8fbefb46bad5c274c7bf0fbe9e828e14c88b44432ada816"
+        "name": "PowerToysUserSetup-0.102.3001.0-x64.exe",
+        "size": 323884640,
+        "browser_download_url": "https://github.com/microsoft/PowerToys/releases/download/v0.102.3001/PowerToysUserSetup-0.102.3001.0-x64.exe",
+        "digest": "sha256:4459b9f1ad5d70a342e109ffb66dbbb08ea07b2d2ec5634b314f878700f9ff0b"
       }
     ],
     "kind": "tool",
@@ -725,7 +725,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (7 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 1 dias)",
+      "🟢 Projeto ativo (atualizado há 2 dias)",
       "🟢 114500 estrelas no repositório",
       "🟢 Código aberto com licença MIT",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
@@ -806,7 +806,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (7 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 1 dias)",
+      "🟢 Projeto ativo (atualizado há 2 dias)",
       "🟢 112186 estrelas no repositório",
       "🟢 Código aberto com licença Apache-2.0",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
@@ -947,7 +947,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (8 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 1 dias)",
+      "🟢 Projeto ativo (atualizado há 2 dias)",
       "🟢 108757 estrelas no repositório",
       "🟢 Código aberto com licença MIT",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
@@ -1313,7 +1313,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (3 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 5 dias)",
+      "🟢 Projeto ativo (atualizado há 6 dias)",
       "🟢 95451 estrelas no repositório",
       "🟢 Código aberto com licença Apache-2.0",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
@@ -1352,7 +1352,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (7 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 4 dias)",
+      "🟢 Projeto ativo (atualizado há 5 dias)",
       "🟢 93941 estrelas no repositório",
       "🟢 Código aberto com licença Apache-2.0",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"

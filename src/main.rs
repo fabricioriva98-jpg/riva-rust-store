@@ -1,6 +1,5 @@
 mod db;
 mod downloader;
-mod achievements;
 mod attestation;
 mod brand;
 mod catalog_sign;
@@ -15,7 +14,6 @@ mod installer;
 mod ide;
 mod launchers;
 mod learn;
-mod optimizer;
 mod performance;
 mod rust_lib;
 mod sandbox;

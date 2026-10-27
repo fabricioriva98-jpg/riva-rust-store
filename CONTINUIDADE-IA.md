@@ -1,7 +1,7 @@
 ---
 tipo: instrucoes-continuidade
 projeto: RRS - Riva Rust Store (gitstore 0.3.0)
-atualizado: 2026-10-25
+atualizado: 2026-10-27
 autor: Claude (Opus 5.5) / Antigravity (Gemini 4 Argon)
 ---
 # Instruções para outra IA continuar a RRS
@@ -71,16 +71,15 @@ Linha de comando útil: `search`, `show dono/repo`, `verify dono/repo`, `downloa
 | `crates_io.rs` | nome do crate → repositório → binário pronto; "Adicionar ao terminal" |
 | `translator.rs` | tradutor C/C++ → Rust por padrões (experimental, avisa linha não reconhecida) e validação pelo `rustc` |
 | `translator_ai.rs` | tradução com a API do Claude (`claude-opus-5-5`, `anthropic-version: 2026-10-21`) e laço do `rustc` |
-| `achievements.rs` | conquistas (20), XP, nível (o nível N começa em 100·(N−1)² XP) e título; contadores na tabela `stats`, desbloqueios em `achievements` |
 | `github_auth.rs` | login com o GitHub (OAuth Device Flow, escopos `read:user gist`); token no Gerenciador de Credenciais do Windows (crate `keyring`), nunca no banco |
-| `social.rs` | perfil público opcional (Gist público `rrs-perfil.json`, sem caminhos, hashes nem chaves), amigos (quem o usuário segue e também publicou), biblioteca por link (Gist secreto) |
+| `social.rs` | biblioteca por link (Gist secreto) e texto de compartilhamento |
 | `community.rs` | GitHub Discussions pela API GraphQL (com variáveis): lista e conversa; responder e abrir conversa nova é no site do GitHub |
 | `i18n.rs` | idioma (português/inglês): tabela de traduções |
 | `rust_lib.rs` | catálogo e referência completa da biblioteca Rust (`std` coleções/concorrência/io/net/process/env/path/time e top crates serde/tokio/reqwest/anyhow/clap/rayon/rand) |
 | `ide.rs` | detecção e espelhamento para IDEs externas (VS Code e Google Antigravity), abertura de workspace/arquivos e instalador de extensões |
 | `terminal_studio.rs` | execução não-bloqueante de comandos de terminal (cargo, rustc, rustup, git) com histórico categorizado |
 | `theme.rs` | sistema de temas visuais (Escuro Clássico, Antigravity Deep Space, Cyberpunk Neon, Matrix Hacker, Dracula Synthwave, Modo Claro) e paleta de cores de destaque |
-| `gui.rs` | interface principal (egui); submódulos `gui\extras.rs` (fase 2), `gui\phase3.rs` (fase 3), `gui\tv.rs` (Modo TV), `gui\settings.rs` (página Configurações), `gui\social.rs` (perfil, conquistas, avisos, comunidade, compartilhar), `gui\learn.rs` (Estúdio Aprender Rust), `gui\optimizer.rs` (Otimizador de PC), `gui\rust_lib.rs` (Biblioteca Rust) e `gui\terminal_studio.rs` (Terminal & IDEs) |
+| `gui.rs` | interface principal (egui); submódulos `gui\extras.rs` (fase 2), `gui\phase3.rs` (fase 3), `gui\tv.rs` (Modo TV), `gui\settings.rs` (página Configurações), `gui\social.rs` (avisos, comunidade, compartilhar), `gui\learn.rs` (Estúdio Aprender Rust), `gui\rust_lib.rs` (Biblioteca Rust) e `gui\terminal_studio.rs` (Terminal & IDEs) |
 
 ## 5. Regras do código (os testes cobram)
 
@@ -107,6 +106,27 @@ Linha de comando útil: `search`, `show dono/repo`, `verify dono/repo`, `downloa
 - Nenhum caminho deste PC (`E:\Fabricio`, `C:\Users\fabri`) no código (`codigo_distribuido_nao_tem_caminhos_deste_pc`).
 
 Feito e testado: avaliação, correções G1–G3, fases 1, 2 e 3 do `IDEIAS-MELHORIAS-24.10.26.md` (resumo lá), rodada social e identidade visual com espaço educacional interativo. Catálogo com 157 itens. Testes automatizados aumentados para 139 (todos passando).
+
+Rodada Remoção do Otimizador do PC e Conquistas (27/10, noite — Antigravity / Gemini):
+- **Pedido Explícito do Usuário**: Remoção completa do "Otimizador do PC" e de "Perfil & Conquistas" para garantir total não-invasividade ao computador, focando 100% no ecossistema Rust.
+- **Remoção do Otimizador de PC (`src/optimizer.rs`, `src/gui/optimizer.rs`)**:
+  - Eliminados todos os escaneamentos em segundo plano de processos, registros do Windows e hardware.
+  - Eliminadas ações invasivas ao sistema operacional: alteração de planos de energia do Windows (`powercfg`), manipulação de chaves de registro (`GameBar / GameMode`) e deleção de arquivos temporários (`%TEMP%`).
+  - Removido o botão de navegação `⚡ Otimizador do PC` e todas as opções associadas.
+- **Remoção de Conquistas e Telemetria de Gamificação (`src/achievements.rs`, `src/social.rs`, `src/gui/social.rs`)**:
+  - Removidos contadores de atividade em segundo plano (`record_stat`, `bump_stat`, `check_achievements`, `BgEvent::Stat`), badges de nível, toasts de notificação de conquistas e publicação de Gists de perfil de gamificação.
+  - `src/social.rs` simplificado com foco exclusivo em compartilhamento ético e voluntário: exportação e importação de bibliotecas via link seguro (Gist secreto) e texto de recomendação de apps.
+  - Chip de perfil no menu lateral simplificado para status limpo de conexão com o GitHub (`✔ Conectado` / `Conta do GitHub`), direcionando diretamente para Configurações.
+- **Segurança e Rastreabilidade (`F:\NAS\Obsoleto\`)**:
+  - Backup completo de código-fonte em `F:\NAS\Obsoleto\gitstore-src-antes-remover-otimizador-e-conquistas-27.10.26\`.
+  - Arquivos retirados preservados em `F:\NAS\Obsoleto\gitstore-modulos-removidos-27.10.26\`.
+  - Registrado em `F:\NAS\Obsoleto\MOVIMENTACOES-27.10.26-remover-otimizador-e-conquistas.csv`.
+  - Script de restauração criado em `F:\NAS\Obsoleto\DESFAZER-27.10.26-remover-otimizador-e-conquistas.ps1`.
+- **Integridade, i18n e Qualidade**:
+  - Limpeza completa das chaves de tradução obsoletas em `src/i18n.rs`.
+  - **124 testes unitários automatizados passando 100%** (incluindo testes de i18n, terminal, compilador, segurança e sandboxing).
+  - Clippy com zero avisos novos.
+  - Binários de release atualizados (`RRS - Riva Rust Store.exe` e `Instalador - RRS Riva Rust Store.exe`), com backup dos anteriores em `Obsoleto\gitstore-exe-antes-remover-otimizador-e-conquistas-27.10.26\`.
 
 Rodada Formatação de Código (rustfmt) & Badges Visuais de Atualização (26/10, noite — Antigravity / Gemini):
 - **Formatação Automática de Código via `rustfmt` (`terminal_studio.rs`, `gui/terminal_studio.rs`)**:

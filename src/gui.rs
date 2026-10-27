@@ -14,7 +14,6 @@ use std::sync::{Arc, Mutex};
 
 mod extras;
 mod learn;
-mod optimizer;
 mod phase3;
 mod settings;
 mod social;
@@ -42,7 +41,6 @@ enum NavSection {
     Tools,
     Library,
     Terminal,
-    Profile,
     Community,
     Settings,
     CppToRust,
@@ -50,7 +48,6 @@ enum NavSection {
     RustLib,
     RustStudio,
     IdeMirror,
-    Optimizer,
 }
 
 #[derive(PartialEq, Clone, Copy)]
@@ -154,9 +151,6 @@ enum BgEvent {
         verification_uri: String,
     },
     LoggedIn(Result<(String, crate::github_auth::GithubUser), String>),
-    ProfilePublished(Result<String, String>),
-    ProfileUnpublished(Result<(), String>),
-    FriendsLoaded(Result<Vec<crate::social::Friend>, String>),
     LibraryShared(Result<String, String>),
     LibraryImported(Result<db::LibraryImport, String>),
     CommunityList {
@@ -165,21 +159,12 @@ enum BgEvent {
     },
     CommunityThread(Result<crate::community::DiscussionThread, String>),
     LearnRunFinished(crate::learn::RunResult),
-    OptimizerScanFinished {
-        specs: crate::optimizer::SystemSpecs,
-        programs: Vec<crate::optimizer::InstalledProgram>,
-        startup: Vec<crate::optimizer::StartupApp>,
-        actions: Vec<crate::optimizer::OptimizationItem>,
-    },
-    OptimizerActionFinished(Result<crate::optimizer::ActionOutcome, String>),
     TerminalCommandFinished(crate::terminal_studio::TerminalOutput),
     IdeActionFinished(Result<String, String>),
     DevEnvDetected {
         env: crate::terminal_studio::RustEnvInfo,
         ides: Vec<crate::ide::IdeInfo>,
     },
-    /// Evento de conquista vindo de uma tarefa em segundo plano.
-    Stat(&'static str),
     Error(String),
 }
 
@@ -289,18 +274,14 @@ pub struct StoreGui {
     /// Token do login (Gerenciador de Credenciais do Windows).
     auth_token: Option<String>,
     github_user: Option<crate::github_auth::GithubUser>,
-    profile_gist_id: Option<String>,
-    unpublish_confirm: bool,
     community_repo: String,
     /// `None` = comunidade geral da RRS; `Some(repo)` = conversas do app.
     community_target: Option<String>,
     community_list: Option<(String, Result<(bool, Vec<crate::community::DiscussionSummary>), String>)>,
     community_thread: Option<Result<crate::community::DiscussionThread, String>>,
     community_visited: bool,
-    friends: Option<Result<Vec<crate::social::Friend>, String>>,
     import_link_input: String,
-    progress: Option<crate::achievements::Progress>,
-    /// Avisos de conquista (texto, instante em que apareceu).
+    /// Avisos no canto da tela (texto, instante em que apareceu).
     toasts: Vec<(String, Option<f64>)>,
 
     // Navegação e filtros
@@ -348,20 +329,6 @@ pub struct StoreGui {
     learn_show_cheatsheet: bool,
     learn_level_filter: usize,
 
-    // Otimizador do PC e Diagnóstico de Sistema
-    optimizer_specs: Option<crate::optimizer::SystemSpecs>,
-    optimizer_programs: Option<Vec<crate::optimizer::InstalledProgram>>,
-    optimizer_startup: Option<Vec<crate::optimizer::StartupApp>>,
-    optimizer_actions: Vec<crate::optimizer::OptimizationItem>,
-    optimizer_is_scanning: bool,
-    /// Ação do Otimizador esperando o segundo clique (ex.: limpeza do %TEMP%)
-    optimizer_confirm: Option<&'static str>,
-    /// Resultado da última ação, mostrado de novo quando o diagnóstico seguinte termina
-    optimizer_action_result: Option<(String, bool)>,
-    /// Plano de energia de antes da otimização (botão "Voltar ao plano anterior")
-    optimizer_prev_power: Option<String>,
-    optimizer_program_search: String,
-    optimizer_tab: usize,
     external_store_filter: Option<crate::launchers::Store>,
 
     // Modo de Desempenho
@@ -426,10 +393,6 @@ impl StoreGui {
             .to_string_lossy()
             .to_string();
 
-        let optimizer_prev_power = db::open(&db_path)
-            .ok()
-            .and_then(|c| db::get_setting(&c, crate::optimizer::SETTING_PREVIOUS_POWER))
-            .filter(|g| !g.is_empty());
         let mut theme = crate::theme::AppTheme::Antigravity;
         let mut accent_color = crate::theme::AccentColor::NeonCyan;
         let mut performance_mode = crate::performance::PerformanceMode::Normal;
@@ -444,7 +407,6 @@ impl StoreGui {
         let mut anthropic_key_input = std::env::var("ANTHROPIC_API_KEY").unwrap_or_default();
         let mut oauth_client_id = String::new();
         let mut github_user = None;
-        let mut profile_gist_id = None;
         let mut community_repo = String::new();
 
         if let Ok(conn) = db::open(&db_path) {
@@ -463,7 +425,6 @@ impl StoreGui {
             oauth_client_id = db::get_setting(&conn, crate::github_auth::SETTING_CLIENT_ID).unwrap_or_default();
             github_user = db::get_setting(&conn, crate::github_auth::SETTING_PROFILE_CACHE)
                 .and_then(|j| serde_json::from_str::<crate::github_auth::GithubUser>(&j).ok());
-            profile_gist_id = db::get_setting(&conn, crate::social::SETTING_PROFILE_GIST);
             community_repo = db::get_setting(&conn, crate::community::SETTING_COMMUNITY_REPO).unwrap_or_default();
             lang = Lang::from_setting(db::get_setting(&conn, crate::i18n::SETTING_LANG).as_deref());
             catalog_url = db::get_setting(&conn, crate::catalog_sign::SETTING_URL).unwrap_or_default();
@@ -532,16 +493,12 @@ impl StoreGui {
             pat_input: String::new(),
             auth_token: crate::github_auth::load_token(),
             github_user,
-            profile_gist_id,
-            unpublish_confirm: false,
             community_repo,
             community_target: None,
             community_list: None,
             community_thread: None,
             community_visited: false,
-            friends: None,
             import_link_input: String::new(),
-            progress: None,
             toasts: Vec::new(),
             section: NavSection::Discover,
             grid_view: true,
@@ -574,16 +531,6 @@ impl StoreGui {
             learn_is_running: false,
             learn_show_cheatsheet: false,
             learn_level_filter: 0,
-            optimizer_specs: None,
-            optimizer_programs: None,
-            optimizer_startup: None,
-            optimizer_actions: Vec::new(),
-            optimizer_is_scanning: false,
-            optimizer_confirm: None,
-            optimizer_action_result: None,
-            optimizer_prev_power,
-            optimizer_program_search: String::new(),
-            optimizer_tab: 0,
             external_store_filter: None,
             performance_mode,
             rust_lib_selected_idx: 0,
@@ -829,7 +776,7 @@ impl StoreGui {
                     NavSection::Discover => true,
                     NavSection::MadeInRust => a.is_rust(),
                     NavSection::Terminal => k == "cli",
-                    NavSection::Profile | NavSection::Community | NavSection::Settings => false,
+                    NavSection::Community | NavSection::Settings => false,
                     NavSection::ReverseEngineering => {
                         if self.re_subfilter == "re-game" {
                             k == "re-game"
@@ -856,7 +803,7 @@ impl StoreGui {
                             true
                         }
                     }
-                    NavSection::CppToRust | NavSection::LearnRust | NavSection::RustLib | NavSection::RustStudio | NavSection::IdeMirror | NavSection::Optimizer => true,
+                    NavSection::CppToRust | NavSection::LearnRust | NavSection::RustLib | NavSection::RustStudio | NavSection::IdeMirror => true,
                 };
                 section_ok && self.matches_global_filters(a)
             })
@@ -895,7 +842,6 @@ impl StoreGui {
         let finished = self.downloads.take_finished();
         if !finished.is_empty() {
             self.reload_from_db();
-            self.check_achievements();
             for job in finished {
                 match job.state {
                     JobState::Finished { message } => {
@@ -919,7 +865,6 @@ impl StoreGui {
                     self.status_is_error = false;
                 }
                 BgEvent::AppUpdated { mut app, message } => {
-                    self.record_stat(crate::achievements::STAT_VERIFIES);
                     let name = app.full_name.clone();
                     // Veio do crates.io: entra no catálogo como ferramenta de terminal
                     if self.pending_cli.as_deref().is_some_and(|p| p.eq_ignore_ascii_case(&name)) {
@@ -929,7 +874,6 @@ impl StoreGui {
                             app.category = Some("Terminal • Rust".into());
                         }
                         self.section = NavSection::Terminal;
-                        self.record_stat(crate::achievements::STAT_CLI);
                     }
                     if let Ok(conn) = db::open(&self.db_path) {
                         let _ = db::upsert(&conn, &app);
@@ -961,7 +905,6 @@ impl StoreGui {
                     self.status_is_error = false;
                 }
                 BgEvent::SecurityScanResult { repo, defender_verdict, defender_msg, authenticode } => {
-                    self.record_stat(crate::achievements::STAT_DEFENDER);
                     if self.selected_repo.as_deref() == Some(repo.as_str()) {
                         self.defender_scan_status = Some((defender_msg, defender_verdict));
                         self.authenticode_status = Some(authenticode);
@@ -975,7 +918,6 @@ impl StoreGui {
                     self.busy_task = None;
                 }
                 BgEvent::WindowsScan(programs) => {
-                    self.record_stat(crate::achievements::STAT_WINDOWS_SCAN);
                     self.busy_task = None;
                     self.windows_programs = Some(programs);
                     self.refresh_windows_matches();
@@ -1017,52 +959,10 @@ impl StoreGui {
                         self.auth_token = Some(token);
                         self.github_user = Some(user);
                         self.login_state = LoginState::Idle;
-                        self.section = NavSection::Profile;
+                        self.section = NavSection::Community;
                     }
                     Err(e) => self.login_state = LoginState::Failed(e),
                 },
-                BgEvent::ProfilePublished(res) => {
-                    self.busy_task = None;
-                    match res {
-                        Ok(id) => {
-                            if let Ok(conn) = db::open(&self.db_path) {
-                                let _ = db::set_setting(&conn, crate::social::SETTING_PROFILE_GIST, &id);
-                            }
-                            let first = self.profile_gist_id.is_none();
-                            self.profile_gist_id = Some(id);
-                            self.status_msg = self.tr("✔ Perfil publicado no seu GitHub (Gist público).");
-                            self.status_is_error = false;
-                            if first {
-                                self.record_stat(crate::achievements::STAT_PROFILE_PUBLISHED);
-                            }
-                        }
-                        Err(e) => {
-                            self.status_msg = e;
-                            self.status_is_error = true;
-                        }
-                    }
-                }
-                BgEvent::ProfileUnpublished(res) => {
-                    self.busy_task = None;
-                    match res {
-                        Ok(()) => {
-                            if let Ok(conn) = db::open(&self.db_path) {
-                                let _ = db::set_setting(&conn, crate::social::SETTING_PROFILE_GIST, "");
-                            }
-                            self.profile_gist_id = None;
-                            self.status_msg = self.tr("✔ Perfil despublicado (o Gist foi apagado da sua conta).");
-                            self.status_is_error = false;
-                        }
-                        Err(e) => {
-                            self.status_msg = e;
-                            self.status_is_error = true;
-                        }
-                    }
-                }
-                BgEvent::FriendsLoaded(res) => {
-                    self.busy_task = None;
-                    self.friends = Some(res);
-                }
                 BgEvent::LibraryShared(res) => {
                     self.busy_task = None;
                     match res {
@@ -1070,7 +970,6 @@ impl StoreGui {
                             ctx.copy_text(url.clone());
                             self.status_msg = format!("🔗 {} {url}", self.tr("Link copiado:"));
                             self.status_is_error = false;
-                            self.record_stat(crate::achievements::STAT_LIBRARY_EXPORT);
                         }
                         Err(e) => {
                             self.status_msg = e;
@@ -1092,7 +991,6 @@ impl StoreGui {
                 }
                 BgEvent::LearnRunFinished(res) => {
                     if res.success {
-                        self.record_stat(crate::achievements::STAT_LEARN_RUN);
                         self.status_msg = self.tr("✔ Código Rust compilado e executado com sucesso!");
                         self.status_is_error = false;
                     } else {
@@ -1102,47 +1000,6 @@ impl StoreGui {
                     self.busy_task = None;
                     self.learn_is_running = false;
                     self.learn_output = Some(res);
-                }
-                BgEvent::OptimizerScanFinished {
-                    specs,
-                    programs,
-                    startup,
-                    actions,
-                } => {
-                    self.optimizer_is_scanning = false;
-                    self.optimizer_specs = Some(specs);
-                    self.optimizer_programs = Some(programs);
-                    self.optimizer_startup = Some(startup);
-                    self.optimizer_actions = actions;
-                    self.busy_task = None;
-                    (self.status_msg, self.status_is_error) = self
-                        .optimizer_action_result
-                        .take()
-                        .unwrap_or_else(|| (self.tr("Diagnóstico do PC e especificações atualizadas."), false));
-                }
-                BgEvent::OptimizerActionFinished(res) => {
-                    self.busy_task = None;
-                    let result = match res {
-                        Ok(outcome) => {
-                            // Guarda o plano de energia anterior (ou esquece, depois de restaurar)
-                            if let Ok(conn) = db::open(&self.db_path) {
-                                if let Some(prev) = &outcome.previous_power_scheme {
-                                    let _ = db::set_setting(&conn, crate::optimizer::SETTING_PREVIOUS_POWER, prev);
-                                    self.optimizer_prev_power = Some(prev.clone());
-                                }
-                                if outcome.power_restored {
-                                    let _ = db::set_setting(&conn, crate::optimizer::SETTING_PREVIOUS_POWER, "");
-                                    self.optimizer_prev_power = None;
-                                }
-                            }
-                            (format!("✔ {}", outcome.message), false)
-                        }
-                        Err(e) => (format!("❌ {e}"), true),
-                    };
-                    (self.status_msg, self.status_is_error) = result.clone();
-                    self.optimizer_action_result = Some(result);
-                    // Diagnóstico de novo só depois da ação, para mostrar o estado já alterado
-                    self.spawn_optimizer_scan();
                 }
                 BgEvent::IdeActionFinished(res) => {
                     self.busy_task = None;
@@ -1192,7 +1049,6 @@ impl StoreGui {
                     self.status_msg = status_txt;
                     self.status_is_error = !out.success;
                 }
-                BgEvent::Stat(key) => self.record_stat(key),
                 BgEvent::CrateResolved(res) => {
                     self.busy_task = None;
                     match res {
@@ -1630,10 +1486,7 @@ impl StoreGui {
                     let elapsed = start.elapsed().as_secs();
                     if let Some(dir) = save_dir {
                         let ev = match crate::saves::backup(&base_dir, &repo_name, std::path::Path::new(&dir), None) {
-                            Ok(zip) => {
-                                events.lock().unwrap().push(BgEvent::Stat(crate::achievements::STAT_SAVES));
-                                BgEvent::Status(format!("💾 Backup dos saves: {}", zip.display()))
-                            }
+                            Ok(zip) => BgEvent::Status(format!("💾 Backup dos saves: {}", zip.display())),
                             Err(e) => BgEvent::Error(format!("Backup dos saves não feito: {e:#}")),
                         };
                         events.lock().unwrap().push(ev);
@@ -1828,8 +1681,6 @@ impl eframe::App for StoreGui {
                     format!("📦  {} ({installed_count})", tr(self.lang, "Minha Biblioteca"))
                 };
                 nav_button(ui, &mut self.section, NavSection::Library, &lib_label);
-                nav_button(ui, &mut self.section, NavSection::Optimizer, &tr(self.lang, "⚡  Otimizador do PC"));
-                nav_button(ui, &mut self.section, NavSection::Profile, &tr(self.lang, "🏆  Perfil & Conquistas"));
                 nav_button(ui, &mut self.section, NavSection::Community, &tr(self.lang, "💬  Comunidade"));
 
                 ui.add_space(12.0);
@@ -2120,9 +1971,7 @@ impl eframe::App for StoreGui {
                 | NavSection::RustLib
                 | NavSection::RustStudio
                 | NavSection::IdeMirror
-                | NavSection::Optimizer
                 | NavSection::Settings
-                | NavSection::Profile
         ) {
             let selected_app = self
                 .selected_repo
@@ -2176,14 +2025,9 @@ impl eframe::App for StoreGui {
                     self.render_ide_mirror(ui);
                     return;
                 }
-                if self.section == NavSection::Optimizer {
-                    self.render_optimizer(ui);
-                    return;
-                }
                 egui::ScrollArea::vertical().show(ui, |ui| {
                     match self.section {
                         NavSection::Settings => return self.render_settings_section(ui),
-                        NavSection::Profile => return self.render_profile_section(ui),
                         NavSection::Community => return self.render_community_section(ui),
                         _ => {}
                     }
@@ -2454,7 +2298,7 @@ impl StoreGui {
     fn render_section_catalog(&mut self, ui: &mut egui::Ui) {
         let (title, subtitle) = match self.section {
             NavSection::Discover => ("🔎 Resultados da Busca", "Projetos verificados encontrados no catálogo."),
-            NavSection::Profile | NavSection::Community | NavSection::Settings => ("", ""),
+            NavSection::Community | NavSection::Settings => ("", ""),
             NavSection::Terminal => (
                 "⌨ Terminal (Rust)",
                 "Ferramentas de linha de comando já compiladas, baixadas da release oficial e conferidas pelo SHA-256.",
@@ -2492,7 +2336,6 @@ impl StoreGui {
             NavSection::RustLib => ("📚  Biblioteca Rust (std & Crates)", ""),
             NavSection::RustStudio => ("⚡  Terminal & IDE Rust (Dedicado)", ""),
             NavSection::IdeMirror => ("🖥️  Espelho de IDEs (VS Code / Antigravity)", ""),
-            NavSection::Optimizer => ("⚡  Otimizador do PC", ""),
         };
 
         ui.label(RichText::new(tr(self.lang, title)).size(20.0).strong().color(Color32::WHITE));
@@ -2623,7 +2466,7 @@ impl StoreGui {
             });
         }
 
-        if !matches!(self.section, NavSection::ReverseEngineering | NavSection::Library | NavSection::Terminal | NavSection::Optimizer) {
+        if !matches!(self.section, NavSection::ReverseEngineering | NavSection::Library | NavSection::Terminal) {
             ui.add_space(8.0);
             ui.horizontal_wrapped(|ui| {
                 ui.label(RichText::new(tr(self.lang, "Filtro:")).size(12.0).color(Color32::GRAY));
@@ -3528,10 +3371,8 @@ impl StoreGui {
                                     )
                                     .on_hover_text(hint)
                                     .clicked()
-                                    && self.start_download(app.full_name.clone(), rel.tag_name.clone(), asset.clone())
-                                    && rel.tag_name != app.latest_tag
                                 {
-                                    self.record_stat(crate::achievements::STAT_OLD_VERSION);
+                                    self.start_download(app.full_name.clone(), rel.tag_name.clone(), asset.clone());
                                 }
                             }
                             None => {
@@ -3593,7 +3434,6 @@ impl StoreGui {
                         .on_hover_text(tr(self.lang, "Consulta os hashes oficiais da Release no VirusTotal sem baixar o arquivo"))
                         .clicked()
                     {
-                        self.record_stat(crate::achievements::STAT_VT);
                         self.spawn_fetch_or_verify(app.full_name.clone(), true);
                     }
                 });
@@ -3682,7 +3522,6 @@ impl StoreGui {
                         .clicked()
                     {
                         trigger_retranslate = true;
-                        self.record_stat(crate::achievements::STAT_TRANSLATIONS);
                     }
 
                     if ui
@@ -4270,7 +4109,6 @@ mod tests {
             ("gui.rs", include_str!("gui.rs")),
             ("gui/extras.rs", include_str!("gui/extras.rs")),
             ("gui/learn.rs", include_str!("gui/learn.rs")),
-            ("gui/optimizer.rs", include_str!("gui/optimizer.rs")),
             ("gui/phase3.rs", include_str!("gui/phase3.rs")),
             ("gui/rust_lib.rs", include_str!("gui/rust_lib.rs")),
             ("gui/settings.rs", include_str!("gui/settings.rs")),

@@ -162,9 +162,6 @@ impl StoreGui {
                                 Ok(zip) => (format!("✔ Backup salvo: {}", zip.display()), false),
                                 Err(e) => (format!("Backup não feito: {e:#}"), true),
                             };
-                        if !self.status_is_error {
-                            self.record_stat(crate::achievements::STAT_SAVES);
-                        }
                     }
                 });
 

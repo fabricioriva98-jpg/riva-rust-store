@@ -44,14 +44,10 @@ impl TerminalOutput {
 /// Antes era a pasta de dados da RRS (onde fica o banco, com as chaves de API) ou, no modo
 /// portátil, a própria pasta do programa.
 pub fn default_projects_dir() -> PathBuf {
-    let documents = crate::optimizer::query_registry_value(
-        r"HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders",
-        "Personal",
-    )
-    .map(PathBuf::from)
-    .filter(|p| p.is_dir())
-    .or_else(|| std::env::var_os("USERPROFILE").map(|h| PathBuf::from(h).join("Documents")))
-    .unwrap_or_else(std::env::temp_dir);
+    let documents = std::env::var_os("USERPROFILE")
+        .map(|h| PathBuf::from(h).join("Documents"))
+        .filter(|p| p.is_dir())
+        .unwrap_or_else(std::env::temp_dir);
     documents.join("Projetos Rust")
 }
 

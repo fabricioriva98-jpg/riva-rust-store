@@ -3,7 +3,7 @@
 
 use super::{BgEvent, LoginState, StoreGui};
 use crate::i18n::{tr, Lang};
-use crate::{achievements, db, github_auth, social};
+use crate::{db, github_auth, social};
 use eframe::egui::{self, Color32, CornerRadius, RichText, Stroke};
 use std::path::PathBuf;
 use std::sync::atomic::{AtomicBool, Ordering};
@@ -40,7 +40,6 @@ impl StoreGui {
         self.settings_theme(ui);
         self.settings_performance(ui);
         self.settings_account(ui);
-        self.settings_public_profile(ui);
         self.settings_community(ui);
         self.settings_language(ui);
         self.settings_keys(ui);
@@ -212,9 +211,6 @@ impl StoreGui {
                 });
                 hint(ui, &self.tr("O token fica no Gerenciador de Credenciais do Windows, não no banco da RRS."));
                 ui.horizontal_wrapped(|ui| {
-                    if ui.button(self.tr("👤 Ver meu perfil")).clicked() {
-                        self.section = super::NavSection::Profile;
-                    }
                     if ui.button(self.tr("Sair da conta")).clicked() {
                         self.logout();
                     }
@@ -223,7 +219,7 @@ impl StoreGui {
             }
 
             hint(ui, &self.tr(
-                "Entrar com o GitHub libera o perfil, os amigos, o compartilhamento por link e a central de bate-papo. A RRS pede só leitura do perfil e permissão de criar gists.",
+                "Entrar com o GitHub libera o compartilhamento por link e a central de bate-papo. A RRS pede só leitura do perfil e permissão de criar gists.",
             ));
             ui.add_space(6.0);
             match self.login_state.clone() {
@@ -353,84 +349,9 @@ impl StoreGui {
         }
         self.auth_token = None;
         self.github_user = None;
-        self.friends = None;
         self.login_state = LoginState::Idle;
         self.status_msg = self.tr("Você saiu da conta do GitHub (o token foi removido do Gerenciador de Credenciais).");
         self.status_is_error = false;
-    }
-
-    // ─── Perfil público ────────────────────────────────────────────────────
-
-    fn settings_public_profile(&mut self, ui: &mut egui::Ui) {
-        let title = self.tr("🌐 Perfil público (opcional)");
-        card(ui, &title, |ui| {
-            hint(ui, &self.tr(
-                "Desligado, nada sai deste PC. Ligado, a RRS publica num Gist público da sua conta: nível, título, conquistas e os 10 apps mais usados com as horas. Não publica caminhos, hashes nem chaves.",
-            ));
-            let logged = self.auth_token.is_some();
-            ui.horizontal_wrapped(|ui| {
-                let published = self.profile_gist_id.is_some();
-                if !published {
-                    if ui
-                        .add_enabled(logged && self.busy_task.is_none(), egui::Button::new(self.tr("🌐 Publicar meu perfil")))
-                        .clicked()
-                    {
-                        self.spawn_publish_profile();
-                    }
-                } else {
-                    ui.label(RichText::new(self.tr("✔ Perfil publicado")).color(Color32::from_rgb(120, 230, 150)));
-                    if ui
-                        .add_enabled(logged && self.busy_task.is_none(), egui::Button::new(self.tr("🔄 Atualizar agora")))
-                        .clicked()
-                    {
-                        self.spawn_publish_profile();
-                    }
-                    let confirming = self.unpublish_confirm;
-                    let label = if confirming { self.tr("⚠ Confirmar despublicação") } else { self.tr("Despublicar") };
-                    if ui
-                        .add_enabled(logged && self.busy_task.is_none(), egui::Button::new(label))
-                        .on_hover_text(self.tr("Apaga o Gist do perfil na sua conta; os amigos deixam de ver o seu nível e conquistas."))
-                        .clicked()
-                    {
-                        if confirming {
-                            self.unpublish_confirm = false;
-                            self.spawn_unpublish_profile();
-                        } else {
-                            self.unpublish_confirm = true;
-                        }
-                    }
-                }
-            });
-            if !logged {
-                hint(ui, &self.tr("Entre com o GitHub (acima) para publicar."));
-            }
-        });
-    }
-
-    pub(super) fn spawn_publish_profile(&mut self) {
-        let (Some(token), Some(user)) = (self.auth_token.clone(), self.github_user.clone()) else { return };
-        let Ok(conn) = db::open(&self.db_path) else { return };
-        let Ok(progress) = achievements::progress(&conn) else { return };
-        let profile = social::build_profile(&user.login, &progress, &self.apps);
-        let existing = self.profile_gist_id.clone();
-        self.busy_task = Some("Publicando perfil no GitHub...".into());
-        let events = Arc::clone(&self.bg_events);
-        self.rt.spawn(async move {
-            let res = social::publish_profile(&token, existing.as_deref(), &profile)
-                .await
-                .map_err(|e| format!("{e:#}"));
-            events.lock().unwrap().push(BgEvent::ProfilePublished(res));
-        });
-    }
-
-    fn spawn_unpublish_profile(&mut self) {
-        let (Some(token), Some(id)) = (self.auth_token.clone(), self.profile_gist_id.clone()) else { return };
-        self.busy_task = Some("Despublicando perfil...".into());
-        let events = Arc::clone(&self.bg_events);
-        self.rt.spawn(async move {
-            let res = social::unpublish_profile(&token, &id).await.map_err(|e| format!("{e:#}"));
-            events.lock().unwrap().push(BgEvent::ProfileUnpublished(res));
-        });
     }
 
     // ─── Comunidade ────────────────────────────────────────────────────────
@@ -643,9 +564,6 @@ impl StoreGui {
                         Ok(n) => (format!("✔ Biblioteca com {n} app(s) salva em {}", path.display()), false),
                         Err(e) => (format!("Erro ao exportar a biblioteca: {e:#}"), true),
                     };
-                    if !self.status_is_error {
-                        self.record_stat(achievements::STAT_LIBRARY_EXPORT);
-                    }
                 }
                 if ui
                     .button(tr(self.lang, "📥 Importar biblioteca"))

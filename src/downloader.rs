@@ -114,13 +114,7 @@ impl DownloadManager {
                         crate::db::mark_installed(&conn, &repo, &tag, &stored, &done.sha256, done.verified)
                     });
                     match registered {
-                        Ok(()) => {
-                            // Conta para as conquistas; a tela confere o que desbloqueou
-                            if let Ok(conn) = crate::db::open(&db_path) {
-                                let _ = crate::db::bump_stat(&conn, crate::achievements::STAT_DOWNLOADS, 1);
-                            }
-                            JobState::Finished { message: done.message }
-                        }
+                        Ok(()) => JobState::Finished { message: done.message },
                         Err(e) => JobState::Failed {
                             error: format!("arquivo baixado, mas não foi possível registrar no banco: {e:#}"),
                         },

@@ -76,7 +76,6 @@ impl StoreGui {
             self.gamepads = gilrs::Gilrs::new().ok();
         }
         self.tv_mode = true;
-        self.record_stat(crate::achievements::STAT_TV);
         self.tv_index = 0;
         ctx.send_viewport_cmd(egui::ViewportCommand::Fullscreen(true));
     }

@@ -357,7 +357,7 @@ mod tests {
     #[test]
     fn codigo_distribuido_nao_tem_caminhos_deste_pc() {
         // O .exe vai para outras pessoas: caminhos com nome de usuário e pastas pessoais não podem estar nele
-        let fontes = [include_str!("ide.rs"), include_str!("terminal_studio.rs"), include_str!("optimizer.rs")];
+        let fontes = [include_str!("ide.rs"), include_str!("terminal_studio.rs")];
         let pessoais = [["E:", "\\Fabricio"].concat(), [":\\Users\\", "fabri"].concat()];
         for src in fontes {
             let code = &src[..src.find("#[cfg(test)]").unwrap_or(src.len())];

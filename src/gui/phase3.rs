@@ -155,9 +155,6 @@ impl StoreGui {
                         ),
                         Err(e) => (format!("{e:#}"), true),
                     };
-                if !self.status_is_error {
-                    self.record_stat(crate::achievements::STAT_CLI);
-                }
             }
         });
         if let Some((repo, result)) = &self.gh_verify_status {
@@ -230,7 +227,6 @@ impl StoreGui {
                     self.tr("rodada(s)")
                 )];
                 if t.compiled {
-                    self.record_stat(crate::achievements::STAT_AI_OK);
                     notes.push(self.tr("✔ Compila no rustc (verificado pela RRS)."));
                 } else {
                     notes.push(self.tr("✘ Não compilou depois de todas as tentativas; veja o diagnóstico abaixo."));
