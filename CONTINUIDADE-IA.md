@@ -187,6 +187,22 @@ Rodada Biblioteca Rust Completa & Terminal Integrado / Espelho de IDEs (25/10, t
 - **Terminal Integrado & Espelho de IDEs (VS Code / Antigravity)**: novos módulos `ide.rs`, `terminal_studio.rs` e tela gráfica `gui/terminal_studio.rs`. Detecta automaticamente a instalação do Visual Studio Code e do Google Antigravity na máquina do Fabricio. Permite abrir pastas de projeto nas IDEs com 1 clique, instalar a extensão oficial `rust-analyzer` no VS Code, inspecionar arquivos e executar comandos Cargo (`cargo check`, `cargo build`, `cargo run`, `cargo test`, `rustc --version`, `rustup show`, `cargo clean` ou qualquer comando digitado) em tempo real sem travar a interface da loja.
 - **Internacionalização e Testes**: paridade rigorosa em `i18n.rs` com 40 novas traduções adicionadas (100% dos testes `todo_texto_traduzivel_tem_ingles`, `tabela_sem_repeticao_nem_sobra` e `troca_de_idioma` aprovados). Suite total expandida para 109 testes (todos passando), 0 novos avisos no Clippy e executáveis atualizados em release: `RRS - Riva Rust Store.exe` e `Instalador - RRS Riva Rust Store.exe`.
 
+Rodada Métricas da Biblioteca, Changelog de Releases e Diagnóstico de Dependências (26/10, noite — Antigravity / Gemini):
+- **Painel de Atividades & Estatísticas da Biblioteca**:
+  - Implementado card estatístico no topo de `Biblioteca` (`NavSection::Library`): Horas totais de jogo/uso formatadas (`h e m`), total de aplicativos instalados, contagem de apps em Rust puro (`🦀 Feito em Rust`), aplicativo mais jogado e botão de ação rápida `⬆ Atualizar Todos` quando há atualizações pendentes.
+  - Adicionados chips de filtro rápido por tags: `Todos`, `⬆ Com Atualização`, `🦀 Feito em Rust`, `🎮 Jogos & Ports`.
+  - Nova ordenação por tempo de uso (`SortBy::Playtime` — "Mais Jogados") no topo da biblioteca.
+- **Visualizador de Notas da Release / Changelog**:
+  - No banner de atualização do painel de detalhes (`render_details`), adicionado botão `📋 Ver Notas da Versão (Changelog) ↗` que abre com segurança a URL oficial da release no GitHub via `downloader::open_url`.
+  - Links de notas da versão `↗` disponibilizados para cada versão listada no histórico do aplicativo (`render_versions_section`).
+- **Diagnóstico de Dependências no Estúdio Rust (`cargo tree` & `cargo update`)**:
+  - Na aba `📦 Projetos & Ferramentas` (`gui/terminal_studio.rs`), adicionada seção "Diagnóstico de Dependências" com botões interativos para preparar e rodar `cargo tree` (árvore hierárquica de crates e dependências) e `cargo update` (conferência de atualizações de crates do Cargo.lock).
+  - Respeitada a regra do teste `terminal_so_recebe_o_que_o_usuario_digita` preparando o comando para execução consciente pelo usuário.
+- **Internacionalização e Testes**:
+  - 15 novos termos adicionados com paridade 100% PT-BR e EN em `src/i18n.rs`.
+  - **139 testes unitários aprovados (100% de sucesso)**, 0 novos avisos de clippy.
+  - Binários de release `RRS - Riva Rust Store.exe` e `Instalador - RRS Riva Rust Store.exe` atualizados na raiz (18.249.728 bytes).
+
 Rodada Sincronização de Lojas, Rust Intermediário & Otimizador do PC (25/10, manhã — Antigravity / Gemini):
 - **Sincronização Multi-Lojas de Games**: suporte expandido em `launchers.rs` e `gui/phase3.rs` para 8 lojas principais: Steam, Epic Games, GOG, Xbox / Microsoft Store / PC Game Pass, EA App, Ubisoft Connect, Battle.net e Riot Games (Vanguard/LoL/Valorant). Botão de sincronização em 1 clique e filtros por loja com contador dinâmico.
 - **Espaço Aprender Rust Intermediário**: expansão de `learn.rs` para 20 lições completas (10 básicas + 10 intermediárias: Ownership & Borrowing, Traits, Generics, Closures, Iteradores avançados, Multithreading com std::thread, Canais mpsc, Smart Pointers Box, Leitura/Escrita de Arquivos fs e Mini-Projeto CLI Gerenciador de Tarefas). Filtros de nível no topo (`Todos`, `Básico`, `Intermediário`), pills visuais e diagnóstico pedagógico com suporte a erros de tempo de vida e bounds de traits.

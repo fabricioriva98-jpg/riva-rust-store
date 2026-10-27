@@ -858,6 +858,23 @@ pub static TABLE: &[(&str, &str)] = &[
     ("Nova Versão Disponível!", "New Version Available!"),
     ("Versão no seu PC:", "Version on your PC:"),
     ("Última versão lançada:", "Latest release:"),
+
+    // Métricas da Biblioteca, Changelog e Diagnóstico de Dependências
+    ("Mais Jogados", "Most Played"),
+    ("⏱ Tempo Total em Uso:", "⏱ Total Time in Use:"),
+    ("📦 Total no PC:", "📦 Total on PC:"),
+    ("segundos", "seconds"),
+    ("apps", "apps"),
+    ("🦀 Feito em Rust:", "🦀 Made in Rust:"),
+    ("🏆 Mais Jogado:", "🏆 Most Played:"),
+    ("Filtrar Biblioteca:", "Filter Library:"),
+    ("⬆ Com Atualização", "⬆ With Update"),
+    ("🎮 Jogos & Ports", "🎮 Games & Ports"),
+    ("📋 Ver Notas da Versão (Changelog) ↗", "📋 View Release Notes (Changelog) ↗"),
+    ("Abrir notas desta versão no GitHub ↗", "Open this version's release notes on GitHub ↗"),
+    ("Diagnóstico de Dependências:", "Dependency Diagnostics:"),
+    ("🌳 Árvore de Dependências (cargo tree)", "🌳 Dependency Tree (cargo tree)"),
+    ("🔄 Atualizar Dependências (cargo update)", "🔄 Update Dependencies (cargo update)"),
 ];
 
 #[cfg(test)]

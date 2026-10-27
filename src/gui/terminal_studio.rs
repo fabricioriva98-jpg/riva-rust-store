@@ -679,6 +679,23 @@ impl StoreGui {
                                 }
                             }
                         });
+
+                        ui.add_space(6.0);
+                        ui.horizontal_wrapped(|ui| {
+                            ui.label(RichText::new(self.tr("Diagnóstico de Dependências:")).size(12.0).color(Color32::from_rgb(160, 175, 200)));
+                            if ui.button(self.tr("🌳 Árvore de Dependências (cargo tree)")).clicked() {
+                                self.terminal_cmd_input = "cargo tree".into();
+                                self.terminal_active_tab = 1;
+                                self.status_msg = format!("{} {}", self.tr("Comando preparado no terminal:"), self.terminal_cmd_input);
+                                self.status_is_error = false;
+                            }
+                            if ui.button(self.tr("🔄 Atualizar Dependências (cargo update)")).clicked() {
+                                self.terminal_cmd_input = "cargo update".into();
+                                self.terminal_active_tab = 1;
+                                self.status_msg = format!("{} {}", self.tr("Comando preparado no terminal:"), self.terminal_cmd_input);
+                                self.status_is_error = false;
+                            }
+                        });
                     });
 
                 ui.add_space(8.0);

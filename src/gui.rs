@@ -59,6 +59,7 @@ enum SortBy {
     Trust,
     Name,
     Updated,
+    Playtime,
 }
 
 /// Linhas guardadas no console do terminal integrado (as mais antigas saem primeiro).
@@ -307,6 +308,7 @@ pub struct StoreGui {
     grid_view: bool,
     featured_idx: usize,
     re_subfilter: String, // "todos" | "re-game" | "re-app"
+    library_filter: String, // "todos" | "update" | "rust" | "games"
     search: String,
     platform_filter: String,
     category_filter: String,
@@ -544,6 +546,7 @@ impl StoreGui {
             grid_view: true,
             featured_idx: 0,
             re_subfilter: "todos".into(),
+            library_filter: "todos".into(),
             search: String::new(),
             platform_filter: "todas".into(),
             category_filter: "todas".into(),
@@ -838,7 +841,19 @@ impl StoreGui {
                     NavSection::Emulators => k == "emulator" || k == "re-game",
                     NavSection::AiAndApps => k == "ai-app" || k == "app",
                     NavSection::Tools => k == "tool" || k == "re-app",
-                    NavSection::Library => a.installed.is_some(),
+                    NavSection::Library => {
+                        if a.installed.is_none() {
+                            false
+                        } else if self.library_filter == "update" {
+                            a.has_update()
+                        } else if self.library_filter == "rust" {
+                            a.is_rust()
+                        } else if self.library_filter == "games" {
+                            a.kind.as_deref() == Some("game") || a.kind.as_deref() == Some("re-game")
+                        } else {
+                            true
+                        }
+                    }
                     NavSection::CppToRust | NavSection::LearnRust | NavSection::RustLib | NavSection::RustStudio | NavSection::IdeMirror | NavSection::Optimizer => true,
                 };
                 section_ok && self.matches_global_filters(a)
@@ -862,6 +877,11 @@ impl StoreGui {
                     .cmp(&friendly_title(&b.full_name).to_lowercase())
             }),
             SortBy::Updated => list.sort_by(|a, b| b.pushed_at.cmp(&a.pushed_at)),
+            SortBy::Playtime => list.sort_by(|a, b| {
+                let ta = a.installed.as_ref().map(|i| i.playtime_seconds).unwrap_or(0);
+                let tb = b.installed.as_ref().map(|i| i.playtime_seconds).unwrap_or(0);
+                tb.cmp(&ta).then(b.stars.cmp(&a.stars))
+            }),
         }
     }
 
@@ -1961,6 +1981,7 @@ impl eframe::App for StoreGui {
                             SortBy::Trust => tr(self.lang, "Maior Confiança"),
                             SortBy::Name => tr(self.lang, "Nome (A-Z)"),
                             SortBy::Updated => tr(self.lang, "Mais Recentes"),
+                            SortBy::Playtime => tr(self.lang, "Mais Jogados"),
                         })
                         .width(120.0)
                         .show_ui(ui, |ui| {
@@ -1968,6 +1989,7 @@ impl eframe::App for StoreGui {
                             ui.selectable_value(&mut self.sort_by, SortBy::Trust, tr(self.lang, "Maior Confiança"));
                             ui.selectable_value(&mut self.sort_by, SortBy::Updated, tr(self.lang, "Mais Recentes"));
                             ui.selectable_value(&mut self.sort_by, SortBy::Name, tr(self.lang, "Nome (A-Z)"));
+                            ui.selectable_value(&mut self.sort_by, SortBy::Playtime, tr(self.lang, "Mais Jogados"));
                         });
 
                     ui.separator();
@@ -2498,23 +2520,105 @@ impl StoreGui {
         }
 
         if self.section == NavSection::Library {
+            ui.add_space(4.0);
+            let total_installed = self.apps.iter().filter(|a| a.installed.is_some()).count();
+            let total_playtime_secs: u64 = self.apps.iter().filter_map(|a| a.installed.as_ref()).map(|i| i.playtime_seconds).sum();
+            let rust_count = self.apps.iter().filter(|a| a.installed.is_some() && a.is_rust()).count();
+            let games_count = self.apps.iter().filter(|a| a.installed.is_some() && (a.kind.as_deref() == Some("game") || a.kind.as_deref() == Some("re-game"))).count();
             let outdated_count = self.apps.iter().filter(|a| a.has_update()).count();
-            if outdated_count > 0 {
-                ui.add_space(8.0);
-                let btn = egui::Button::new(
-                    RichText::new(format!("{} ({outdated_count})", tr(self.lang, "⬆ Atualizar Todos os Aplicativos")))
-                        .size(13.0)
-                        .strong()
-                        .color(Color32::WHITE),
-                )
-                .fill(Color32::from_rgb(205, 115, 20))
-                .min_size(Vec2::new(280.0, 32.0))
-                .corner_radius(CornerRadius::same(6));
 
-                if ui.add_enabled(self.busy_task.is_none(), btn).clicked() {
-                    self.spawn_update_all();
+            let total_time_str = if total_playtime_secs < 60 {
+                format!("{} {}", total_playtime_secs, tr(self.lang, "segundos"))
+            } else if total_playtime_secs < 3600 {
+                format!("{} min", total_playtime_secs / 60)
+            } else {
+                format!("{:.1} h", total_playtime_secs as f64 / 3600.0)
+            };
+
+            let most_played = self.apps
+                .iter()
+                .filter_map(|a| a.installed.as_ref().map(|i| (i.playtime_seconds, a.full_name.clone())))
+                .filter(|(s, _)| *s > 0)
+                .max_by_key(|(s, _)| *s);
+
+            egui::Frame::NONE
+                .fill(Color32::from_rgb(18, 24, 34))
+                .stroke(Stroke::new(1.0_f32, Color32::from_rgb(38, 48, 68)))
+                .corner_radius(CornerRadius::same(10))
+                .inner_margin(egui::Margin::symmetric(16, 12))
+                .show(ui, |ui| {
+                    ui.horizontal_wrapped(|ui| {
+                        // Coluna 1: Tempo Total
+                        ui.vertical(|ui| {
+                            ui.label(RichText::new(tr(self.lang, "⏱ Tempo Total em Uso:")).size(11.5).color(Color32::from_rgb(140, 155, 180)));
+                            ui.label(RichText::new(total_time_str).size(18.0).strong().color(Color32::from_rgb(100, 220, 145)));
+                        });
+                        ui.add_space(20.0);
+
+                        // Coluna 2: Instalados
+                        ui.vertical(|ui| {
+                            ui.label(RichText::new(tr(self.lang, "📦 Total no PC:")).size(11.5).color(Color32::from_rgb(140, 155, 180)));
+                            ui.label(RichText::new(format!("{} {}", total_installed, tr(self.lang, "programas"))).size(18.0).strong().color(Color32::WHITE));
+                        });
+                        ui.add_space(20.0);
+
+                        // Coluna 3: Em Rust
+                        ui.vertical(|ui| {
+                            ui.label(RichText::new(tr(self.lang, "🦀 Feito em Rust:")).size(11.5).color(Color32::from_rgb(140, 155, 180)));
+                            ui.label(RichText::new(format!("{} {}", rust_count, tr(self.lang, "apps"))).size(18.0).strong().color(RUST_ORANGE));
+                        });
+                        ui.add_space(20.0);
+
+                        // Coluna 4: Mais Jogado
+                        if let Some((secs, ref name)) = most_played {
+                            let hours = secs as f64 / 3600.0;
+                            ui.vertical(|ui| {
+                                ui.label(RichText::new(tr(self.lang, "🏆 Mais Jogado:")).size(11.5).color(Color32::from_rgb(140, 155, 180)));
+                                ui.label(RichText::new(format!("{} ({:.1}h)", friendly_title(name), hours)).size(15.0).strong().color(Color32::from_rgb(255, 215, 80)));
+                            });
+                            ui.add_space(20.0);
+                        }
+
+                        // Coluna 5: Botão de Atualizar Todos (se houver)
+                        if outdated_count > 0 {
+                            ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
+                                let btn = egui::Button::new(
+                                    RichText::new(format!("{} ({outdated_count})", tr(self.lang, "⬆ Atualizar Todos os Aplicativos")))
+                                        .size(13.0)
+                                        .strong()
+                                        .color(Color32::WHITE),
+                                )
+                                .fill(Color32::from_rgb(205, 115, 20))
+                                .min_size(Vec2::new(240.0, 34.0))
+                                .corner_radius(CornerRadius::same(6));
+
+                                if ui.add_enabled(self.busy_task.is_none(), btn).clicked() {
+                                    self.spawn_update_all();
+                                }
+                            });
+                        }
+                    });
+                });
+
+            ui.add_space(8.0);
+
+            // Filtros rápidos da biblioteca
+            ui.horizontal_wrapped(|ui| {
+                ui.label(RichText::new(tr(self.lang, "Filtrar Biblioteca:")).size(12.0).color(Color32::GRAY));
+                let lib_filters = [
+                    ("Todos", "todos", total_installed),
+                    ("⬆ Com Atualização", "update", outdated_count),
+                    ("🦀 Feito em Rust", "rust", rust_count),
+                    ("🎮 Jogos & Ports", "games", games_count),
+                ];
+                for (label, val, count) in lib_filters {
+                    let is_active = self.library_filter == val;
+                    let display_txt = format!("{} ({count})", tr(self.lang, label));
+                    if ui.selectable_label(is_active, display_txt).clicked() {
+                        self.library_filter = val.into();
+                    }
                 }
-            }
+            });
         }
 
         if !matches!(self.section, NavSection::ReverseEngineering | NavSection::Library | NavSection::Terminal | NavSection::Optimizer) {
@@ -3014,6 +3118,11 @@ impl StoreGui {
                                 .size(11.8)
                                 .color(Color32::from_rgb(240, 240, 240)),
                             );
+                            ui.add_space(3.0);
+                            let release_url = format!("https://github.com/{}/releases/tag/{}", app.full_name, app.latest_tag);
+                            if ui.link(tr(self.lang, "📋 Ver Notas da Versão (Changelog) ↗")).clicked() {
+                                let _ = downloader::open_url(&release_url);
+                            }
                         });
                     });
                 });
@@ -3393,6 +3502,10 @@ impl StoreGui {
                         }
                         if installed_tag.as_deref() == Some(rel.tag_name.as_str()) {
                             draw_pill(ui, &tr(self.lang, "instalada"), Color32::from_rgb(30, 125, 75));
+                        }
+                        let rel_url = format!("https://github.com/{}/releases/tag/{}", app.full_name, rel.tag_name);
+                        if ui.link("↗").on_hover_text(tr(self.lang, "Abrir notas desta versão no GitHub ↗")).clicked() {
+                            let _ = downloader::open_url(&rel_url);
                         }
                         match &best {
                             Some(asset) => {
