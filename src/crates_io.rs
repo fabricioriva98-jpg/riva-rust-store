@@ -27,6 +27,8 @@ pub async fn crate_repository(name: &str) -> Result<String> {
     // O crates.io pede um User-Agent que identifique o programa
     let client = reqwest::Client::builder()
         .user_agent("gitstore/0.3 (RRS - Riva Rust Store)")
+        .connect_timeout(std::time::Duration::from_secs(15))
+        .timeout(std::time::Duration::from_secs(30))
         .build()?;
     let resp = client
         .get(format!("https://crates.io/api/v1/crates/{name}"))

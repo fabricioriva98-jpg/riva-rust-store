@@ -178,6 +178,9 @@ pub async fn download_and_verify(
 
     let client = reqwest::Client::builder()
         .user_agent("gitstore/0.2")
+        .connect_timeout(std::time::Duration::from_secs(15))
+        // Tempo máximo sem receber dados (não limita o download inteiro).
+        .read_timeout(std::time::Duration::from_secs(60))
         .build()?;
 
     let mut resp = client
@@ -207,7 +210,11 @@ pub async fn download_and_verify(
                 return Err(e).context("download interrompido");
             }
         };
-        file.write_all(&chunk)?;
+        if let Err(e) = file.write_all(&chunk) {
+            drop(file);
+            let _ = std::fs::remove_file(&temp_path);
+            return Err(e).context("falha ao gravar o download no disco");
+        }
         hasher.update(&chunk);
         downloaded += chunk.len() as u64;
 
@@ -254,9 +261,14 @@ pub async fn download_and_verify(
         _ => (final_path.clone(), false),
     };
 
-    let msg = if extracted {
+    let msg = if extracted && verified_digest {
         format!(
             "✅ Download concluído, SHA-256 verificado e aplicativo descompactado pronto para uso! ({})",
+            &computed_sha256[..12]
+        )
+    } else if extracted {
+        format!(
+            "✅ Download concluído e aplicativo descompactado. SHA-256 calculado: {} (release sem digest no GitHub, não verificado)",
             &computed_sha256[..12]
         )
     } else if verified_digest {

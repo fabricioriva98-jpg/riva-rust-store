@@ -135,7 +135,11 @@ pub async fn fetch_signed(location: &str) -> Result<(Vec<u8>, CatalogSignature)>
     let location = location.trim();
     let sig_location = format!("{location}.sig");
     let (catalog, sig_raw) = if location.starts_with("https://") || location.starts_with("http://") {
-        let client = reqwest::Client::builder().user_agent("gitstore/0.3").build()?;
+        let client = reqwest::Client::builder()
+            .user_agent("gitstore/0.3")
+            .connect_timeout(std::time::Duration::from_secs(15))
+            .timeout(std::time::Duration::from_secs(60))
+            .build()?;
         let get = |url: String| {
             let client = client.clone();
             async move {

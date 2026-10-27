@@ -91,7 +91,11 @@ pub fn parse_poll(v: &Value) -> PollResult {
 }
 
 fn client() -> Result<reqwest::Client> {
-    Ok(reqwest::Client::builder().user_agent("gitstore/0.3").build()?)
+    Ok(reqwest::Client::builder()
+        .user_agent("gitstore/0.3")
+        .connect_timeout(std::time::Duration::from_secs(15))
+        .timeout(std::time::Duration::from_secs(30))
+        .build()?)
 }
 
 pub async fn request_device_code(client_id: &str) -> Result<DeviceCode> {

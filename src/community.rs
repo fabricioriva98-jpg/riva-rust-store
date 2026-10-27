@@ -149,6 +149,8 @@ async fn graphql(token: &str, body: &Value) -> Result<Value> {
     }
     let resp = reqwest::Client::builder()
         .user_agent("gitstore/0.3")
+        .connect_timeout(std::time::Duration::from_secs(15))
+        .timeout(std::time::Duration::from_secs(30))
         .build()?
         .post("https://api.github.com/graphql")
         .header("Authorization", format!("Bearer {}", token.trim()))

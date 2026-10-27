@@ -104,7 +104,11 @@ impl Forge {
         headers.insert(header::ACCEPT, "application/json".parse()?);
         Ok(Self {
             gh: Github::new(github_token)?,
-            http: Client::builder().default_headers(headers).build()?,
+            http: Client::builder()
+                .default_headers(headers)
+                .connect_timeout(std::time::Duration::from_secs(15))
+                .timeout(std::time::Duration::from_secs(60))
+                .build()?,
         })
     }
 

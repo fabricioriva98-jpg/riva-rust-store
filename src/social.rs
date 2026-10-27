@@ -25,7 +25,11 @@ pub fn share_text(app: &App, title: &str) -> String {
 }
 
 fn http() -> Result<reqwest::Client> {
-    Ok(reqwest::Client::builder().user_agent("gitstore/0.3").build()?)
+    Ok(reqwest::Client::builder()
+        .user_agent("gitstore/0.3")
+        .connect_timeout(std::time::Duration::from_secs(15))
+        .timeout(std::time::Duration::from_secs(30))
+        .build()?)
 }
 
 fn auth(req: reqwest::RequestBuilder, token: &str) -> reqwest::RequestBuilder {

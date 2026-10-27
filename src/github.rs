@@ -103,7 +103,11 @@ impl Github {
             headers.insert(header::AUTHORIZATION, format!("Bearer {t}").parse()?);
         }
         Ok(Self {
-            client: Client::builder().default_headers(headers).build()?,
+            client: Client::builder()
+                .default_headers(headers)
+                .connect_timeout(std::time::Duration::from_secs(15))
+                .timeout(std::time::Duration::from_secs(60))
+                .build()?,
             has_token: token.is_some(),
         })
     }
