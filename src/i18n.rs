@@ -885,6 +885,14 @@ pub static TABLE: &[(&str, &str)] = &[
     ("Hash SHA-256", "SHA-256 Hash"),
     ("Web API / Axum", "Web API / Axum"),
     ("Barra de Progresso", "Progress Bar"),
+
+    // Ampliação do Editor e IDE Rust
+    ("📊 Mostrar Saída", "📊 Show Output"),
+    ("Exibe o painel de saída e logs de compilação.", "Shows the output panel and compilation logs."),
+    ("🖥️ Maximizar Editor", "🖥️ Maximize Editor"),
+    ("Expande a área do editor de código ocupando toda a tela.", "Expands the code editor area to occupy the full screen."),
+    ("▼ Ocultar", "▼ Hide"),
+    ("Oculta este painel de saída e maximiza o editor.", "Hides this output panel and maximizes the editor."),
 ];
 
 #[cfg(test)]

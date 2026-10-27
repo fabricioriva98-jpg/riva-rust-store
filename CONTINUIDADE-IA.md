@@ -187,6 +187,15 @@ Rodada Biblioteca Rust Completa & Terminal Integrado / Espelho de IDEs (25/10, t
 - **Terminal Integrado & Espelho de IDEs (VS Code / Antigravity)**: novos módulos `ide.rs`, `terminal_studio.rs` e tela gráfica `gui/terminal_studio.rs`. Detecta automaticamente a instalação do Visual Studio Code e do Google Antigravity na máquina do Fabricio. Permite abrir pastas de projeto nas IDEs com 1 clique, instalar a extensão oficial `rust-analyzer` no VS Code, inspecionar arquivos e executar comandos Cargo (`cargo check`, `cargo build`, `cargo run`, `cargo test`, `rustc --version`, `rustup show`, `cargo clean` ou qualquer comando digitado) em tempo real sem travar a interface da loja.
 - **Internacionalização e Testes**: paridade rigorosa em `i18n.rs` com 40 novas traduções adicionadas (100% dos testes `todo_texto_traduzivel_tem_ingles`, `tabela_sem_repeticao_nem_sobra` e `troca_de_idioma` aprovados). Suite total expandida para 109 testes (todos passando), 0 novos avisos no Clippy e executáveis atualizados em release: `RRS - Riva Rust Store.exe` e `Instalador - RRS Riva Rust Store.exe`.
 
+Rodada Ampliação da Área de Trabalho do Editor & IDE Rust (26/10, noite — Antigravity / Gemini):
+- **Ampliação do Editor & IDE Dedicada do Rust (`gui.rs`, `gui/terminal_studio.rs`, `i18n.rs`)**:
+  - Atendimento ao pedido do Fabricio para que a área de edição da aba `💻 Editor & IDE` tenha tamanho proporcional e amplo semelhante ao console do terminal, aproveitando integralmente a altura da tela sem espaços vazios.
+  - **Cálculo Dinâmico de Altura**: implementado cálculo responsivo baseado em `ui.available_height()`.
+  - **Modo Dividido (Split) Proporcional**: o editor passa a ocupar ~65% da altura da tela (`clamp(260.0, 750.0)`) com 20 linhas visíveis, e o painel de saída ocupa os 35% restantes com `ui.set_height(output_h)`, preenchendo toda a extensão vertical até o rodapé da janela.
+  - **Modo Editor Maximizado (Tela Inteira)**: novo botão `[🖥️ Maximizar Editor]` na barra de ferramentas e botão `[▼ Ocultar]` no cabeçalho da saída. Quando ativado, o editor se expande para ocupar a altura total disponível (`ui.available_height() - 65.0`), espelhando a área do console da Aba 1.
+  - **Reexibição Inteligente**: botão `[📊 Mostrar Saída]` para reabrir a saída a qualquer momento, e auto-reexibição instantânea ao clicar em `▶ Executar Código`.
+  - **Internacionalização e Testes**: 6 novos termos com paridade 100% PT-BR e EN em `src/i18n.rs`, 139 testes aprovados (100% de sucesso) e binários de release `RRS - Riva Rust Store.exe` e `Instalador - RRS Riva Rust Store.exe` atualizados na raiz com backups prévios em `Obsoleto`.
+
 Rodada Expansão Rust: 30 Lições de Aprendizado, 60 Crates e Novos Templates na IDE (26/10, noite — Antigravity / Gemini):
 - **10 Lições Avançadas de Rust no Estúdio do Iniciante (`learn.rs` e `gui/learn.rs`)**:
   - Total expandido para **30 lições práticas completas** (10 Básico, 10 Intermediário, 10 Avançado).

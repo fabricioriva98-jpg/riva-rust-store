@@ -226,6 +226,16 @@ impl StoreGui {
         match self.terminal_active_tab {
             0 => {
                 // ─── ABA 0: EDITOR DE CÓDIGO RUST INTEGRADO (IDE) ───────────
+                let total_avail = ui.available_height();
+                let (editor_h, output_h) = if self.rust_ide_hide_output {
+                    ((total_avail - 65.0).max(420.0), 0.0_f32)
+                } else {
+                    let content_avail = (total_avail - 125.0).max(350.0);
+                    let ed_h = (content_avail * 0.65).clamp(260.0, 750.0);
+                    let out_h = (content_avail - ed_h).clamp(120.0, 350.0);
+                    (ed_h, out_h)
+                };
+
                 egui::Frame::NONE
                     .fill(Color32::from_rgb(16, 20, 28))
                     .stroke(Stroke::new(1.0_f32, Color32::from_rgb(32, 42, 60)))
@@ -300,6 +310,21 @@ impl StoreGui {
                             }
 
                             ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
+                                if self.rust_ide_hide_output {
+                                    if ui
+                                        .button(self.tr("📊 Mostrar Saída"))
+                                        .on_hover_text(self.tr("Exibe o painel de saída e logs de compilação."))
+                                        .clicked()
+                                    {
+                                        self.rust_ide_hide_output = false;
+                                    }
+                                } else if ui
+                                    .button(self.tr("🖥️ Maximizar Editor"))
+                                    .on_hover_text(self.tr("Expande a área do editor de código ocupando toda a tela."))
+                                    .clicked()
+                                {
+                                    self.rust_ide_hide_output = true;
+                                }
                                 if ui.button(self.tr("🧹 Limpar")).clicked() {
                                     self.rust_ide_code.clear();
                                 }
@@ -336,6 +361,7 @@ impl StoreGui {
                                     .on_hover_text(self.tr("Compila e executa este código imediatamente com o compilador rustc em segundo plano."))
                                     .clicked()
                                 {
+                                    self.rust_ide_hide_output = false;
                                     let code = self.rust_ide_code.clone();
                                     self.spawn_terminal_eval(code);
                                 }
@@ -345,65 +371,76 @@ impl StoreGui {
                         ui.add_space(6.0);
 
                         // Área do editor de texto com fonte monospace
+                        let desired_rows = if self.rust_ide_hide_output { 35 } else { 20 };
                         egui::ScrollArea::vertical()
                             .id_salt("rust_ide_editor_scroll")
-                            .max_height(240.0)
+                            .max_height(editor_h)
                             .show(ui, |ui| {
+                                ui.set_height(editor_h);
                                 ui.add(
                                     egui::TextEdit::multiline(&mut self.rust_ide_code)
                                         .font(egui::TextStyle::Monospace)
                                         .desired_width(ui.available_width())
-                                        .desired_rows(10)
+                                        .desired_rows(desired_rows)
                                         .lock_focus(true),
                                 );
                             });
                     });
 
-                ui.add_space(8.0);
+                if !self.rust_ide_hide_output {
+                    ui.add_space(8.0);
 
-                // Painel de saída da execução do código
-                egui::Frame::NONE
-                    .fill(Color32::from_rgb(10, 12, 16))
-                    .stroke(Stroke::new(1.0_f32, Color32::from_rgb(32, 40, 56)))
-                    .corner_radius(CornerRadius::same(8))
-                    .inner_margin(egui::Margin::symmetric(12, 8))
-                    .show(ui, |ui| {
-                        ui.horizontal(|ui| {
-                            ui.label(RichText::new(self.tr("📋 Saída da Execução:")).strong().size(12.5).color(Color32::WHITE));
-                            ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-                                if ui.button(self.tr("🧹 Limpar Saída")).clicked() {
-                                    self.terminal_logs.clear();
-                                }
-                                if self.terminal_is_running {
-                                    draw_pill(ui, &self.tr("⏳ Compilando e Executando..."), Color32::from_rgb(200, 120, 30));
-                                }
+                    // Painel de saída da execução do código
+                    egui::Frame::NONE
+                        .fill(Color32::from_rgb(10, 12, 16))
+                        .stroke(Stroke::new(1.0_f32, Color32::from_rgb(32, 40, 56)))
+                        .corner_radius(CornerRadius::same(8))
+                        .inner_margin(egui::Margin::symmetric(12, 8))
+                        .show(ui, |ui| {
+                            ui.horizontal(|ui| {
+                                ui.label(RichText::new(self.tr("📋 Saída da Execução:")).strong().size(12.5).color(Color32::WHITE));
+                                ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
+                                    if ui
+                                        .button(self.tr("▼ Ocultar"))
+                                        .on_hover_text(self.tr("Oculta este painel de saída e maximiza o editor."))
+                                        .clicked()
+                                    {
+                                        self.rust_ide_hide_output = true;
+                                    }
+                                    if ui.button(self.tr("🧹 Limpar Saída")).clicked() {
+                                        self.terminal_logs.clear();
+                                    }
+                                    if self.terminal_is_running {
+                                        draw_pill(ui, &self.tr("⏳ Compilando e Executando..."), Color32::from_rgb(200, 120, 30));
+                                    }
+                                });
                             });
+                            ui.add_space(4.0);
+                            ui.separator();
+                            ui.add_space(4.0);
+
+                            egui::ScrollArea::vertical()
+                                .id_salt("rust_ide_output_scroll")
+                                .stick_to_bottom(true)
+                                .max_height(output_h)
+                                .show(ui, |ui| {
+                                    ui.set_width(ui.available_width());
+                                    ui.set_height(output_h);
+                                    if self.terminal_logs.is_empty() {
+                                        ui.label(RichText::new(self.tr("Nenhum código executado ainda. Clique em '▶ Executar Código' acima para compilar e rodar.")).monospace().size(12.0).color(Color32::from_rgb(110, 125, 145)));
+                                    }
+                                    for (kind, text) in &self.terminal_logs {
+                                        let text_col = match kind {
+                                            terminal_studio::TerminalLineKind::Command => Color32::from_rgb(0, 240, 255),
+                                            terminal_studio::TerminalLineKind::Stdout => Color32::from_rgb(220, 225, 235),
+                                            terminal_studio::TerminalLineKind::Stderr => Color32::from_rgb(245, 90, 80),
+                                            terminal_studio::TerminalLineKind::SystemInfo => Color32::from_rgb(90, 175, 240),
+                                        };
+                                        ui.label(RichText::new(text).monospace().size(12.0).color(text_col));
+                                    }
+                                });
                         });
-                        ui.add_space(4.0);
-                        ui.separator();
-                        ui.add_space(4.0);
-
-                        let available_h = (ui.available_height() - 20.0).max(180.0);
-                        egui::ScrollArea::vertical()
-                            .id_salt("rust_ide_output_scroll")
-                            .stick_to_bottom(true)
-                            .max_height(available_h)
-                            .show(ui, |ui| {
-                                ui.set_width(ui.available_width());
-                                if self.terminal_logs.is_empty() {
-                                    ui.label(RichText::new(self.tr("Nenhum código executado ainda. Clique em '▶ Executar Código' acima para compilar e rodar.")).monospace().size(12.0).color(Color32::from_rgb(110, 125, 145)));
-                                }
-                                for (kind, text) in &self.terminal_logs {
-                                    let text_col = match kind {
-                                        terminal_studio::TerminalLineKind::Command => Color32::from_rgb(0, 240, 255),
-                                        terminal_studio::TerminalLineKind::Stdout => Color32::from_rgb(220, 225, 235),
-                                        terminal_studio::TerminalLineKind::Stderr => Color32::from_rgb(245, 90, 80),
-                                        terminal_studio::TerminalLineKind::SystemInfo => Color32::from_rgb(90, 175, 240),
-                                    };
-                                    ui.label(RichText::new(text).monospace().size(12.0).color(text_col));
-                                }
-                            });
-                    });
+                }
             }
             1 => {
                 // ─── ABA 1: CONSOLE DO TERMINAL INTEGRADO (MODERNO COM 🔴🟡🟢) ──
