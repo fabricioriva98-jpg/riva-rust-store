@@ -76,8 +76,8 @@ pub fn run_terminal_command(working_dir: &Path, raw_cmd: &str, cancel: &AtomicBo
     let parts = split_args(trimmed);
     let prog = &parts[0];
 
-    // Ferramentas de desenvolvimento (cargo, rustc, rustup, git, gh) são chamadas diretamente
-    let is_direct_tool = ["cargo", "rustc", "rustup", "git", "gh"].contains(&prog.to_lowercase().as_str());
+    // Ferramentas de desenvolvimento (cargo, rustc, rustup, rustfmt, git, gh) são chamadas diretamente
+    let is_direct_tool = ["cargo", "rustc", "rustup", "rustfmt", "git", "gh"].contains(&prog.to_lowercase().as_str());
     let mut cmd = if is_direct_tool {
         let mut c = Command::new(prog);
         c.args(&parts[1..]);
@@ -140,6 +140,7 @@ pub struct RustEnvInfo {
     pub cargo_version: Option<String>,
     pub rustup_version: Option<String>,
     pub clippy_installed: bool,
+    pub rustfmt_installed: bool,
     pub rust_analyzer_installed: bool,
     pub active_toolchain: Option<String>,
 }
@@ -153,6 +154,7 @@ pub fn detect_rust_env() -> RustEnvInfo {
     });
 
     let clippy_installed = run_silent("cargo", &["clippy", "--version"]).is_some();
+    let rustfmt_installed = run_silent("rustfmt", &["--version"]).is_some();
     let rust_analyzer_installed = run_silent("rust-analyzer", &["--version"]).is_some();
 
     let active_toolchain = run_silent("rustup", &["show", "active-toolchain"]).and_then(|out| {
@@ -164,6 +166,7 @@ pub fn detect_rust_env() -> RustEnvInfo {
         cargo_version,
         rustup_version,
         clippy_installed,
+        rustfmt_installed,
         rust_analyzer_installed,
         active_toolchain,
     }
@@ -292,6 +295,50 @@ pub fn eval_rust_expression(expr: &str, cancel: &AtomicBool) -> TerminalOutput {
     out
 }
 
+/// Formata um bloco de código Rust usando o formatador oficial `rustfmt`.
+/// Executa de forma segura com tempo limite [`subprocess::QUICK`].
+pub fn format_rust_code(code: &str) -> Result<String, String> {
+    let trimmed = code.trim();
+    if trimmed.is_empty() {
+        return Ok(code.to_string());
+    }
+
+    static FMT_COUNTER: AtomicU64 = AtomicU64::new(0);
+    let n = FMT_COUNTER.fetch_add(1, Ordering::Relaxed);
+    let temp_dir = std::env::temp_dir();
+    let file_id = format!("rrs_fmt_{}_{n}", std::process::id());
+    let src_path = temp_dir.join(format!("{}.rs", file_id));
+
+    if let Err(e) = std::fs::write(&src_path, code) {
+        return Err(format!("Erro ao criar arquivo temporário para formatação: {e}"));
+    }
+
+    let mut cmd = Command::new("rustfmt");
+    cmd.arg("--edition=2021").arg(&src_path);
+    let res = subprocess::run_limited(cmd, subprocess::QUICK, None);
+
+    let out = match res {
+        Ok(output) if output.success() => {
+            match std::fs::read_to_string(&src_path) {
+                Ok(formatted) => Ok(formatted),
+                Err(e) => Err(format!("Erro ao ler código formatado: {e}")),
+            }
+        }
+        Ok(output) => {
+            let err = output.stderr.trim();
+            if err.is_empty() {
+                Err("Não foi possível formatar o código (verifique se há erros de sintaxe)".to_string())
+            } else {
+                Err(err.to_string())
+            }
+        }
+        Err(e) => Err(format!("rustfmt não encontrado ou indisponível: {e}. Instale com 'rustup component add rustfmt'")),
+    };
+
+    let _ = std::fs::remove_file(&src_path);
+    out
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -347,5 +394,19 @@ mod tests {
         assert!(dir.ends_with("Projetos Rust"), "{dir:?}");
         let exe_dir = std::env::current_exe().unwrap().parent().unwrap().to_path_buf();
         assert!(!dir.starts_with(&exe_dir));
+    }
+
+    #[test]
+    fn formatacao_de_codigo_com_rustfmt_funciona() {
+        let unformatted = "fn   main(){\nprintln!(\"oi\");\n}\n";
+        match format_rust_code(unformatted) {
+            Ok(formatted) => {
+                assert!(formatted.contains("fn main() {\n    println!(\"oi\");\n}"));
+            }
+            Err(e) if e.contains("rustfmt não encontrado") => {
+                // Em ambiente sem rustfmt, teste passa suavemente
+            }
+            Err(e) => panic!("Erro inesperado na formatação: {e}"),
+        }
     }
 }

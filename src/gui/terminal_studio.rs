@@ -145,6 +145,10 @@ impl StoreGui {
                             draw_pill(ui, "clippy: ✔", Color32::from_rgb(40, 100, 70));
                         }
 
+                        if env_info.rustfmt_installed {
+                            draw_pill(ui, "rustfmt: ✔", Color32::from_rgb(40, 100, 70));
+                        }
+
                         if env_info.rust_analyzer_installed {
                             draw_pill(ui, "rust-analyzer: ✔", Color32::from_rgb(40, 100, 70));
                         }
@@ -273,6 +277,29 @@ impl StoreGui {
                                     ui.ctx().copy_text(self.rust_ide_code.clone());
                                     self.status_msg = self.tr("Código copiado para a área de transferência.");
                                     self.status_is_error = false;
+                                }
+                                if ui
+                                    .add_enabled(
+                                        !self.rust_ide_code.trim().is_empty(),
+                                        egui::Button::new(
+                                            RichText::new(self.tr("✨ Formatar (rustfmt)"))
+                                                .color(Color32::from_rgb(100, 215, 255)),
+                                        ),
+                                    )
+                                    .on_hover_text(self.tr("Formata e indenta o código Rust seguindo os padrões oficiais com o rustfmt."))
+                                    .clicked()
+                                {
+                                    match terminal_studio::format_rust_code(&self.rust_ide_code) {
+                                        Ok(formatted) => {
+                                            self.rust_ide_code = formatted;
+                                            self.status_msg = self.tr("Código formatado com sucesso via rustfmt.");
+                                            self.status_is_error = false;
+                                        }
+                                        Err(err) => {
+                                            self.status_msg = format!("{}: {}", self.tr("Falha ao formatar"), err);
+                                            self.status_is_error = true;
+                                        }
+                                    }
                                 }
                                 if ui
                                     .add_enabled(!self.terminal_is_running && !self.rust_ide_code.trim().is_empty(), egui::Button::new(RichText::new(self.tr("▶ Executar Código")).strong().color(Color32::from_rgb(80, 220, 120))))

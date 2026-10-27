@@ -849,6 +849,15 @@ pub static TABLE: &[(&str, &str)] = &[
     ("🍃 Eco", "🍃 Eco"),
     ("⚖️ Normal", "⚖️ Normal"),
     ("🚀 Performance", "🚀 Performance"),
+
+    // Formatação de Código (rustfmt) e Badges de Atualização
+    ("✨ Formatar (rustfmt)", "✨ Format (rustfmt)"),
+    ("Formata e indenta o código Rust seguindo os padrões oficiais com o rustfmt.", "Formats and indents Rust code according to official standards using rustfmt."),
+    ("Código formatado com sucesso via rustfmt.", "Code successfully formatted with rustfmt."),
+    ("Falha ao formatar", "Failed to format"),
+    ("Nova Versão Disponível!", "New Version Available!"),
+    ("Versão no seu PC:", "Version on your PC:"),
+    ("Última versão lançada:", "Latest release:"),
 ];
 
 #[cfg(test)]

@@ -2673,6 +2673,8 @@ impl StoreGui {
         };
         let border = if is_selected {
             Stroke::new(1.8_f32, Color32::from_rgb(95, 175, 255))
+        } else if app.has_update() {
+            Stroke::new(1.6_f32, Color32::from_rgb(235, 135, 20))
         } else {
             Stroke::new(1.0_f32, Color32::from_rgb(36, 42, 56))
         };
@@ -2710,6 +2712,11 @@ impl StoreGui {
                             draw_pill(ui, &tr(self.lang, kind_label), kind_color);
                             if app.is_rust() {
                                 draw_pill(ui, "🦀", RUST_ORANGE);
+                            }
+                            if app.has_update() {
+                                draw_pill(ui, &tr(self.lang, "⬆ ATUALIZAÇÃO"), Color32::from_rgb(220, 110, 15));
+                            } else if app.installed.is_some() {
+                                draw_pill(ui, &tr(self.lang, "✔ Instalado"), Color32::from_rgb(28, 125, 70));
                             }
 
                             ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
@@ -2803,6 +2810,8 @@ impl StoreGui {
         };
         let border = if is_selected {
             Stroke::new(1.5_f32, Color32::from_rgb(90, 165, 250))
+        } else if app.has_update() {
+            Stroke::new(1.5_f32, Color32::from_rgb(235, 135, 20))
         } else {
             Stroke::new(1.0_f32, Color32::from_rgb(38, 44, 56))
         };
@@ -2975,6 +2984,40 @@ impl StoreGui {
                 }
             }
         });
+
+        if app.has_update() {
+            ui.add_space(8.0);
+            egui::Frame::NONE
+                .fill(Color32::from_rgb(46, 30, 14))
+                .stroke(Stroke::new(1.5_f32, Color32::from_rgb(235, 135, 20)))
+                .corner_radius(CornerRadius::same(8))
+                .inner_margin(egui::Margin::symmetric(14, 10))
+                .show(ui, |ui| {
+                    ui.horizontal(|ui| {
+                        ui.label(RichText::new("🔔").size(20.0));
+                        ui.vertical(|ui| {
+                            ui.label(
+                                RichText::new(tr(self.lang, "Nova Versão Disponível!"))
+                                    .size(13.5)
+                                    .strong()
+                                    .color(Color32::from_rgb(255, 205, 80)),
+                            );
+                            let inst_tag = app.installed.as_ref().map(|i| i.installed_tag.as_str()).unwrap_or("?");
+                            ui.label(
+                                RichText::new(format!(
+                                    "{} {}  ➜  {} {}",
+                                    tr(self.lang, "Versão no seu PC:"),
+                                    inst_tag,
+                                    tr(self.lang, "Última versão lançada:"),
+                                    app.latest_tag
+                                ))
+                                .size(11.8)
+                                .color(Color32::from_rgb(240, 240, 240)),
+                            );
+                        });
+                    });
+                });
+        }
 
         ui.add_space(8.0);
         ui.label(

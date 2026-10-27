@@ -12,81 +12,81 @@
     "fork": false,
     "archived": false,
     "has_issues": true,
-    "latest_tag": "2026.10.21",
-    "released_at": "2026-10-21T21:54:37Z",
+    "latest_tag": "2026.10.26",
+    "released_at": "2026-10-26T22:25:26Z",
     "platforms": "linux,macos,windows",
     "assets": [
       {
         "name": "yt-dlp.exe",
-        "size": 17880111,
-        "browser_download_url": "https://github.com/yt-dlp/yt-dlp/releases/download/2026.10.21/yt-dlp.exe",
-        "digest": "sha256:33121d192d706e62f684a06f80918e3f3a8ba52ac3a65213b6951c39c7d9f555"
+        "size": 23575744,
+        "browser_download_url": "https://github.com/yt-dlp/yt-dlp/releases/download/2026.10.26/yt-dlp.exe",
+        "digest": "sha256:f5389d3698ecde4ef06f4e6b1ce0294fe9ac1396228c8990b8d3416d6d177a7d"
       },
       {
         "name": "yt-dlp_arm64.exe",
-        "size": 21695356,
-        "browser_download_url": "https://github.com/yt-dlp/yt-dlp/releases/download/2026.10.21/yt-dlp_arm64.exe",
-        "digest": "sha256:1380a9f105302764e6a5d383c2f07238ae242f0f4fbf3414aea00e56619a79b3"
+        "size": 22809590,
+        "browser_download_url": "https://github.com/yt-dlp/yt-dlp/releases/download/2026.10.26/yt-dlp_arm64.exe",
+        "digest": "sha256:0066dbac3c124028e2dcae2a197fccee33cd91f456313d24f7af89fd54590e98"
       },
       {
         "name": "yt-dlp_linux.zip",
-        "size": 40639382,
-        "browser_download_url": "https://github.com/yt-dlp/yt-dlp/releases/download/2026.10.21/yt-dlp_linux.zip",
-        "digest": "sha256:dcddc44b6151ccd855a9a3c8fcdb00e897bb872ec9f4908b1b708b16eaaaa114"
+        "size": 41236547,
+        "browser_download_url": "https://github.com/yt-dlp/yt-dlp/releases/download/2026.10.26/yt-dlp_linux.zip",
+        "digest": "sha256:f34053415136e55073dd64ba5326d161ecc23ce0e98c081d8752867b37809450"
       },
       {
         "name": "yt-dlp_linux_aarch64.zip",
-        "size": 40328850,
-        "browser_download_url": "https://github.com/yt-dlp/yt-dlp/releases/download/2026.10.21/yt-dlp_linux_aarch64.zip",
-        "digest": "sha256:d98a0aeb26b670aac94ee892a03a196f3f2cf0a81c3872186199c0c67ab36bde"
+        "size": 40835009,
+        "browser_download_url": "https://github.com/yt-dlp/yt-dlp/releases/download/2026.10.26/yt-dlp_linux_aarch64.zip",
+        "digest": "sha256:74708e707e8fa8177c8347e58152337edf320149cd7b225defd453f7cde47822"
       },
       {
         "name": "yt-dlp_linux_armv7l.zip",
-        "size": 38772464,
-        "browser_download_url": "https://github.com/yt-dlp/yt-dlp/releases/download/2026.10.21/yt-dlp_linux_armv7l.zip",
-        "digest": "sha256:cfff2f4e4a7dfc893fbca781195fabe1965e28151c6b08ad906662cb944c9bed"
+        "size": 39362808,
+        "browser_download_url": "https://github.com/yt-dlp/yt-dlp/releases/download/2026.10.26/yt-dlp_linux_armv7l.zip",
+        "digest": "sha256:ec828c26c6da7898b279da2cad3dca434ebec7f8f18ae7b6420027f3aa037bf2"
       },
       {
         "name": "yt-dlp_macos.zip",
-        "size": 53879210,
-        "browser_download_url": "https://github.com/yt-dlp/yt-dlp/releases/download/2026.10.21/yt-dlp_macos.zip",
-        "digest": "sha256:2b5251788b36fcbc476568b4eea8cb239f0a775759456f2ff9344a437c52f000"
+        "size": 54165284,
+        "browser_download_url": "https://github.com/yt-dlp/yt-dlp/releases/download/2026.10.26/yt-dlp_macos.zip",
+        "digest": "sha256:20d98fa608998eff87d1d35a6e9fb65e4b874639a6cc89addc19da3becde3ef1"
       },
       {
         "name": "yt-dlp_musllinux.zip",
-        "size": 40802017,
-        "browser_download_url": "https://github.com/yt-dlp/yt-dlp/releases/download/2026.10.21/yt-dlp_musllinux.zip",
-        "digest": "sha256:66358aac681cf9adc2bea09bdf200d45c6ff59b5084e655f9ea1eb53c9ea3140"
+        "size": 41367877,
+        "browser_download_url": "https://github.com/yt-dlp/yt-dlp/releases/download/2026.10.26/yt-dlp_musllinux.zip",
+        "digest": "sha256:c3a67f7c14d4cbf876e7801039237fc16b929a629c72f9c785ec3fdc8aa40748"
       },
       {
         "name": "yt-dlp_musllinux_aarch64.zip",
-        "size": 40028067,
-        "browser_download_url": "https://github.com/yt-dlp/yt-dlp/releases/download/2026.10.21/yt-dlp_musllinux_aarch64.zip",
-        "digest": "sha256:246b2f1285cca36c6d949cae4b162ec2bdde304fb100b6e926c298a3bbbd6c29"
+        "size": 40628181,
+        "browser_download_url": "https://github.com/yt-dlp/yt-dlp/releases/download/2026.10.26/yt-dlp_musllinux_aarch64.zip",
+        "digest": "sha256:1648beeb7b0c78b471654262697066c016783d33813659367a5c274828ba3240"
       },
       {
         "name": "yt-dlp_win.zip",
-        "size": 18127019,
-        "browser_download_url": "https://github.com/yt-dlp/yt-dlp/releases/download/2026.10.21/yt-dlp_win.zip",
-        "digest": "sha256:a981b50fff6e437576d1c3c8df0680af572028ca12dff5e49435d9d33c98294b"
+        "size": 23885596,
+        "browser_download_url": "https://github.com/yt-dlp/yt-dlp/releases/download/2026.10.26/yt-dlp_win.zip",
+        "digest": "sha256:fd51b212cf8380c7a52ee08c0d6be7f3c59b2f2c832eaf7b45acfae6eab57419"
       },
       {
         "name": "yt-dlp_win_arm64.zip",
-        "size": 22022171,
-        "browser_download_url": "https://github.com/yt-dlp/yt-dlp/releases/download/2026.10.21/yt-dlp_win_arm64.zip",
-        "digest": "sha256:fa0c7962c94409d5204d501dec95029a32df98bf632b5098a0d6219ea0d822ef"
+        "size": 23179217,
+        "browser_download_url": "https://github.com/yt-dlp/yt-dlp/releases/download/2026.10.26/yt-dlp_win_arm64.zip",
+        "digest": "sha256:5eaa4c61f3c09189f3a551bf1855c13aad61fb865cc33f06012a6c2dbe287a45"
       },
       {
         "name": "yt-dlp_win_x86.zip",
-        "size": 13303550,
-        "browser_download_url": "https://github.com/yt-dlp/yt-dlp/releases/download/2026.10.21/yt-dlp_win_x86.zip",
-        "digest": "sha256:f1c71e5b651b51161be000c640469d10ea2e0a6ecbb1782fb33a6945c9f145a4"
+        "size": 18729496,
+        "browser_download_url": "https://github.com/yt-dlp/yt-dlp/releases/download/2026.10.26/yt-dlp_win_x86.zip",
+        "digest": "sha256:e2898afd51c029d23c58de60cd8446b110dd3aa121b3e4149bafcee3356c59c0"
       },
       {
         "name": "yt-dlp_x86.exe",
-        "size": 13230782,
-        "browser_download_url": "https://github.com/yt-dlp/yt-dlp/releases/download/2026.10.21/yt-dlp_x86.exe",
-        "digest": "sha256:7ce38c77db13db50c64e656b1056a0448e6c38ec0f0ccf28e30dd5271c008850"
+        "size": 18618344,
+        "browser_download_url": "https://github.com/yt-dlp/yt-dlp/releases/download/2026.10.26/yt-dlp_x86.exe",
+        "digest": "sha256:c0407c66361f50a99e10949ae882ea2ad7de9086b75d226d8fd88da4f74828fa"
       }
     ],
     "kind": "tool",
@@ -97,7 +97,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (6 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 2 dias)",
+      "🟢 Projeto ativo (atualizado há 3 dias)",
       "🟢 201501 estrelas no repositório",
       "🟢 Código aberto com licença Unlicense",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
@@ -178,8 +178,119 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (3 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 1 dias)",
+      "🟢 Projeto ativo (atualizado há 2 dias)",
       "🟢 184652 estrelas no repositório",
+      "🟢 Código aberto com licença MIT",
+      "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "farion1231/cc-switch",
+    "description": "A cross-platform desktop All-in-One assistant for Claude Code, Codex, OpenCode, OpenClaw, Grok Build & Hermes Agent. Only official website: ccswitch.io",
+    "url": "https://github.com/farion1231/cc-switch",
+    "stars": 148572,
+    "license": "MIT",
+    "topics": "ai-tools,claude-code,codex,desktop-app,grok,grokbuild,hermes,hermes-agent,mcp,open-source,openclaw,openclaw-ui,opencode,pi,provider-management,rust,skills,skills-management,tauri,wsl-support",
+    "language": "Rust",
+    "created_at": "2025-08-04T14:16:16Z",
+    "pushed_at": "2026-10-25T15:21:26Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v4.0.21",
+    "released_at": "2026-10-26T13:47:11Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "CC-Switch-v4.0.21-Linux-arm64.AppImage",
+        "size": 94489096,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.21/CC-Switch-v4.0.21-Linux-arm64.AppImage",
+        "digest": "sha256:e551e709a2f4bb3ebeb9a0b0c3d4b318ca23551bf7d5516ee45ac1fd48a06c2c"
+      },
+      {
+        "name": "CC-Switch-v4.0.21-Linux-arm64.deb",
+        "size": 17606252,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.21/CC-Switch-v4.0.21-Linux-arm64.deb",
+        "digest": "sha256:5dce53662d87df22a7818aeb96c229fe2752248b47f7f7fac166ff70fb3d05c1"
+      },
+      {
+        "name": "CC-Switch-v4.0.21-Linux-arm64.rpm",
+        "size": 17607101,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.21/CC-Switch-v4.0.21-Linux-arm64.rpm",
+        "digest": "sha256:6d118246ec8f58b91a782c728c30ac7815f9b2d9237516c9815a09b01483440b"
+      },
+      {
+        "name": "CC-Switch-v4.0.21-Linux-x86_64.AppImage",
+        "size": 97065464,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.21/CC-Switch-v4.0.21-Linux-x86_64.AppImage",
+        "digest": "sha256:8a69d94e0b94beffcd41aa79253359ab865bcc57473235dc9a5c0cb952534457"
+      },
+      {
+        "name": "CC-Switch-v4.0.21-Linux-x86_64.deb",
+        "size": 18403900,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.21/CC-Switch-v4.0.21-Linux-x86_64.deb",
+        "digest": "sha256:ea2f6ca82da004820e09e0c473ca7254bf9291282f00272e9e2adf8f114e3e61"
+      },
+      {
+        "name": "CC-Switch-v4.0.21-Linux-x86_64.rpm",
+        "size": 18404528,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.21/CC-Switch-v4.0.21-Linux-x86_64.rpm",
+        "digest": "sha256:1765dcd90af88c8cdd04c886af4a620f9d2a941dd77d4cca533a485dafd9bb29"
+      },
+      {
+        "name": "CC-Switch-v4.0.21-macOS.dmg",
+        "size": 36852461,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.21/CC-Switch-v4.0.21-macOS.dmg",
+        "digest": "sha256:504a64f9c858927c08e6d86301f0ecc638e8650202d39945694fcd64d8d1973b"
+      },
+      {
+        "name": "CC-Switch-v4.0.21-macOS.tar.gz",
+        "size": 37889032,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.21/CC-Switch-v4.0.21-macOS.tar.gz",
+        "digest": "sha256:2ecba09beeba2d9c3a952b4a5387b073d24838ad5c1f4326959ab25b5bbb3192"
+      },
+      {
+        "name": "CC-Switch-v4.0.21-macOS.zip",
+        "size": 36910711,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.21/CC-Switch-v4.0.21-macOS.zip",
+        "digest": "sha256:2277745abeed3ae72d135585e695735402744185460cd43764eaccf08a7b7f67"
+      },
+      {
+        "name": "CC-Switch-v4.0.21-Windows-arm64-Portable.zip",
+        "size": 17274134,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.21/CC-Switch-v4.0.21-Windows-arm64-Portable.zip",
+        "digest": "sha256:3ebde12cc321e27bcf4e0783a419ea46900bb99cb69990b0c9768549b17d83b7"
+      },
+      {
+        "name": "CC-Switch-v4.0.21-Windows-arm64.msi",
+        "size": 17473536,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.21/CC-Switch-v4.0.21-Windows-arm64.msi",
+        "digest": "sha256:6e595c26c3189eaf4f9b1a4352e0ba49178061e57f89da2b14cf03ab20da81c8"
+      },
+      {
+        "name": "CC-Switch-v4.0.21-Windows-Portable.zip",
+        "size": 18186399,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.21/CC-Switch-v4.0.21-Windows-Portable.zip",
+        "digest": "sha256:6291de97f030e965fabd361418c349f5c0b390e46d55b5fa806cf967f5201a38"
+      },
+      {
+        "name": "CC-Switch-v4.0.21-Windows.msi",
+        "size": 18206720,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.21/CC-Switch-v4.0.21-Windows.msi",
+        "digest": "sha256:16e9904023720abba117dd16aa11d020aa7e9546ac08bb7c6eab610e78e95ab3"
+      }
+    ],
+    "kind": "ferramenta",
+    "category": "Utilitários Rust",
+    "tags": "rust,github,descoberta",
+    "summary": null,
+    "trust_score": 98,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório consolidado (1 anos de histórico)",
+      "🟢 Projeto ativo (atualizado há 1 dias)",
+      "🟢 148572 estrelas no repositório",
       "🟢 Código aberto com licença MIT",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
     ],
@@ -398,7 +509,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (6 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 1 dias)",
+      "🟢 Projeto ativo (atualizado há 2 dias)",
       "🟢 126818 estrelas no repositório",
       "🟢 Código aberto com licença AGPL-3.0",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
@@ -557,7 +668,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (12 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 2 dias)",
+      "🟢 Projeto ativo (atualizado há 3 dias)",
       "🟢 119009 estrelas no repositório",
       "🟢 Código aberto com licença MIT",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
@@ -614,9 +725,444 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (7 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 0 dias)",
+      "🟢 Projeto ativo (atualizado há 1 dias)",
       "🟢 114500 estrelas no repositório",
       "🟢 Código aberto com licença MIT",
+      "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "tauri-apps/tauri",
+    "description": "Build smaller, faster, and more secure desktop and mobile applications with a web frontend.",
+    "url": "https://github.com/tauri-apps/tauri",
+    "stars": 112186,
+    "license": "Apache-2.0",
+    "topics": "desktop-app,high-performance,mobile-app,native-app,rust,web-frontend,webview",
+    "language": "Rust",
+    "created_at": "2019-07-13T09:09:37Z",
+    "pushed_at": "2026-10-25T13:49:32Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "tauri-cli-v2.12.4",
+    "released_at": "2026-10-21T11:56:45Z",
+    "platforms": "linux,windows",
+    "assets": [
+      {
+        "name": "cargo-tauri-aarch64-apple-darwin.zip",
+        "size": 7795035,
+        "browser_download_url": "https://github.com/tauri-apps/tauri/releases/download/tauri-cli-v2.12.4/cargo-tauri-aarch64-apple-darwin.zip",
+        "digest": "sha256:f71a34ada728ca2d1a51c28d6d21639e1e080898ec69ec8d49c5da3b7e8bc1be"
+      },
+      {
+        "name": "cargo-tauri-aarch64-pc-windows-msvc.zip",
+        "size": 7326191,
+        "browser_download_url": "https://github.com/tauri-apps/tauri/releases/download/tauri-cli-v2.12.4/cargo-tauri-aarch64-pc-windows-msvc.zip",
+        "digest": "sha256:92aa6a90be3126ed7b6ede964ca12124535359b47d8363dc29189b4f776303e7"
+      },
+      {
+        "name": "cargo-tauri-aarch64-unknown-linux-gnu.tgz",
+        "size": 8528052,
+        "browser_download_url": "https://github.com/tauri-apps/tauri/releases/download/tauri-cli-v2.12.4/cargo-tauri-aarch64-unknown-linux-gnu.tgz",
+        "digest": "sha256:4f601b9f462c3d3d10ce67b6ae963f099f6a5a3253920dae95a253abd558d723"
+      },
+      {
+        "name": "cargo-tauri-aarch64-unknown-linux-musl.tgz",
+        "size": 8527014,
+        "browser_download_url": "https://github.com/tauri-apps/tauri/releases/download/tauri-cli-v2.12.4/cargo-tauri-aarch64-unknown-linux-musl.tgz",
+        "digest": "sha256:673fe9f41ba9ad42e9820c97fe92af0cddd01e34611f5006f33591237390ac51"
+      },
+      {
+        "name": "cargo-tauri-riscv64gc-unknown-linux-gnu.tgz",
+        "size": 8922719,
+        "browser_download_url": "https://github.com/tauri-apps/tauri/releases/download/tauri-cli-v2.12.4/cargo-tauri-riscv64gc-unknown-linux-gnu.tgz",
+        "digest": "sha256:40dc1665d34c3f59ad9e50e7af897e573823bc9b4e482e8784d0161d05aa6c45"
+      },
+      {
+        "name": "cargo-tauri-x86_64-apple-darwin.zip",
+        "size": 8391002,
+        "browser_download_url": "https://github.com/tauri-apps/tauri/releases/download/tauri-cli-v2.12.4/cargo-tauri-x86_64-apple-darwin.zip",
+        "digest": "sha256:164d184c0e50800dcae7bb31f0815066ebd27efc3e3bb73117974bcd2e982192"
+      },
+      {
+        "name": "cargo-tauri-x86_64-pc-windows-msvc.zip",
+        "size": 7763590,
+        "browser_download_url": "https://github.com/tauri-apps/tauri/releases/download/tauri-cli-v2.12.4/cargo-tauri-x86_64-pc-windows-msvc.zip",
+        "digest": "sha256:3e8687fb184bd7f10ebd8642f7715f79f4a605c0694c142a21507e8a24dc0f8b"
+      },
+      {
+        "name": "cargo-tauri-x86_64-unknown-linux-gnu.tgz",
+        "size": 9038200,
+        "browser_download_url": "https://github.com/tauri-apps/tauri/releases/download/tauri-cli-v2.12.4/cargo-tauri-x86_64-unknown-linux-gnu.tgz",
+        "digest": "sha256:820ae3c7580ca637cad15f65638960ee2a96e5a491e224691c86d6f25e6c9e8a"
+      }
+    ],
+    "kind": "ferramenta",
+    "category": "Utilitários Rust",
+    "tags": "rust,github,descoberta",
+    "summary": null,
+    "trust_score": 98,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório consolidado (7 anos de histórico)",
+      "🟢 Projeto ativo (atualizado há 1 dias)",
+      "🟢 112186 estrelas no repositório",
+      "🟢 Código aberto com licença Apache-2.0",
+      "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "denoland/deno",
+    "description": "A modern runtime for JavaScript and TypeScript.",
+    "url": "https://github.com/denoland/deno",
+    "stars": 108757,
+    "license": "MIT",
+    "topics": "deno,javascript,rust,typescript",
+    "language": "Rust",
+    "created_at": "2018-05-15T01:34:26Z",
+    "pushed_at": "2026-10-25T12:06:23Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v2.9.8",
+    "released_at": "2026-10-21T15:28:53Z",
+    "platforms": "linux,windows",
+    "assets": [
+      {
+        "name": "deno-aarch64-apple-darwin.zip",
+        "size": 38770795,
+        "browser_download_url": "https://github.com/denoland/deno/releases/download/v2.9.8/deno-aarch64-apple-darwin.zip",
+        "digest": "sha256:9f0bf660393da2eaff044cdc7444cb08c73f235849b61d224d825a194ce7c98e"
+      },
+      {
+        "name": "deno-aarch64-pc-windows-msvc.zip",
+        "size": 41163152,
+        "browser_download_url": "https://github.com/denoland/deno/releases/download/v2.9.8/deno-aarch64-pc-windows-msvc.zip",
+        "digest": "sha256:b413b92b735b50c198e8fe3b85af1aa50e29d5f72e229aab701d132286e14cef"
+      },
+      {
+        "name": "deno-aarch64-unknown-linux-gnu.zip",
+        "size": 40120596,
+        "browser_download_url": "https://github.com/denoland/deno/releases/download/v2.9.8/deno-aarch64-unknown-linux-gnu.zip",
+        "digest": "sha256:d49596c20b9788cf8f5d8ddf644103d4bde56ed239753f0bdb92ba9361d51905"
+      },
+      {
+        "name": "deno-x86_64-apple-darwin.zip",
+        "size": 42797031,
+        "browser_download_url": "https://github.com/denoland/deno/releases/download/v2.9.8/deno-x86_64-apple-darwin.zip",
+        "digest": "sha256:4b2f5edd2639b7470f034238b321d7002d8dfb4726d8558f52c17afac370eb2c"
+      },
+      {
+        "name": "deno-x86_64-pc-windows-msvc.zip",
+        "size": 42917472,
+        "browser_download_url": "https://github.com/denoland/deno/releases/download/v2.9.8/deno-x86_64-pc-windows-msvc.zip",
+        "digest": "sha256:cba84b26e0df5ae7f74fc66b86a95b866872a86292ebd84fa1e959927edd93bf"
+      },
+      {
+        "name": "deno-x86_64-unknown-linux-gnu.zip",
+        "size": 41963064,
+        "browser_download_url": "https://github.com/denoland/deno/releases/download/v2.9.8/deno-x86_64-unknown-linux-gnu.zip",
+        "digest": "sha256:e890975bc2549807bbcc0b584ffafda72cc7c93349dd99c80483dd784f6c4609"
+      },
+      {
+        "name": "denort-aarch64-apple-darwin.zip",
+        "size": 29038595,
+        "browser_download_url": "https://github.com/denoland/deno/releases/download/v2.9.8/denort-aarch64-apple-darwin.zip",
+        "digest": "sha256:0d44d476ffcb0406771ed62eca9da8a9bc12b2f0b4a2c7b477b5303809c5b483"
+      },
+      {
+        "name": "denort-aarch64-pc-windows-msvc.zip",
+        "size": 31515608,
+        "browser_download_url": "https://github.com/denoland/deno/releases/download/v2.9.8/denort-aarch64-pc-windows-msvc.zip",
+        "digest": "sha256:9c70c723e38940e1632502dd96ac1e1cec50adaaea96a9ce3071bebfcf913157"
+      },
+      {
+        "name": "denort-aarch64-unknown-linux-gnu.zip",
+        "size": 34610940,
+        "browser_download_url": "https://github.com/denoland/deno/releases/download/v2.9.8/denort-aarch64-unknown-linux-gnu.zip",
+        "digest": "sha256:1cf6a3b3e8c1f364c2b89fd08605e5c2d16ed1c670fed330fb5e370c2dbf6b3d"
+      },
+      {
+        "name": "denort-x86_64-apple-darwin.zip",
+        "size": 32080734,
+        "browser_download_url": "https://github.com/denoland/deno/releases/download/v2.9.8/denort-x86_64-apple-darwin.zip",
+        "digest": "sha256:04a21f7ad67a22aaa07ec55ae2e161dd879ebaba64f6acbd8c707c1f3b4bfd1d"
+      },
+      {
+        "name": "denort-x86_64-pc-windows-msvc.zip",
+        "size": 32979811,
+        "browser_download_url": "https://github.com/denoland/deno/releases/download/v2.9.8/denort-x86_64-pc-windows-msvc.zip",
+        "digest": "sha256:87f58d9bb53bdbd1e2df10767cd0f5f05cf93b84c2608b94116a9b675476766a"
+      },
+      {
+        "name": "denort-x86_64-unknown-linux-gnu.zip",
+        "size": 34819668,
+        "browser_download_url": "https://github.com/denoland/deno/releases/download/v2.9.8/denort-x86_64-unknown-linux-gnu.zip",
+        "digest": "sha256:1577df68c9fe13ec7b974d10d483e9f8974575a3d17f7c127489cf5032e14bd4"
+      },
+      {
+        "name": "libdenort-aarch64-apple-darwin.zip",
+        "size": 29219001,
+        "browser_download_url": "https://github.com/denoland/deno/releases/download/v2.9.8/libdenort-aarch64-apple-darwin.zip",
+        "digest": "sha256:b5edb378a0553d26018d583cd45b4250b5d35e512f96b6528c576e379eb57a1c"
+      },
+      {
+        "name": "libdenort-aarch64-pc-windows-msvc.zip",
+        "size": 31728378,
+        "browser_download_url": "https://github.com/denoland/deno/releases/download/v2.9.8/libdenort-aarch64-pc-windows-msvc.zip",
+        "digest": "sha256:a380065e4d783d6507e52f8e5df9030d21fe96baf006b14f91d0880576497ec6"
+      },
+      {
+        "name": "libdenort-aarch64-unknown-linux-gnu.zip",
+        "size": 30422088,
+        "browser_download_url": "https://github.com/denoland/deno/releases/download/v2.9.8/libdenort-aarch64-unknown-linux-gnu.zip",
+        "digest": "sha256:2e8105380799e6b1625960771d0b993b0702eba60b7270aee96f6ca0764a8146"
+      },
+      {
+        "name": "libdenort-x86_64-apple-darwin.zip",
+        "size": 32278358,
+        "browser_download_url": "https://github.com/denoland/deno/releases/download/v2.9.8/libdenort-x86_64-apple-darwin.zip",
+        "digest": "sha256:4f002b9714c7914120d55c635d86f5f272644b1291bf29b6a008250e52558782"
+      },
+      {
+        "name": "libdenort-x86_64-pc-windows-msvc.zip",
+        "size": 33201486,
+        "browser_download_url": "https://github.com/denoland/deno/releases/download/v2.9.8/libdenort-x86_64-pc-windows-msvc.zip",
+        "digest": "sha256:a35ddbcc7258f701b6607ca885e61b97b3ac2774baf78f73eecd00efcc16f503"
+      },
+      {
+        "name": "libdenort-x86_64-unknown-linux-gnu.zip",
+        "size": 31824779,
+        "browser_download_url": "https://github.com/denoland/deno/releases/download/v2.9.8/libdenort-x86_64-unknown-linux-gnu.zip",
+        "digest": "sha256:2ba29e3af198372f34874cc5e6e45eb6bece800b9eac17a731124befd49a8fb2"
+      }
+    ],
+    "kind": "ferramenta",
+    "category": "Utilitários Rust",
+    "tags": "rust,github,descoberta",
+    "summary": null,
+    "trust_score": 98,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório consolidado (8 anos de histórico)",
+      "🟢 Projeto ativo (atualizado há 1 dias)",
+      "🟢 108757 estrelas no repositório",
+      "🟢 Código aberto com licença MIT",
+      "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "oven-sh/bun",
+    "description": "Incredibly fast JavaScript runtime, bundler, test runner, and package manager – all in one",
+    "url": "https://github.com/oven-sh/bun",
+    "stars": 96406,
+    "license": "NOASSERTION",
+    "topics": "bun,bundler,javascript,javascriptcore,jsx,nodejs,npm,react,rust,rust-lang,transpiler,typescript",
+    "language": "Rust",
+    "created_at": "2021-04-14T00:48:17Z",
+    "pushed_at": "2026-10-25T19:55:54Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "bun-v1.4.4",
+    "released_at": "2026-10-22T10:11:32Z",
+    "platforms": "linux,windows",
+    "assets": [
+      {
+        "name": "bun-darwin-aarch64-profile.zip",
+        "size": 187311669,
+        "browser_download_url": "https://github.com/oven-sh/bun/releases/download/bun-v1.4.4/bun-darwin-aarch64-profile.zip",
+        "digest": "sha256:c724ac51d1ffff2d5ab817ba710c3053aa60c3906667c9699a2b8acdacf4a202"
+      },
+      {
+        "name": "bun-darwin-aarch64.zip",
+        "size": 40323673,
+        "browser_download_url": "https://github.com/oven-sh/bun/releases/download/bun-v1.4.4/bun-darwin-aarch64.zip",
+        "digest": "sha256:c240d7f0ccb90c263a849fcdb09b7ee62630d921348ed6aafda86b9d577bc510"
+      },
+      {
+        "name": "bun-darwin-x64-baseline-profile.zip",
+        "size": 199556037,
+        "browser_download_url": "https://github.com/oven-sh/bun/releases/download/bun-v1.4.4/bun-darwin-x64-baseline-profile.zip",
+        "digest": "sha256:f9c394aba5f4c4cf1b99ae32647c99941876ad56729e1eacce51f2369a96f9d5"
+      },
+      {
+        "name": "bun-darwin-x64-baseline.zip",
+        "size": 43442607,
+        "browser_download_url": "https://github.com/oven-sh/bun/releases/download/bun-v1.4.4/bun-darwin-x64-baseline.zip",
+        "digest": "sha256:d4a155adfbfd09155eb3ba05c9e3a544f39297d7a68616d3c7759f67ab5c47dc"
+      },
+      {
+        "name": "bun-darwin-x64-profile.zip",
+        "size": 199555929,
+        "browser_download_url": "https://github.com/oven-sh/bun/releases/download/bun-v1.4.4/bun-darwin-x64-profile.zip",
+        "digest": "sha256:407d89a80de54e9683437aba1bf8f881d71fc488e03f476383309decc85b788e"
+      },
+      {
+        "name": "bun-darwin-x64.zip",
+        "size": 43442571,
+        "browser_download_url": "https://github.com/oven-sh/bun/releases/download/bun-v1.4.4/bun-darwin-x64.zip",
+        "digest": "sha256:50a3491f73abc2fe81673171a85762d3bc2cc1680ccecadd983de99adf77977e"
+      },
+      {
+        "name": "bun-linux-aarch64-android-profile.zip",
+        "size": 421594418,
+        "browser_download_url": "https://github.com/oven-sh/bun/releases/download/bun-v1.4.4/bun-linux-aarch64-android-profile.zip",
+        "digest": "sha256:bf507d25f9f1e093033a434c84a201450d827ca6793033e89bad47fd3454cbd8"
+      },
+      {
+        "name": "bun-linux-aarch64-android.zip",
+        "size": 48920259,
+        "browser_download_url": "https://github.com/oven-sh/bun/releases/download/bun-v1.4.4/bun-linux-aarch64-android.zip",
+        "digest": "sha256:d72e42c60e895ccbc16144bb1e0e0ad7ee384841c35b5501a7ec28b4d6d759c9"
+      },
+      {
+        "name": "bun-linux-aarch64-musl-profile.zip",
+        "size": 205042325,
+        "browser_download_url": "https://github.com/oven-sh/bun/releases/download/bun-v1.4.4/bun-linux-aarch64-musl-profile.zip",
+        "digest": "sha256:4f29d5b17634bb35c9256fd9659cc2a279fadb35470ede781ca8a70a482405fd"
+      },
+      {
+        "name": "bun-linux-aarch64-musl.zip",
+        "size": 47867331,
+        "browser_download_url": "https://github.com/oven-sh/bun/releases/download/bun-v1.4.4/bun-linux-aarch64-musl.zip",
+        "digest": "sha256:57f01b02ac7113c61c935f28f38c2eab849e3c970dab21f8b640a87b1ef65009"
+      },
+      {
+        "name": "bun-linux-aarch64-profile.zip",
+        "size": 228067466,
+        "browser_download_url": "https://github.com/oven-sh/bun/releases/download/bun-v1.4.4/bun-linux-aarch64-profile.zip",
+        "digest": "sha256:c1de5102a9e12d5a73e5ab35d6eb9da16a0cada7d043577763695bb11b631789"
+      },
+      {
+        "name": "bun-linux-aarch64.zip",
+        "size": 51644673,
+        "browser_download_url": "https://github.com/oven-sh/bun/releases/download/bun-v1.4.4/bun-linux-aarch64.zip",
+        "digest": "sha256:baa6bb36f51d6e58561e02bbea825038a9df454f673d6d776e8bbf86f8c7850e"
+      },
+      {
+        "name": "bun-linux-x64-android-baseline-profile.zip",
+        "size": 423287118,
+        "browser_download_url": "https://github.com/oven-sh/bun/releases/download/bun-v1.4.4/bun-linux-x64-android-baseline-profile.zip",
+        "digest": "sha256:e0bc768aec07b624b0d714c003c88fda5229d21c02c291b7b1b44e2d3fc2b1c7"
+      },
+      {
+        "name": "bun-linux-x64-android-baseline.zip",
+        "size": 51254553,
+        "browser_download_url": "https://github.com/oven-sh/bun/releases/download/bun-v1.4.4/bun-linux-x64-android-baseline.zip",
+        "digest": "sha256:a7ee2956033938c14a7fc10ce7cc0c755acd688340c2a218adc75ff6ca767ded"
+      },
+      {
+        "name": "bun-linux-x64-android-profile.zip",
+        "size": 423287208,
+        "browser_download_url": "https://github.com/oven-sh/bun/releases/download/bun-v1.4.4/bun-linux-x64-android-profile.zip",
+        "digest": "sha256:97097dcf2bda40a9d4d168cdc5d64e4afa79361b233e4f889cde39056cf7c6d9"
+      },
+      {
+        "name": "bun-linux-x64-android.zip",
+        "size": 51254589,
+        "browser_download_url": "https://github.com/oven-sh/bun/releases/download/bun-v1.4.4/bun-linux-x64-android.zip",
+        "digest": "sha256:c1d7819a84407701be1904d8733b9a2e009432c2b80135e11b482c217fa598a9"
+      },
+      {
+        "name": "bun-linux-x64-baseline-profile.zip",
+        "size": 230490535,
+        "browser_download_url": "https://github.com/oven-sh/bun/releases/download/bun-v1.4.4/bun-linux-x64-baseline-profile.zip",
+        "digest": "sha256:d5703d4f8b1ca072e575f9937a8af986a994ad1adfaa298b923752d51a0617a2"
+      },
+      {
+        "name": "bun-linux-x64-baseline.zip",
+        "size": 51794559,
+        "browser_download_url": "https://github.com/oven-sh/bun/releases/download/bun-v1.4.4/bun-linux-x64-baseline.zip",
+        "digest": "sha256:e0446eb55995772eb9894bebae9a6be368d985a8b9271ee124486f9946eedd76"
+      },
+      {
+        "name": "bun-linux-x64-musl-baseline-profile.zip",
+        "size": 203469237,
+        "browser_download_url": "https://github.com/oven-sh/bun/releases/download/bun-v1.4.4/bun-linux-x64-musl-baseline-profile.zip",
+        "digest": "sha256:69727f81cf19c7b9d97d6bc201b6ab50cd9dc05f021b7e074dbbd920c12011cf"
+      },
+      {
+        "name": "bun-linux-x64-musl-baseline.zip",
+        "size": 48238257,
+        "browser_download_url": "https://github.com/oven-sh/bun/releases/download/bun-v1.4.4/bun-linux-x64-musl-baseline.zip",
+        "digest": "sha256:6e9c37098b293920aed28bfb51ab240e26d23bfdd9bbfecb3ad428ac166549bc"
+      },
+      {
+        "name": "bun-linux-x64-musl-profile.zip",
+        "size": 203469327,
+        "browser_download_url": "https://github.com/oven-sh/bun/releases/download/bun-v1.4.4/bun-linux-x64-musl-profile.zip",
+        "digest": "sha256:8c8f27fa1b254647becd527d5336f20f233ec0ee1ec83f784ce6a12e11a4fb5f"
+      },
+      {
+        "name": "bun-linux-x64-musl.zip",
+        "size": 48238293,
+        "browser_download_url": "https://github.com/oven-sh/bun/releases/download/bun-v1.4.4/bun-linux-x64-musl.zip",
+        "digest": "sha256:a5a8ccc5e74dcb883fe974f125a7bdb3b41e5195ed1b870e73f17effd3eb2b2d"
+      },
+      {
+        "name": "bun-linux-x64-profile.zip",
+        "size": 230490643,
+        "browser_download_url": "https://github.com/oven-sh/bun/releases/download/bun-v1.4.4/bun-linux-x64-profile.zip",
+        "digest": "sha256:86cbb25359505224f270229ea3d498300606a2114505dc2f8a328b6551ae9988"
+      },
+      {
+        "name": "bun-linux-x64.zip",
+        "size": 51794595,
+        "browser_download_url": "https://github.com/oven-sh/bun/releases/download/bun-v1.4.4/bun-linux-x64.zip",
+        "digest": "sha256:bf8ccbfb2b0b80159e0f9a6d15c55317add8077534dbc6130a3edb52fccb395c"
+      },
+      {
+        "name": "bun-windows-aarch64-profile.zip",
+        "size": 242535797,
+        "browser_download_url": "https://github.com/oven-sh/bun/releases/download/bun-v1.4.4/bun-windows-aarch64-profile.zip",
+        "digest": "sha256:d7cead2f44ec91d5ebe52c60f8c4682b10767486795bcd90b0772e83de6428d5"
+      },
+      {
+        "name": "bun-windows-aarch64.zip",
+        "size": 49392935,
+        "browser_download_url": "https://github.com/oven-sh/bun/releases/download/bun-v1.4.4/bun-windows-aarch64.zip",
+        "digest": "sha256:2d57a0eec0cb44d95c918c3f9734f60455a1306ae5085d76fc68f44e3ee30d09"
+      },
+      {
+        "name": "bun-windows-x64-baseline-profile.zip",
+        "size": 284699562,
+        "browser_download_url": "https://github.com/oven-sh/bun/releases/download/bun-v1.4.4/bun-windows-x64-baseline-profile.zip",
+        "digest": "sha256:b7ffa8af18bba66fa0bb3e14384bc77bb71310ae6d90617bc653dcd105345a60"
+      },
+      {
+        "name": "bun-windows-x64-baseline.zip",
+        "size": 54731686,
+        "browser_download_url": "https://github.com/oven-sh/bun/releases/download/bun-v1.4.4/bun-windows-x64-baseline.zip",
+        "digest": "sha256:0f20ce6674d4f2dbcc8c5d59fdf99f7ba45f8c3b367e0f5781cbfa30a1c78d99"
+      },
+      {
+        "name": "bun-windows-x64-profile.zip",
+        "size": 284699642,
+        "browser_download_url": "https://github.com/oven-sh/bun/releases/download/bun-v1.4.4/bun-windows-x64-profile.zip",
+        "digest": "sha256:da33943f82a46f6c084888f29b94b76463e473757b2c15e34134c962adf0a4fb"
+      },
+      {
+        "name": "bun-windows-x64.zip",
+        "size": 54731706,
+        "browser_download_url": "https://github.com/oven-sh/bun/releases/download/bun-v1.4.4/bun-windows-x64.zip",
+        "digest": "sha256:cd2c0fccc78f3ede1f50ca827a15f063eda13d4d150a3d0674f4f6e323d864a5"
+      }
+    ],
+    "kind": "ferramenta",
+    "category": "Utilitários Rust",
+    "tags": "rust,github,descoberta",
+    "summary": null,
+    "trust_score": 88,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório consolidado (5 anos de histórico)",
+      "🟢 Projeto ativo (atualizado há 1 dias)",
+      "🟢 96406 estrelas no repositório",
+      "🟡 Sem licença open-source padronizada",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
     ],
     "attestation": ""
@@ -767,7 +1313,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (3 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 4 dias)",
+      "🟢 Projeto ativo (atualizado há 5 dias)",
       "🟢 95451 estrelas no repositório",
       "🟢 Código aberto com licença Apache-2.0",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
@@ -806,7 +1352,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (7 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 3 dias)",
+      "🟢 Projeto ativo (atualizado há 4 dias)",
       "🟢 93941 estrelas no repositório",
       "🟢 Código aberto com licença Apache-2.0",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
@@ -974,6 +1520,177 @@
       "🟢 Projeto ativo (atualizado há 1 dias)",
       "🟢 89702 estrelas no repositório",
       "🟢 Código aberto com licença MPL-2.0",
+      "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "rtk-ai/rtk",
+    "description": "CLI proxy that reduces LLM token consumption by 60-90% on common dev commands. Single Rust binary, zero dependencies",
+    "url": "https://github.com/rtk-ai/rtk",
+    "stars": 84533,
+    "license": "Apache-2.0",
+    "topics": "agentic-coding,ai-coding,anthropic,claude-code,cli,command-line-tool,cost-reduction,developer-tools,llm,open-source,productivity,rust,token-optimization",
+    "language": "Rust",
+    "created_at": "2026-01-22T16:54:16Z",
+    "pushed_at": "2026-10-25T18:16:27Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v1.1.0",
+    "released_at": "2026-10-25T18:00:11Z",
+    "platforms": "linux,windows",
+    "assets": [
+      {
+        "name": "rtk-1.1.0-1.x86_64.rpm",
+        "size": 5472961,
+        "browser_download_url": "https://github.com/rtk-ai/rtk/releases/download/v1.1.0/rtk-1.1.0-1.x86_64.rpm",
+        "digest": "sha256:f87a570cec4f0271d5a33be94495b1504c5f3304842927edda92406120817b0c"
+      },
+      {
+        "name": "rtk-aarch64-apple-darwin.tar.gz",
+        "size": 5929243,
+        "browser_download_url": "https://github.com/rtk-ai/rtk/releases/download/v1.1.0/rtk-aarch64-apple-darwin.tar.gz",
+        "digest": "sha256:8da773b0954cf90b115ec95c4e4eb420f04c39de233c5db102246a6caf073ba7"
+      },
+      {
+        "name": "rtk-aarch64-unknown-linux-gnu.tar.gz",
+        "size": 6229830,
+        "browser_download_url": "https://github.com/rtk-ai/rtk/releases/download/v1.1.0/rtk-aarch64-unknown-linux-gnu.tar.gz",
+        "digest": "sha256:a5c00c3ab0129884bcb757d348afc1a650efa0f4f0769da97c341f28f89719ed"
+      },
+      {
+        "name": "rtk-oss-1.1.0-1.x86_64.rpm",
+        "size": 4721248,
+        "browser_download_url": "https://github.com/rtk-ai/rtk/releases/download/v1.1.0/rtk-oss-1.1.0-1.x86_64.rpm",
+        "digest": "sha256:cde2e12f52979ee5c14cf9939c61942f6400735ddb55961fff30e79ac077859b"
+      },
+      {
+        "name": "rtk-oss-aarch64-apple-darwin.tar.gz",
+        "size": 5058221,
+        "browser_download_url": "https://github.com/rtk-ai/rtk/releases/download/v1.1.0/rtk-oss-aarch64-apple-darwin.tar.gz",
+        "digest": "sha256:1623590dd8d65374f61589c599c764c08ba9ce993ebe6b601312a89a3c874558"
+      },
+      {
+        "name": "rtk-oss-aarch64-unknown-linux-gnu.tar.gz",
+        "size": 5305145,
+        "browser_download_url": "https://github.com/rtk-ai/rtk/releases/download/v1.1.0/rtk-oss-aarch64-unknown-linux-gnu.tar.gz",
+        "digest": "sha256:57a4fac13d18da77f0577ea8b68def7934b934bf76d0a6e161f0bfd06b1e1078"
+      },
+      {
+        "name": "rtk-oss-x86_64-apple-darwin.tar.gz",
+        "size": 5500767,
+        "browser_download_url": "https://github.com/rtk-ai/rtk/releases/download/v1.1.0/rtk-oss-x86_64-apple-darwin.tar.gz",
+        "digest": "sha256:559156238dd3e148c84c88c3a62a7594b874f68793208994e1b02e77a9d9abf9"
+      },
+      {
+        "name": "rtk-oss-x86_64-pc-windows-msvc.zip",
+        "size": 5781191,
+        "browser_download_url": "https://github.com/rtk-ai/rtk/releases/download/v1.1.0/rtk-oss-x86_64-pc-windows-msvc.zip",
+        "digest": "sha256:9b076379be9d86011ca3f3a0264d0be4851da5535453a47f67fa46b4e893fbb2"
+      },
+      {
+        "name": "rtk-oss-x86_64-unknown-linux-musl.tar.gz",
+        "size": 5834617,
+        "browser_download_url": "https://github.com/rtk-ai/rtk/releases/download/v1.1.0/rtk-oss-x86_64-unknown-linux-musl.tar.gz",
+        "digest": "sha256:4dec94a64035e08189ae82fd5408fe4ae9ae27a665fc07e3e3ec3c4c2d8e8a3e"
+      },
+      {
+        "name": "rtk-oss.x86_64.rpm",
+        "size": 4721248,
+        "browser_download_url": "https://github.com/rtk-ai/rtk/releases/download/v1.1.0/rtk-oss.x86_64.rpm",
+        "digest": "sha256:cde2e12f52979ee5c14cf9939c61942f6400735ddb55961fff30e79ac077859b"
+      },
+      {
+        "name": "rtk-oss_1.1.0-1_amd64.deb",
+        "size": 4363644,
+        "browser_download_url": "https://github.com/rtk-ai/rtk/releases/download/v1.1.0/rtk-oss_1.1.0-1_amd64.deb",
+        "digest": "sha256:8a81e8e252e5e2b53726b743b2e214a7f208cba6e02fe29c1f5efb576334bcaa"
+      },
+      {
+        "name": "rtk-oss_amd64.deb",
+        "size": 4363644,
+        "browser_download_url": "https://github.com/rtk-ai/rtk/releases/download/v1.1.0/rtk-oss_amd64.deb",
+        "digest": "sha256:8a81e8e252e5e2b53726b743b2e214a7f208cba6e02fe29c1f5efb576334bcaa"
+      },
+      {
+        "name": "rtk-proxy-aarch64-apple-darwin.tar.gz",
+        "size": 7617209,
+        "browser_download_url": "https://github.com/rtk-ai/rtk/releases/download/v1.1.0/rtk-proxy-aarch64-apple-darwin.tar.gz",
+        "digest": "sha256:74f7ad9543902f4deffd2b8d794f8e1af3c60b8e4b409b94a8f06f4188af02e3"
+      },
+      {
+        "name": "rtk-proxy-aarch64-unknown-linux-gnu.tar.gz",
+        "size": 8303102,
+        "browser_download_url": "https://github.com/rtk-ai/rtk/releases/download/v1.1.0/rtk-proxy-aarch64-unknown-linux-gnu.tar.gz",
+        "digest": "sha256:2f2cf0c2a1d4e327cb4aba75389705c0b79917765c5f0fd0a330167e2cc97702"
+      },
+      {
+        "name": "rtk-proxy-x86_64-apple-darwin.tar.gz",
+        "size": 7806194,
+        "browser_download_url": "https://github.com/rtk-ai/rtk/releases/download/v1.1.0/rtk-proxy-x86_64-apple-darwin.tar.gz",
+        "digest": "sha256:2634827cbee72ae11d65491702e2b3b42c98d2df6534a400b072b6fc76efcc61"
+      },
+      {
+        "name": "rtk-proxy-x86_64-pc-windows-msvc.zip",
+        "size": 6970934,
+        "browser_download_url": "https://github.com/rtk-ai/rtk/releases/download/v1.1.0/rtk-proxy-x86_64-pc-windows-msvc.zip",
+        "digest": "sha256:6239977c6cbcde0278390dfe2f82f9f3ce6ad5acf9d5e6ff35555e07f4d935ff"
+      },
+      {
+        "name": "rtk-proxy-x86_64-unknown-linux-musl.tar.gz",
+        "size": 8558456,
+        "browser_download_url": "https://github.com/rtk-ai/rtk/releases/download/v1.1.0/rtk-proxy-x86_64-unknown-linux-musl.tar.gz",
+        "digest": "sha256:576430d7f3fdfc4b54c05a6da5ba79bf5df7ddeb1469a9c02893edf5b820a0fb"
+      },
+      {
+        "name": "rtk-x86_64-apple-darwin.tar.gz",
+        "size": 6447453,
+        "browser_download_url": "https://github.com/rtk-ai/rtk/releases/download/v1.1.0/rtk-x86_64-apple-darwin.tar.gz",
+        "digest": "sha256:1e23e8b9542b58428e6409c49b1c3fb92c4c0d5125da72e80f002a46086a6c20"
+      },
+      {
+        "name": "rtk-x86_64-pc-windows-msvc.zip",
+        "size": 6801526,
+        "browser_download_url": "https://github.com/rtk-ai/rtk/releases/download/v1.1.0/rtk-x86_64-pc-windows-msvc.zip",
+        "digest": "sha256:c9a8f7a8bad471e64a343314168f38d2399a06fa327cdf5772fb0e645d99ea6f"
+      },
+      {
+        "name": "rtk-x86_64-unknown-linux-musl.tar.gz",
+        "size": 6844596,
+        "browser_download_url": "https://github.com/rtk-ai/rtk/releases/download/v1.1.0/rtk-x86_64-unknown-linux-musl.tar.gz",
+        "digest": "sha256:9454ad1b9489daa57ab0a9f4ebe2faaf4dc82b8a0f26c9e5135151abd7c9378d"
+      },
+      {
+        "name": "rtk.x86_64.rpm",
+        "size": 5472961,
+        "browser_download_url": "https://github.com/rtk-ai/rtk/releases/download/v1.1.0/rtk.x86_64.rpm",
+        "digest": "sha256:f87a570cec4f0271d5a33be94495b1504c5f3304842927edda92406120817b0c"
+      },
+      {
+        "name": "rtk_1.1.0-1_amd64.deb",
+        "size": 5057824,
+        "browser_download_url": "https://github.com/rtk-ai/rtk/releases/download/v1.1.0/rtk_1.1.0-1_amd64.deb",
+        "digest": "sha256:21c4a2e30879ce49ebd939fa338c99208871ba591da9feeb483f2ed266fe7163"
+      },
+      {
+        "name": "rtk_amd64.deb",
+        "size": 5057824,
+        "browser_download_url": "https://github.com/rtk-ai/rtk/releases/download/v1.1.0/rtk_amd64.deb",
+        "digest": "sha256:21c4a2e30879ce49ebd939fa338c99208871ba591da9feeb483f2ed266fe7163"
+      }
+    ],
+    "kind": "ferramenta",
+    "category": "Utilitários Rust",
+    "tags": "rust,github,descoberta",
+    "summary": null,
+    "trust_score": 86,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟡 Repositório com 276 dias de existência",
+      "🟢 Projeto ativo (atualizado há 0 dias)",
+      "🟢 84533 estrelas no repositório",
+      "🟢 Código aberto com licença Apache-2.0",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
     ],
     "attestation": ""
@@ -1197,6 +1914,315 @@
     "attestation": ""
   },
   {
+    "full_name": "toeverything/AFFiNE",
+    "description": "There can be more than Notion and Miro. AFFiNE(pronounced [ə‘fain]) is a next-gen knowledge base that brings planning, sorting and creating all together. Privacy first, open-source, customizable and ready to use. ",
+    "url": "https://github.com/toeverything/AFFiNE",
+    "stars": 73838,
+    "license": "NOASSERTION",
+    "topics": "app,crdt,editor,electron,knowledge-base,markdown,miro,notes,notion,notion-alternative,rust,rust-lang,rust-language,table,tableview,whiteboard,wiki,workspace",
+    "language": "TypeScript",
+    "created_at": "2022-07-31T18:45:21Z",
+    "pushed_at": "2026-10-25T15:13:07Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v0.27.4",
+    "released_at": "2026-08-18T16:51:39Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "affine-0.27.4-stable-linux-x64.appimage",
+        "size": 191867384,
+        "browser_download_url": "https://github.com/toeverything/AFFiNE/releases/download/v0.27.4/affine-0.27.4-stable-linux-x64.appimage",
+        "digest": "sha256:102ff093ea3af7067893e76ae85b8a5d5818aa92c8785d399312bd8f468f5cac"
+      },
+      {
+        "name": "affine-0.27.4-stable-linux-x64.deb",
+        "size": 165771698,
+        "browser_download_url": "https://github.com/toeverything/AFFiNE/releases/download/v0.27.4/affine-0.27.4-stable-linux-x64.deb",
+        "digest": "sha256:c92c859aa96964d967ac840ccefbee645925dc2aa28cd31f44536c20b883a8d4"
+      },
+      {
+        "name": "affine-0.27.4-stable-linux-x64.flatpak",
+        "size": 163323864,
+        "browser_download_url": "https://github.com/toeverything/AFFiNE/releases/download/v0.27.4/affine-0.27.4-stable-linux-x64.flatpak",
+        "digest": "sha256:921e211f40e7dbbdee40d11d7335e160fb5f2db08c247c65c0a19798cc182c74"
+      },
+      {
+        "name": "affine-0.27.4-stable-linux-x64.zip",
+        "size": 202703607,
+        "browser_download_url": "https://github.com/toeverything/AFFiNE/releases/download/v0.27.4/affine-0.27.4-stable-linux-x64.zip",
+        "digest": "sha256:d8460d678d31e3b47d52aaa0a5bc3266e31f616d778e43b1f62a45a1a1c5fb73"
+      },
+      {
+        "name": "affine-0.27.4-stable-macos-arm64.dmg",
+        "size": 158774537,
+        "browser_download_url": "https://github.com/toeverything/AFFiNE/releases/download/v0.27.4/affine-0.27.4-stable-macos-arm64.dmg",
+        "digest": "sha256:4bbb5def9e377f513be0fa05f1cc29ec2738e2d5432029df3f02c91f5ffadfea"
+      },
+      {
+        "name": "affine-0.27.4-stable-macos-arm64.zip",
+        "size": 195708601,
+        "browser_download_url": "https://github.com/toeverything/AFFiNE/releases/download/v0.27.4/affine-0.27.4-stable-macos-arm64.zip",
+        "digest": "sha256:1139f5788f40e3f0552416d8f57615d1c2750c5f184a2a1b754dde9a4d0077f6"
+      },
+      {
+        "name": "affine-0.27.4-stable-macos-x64.dmg",
+        "size": 174014242,
+        "browser_download_url": "https://github.com/toeverything/AFFiNE/releases/download/v0.27.4/affine-0.27.4-stable-macos-x64.dmg",
+        "digest": "sha256:575f8e78a594adc15232d6450a9dbeab731961ed1b6be2c92d32d1cd10b7547c"
+      },
+      {
+        "name": "affine-0.27.4-stable-macos-x64.zip",
+        "size": 206202603,
+        "browser_download_url": "https://github.com/toeverything/AFFiNE/releases/download/v0.27.4/affine-0.27.4-stable-macos-x64.zip",
+        "digest": "sha256:0db7851f16082a35db4b990fa6fff04717d745b81c2a202eb1d30d596099c63b"
+      },
+      {
+        "name": "affine-0.27.4-stable-windows-arm64.exe",
+        "size": 218701720,
+        "browser_download_url": "https://github.com/toeverything/AFFiNE/releases/download/v0.27.4/affine-0.27.4-stable-windows-arm64.exe",
+        "digest": "sha256:25464eaaab6f23e88a98e6713383a2c28f97bb32474736978e20bf9e58cbf998"
+      },
+      {
+        "name": "affine-0.27.4-stable-windows-arm64.nsis.exe",
+        "size": 165330408,
+        "browser_download_url": "https://github.com/toeverything/AFFiNE/releases/download/v0.27.4/affine-0.27.4-stable-windows-arm64.nsis.exe",
+        "digest": "sha256:83098b396b1e8b6c9fa8cb5aec2d532fa45a9d6a9d53259decac8bc8496e7d03"
+      },
+      {
+        "name": "affine-0.27.4-stable-windows-x64.exe",
+        "size": 221059480,
+        "browser_download_url": "https://github.com/toeverything/AFFiNE/releases/download/v0.27.4/affine-0.27.4-stable-windows-x64.exe",
+        "digest": "sha256:b9719c96a92062abe4eddf4340a0f9c68997754d338f6c713b33af631f23983d"
+      },
+      {
+        "name": "affine-0.27.4-stable-windows-x64.nsis.exe",
+        "size": 170626392,
+        "browser_download_url": "https://github.com/toeverything/AFFiNE/releases/download/v0.27.4/affine-0.27.4-stable-windows-x64.nsis.exe",
+        "digest": "sha256:80b6168bcdd3776b00b311386f60525e0d9ee90aef0e212b779087f3c8299f3c"
+      }
+    ],
+    "kind": "ferramenta",
+    "category": "Utilitários Rust",
+    "tags": "rust,github,descoberta",
+    "summary": null,
+    "trust_score": 88,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório consolidado (4 anos de histórico)",
+      "🟢 Projeto ativo (atualizado há 0 dias)",
+      "🟢 73838 estrelas no repositório",
+      "🟡 Sem licença open-source padronizada",
+      "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "unionlabs/union",
+    "description": "The trust-minimized, zero-knowledge bridging protocol, designed for censorship resistance, extremely high security, and usage in decentralized finance.",
+    "url": "https://github.com/unionlabs/union",
+    "stars": 73734,
+    "license": "Apache-2.0",
+    "topics": "astro,blockchain,cosmos,cosmwasm,ethereum,evm,golang,indexer,interoperability,move,nix,prover,relayer,rust,solidity,svelte,typescipt,typescript,zero-knowledge",
+    "language": "Rust",
+    "created_at": "2023-05-16T22:33:39Z",
+    "pushed_at": "2026-07-25T18:20:02Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "bundle-union-1/v1.2.3",
+    "released_at": "2026-01-26T21:57:02Z",
+    "platforms": "linux",
+    "assets": [
+      {
+        "name": "bundle-union-1-aarch64-linux.tar.gz",
+        "size": 164,
+        "browser_download_url": "https://github.com/unionlabs/union/releases/download/bundle-union-1/v1.2.3/bundle-union-1-aarch64-linux.tar.gz",
+        "digest": "sha256:5cbda7cde9fe5581bc29f677656794b66a813a776fbad278d2476f523dad89a9"
+      },
+      {
+        "name": "bundle-union-1-x86_64-linux.tar.gz",
+        "size": 165,
+        "browser_download_url": "https://github.com/unionlabs/union/releases/download/bundle-union-1/v1.2.3/bundle-union-1-x86_64-linux.tar.gz",
+        "digest": "sha256:3910cf200a6a5cb31ff6c7c4abbba4b1a0580b086cee5bada659ede22c106122"
+      }
+    ],
+    "kind": "ferramenta",
+    "category": "Utilitários Rust",
+    "tags": "rust,github,descoberta",
+    "summary": null,
+    "trust_score": 98,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório consolidado (3 anos de histórico)",
+      "🟢 Projeto ativo (atualizado há 92 dias)",
+      "🟢 73734 estrelas no repositório",
+      "🟢 Código aberto com licença Apache-2.0",
+      "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "storytold/photocraft",
+    "description": "PhotoCraft: An open-source, photo editor written by scratch in pure Rust",
+    "url": "https://github.com/storytold/photocraft",
+    "stars": 72768,
+    "license": "Apache-2.0",
+    "topics": "art,image-editing,image-editing-software,image-editor,images,photo-editing,rust",
+    "language": "Rust",
+    "created_at": "2026-09-30T13:37:48Z",
+    "pushed_at": "2026-10-25T19:55:45Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v0.16.0",
+    "released_at": "2026-10-25T14:17:53Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "photocraft-0.16.0-linux-aarch64.AppImage",
+        "size": 79026696,
+        "browser_download_url": "https://github.com/storytold/photocraft/releases/download/v0.16.0/photocraft-0.16.0-linux-aarch64.AppImage",
+        "digest": "sha256:dde10fe1311e66bb0f82ae8ad237e112716ebd0daed483243a1e12f2bc33f853"
+      },
+      {
+        "name": "photocraft-0.16.0-linux-aarch64.deb",
+        "size": 85605616,
+        "browser_download_url": "https://github.com/storytold/photocraft/releases/download/v0.16.0/photocraft-0.16.0-linux-aarch64.deb",
+        "digest": "sha256:6108ab30cf92e8a7215c2b42a38f00ce44ce83501fdf28f7b6fa5a3f4f5d00e4"
+      },
+      {
+        "name": "photocraft-0.16.0-linux-aarch64.flatpak",
+        "size": 60477040,
+        "browser_download_url": "https://github.com/storytold/photocraft/releases/download/v0.16.0/photocraft-0.16.0-linux-aarch64.flatpak",
+        "digest": "sha256:07ee5f36e98952c1a40dbcb59fe181dc67a6be64cf48bd232972571d863019f6"
+      },
+      {
+        "name": "photocraft-0.16.0-linux-aarch64.rpm",
+        "size": 84836460,
+        "browser_download_url": "https://github.com/storytold/photocraft/releases/download/v0.16.0/photocraft-0.16.0-linux-aarch64.rpm",
+        "digest": "sha256:e162303e07f61e8acc946d0185a873b28f10b7d60690f77324ee6634b619403d"
+      },
+      {
+        "name": "photocraft-0.16.0-linux-aarch64.tar.gz",
+        "size": 83104781,
+        "browser_download_url": "https://github.com/storytold/photocraft/releases/download/v0.16.0/photocraft-0.16.0-linux-aarch64.tar.gz",
+        "digest": "sha256:9b998376a4876a620842f0456f79695b147950d6f173930ee4d5da751303e10b"
+      },
+      {
+        "name": "photocraft-0.16.0-linux-riscv64.deb",
+        "size": 86461568,
+        "browser_download_url": "https://github.com/storytold/photocraft/releases/download/v0.16.0/photocraft-0.16.0-linux-riscv64.deb",
+        "digest": "sha256:412783fe476dd94c1dc4843669ce5e988e5dbea6b8425703ff37639c7e9fc56f"
+      },
+      {
+        "name": "photocraft-0.16.0-linux-riscv64.rpm",
+        "size": 86097695,
+        "browser_download_url": "https://github.com/storytold/photocraft/releases/download/v0.16.0/photocraft-0.16.0-linux-riscv64.rpm",
+        "digest": "sha256:146aa51ffc585839a73dd76b9a5e176211f2f187e266b2fdede8a09282fdee78"
+      },
+      {
+        "name": "photocraft-0.16.0-linux-riscv64.tar.gz",
+        "size": 85257010,
+        "browser_download_url": "https://github.com/storytold/photocraft/releases/download/v0.16.0/photocraft-0.16.0-linux-riscv64.tar.gz",
+        "digest": "sha256:056a1093f9d840ff18f3b26567e7203cb3fece07e19fa13a058e9d7424d6a232"
+      },
+      {
+        "name": "photocraft-0.16.0-linux-x86_64.AppImage",
+        "size": 83327480,
+        "browser_download_url": "https://github.com/storytold/photocraft/releases/download/v0.16.0/photocraft-0.16.0-linux-x86_64.AppImage",
+        "digest": "sha256:fc670139091e661e948a6de1ff2219a6dd04232e6ac8616349ee238a7a49d54e"
+      },
+      {
+        "name": "photocraft-0.16.0-linux-x86_64.deb",
+        "size": 89232816,
+        "browser_download_url": "https://github.com/storytold/photocraft/releases/download/v0.16.0/photocraft-0.16.0-linux-x86_64.deb",
+        "digest": "sha256:955589b84849d94e5efee8f19c9c32263723bbfe89358f9109263540f0696078"
+      },
+      {
+        "name": "photocraft-0.16.0-linux-x86_64.flatpak",
+        "size": 65494256,
+        "browser_download_url": "https://github.com/storytold/photocraft/releases/download/v0.16.0/photocraft-0.16.0-linux-x86_64.flatpak",
+        "digest": "sha256:b8b844a4951f687722fccae7e44f360bbdafdf1129111d8d101e893494ea3202"
+      },
+      {
+        "name": "photocraft-0.16.0-linux-x86_64.rpm",
+        "size": 88627222,
+        "browser_download_url": "https://github.com/storytold/photocraft/releases/download/v0.16.0/photocraft-0.16.0-linux-x86_64.rpm",
+        "digest": "sha256:373ce29fd07ce492f953a7bca4e4441318a56f5b76c7694aa2657c159a4e92a2"
+      },
+      {
+        "name": "photocraft-0.16.0-linux-x86_64.tar.gz",
+        "size": 87847296,
+        "browser_download_url": "https://github.com/storytold/photocraft/releases/download/v0.16.0/photocraft-0.16.0-linux-x86_64.tar.gz",
+        "digest": "sha256:7c17f3633ebf7dabf27628e2d2637d918c7c2a5b163b8b90347a78acddf63608"
+      },
+      {
+        "name": "photocraft-0.16.0-macos-universal.dmg",
+        "size": 98985128,
+        "browser_download_url": "https://github.com/storytold/photocraft/releases/download/v0.16.0/photocraft-0.16.0-macos-universal.dmg",
+        "digest": "sha256:489e00a7fd19f7e924a3a05ec33c7b057ea4766129b4eef132ce82ff42c10619"
+      },
+      {
+        "name": "photocraft-0.16.0-windows-arm64-portable.zip",
+        "size": 84925185,
+        "browser_download_url": "https://github.com/storytold/photocraft/releases/download/v0.16.0/photocraft-0.16.0-windows-arm64-portable.zip",
+        "digest": "sha256:7b30c36764c73a8c027e4ad0205bfd630d67d413fea70c559cc3e005878ad567"
+      },
+      {
+        "name": "photocraft-0.16.0-windows-arm64.msi",
+        "size": 69341184,
+        "browser_download_url": "https://github.com/storytold/photocraft/releases/download/v0.16.0/photocraft-0.16.0-windows-arm64.msi",
+        "digest": "sha256:1ebd494f733ddc906e558766fd9351d7d90dfd67468e24c0edfa11c939d41b68"
+      },
+      {
+        "name": "photocraft-0.16.0-windows-x64-portable.zip",
+        "size": 90025164,
+        "browser_download_url": "https://github.com/storytold/photocraft/releases/download/v0.16.0/photocraft-0.16.0-windows-x64-portable.zip",
+        "digest": "sha256:3e634f7e3cc95476c369d59ef0cfed3d1dd6fafd3c351ad81a4ddf3bd792e99d"
+      },
+      {
+        "name": "photocraft-0.16.0-windows-x64.msi",
+        "size": 74760192,
+        "browser_download_url": "https://github.com/storytold/photocraft/releases/download/v0.16.0/photocraft-0.16.0-windows-x64.msi",
+        "digest": "sha256:1a073b3ce410cd68bed8c1e5d63f825a8cb578c78106bd54e598d8b07edb6982"
+      },
+      {
+        "name": "photocraft-0.16.0-windows-x86-portable.zip",
+        "size": 85114531,
+        "browser_download_url": "https://github.com/storytold/photocraft/releases/download/v0.16.0/photocraft-0.16.0-windows-x86-portable.zip",
+        "digest": "sha256:c3c52241f9397f80704201f51bfbfe04b02c75acd43164222ed6526d7567b341"
+      },
+      {
+        "name": "photocraft-0.16.0-windows-x86.msi",
+        "size": 71917568,
+        "browser_download_url": "https://github.com/storytold/photocraft/releases/download/v0.16.0/photocraft-0.16.0-windows-x86.msi",
+        "digest": "sha256:0d9e5028c4c8308319fbef3d60e915fc533ea8ec021eac4afd049f094de003bc"
+      },
+      {
+        "name": "photocraft-cli-0.16.0-macos-universal.zip",
+        "size": 71995874,
+        "browser_download_url": "https://github.com/storytold/photocraft/releases/download/v0.16.0/photocraft-cli-0.16.0-macos-universal.zip",
+        "digest": "sha256:ecc6e0aee7990538c99dfcccee989066777ec16cb90d6b2c9e5b136e5c60ae92"
+      }
+    ],
+    "kind": "ferramenta",
+    "category": "Utilitários Rust",
+    "tags": "rust,github,descoberta",
+    "summary": null,
+    "trust_score": 68,
+    "trust_level": "🟡 ATENÇÃO",
+    "trust_notes": [
+      "🔴 Repositório muito novo (25 dias)",
+      "🟢 Projeto ativo (atualizado há 0 dias)",
+      "🟢 72768 estrelas no repositório",
+      "🟢 Código aberto com licença Apache-2.0",
+      "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
+    ],
+    "attestation": ""
+  },
+  {
     "full_name": "BurntSushi/ripgrep",
     "description": "ripgrep recursively searches directories for a regex pattern while respecting your gitignore",
     "url": "https://github.com/BurntSushi/ripgrep",
@@ -1315,6 +2341,519 @@
     "attestation": "ausente"
   },
   {
+    "full_name": "openinterpreter/openinterpreter",
+    "description": "A coding agent for open models like Kimi K3 and GLM 5.3",
+    "url": "https://github.com/openinterpreter/openinterpreter",
+    "stars": 68671,
+    "license": "Apache-2.0",
+    "topics": "acp,coding-agent,deepseek,kimi,python,qwen,rust",
+    "language": "Rust",
+    "created_at": "2023-07-14T07:10:44Z",
+    "pushed_at": "2026-10-11T00:56:06Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "rust-v0.0.56",
+    "released_at": "2026-10-07T03:42:13Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "bwrap-aarch64-unknown-linux-musl.tar.gz",
+        "size": 254928,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/bwrap-aarch64-unknown-linux-musl.tar.gz",
+        "digest": "sha256:c3267bcf54ab57f4be0a09aa999c5fde20bed406be02f68614d44843864553e4"
+      },
+      {
+        "name": "bwrap-x86_64-unknown-linux-musl.tar.gz",
+        "size": 261563,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/bwrap-x86_64-unknown-linux-musl.tar.gz",
+        "digest": "sha256:3178fee23c3941d51c7f0e076e4cee08c60e1dafff73cd59019d872546ea0f2a"
+      },
+      {
+        "name": "codex-aarch64-apple-darwin.dmg",
+        "size": 171537408,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-aarch64-apple-darwin.dmg",
+        "digest": "sha256:d281bde253d72445e898f71b2fc3ccf0e79dbf48cce98b7de535c1b959569917"
+      },
+      {
+        "name": "codex-aarch64-apple-darwin.tar.gz",
+        "size": 98173065,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-aarch64-apple-darwin.tar.gz",
+        "digest": "sha256:837570739cf7cd13e0d5b88cc18d6aea33e31eba3682844218fdb050640deee2"
+      },
+      {
+        "name": "codex-aarch64-pc-windows-msvc.exe",
+        "size": 285010944,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-aarch64-pc-windows-msvc.exe",
+        "digest": "sha256:627cbb7d11b902e91167eed6038ebce08f9da19f1c5fe9aba3ba653614b3388f"
+      },
+      {
+        "name": "codex-aarch64-pc-windows-msvc.exe.tar.gz",
+        "size": 102201213,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-aarch64-pc-windows-msvc.exe.tar.gz",
+        "digest": "sha256:aebf651678d5ae7af40909a519a3250950cb49fbbba6a3339cd45acf73873cc1"
+      },
+      {
+        "name": "codex-aarch64-pc-windows-msvc.exe.zip",
+        "size": 149584086,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-aarch64-pc-windows-msvc.exe.zip",
+        "digest": "sha256:faa619f58a5ff57039bf7ebac5b5b5a004b2fb9612f6524ad157cfb51952cd53"
+      },
+      {
+        "name": "codex-aarch64-unknown-linux-musl.tar.gz",
+        "size": 103565826,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-aarch64-unknown-linux-musl.tar.gz",
+        "digest": "sha256:a3bb3e37cd4a29f35bbd0021c4fbebec5a858a159edb1c09775f209becb53810"
+      },
+      {
+        "name": "codex-app-server-aarch64-apple-darwin.tar.gz",
+        "size": 75130664,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-app-server-aarch64-apple-darwin.tar.gz",
+        "digest": "sha256:090856b4176e20308d70614e0fab85df46e04f9669c08e2dc47ba36ee5cbfa48"
+      },
+      {
+        "name": "codex-app-server-aarch64-pc-windows-msvc.exe",
+        "size": 217041920,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-app-server-aarch64-pc-windows-msvc.exe",
+        "digest": "sha256:32811657a731e79b6c0ec97dec41a41943faf173ff10d0472d76ddf34768431d"
+      },
+      {
+        "name": "codex-app-server-aarch64-pc-windows-msvc.exe.tar.gz",
+        "size": 78086168,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-app-server-aarch64-pc-windows-msvc.exe.tar.gz",
+        "digest": "sha256:32d77addd90fdb5c3e08fe23e0e43da3ad1c9b0f8bd2000033f230958d3a7bc8"
+      },
+      {
+        "name": "codex-app-server-aarch64-pc-windows-msvc.exe.zip",
+        "size": 76033021,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-app-server-aarch64-pc-windows-msvc.exe.zip",
+        "digest": "sha256:7f0c451d6cb0a44921779da440594d2ca35e82daefd34ae66868cb8fefb4e7f7"
+      },
+      {
+        "name": "codex-app-server-aarch64-unknown-linux-musl.tar.gz",
+        "size": 79620645,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-app-server-aarch64-unknown-linux-musl.tar.gz",
+        "digest": "sha256:287df955ea1cadeb5ee5c6ee075b66ab50115e33f09315d2ec05b670d0ddac8a"
+      },
+      {
+        "name": "codex-app-server-package-aarch64-apple-darwin.tar.gz",
+        "size": 99750219,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-app-server-package-aarch64-apple-darwin.tar.gz",
+        "digest": "sha256:9ca08ed963176aadc5c5d63228d7bddc0745d117aed1905e7e8a3067979f73fb"
+      },
+      {
+        "name": "codex-app-server-package-aarch64-pc-windows-msvc.tar.gz",
+        "size": 114211231,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-app-server-package-aarch64-pc-windows-msvc.tar.gz",
+        "digest": "sha256:27e5d71156be578c0c588eff7c035b069c6523adacb3183e6906920191f824f5"
+      },
+      {
+        "name": "codex-app-server-package-aarch64-unknown-linux-musl.tar.gz",
+        "size": 106841073,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-app-server-package-aarch64-unknown-linux-musl.tar.gz",
+        "digest": "sha256:e0adbf9eb043ec9b26e26965da4c078f7d1dcccf045281f9b1140e538b56d6f4"
+      },
+      {
+        "name": "codex-app-server-package-x86_64-apple-darwin.tar.gz",
+        "size": 106034005,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-app-server-package-x86_64-apple-darwin.tar.gz",
+        "digest": "sha256:98f5ba8404a87d9f423a4894021c900d06f7587218e2dbb756e616c68272d085"
+      },
+      {
+        "name": "codex-app-server-package-x86_64-pc-windows-msvc.tar.gz",
+        "size": 123253940,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-app-server-package-x86_64-pc-windows-msvc.tar.gz",
+        "digest": "sha256:87c301fdad68696f1c2d25bfc23c77c5d2ade341039878dcf895e3f03a8b01fd"
+      },
+      {
+        "name": "codex-app-server-package-x86_64-unknown-linux-musl.tar.gz",
+        "size": 114266881,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-app-server-package-x86_64-unknown-linux-musl.tar.gz",
+        "digest": "sha256:7e9b7150de0f51bb6c4af9b502780e7d69487d69cab4ff41315750c9f1ea74e5"
+      },
+      {
+        "name": "codex-app-server-x86_64-apple-darwin.tar.gz",
+        "size": 80052152,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-app-server-x86_64-apple-darwin.tar.gz",
+        "digest": "sha256:18d060f6f68062d99f217ae25b06221e0c650cd0abc1d94ae4ad82d495f42c53"
+      },
+      {
+        "name": "codex-app-server-x86_64-pc-windows-msvc.exe",
+        "size": 256971776,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-app-server-x86_64-pc-windows-msvc.exe",
+        "digest": "sha256:b7fcbf54646315227e4751dc7b26101d557ce8a6d494db59e225a0584089daa9"
+      },
+      {
+        "name": "codex-app-server-x86_64-pc-windows-msvc.exe.tar.gz",
+        "size": 85148939,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-app-server-x86_64-pc-windows-msvc.exe.tar.gz",
+        "digest": "sha256:46d64fee9ff9390dc1f5cf033b4e218c3a82001c13dd4c1f93f3ca7169de8c64"
+      },
+      {
+        "name": "codex-app-server-x86_64-pc-windows-msvc.exe.zip",
+        "size": 82392416,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-app-server-x86_64-pc-windows-msvc.exe.zip",
+        "digest": "sha256:722a23f31d88e22e5454a304fafc103435ba986ebe5a518e3bb14a20d302c917"
+      },
+      {
+        "name": "codex-app-server-x86_64-unknown-linux-musl.tar.gz",
+        "size": 85356004,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-app-server-x86_64-unknown-linux-musl.tar.gz",
+        "digest": "sha256:0e0941e25ac81123abacea8a6a38eb991e277f559d7e961d20221fc757eb7984"
+      },
+      {
+        "name": "codex-code-mode-host-aarch64-apple-darwin.tar.gz",
+        "size": 22606069,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-code-mode-host-aarch64-apple-darwin.tar.gz",
+        "digest": "sha256:af24d8baec55cd362712f7bbaa98d0a545b4a0eb7ffc8dbc095410e2e590ddbf"
+      },
+      {
+        "name": "codex-code-mode-host-aarch64-pc-windows-msvc.exe",
+        "size": 67653120,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-code-mode-host-aarch64-pc-windows-msvc.exe",
+        "digest": "sha256:2da3b1be9d03c31e5d4c2251bfb883c05b4b6a6d7209d94022a765368ec4816f"
+      },
+      {
+        "name": "codex-code-mode-host-aarch64-pc-windows-msvc.exe.tar.gz",
+        "size": 26606352,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-code-mode-host-aarch64-pc-windows-msvc.exe.tar.gz",
+        "digest": "sha256:135c3e20615dd22f3b96add218fd2068f02ed1665fc21e3197e6772fd1484c97"
+      },
+      {
+        "name": "codex-code-mode-host-aarch64-pc-windows-msvc.exe.zip",
+        "size": 25823658,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-code-mode-host-aarch64-pc-windows-msvc.exe.zip",
+        "digest": "sha256:2ecd5c2e41946bc9e7446309ae657943e6a1ba42ae3224238fb72fd2e8c0296c"
+      },
+      {
+        "name": "codex-code-mode-host-aarch64-unknown-linux-musl.tar.gz",
+        "size": 24880047,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-code-mode-host-aarch64-unknown-linux-musl.tar.gz",
+        "digest": "sha256:9043fa1c7a002efd8886e22421a3628979fffe2fdb61d6e0b5aa56d3af389dee"
+      },
+      {
+        "name": "codex-code-mode-host-x86_64-apple-darwin.tar.gz",
+        "size": 23813769,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-code-mode-host-x86_64-apple-darwin.tar.gz",
+        "digest": "sha256:8e79f6201306675b74f26a9f26988f2f6c047fde1863dfb64b390bd4166551b9"
+      },
+      {
+        "name": "codex-code-mode-host-x86_64-pc-windows-msvc.exe",
+        "size": 72369152,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-code-mode-host-x86_64-pc-windows-msvc.exe",
+        "digest": "sha256:2c707b5657e02f2b25000f4d0a3f69983be64337cff6a204e03429a434984682"
+      },
+      {
+        "name": "codex-code-mode-host-x86_64-pc-windows-msvc.exe.tar.gz",
+        "size": 27907718,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-code-mode-host-x86_64-pc-windows-msvc.exe.tar.gz",
+        "digest": "sha256:02899cefa5c947058ea9665cd9d96f570ec5a70da1189f1d8c6ce66b607d88b5"
+      },
+      {
+        "name": "codex-code-mode-host-x86_64-pc-windows-msvc.exe.zip",
+        "size": 27106755,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-code-mode-host-x86_64-pc-windows-msvc.exe.zip",
+        "digest": "sha256:4db24519a61f14c95ef8af8a721e9881d0ce885b7e1824cdf57e472d371897be"
+      },
+      {
+        "name": "codex-code-mode-host-x86_64-unknown-linux-musl.tar.gz",
+        "size": 26220393,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-code-mode-host-x86_64-unknown-linux-musl.tar.gz",
+        "digest": "sha256:c5d640a1578505e55669fa9f571cf633420ddc353487f6bc9f7c50b80aad6c90"
+      },
+      {
+        "name": "codex-command-runner-aarch64-pc-windows-msvc.exe",
+        "size": 7260160,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-command-runner-aarch64-pc-windows-msvc.exe",
+        "digest": "sha256:c1b2e3de3e715e93b54f9b1e945ae4d1d2e7768ff6891d6464be8c230461b7ad"
+      },
+      {
+        "name": "codex-command-runner-aarch64-pc-windows-msvc.exe.tar.gz",
+        "size": 2703190,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-command-runner-aarch64-pc-windows-msvc.exe.tar.gz",
+        "digest": "sha256:dbec2013edc9fc5399905869c8dc39574f964044c598bf607cf2fefd88bff274"
+      },
+      {
+        "name": "codex-command-runner-aarch64-pc-windows-msvc.exe.zip",
+        "size": 2620859,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-command-runner-aarch64-pc-windows-msvc.exe.zip",
+        "digest": "sha256:508c7931ca558cd2c18e3444aeda5fa607eb7e3d26e6d9e445ecd42e83633070"
+      },
+      {
+        "name": "codex-command-runner-x86_64-pc-windows-msvc.exe",
+        "size": 8111104,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-command-runner-x86_64-pc-windows-msvc.exe",
+        "digest": "sha256:77e75c5ad13dce355665d2bc0dcc83f17557d4c6499d5f451347966ac480a8dd"
+      },
+      {
+        "name": "codex-command-runner-x86_64-pc-windows-msvc.exe.tar.gz",
+        "size": 2940643,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-command-runner-x86_64-pc-windows-msvc.exe.tar.gz",
+        "digest": "sha256:462c72cff01ab0dab78ebe98722462ceff0bacfdc5aad70d2c8dd15d39364a10"
+      },
+      {
+        "name": "codex-command-runner-x86_64-pc-windows-msvc.exe.zip",
+        "size": 2847605,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-command-runner-x86_64-pc-windows-msvc.exe.zip",
+        "digest": "sha256:bacec7864d5ebd42b3d59bc08c6c5f5ea944d5a90ef9be970437587e2da6e92e"
+      },
+      {
+        "name": "codex-package-aarch64-apple-darwin.tar.gz",
+        "size": 130816573,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-package-aarch64-apple-darwin.tar.gz",
+        "digest": "sha256:41f71e3b641b1e0d3ad67553be0cb79a983177cd6023b616d6a3733f52051122"
+      },
+      {
+        "name": "codex-package-aarch64-pc-windows-msvc.tar.gz",
+        "size": 145349465,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-package-aarch64-pc-windows-msvc.tar.gz",
+        "digest": "sha256:5b2de097e998231803abfb1dc63b94d7c4b75f0b0068c0339796cda5371a845d"
+      },
+      {
+        "name": "codex-package-aarch64-unknown-linux-musl.tar.gz",
+        "size": 140388574,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-package-aarch64-unknown-linux-musl.tar.gz",
+        "digest": "sha256:192afb54c4fc5bda409959fbfd0d0a370852c7ffd4296750113eed0c683e0214"
+      },
+      {
+        "name": "codex-package-x86_64-apple-darwin.tar.gz",
+        "size": 139451757,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-package-x86_64-apple-darwin.tar.gz",
+        "digest": "sha256:669de2c8e8010e2333fffff1de8a8c2eb0b7345fedb4aeea88ca9a90bd2d196f"
+      },
+      {
+        "name": "codex-package-x86_64-pc-windows-msvc.tar.gz",
+        "size": 157403620,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-package-x86_64-pc-windows-msvc.tar.gz",
+        "digest": "sha256:25d2665c1eb5c9ee43c263cdc556808ae2d682a6d2be8dd195ed991482810cb9"
+      },
+      {
+        "name": "codex-package-x86_64-unknown-linux-musl.tar.gz",
+        "size": 149629215,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-package-x86_64-unknown-linux-musl.tar.gz",
+        "digest": "sha256:e2ba5d9dcf03b18326ac4580ea89f629411bd1f6876c78553b5e933f85fc7e52"
+      },
+      {
+        "name": "codex-responses-api-proxy-aarch64-apple-darwin.tar.gz",
+        "size": 2465745,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-responses-api-proxy-aarch64-apple-darwin.tar.gz",
+        "digest": "sha256:ee759dda666b141fb8b473ba0b3ceae557f19577154e58688d5f3ecdb93e0d87"
+      },
+      {
+        "name": "codex-responses-api-proxy-aarch64-pc-windows-msvc.exe",
+        "size": 5427712,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-responses-api-proxy-aarch64-pc-windows-msvc.exe",
+        "digest": "sha256:f60e1a79df7ee076f2f21ef574e1e7c0b4cbca4be4e38bab0215b7389432cdb2"
+      },
+      {
+        "name": "codex-responses-api-proxy-aarch64-pc-windows-msvc.exe.tar.gz",
+        "size": 2411854,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-responses-api-proxy-aarch64-pc-windows-msvc.exe.tar.gz",
+        "digest": "sha256:8afcfe197be2d0fe884def08b184a6a994a4ebe753bbadd0aa325b1ded941dbb"
+      },
+      {
+        "name": "codex-responses-api-proxy-aarch64-pc-windows-msvc.exe.zip",
+        "size": 2349473,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-responses-api-proxy-aarch64-pc-windows-msvc.exe.zip",
+        "digest": "sha256:ab16cfbf43fdd0255a9f651a448afa0c5f01908324a3ec36976c8b6ed779e05d"
+      },
+      {
+        "name": "codex-responses-api-proxy-aarch64-unknown-linux-musl.tar.gz",
+        "size": 5129463,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-responses-api-proxy-aarch64-unknown-linux-musl.tar.gz",
+        "digest": "sha256:515da2b6a47a4952aa4c27e5c3fe27d5ba539a1cb41c9a9c58cecef61d7830b0"
+      },
+      {
+        "name": "codex-responses-api-proxy-x86_64-apple-darwin.tar.gz",
+        "size": 2593573,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-responses-api-proxy-x86_64-apple-darwin.tar.gz",
+        "digest": "sha256:ffc6cde7c6f37ca51edf6fd52364619783b42147fde5bf5059858f7fcb78bc27"
+      },
+      {
+        "name": "codex-responses-api-proxy-x86_64-pc-windows-msvc.exe",
+        "size": 6121472,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-responses-api-proxy-x86_64-pc-windows-msvc.exe",
+        "digest": "sha256:8804dfc9a8674bfeddebfb25fd2078888bd645f3e6badac78be9ee3ee931e5e7"
+      },
+      {
+        "name": "codex-responses-api-proxy-x86_64-pc-windows-msvc.exe.tar.gz",
+        "size": 2562116,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-responses-api-proxy-x86_64-pc-windows-msvc.exe.tar.gz",
+        "digest": "sha256:954e1dc4bf38defc6047233a50062d438cf737d2d0e5c04a8078564a68a03c86"
+      },
+      {
+        "name": "codex-responses-api-proxy-x86_64-pc-windows-msvc.exe.zip",
+        "size": 2486766,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-responses-api-proxy-x86_64-pc-windows-msvc.exe.zip",
+        "digest": "sha256:3c3a64e081526a6620cd9e23b341ab0e4e26d27ed61af7d6b23b39fda3882a31"
+      },
+      {
+        "name": "codex-responses-api-proxy-x86_64-unknown-linux-musl.tar.gz",
+        "size": 5089434,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-responses-api-proxy-x86_64-unknown-linux-musl.tar.gz",
+        "digest": "sha256:f469c43e981d13e39ee47ced55db3cd09fe06b32156422cfdb02e22715847eb1"
+      },
+      {
+        "name": "codex-windows-sandbox-service-aarch64-pc-windows-msvc.exe",
+        "size": 45874176,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-windows-sandbox-service-aarch64-pc-windows-msvc.exe",
+        "digest": "sha256:480f7139f57ceda6ee7f448d805a520a8a0d23d37e494d1aab8126e505a98d28"
+      },
+      {
+        "name": "codex-windows-sandbox-service-aarch64-pc-windows-msvc.exe.tar.gz",
+        "size": 16049489,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-windows-sandbox-service-aarch64-pc-windows-msvc.exe.tar.gz",
+        "digest": "sha256:b82f4c21a5e05eeba10b48c31721049d5e032392cbaf5568efc8ecbe98a13af3"
+      },
+      {
+        "name": "codex-windows-sandbox-service-aarch64-pc-windows-msvc.exe.zip",
+        "size": 15647275,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-windows-sandbox-service-aarch64-pc-windows-msvc.exe.zip",
+        "digest": "sha256:457343847b26973a65adaf54596e08f18d367e9577402b80e8ad7f7012eca96f"
+      },
+      {
+        "name": "codex-windows-sandbox-service-x86_64-pc-windows-msvc.exe",
+        "size": 54903808,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-windows-sandbox-service-x86_64-pc-windows-msvc.exe",
+        "digest": "sha256:33c7b8faba1dc99970ac2f66345e016d95c9cad702e833270d044cce2340d330"
+      },
+      {
+        "name": "codex-windows-sandbox-service-x86_64-pc-windows-msvc.exe.tar.gz",
+        "size": 17654927,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-windows-sandbox-service-x86_64-pc-windows-msvc.exe.tar.gz",
+        "digest": "sha256:0d6d309ae0c63ca9693f44d4a85af8e7eacd3d105bcb03c0b61c3024825ae6a9"
+      },
+      {
+        "name": "codex-windows-sandbox-service-x86_64-pc-windows-msvc.exe.zip",
+        "size": 17156499,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-windows-sandbox-service-x86_64-pc-windows-msvc.exe.zip",
+        "digest": "sha256:0de1fefeed0eefe2f9ae2c962a351a652dc874cb50c49f85918865b630381c6b"
+      },
+      {
+        "name": "codex-windows-sandbox-setup-aarch64-pc-windows-msvc.exe",
+        "size": 13827072,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-windows-sandbox-setup-aarch64-pc-windows-msvc.exe",
+        "digest": "sha256:caae67d12c4c15cabe1f56f1b7b056b5e8fcc05765da7346f6d3c984b6088a3d"
+      },
+      {
+        "name": "codex-windows-sandbox-setup-aarch64-pc-windows-msvc.exe.tar.gz",
+        "size": 5418401,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-windows-sandbox-setup-aarch64-pc-windows-msvc.exe.tar.gz",
+        "digest": "sha256:7a56e11ee0d11807560cfc3f8caf8e880d441e24b51ef738f5d7c319b9afbb9e"
+      },
+      {
+        "name": "codex-windows-sandbox-setup-aarch64-pc-windows-msvc.exe.zip",
+        "size": 5268071,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-windows-sandbox-setup-aarch64-pc-windows-msvc.exe.zip",
+        "digest": "sha256:f70e05f90f2d9b80f174d73d1d6c2c60ec14adf4dbd368aff2b3c43449ee4f78"
+      },
+      {
+        "name": "codex-windows-sandbox-setup-x86_64-pc-windows-msvc.exe",
+        "size": 15538176,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-windows-sandbox-setup-x86_64-pc-windows-msvc.exe",
+        "digest": "sha256:e4fe765edec27bbebaa743563256d69c92a0ed43e26bf62779d0d2c6d0e47a7f"
+      },
+      {
+        "name": "codex-windows-sandbox-setup-x86_64-pc-windows-msvc.exe.tar.gz",
+        "size": 5818104,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-windows-sandbox-setup-x86_64-pc-windows-msvc.exe.tar.gz",
+        "digest": "sha256:e8fee22ab72b38802a10b9d8deebc496d64c9d6aa755e60420743cc85f07c4ce"
+      },
+      {
+        "name": "codex-windows-sandbox-setup-x86_64-pc-windows-msvc.exe.zip",
+        "size": 5640487,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-windows-sandbox-setup-x86_64-pc-windows-msvc.exe.zip",
+        "digest": "sha256:d270a651a4a3a587a3d529eb7563f5c14ee69823355bc3cda907e64dfdb6d680"
+      },
+      {
+        "name": "codex-x86_64-apple-darwin.dmg",
+        "size": 183971799,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-x86_64-apple-darwin.dmg",
+        "digest": "sha256:52bb148bc88943771170314458975a1d8562cd0b04bcbd014262d9074e406a3b"
+      },
+      {
+        "name": "codex-x86_64-apple-darwin.tar.gz",
+        "size": 105064677,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-x86_64-apple-darwin.tar.gz",
+        "digest": "sha256:9f998b2b61c60e60e3c5e8d6006bdda44884175c19ac518eccc0f5d8a7a10689"
+      },
+      {
+        "name": "codex-x86_64-pc-windows-msvc.exe",
+        "size": 338146304,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-x86_64-pc-windows-msvc.exe",
+        "digest": "sha256:a31684f8bdc3634d18a849cfcbdf7c2926a7849a61152b146b17fdbca7689902"
+      },
+      {
+        "name": "codex-x86_64-pc-windows-msvc.exe.tar.gz",
+        "size": 111594501,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-x86_64-pc-windows-msvc.exe.tar.gz",
+        "digest": "sha256:b64ca796705c6b08d595e1007c0bbc27bb8f8eebecf9129d9c130db7f9651d42"
+      },
+      {
+        "name": "codex-x86_64-pc-windows-msvc.exe.zip",
+        "size": 161371496,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-x86_64-pc-windows-msvc.exe.zip",
+        "digest": "sha256:4b51868dbff8e6a4e95f9df5f3d250f2dd35b748845d05c49aca3a7eeb16ed40"
+      },
+      {
+        "name": "codex-x86_64-unknown-linux-musl.tar.gz",
+        "size": 111010335,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/codex-x86_64-unknown-linux-musl.tar.gz",
+        "digest": "sha256:c0f76523f8585a3bd8985638bf8861d70ab86fb9e9b02c6bf96a54680458fe0b"
+      },
+      {
+        "name": "open-interpreter-package-aarch64-apple-darwin.tar.gz",
+        "size": 220989635,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/open-interpreter-package-aarch64-apple-darwin.tar.gz",
+        "digest": "sha256:7378352f8aac0e068770ce579890eda00a66ea1f26a6c7fbf759592dbe7c31d1"
+      },
+      {
+        "name": "open-interpreter-package-aarch64-pc-windows-msvc.tar.gz",
+        "size": 240272128,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/open-interpreter-package-aarch64-pc-windows-msvc.tar.gz",
+        "digest": "sha256:95f840a83c9c347321b89dec9a4709da790bf0c5d47c9ce959e374b8a20c6257"
+      },
+      {
+        "name": "open-interpreter-package-aarch64-unknown-linux-musl.tar.gz",
+        "size": 234243167,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/open-interpreter-package-aarch64-unknown-linux-musl.tar.gz",
+        "digest": "sha256:0fe21c5e925dad7fcfa8f9b5df8a3c690e7a1e50fdc15ca3d73671f8bcdca3a0"
+      },
+      {
+        "name": "open-interpreter-package-x86_64-apple-darwin.tar.gz",
+        "size": 236101190,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/open-interpreter-package-x86_64-apple-darwin.tar.gz",
+        "digest": "sha256:7f4146822521c6a695af4ba0e2709d8d7215dee6e77af82a1eca0a0732880382"
+      },
+      {
+        "name": "open-interpreter-package-x86_64-pc-windows-msvc.tar.gz",
+        "size": 260878051,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/open-interpreter-package-x86_64-pc-windows-msvc.tar.gz",
+        "digest": "sha256:0e7fd776ffb46cb3821d8acd54c4b45bc13d72110d1dfa0b92903f49fb2bb8a1"
+      },
+      {
+        "name": "open-interpreter-package-x86_64-unknown-linux-musl.tar.gz",
+        "size": 250715859,
+        "browser_download_url": "https://github.com/openinterpreter/openinterpreter/releases/download/rust-v0.0.56/open-interpreter-package-x86_64-unknown-linux-musl.tar.gz",
+        "digest": "sha256:9e859353d6e2af28381489570d3ecf02060f7c73df5a652f3ca60c196835ccac"
+      }
+    ],
+    "kind": "ferramenta",
+    "category": "Utilitários Rust",
+    "tags": "rust,github,descoberta",
+    "summary": null,
+    "trust_score": 98,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório consolidado (3 anos de histórico)",
+      "🟢 Projeto ativo (atualizado há 14 dias)",
+      "🟢 68671 estrelas no repositório",
+      "🟢 Código aberto com licença Apache-2.0",
+      "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
+    ],
+    "attestation": ""
+  },
+  {
     "full_name": "alacritty/alacritty",
     "description": "A cross-platform, OpenGL terminal emulator.",
     "url": "https://github.com/alacritty/alacritty",
@@ -1365,6 +2904,423 @@
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
     ],
     "attestation": "ausente"
+  },
+  {
+    "full_name": "tw93/Pake",
+    "description": "Turn any website into a lightweight desktop app with one command, on macOS, Windows and Linux.",
+    "url": "https://github.com/tw93/Pake",
+    "stars": 62309,
+    "license": "GPL-3.0",
+    "topics": "chatgpt,claude,cli,desktop,desktop-app,electron-alternative,gemini,linux,macos,nativefier,no-electron,rust,tauri,web-to-desktop,website-to-app,webview,windows,youtube",
+    "language": "Rust",
+    "created_at": "2022-10-14T09:32:57Z",
+    "pushed_at": "2026-10-25T00:50:16Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "V3.17.6",
+    "released_at": "2026-10-17T01:58:23Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "ChatGPT.dmg",
+        "size": 9992080,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/ChatGPT.dmg",
+        "digest": "sha256:9ee8b90d9cd93624790ed1ea2fb5b618f2cb103a714ad1bf4ce18bb8d800d2c5"
+      },
+      {
+        "name": "ChatGPT_x64.msi",
+        "size": 3747840,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/ChatGPT_x64.msi",
+        "digest": "sha256:66657da725bc9efa3d18bc4dbf0331afbc5f326b05712872377ef54a3b5d9c33"
+      },
+      {
+        "name": "ChatGPT_x86_64.AppImage",
+        "size": 80378360,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/ChatGPT_x86_64.AppImage",
+        "digest": "sha256:a44be966a40739f26daf28beb9e8f6d766c30f74480abb496b1b16deadb6f9b6"
+      },
+      {
+        "name": "ChatGPT_x86_64.deb",
+        "size": 4818878,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/ChatGPT_x86_64.deb",
+        "digest": "sha256:b78c01efbc46efdf2d8f05a4ea9aa38c51a8c8a59f336ab747f2e7d149c706a1"
+      },
+      {
+        "name": "DeepSeek.dmg",
+        "size": 9893377,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/DeepSeek.dmg",
+        "digest": "sha256:4d8304b0d80a570bdcbd0bfd0bf48764929dd17deec9d2b6cf18b91cd4e8791c"
+      },
+      {
+        "name": "DeepSeek_x64.msi",
+        "size": 3661824,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/DeepSeek_x64.msi",
+        "digest": "sha256:cef205b89ce4e1990cb93fb836295a06528c10d784f48eef8701a0f74f2c7890"
+      },
+      {
+        "name": "DeepSeek_x86_64.AppImage",
+        "size": 80292344,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/DeepSeek_x86_64.AppImage",
+        "digest": "sha256:f80ff3654e6a369635a356526eaf792701378a6fe9c6f5c62d2e8c819da47efd"
+      },
+      {
+        "name": "DeepSeek_x86_64.deb",
+        "size": 4689198,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/DeepSeek_x86_64.deb",
+        "digest": "sha256:a503687faf5b7cd2185a9780a86c95657c41616852298961877412d0a5b41d23"
+      },
+      {
+        "name": "Excalidraw.dmg",
+        "size": 8820651,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/Excalidraw.dmg",
+        "digest": "sha256:d9bf9f7f2eed2175a71065d53548146277fcd2c752c64c513b7efd4c8bd49eb5"
+      },
+      {
+        "name": "Excalidraw_x64.msi",
+        "size": 3620864,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/Excalidraw_x64.msi",
+        "digest": "sha256:80f362cc6e4bf59ea5e1cc998fdab7749a2ac9e50b1056fae94807c45c7d33b3"
+      },
+      {
+        "name": "Excalidraw_x86_64.AppImage",
+        "size": 80247288,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/Excalidraw_x86_64.AppImage",
+        "digest": "sha256:574f14bf34a0d2d3a0f0e9da024a6a4803916abb1a31d8ed8a3e3c975daedbe3"
+      },
+      {
+        "name": "Excalidraw_x86_64.deb",
+        "size": 4618012,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/Excalidraw_x86_64.deb",
+        "digest": "sha256:e7c5062e5c81f67e2a280e1d979ccadc82b7c20488dea3b21f4ca3f54f4b3f83"
+      },
+      {
+        "name": "Flomo.dmg",
+        "size": 9562666,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/Flomo.dmg",
+        "digest": "sha256:f0acdf6b4772c9c42bb6e71f1f629f4d4513daca58f3bb6bfdcc8cf46098e653"
+      },
+      {
+        "name": "Flomo_x64.msi",
+        "size": 3702784,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/Flomo_x64.msi",
+        "digest": "sha256:4e87efa7ec0a785437f05ce0f4b817ea86c36c0cb2da9661a6d6a07196efdb8f"
+      },
+      {
+        "name": "Flomo_x86_64.AppImage",
+        "size": 80341496,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/Flomo_x86_64.AppImage",
+        "digest": "sha256:b09fb9a597c5cd1cdd1ccf80b1f82590dad0c2d29e33c5b8c4317cf59b9a9dbe"
+      },
+      {
+        "name": "Flomo_x86_64.deb",
+        "size": 4761106,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/Flomo_x86_64.deb",
+        "digest": "sha256:f33963d6fc4b49bd2c479bba914ba046d9c0f2d08ebfdab7e59f358ea1f5d76b"
+      },
+      {
+        "name": "Gemini.dmg",
+        "size": 9343697,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/Gemini.dmg",
+        "digest": "sha256:e92796a0036ef8299e79a650a310c2982eab4f1865170a0f011bc59a7e5c9d44"
+      },
+      {
+        "name": "Gemini_x64.msi",
+        "size": 3637248,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/Gemini_x64.msi",
+        "digest": "sha256:9bf3217946b43dca6bba5311be9178cd0a2515db4cbbf70369fb9260080bb17f"
+      },
+      {
+        "name": "Gemini_x86_64.AppImage",
+        "size": 80292344,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/Gemini_x86_64.AppImage",
+        "digest": "sha256:a6b2e7ceee8b72e41f60b9dc6c8da1a3572ae5233c69483d6c7da92c8888ccd8"
+      },
+      {
+        "name": "Gemini_x86_64.deb",
+        "size": 4681340,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/Gemini_x86_64.deb",
+        "digest": "sha256:e5efbf293965c2fa9aed8068f1c53f70e82da21640b4d6a1c9045fa9c862edc5"
+      },
+      {
+        "name": "Grok.dmg",
+        "size": 11628539,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/Grok.dmg",
+        "digest": "sha256:4d8b5b839ee76224125df5f5761388ae7c64b3d912831b27231abec9c871469b"
+      },
+      {
+        "name": "Grok_x64.msi",
+        "size": 3821568,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/Grok_x64.msi",
+        "digest": "sha256:c9468773cc2dbfb745961842a3aa7556c11c39407b960a907a3e520d8b1b5d22"
+      },
+      {
+        "name": "Grok_x86_64.AppImage",
+        "size": 80513528,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/Grok_x86_64.AppImage",
+        "digest": "sha256:974df5959ed718ebcb427530ff8101f7ad16cfe54fabe38eb8f7bc09e1b384da"
+      },
+      {
+        "name": "Grok_x86_64.deb",
+        "size": 5022562,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/Grok_x86_64.deb",
+        "digest": "sha256:42ec0e79f6e50ecf7ea2ee65d6c0dccd38bf5d9412ae593a17b2d05579cdfa9e"
+      },
+      {
+        "name": "LiZhi.dmg",
+        "size": 14222908,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/LiZhi.dmg",
+        "digest": "sha256:481b4a12536ae6d96bfa5d3eeb2a7f0e7171966be5940c64b848ebfa72d6ed37"
+      },
+      {
+        "name": "LiZhi_x64.msi",
+        "size": 4038656,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/LiZhi_x64.msi",
+        "digest": "sha256:618a9619a1998f4dea56cfbeb9410fd6efbbfcb6bc25e1529d8328eec2d46306"
+      },
+      {
+        "name": "LiZhi_x86_64.AppImage",
+        "size": 80935416,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/LiZhi_x86_64.AppImage",
+        "digest": "sha256:fa027743c6cba442d34c2a6ba450eb02a7ed6d381b9eb3b42fc47776a295cf84"
+      },
+      {
+        "name": "LiZhi_x86_64.deb",
+        "size": 5582838,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/LiZhi_x86_64.deb",
+        "digest": "sha256:d3fd6da60299d11e45e6c20ecf569b0fe8f4f3bcb66e917bb589cfe25237700b"
+      },
+      {
+        "name": "Notion.dmg",
+        "size": 9678395,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/Notion.dmg",
+        "digest": "sha256:a7068c8424f4a60a3f80232ec3a93715aa3f30633c35171a4a1246820a6aef74"
+      },
+      {
+        "name": "Notion_x64.msi",
+        "size": 3710976,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/Notion_x64.msi",
+        "digest": "sha256:b3d1ed81a28dbe1f370a5134fa9588bdfb1f9ae618bf6563854f2f59b3f0c2ba"
+      },
+      {
+        "name": "Notion_x86_64.AppImage",
+        "size": 80378360,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/Notion_x86_64.AppImage",
+        "digest": "sha256:e8103f90eacbea607d58eae7d794fbbe886ad44ec743118a438ef5eca29cafa0"
+      },
+      {
+        "name": "Notion_x86_64.deb",
+        "size": 4815220,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/Notion_x86_64.deb",
+        "digest": "sha256:8da483ec22f1d4aee9317e4a220d7be407a8aa4bd20820c1ea3ca553bdc65e2c"
+      },
+      {
+        "name": "ProgramMusic.dmg",
+        "size": 9343903,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/ProgramMusic.dmg",
+        "digest": "sha256:ce0ef176bc505f1d0c5ba2f518819db8ead1948beb9865832dc98947ed90b734"
+      },
+      {
+        "name": "ProgramMusic_x64.msi",
+        "size": 3690496,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/ProgramMusic_x64.msi",
+        "digest": "sha256:71eae40ed03fabfc8a49e6dd0750acfacaabebe700b06ad310fdc472f5733d55"
+      },
+      {
+        "name": "ProgramMusic_x86_64.AppImage",
+        "size": 80316920,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/ProgramMusic_x86_64.AppImage",
+        "digest": "sha256:7f666b4be4702f9b698a9653b97905d9e3f75c9ca4080ab22bf93d77b7a95d6d"
+      },
+      {
+        "name": "ProgramMusic_x86_64.deb",
+        "size": 4714308,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/ProgramMusic_x86_64.deb",
+        "digest": "sha256:30c808c1dacfa3be222dbdbfec79755161044ee87224e30f904ca2c217cd00af"
+      },
+      {
+        "name": "Qwerty.dmg",
+        "size": 12287439,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/Qwerty.dmg",
+        "digest": "sha256:b945cd6f4eda5e48380d627615f0a11a05db87b092c3ef350af6d724d71d1104"
+      },
+      {
+        "name": "Qwerty_x64.msi",
+        "size": 3776512,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/Qwerty_x64.msi",
+        "digest": "sha256:318137bc020e5eaca6ce24fdc98c7ba54bca9247224e5f9cb207985ffe17eb2f"
+      },
+      {
+        "name": "Qwerty_x86_64.AppImage",
+        "size": 80513528,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/Qwerty_x86_64.AppImage",
+        "digest": "sha256:524c35273af344a19eac758a6f115281236be52187f40a417b97d71bcba8ec7a"
+      },
+      {
+        "name": "Qwerty_x86_64.deb",
+        "size": 5023006,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/Qwerty_x86_64.deb",
+        "digest": "sha256:030a0ae715135820b0f4321cd9f9e17eda01515e35db04cf4722f1a08ee9a74a"
+      },
+      {
+        "name": "Twitter.dmg",
+        "size": 8876902,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/Twitter.dmg",
+        "digest": "sha256:af83a5012028f4c4e57544434ce07d8f10b75f4a1173d576afcf4aca725179a6"
+      },
+      {
+        "name": "Twitter_x64.msi",
+        "size": 3641344,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/Twitter_x64.msi",
+        "digest": "sha256:6247081465c3aebd61af3a1f53abdab07e0617b70d3c2be979ec0e99374ef561"
+      },
+      {
+        "name": "Twitter_x86_64.AppImage",
+        "size": 80271864,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/Twitter_x86_64.AppImage",
+        "digest": "sha256:2d1a7fa48d998f17f9b22653213811817e087c7a815be18b1fd98563daa40be3"
+      },
+      {
+        "name": "Twitter_x86_64.deb",
+        "size": 4639584,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/Twitter_x86_64.deb",
+        "digest": "sha256:59ed44144ad23b6bfb0ec065e4a0238a04886a282fa63dd45d9cdb5c899aacd4"
+      },
+      {
+        "name": "WeChat.dmg",
+        "size": 9798289,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/WeChat.dmg",
+        "digest": "sha256:dc4934f2b178387a9377b6482a1eecd8407e13de01cba893f7e0daa014536b03"
+      },
+      {
+        "name": "WeChat_x64.msi",
+        "size": 3686400,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/WeChat_x64.msi",
+        "digest": "sha256:ef4183088ba47969fba52ca4be3a309f55b891c85f823789172944069f3981ca"
+      },
+      {
+        "name": "WeChat_x86_64.AppImage",
+        "size": 80333304,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/WeChat_x86_64.AppImage",
+        "digest": "sha256:79082a03560f9e8fb1ed4a8a1c6481c713f12cefabd0abb2d09620d4e0ce252b"
+      },
+      {
+        "name": "WeChat_x86_64.deb",
+        "size": 4743132,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/WeChat_x86_64.deb",
+        "digest": "sha256:8c775d82da003c46498ce670a6d96a73af4b9d7182473dd922a02c75912642bf"
+      },
+      {
+        "name": "WeRead.dmg",
+        "size": 8804690,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/WeRead.dmg",
+        "digest": "sha256:ed5d1794d22e5501f11044e153b17cba08ee07cb0e1d96311b6fb672a64d34a2"
+      },
+      {
+        "name": "WeRead_x64.msi",
+        "size": 3620864,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/WeRead_x64.msi",
+        "digest": "sha256:d2b7962bf54a8bf8b41aeb940e6fc6d88580faf3e59ead3dc712c2d381b27ac8"
+      },
+      {
+        "name": "WeRead_x86_64.AppImage",
+        "size": 80247288,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/WeRead_x86_64.AppImage",
+        "digest": "sha256:707ef9e08698e9a4c93cf06b15871e66c5d243659e1249318e88760fed4e3bf5"
+      },
+      {
+        "name": "WeRead_x86_64.deb",
+        "size": 4581170,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/WeRead_x86_64.deb",
+        "digest": "sha256:bbaba6e37722bd8cd4a3bd99abf0276fdb5aadf9d75cc744435472a1b5062d96"
+      },
+      {
+        "name": "XiaoHongShu.dmg",
+        "size": 11996560,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/XiaoHongShu.dmg",
+        "digest": "sha256:3aa2053ba1708453052cc85126376ea46b5fb270d533b6b9546f2964c25386d4"
+      },
+      {
+        "name": "XiaoHongShu_x64.msi",
+        "size": 3735552,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/XiaoHongShu_x64.msi",
+        "digest": "sha256:178a4457275fce62af584d15b028cb21f3660baf9cb020eb4a9164a3abe13889"
+      },
+      {
+        "name": "XiaoHongShu_x86_64.AppImage",
+        "size": 80435704,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/XiaoHongShu_x86_64.AppImage",
+        "digest": "sha256:44e253a22600a8ee3141a47b6d671c39fb88e6ce272045a77cde02d7977b21cb"
+      },
+      {
+        "name": "XiaoHongShu_x86_64.deb",
+        "size": 4917718,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/XiaoHongShu_x86_64.deb",
+        "digest": "sha256:ecd1cb54af263a29279088b1f179ead42f91123a2b8c586d84fb59ff23ebd68b"
+      },
+      {
+        "name": "YouTube.dmg",
+        "size": 8522979,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/YouTube.dmg",
+        "digest": "sha256:7dfb3d7c41802965fa20d7d9ecefe62ce19958f42bdc923aea80daa9f81aa310"
+      },
+      {
+        "name": "YouTubeMusic.dmg",
+        "size": 15481062,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/YouTubeMusic.dmg",
+        "digest": "sha256:e7df72fd060fa8cd0382f4d4b600421bcb40a68039e657678dc173d849bacb3b"
+      },
+      {
+        "name": "YouTubeMusic_x64.msi",
+        "size": 3969024,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/YouTubeMusic_x64.msi",
+        "digest": "sha256:d2e73358638156cb73fc52b078cd23ea995643c0b43eafbe897e271f9423f873"
+      },
+      {
+        "name": "YouTubeMusic_x86_64.AppImage",
+        "size": 80898552,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/YouTubeMusic_x86_64.AppImage",
+        "digest": "sha256:381006d4f96b7246f47029275f2bd25d17a39d9e422c61f9089f6bb116e2e682"
+      },
+      {
+        "name": "YouTubeMusic_x86_64.deb",
+        "size": 5569570,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/YouTubeMusic_x86_64.deb",
+        "digest": "sha256:86b17ee0ee4454658dcd7efba55d113d4a57c31f35f9ea12717d17b6d7f03022"
+      },
+      {
+        "name": "YouTube_x64.msi",
+        "size": 3575808,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/YouTube_x64.msi",
+        "digest": "sha256:664ed76e886dd61fb843efe4ee15a23f5aff0eebf62fbe98bed52a74035a915d"
+      },
+      {
+        "name": "YouTube_x86_64.AppImage",
+        "size": 80218616,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/YouTube_x86_64.AppImage",
+        "digest": "sha256:9fb3a31371d02c5f221e45a22c27e53ef92f1355fe6a2905a3c0ed7c8e936893"
+      },
+      {
+        "name": "YouTube_x86_64.deb",
+        "size": 4552680,
+        "browser_download_url": "https://github.com/tw93/Pake/releases/download/V3.17.6/YouTube_x86_64.deb",
+        "digest": "sha256:6f71c502c6046aebdaaf9c23250b73c87f656e77197c7c7706677ea5b0d98069"
+      }
+    ],
+    "kind": "ferramenta",
+    "category": "Utilitários Rust",
+    "tags": "rust,github,descoberta",
+    "summary": null,
+    "trust_score": 98,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório consolidado (4 anos de histórico)",
+      "🟢 Projeto ativo (atualizado há 0 dias)",
+      "🟢 62309 estrelas no repositório",
+      "🟢 Código aberto com licença GPL-3.0",
+      "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
+    ],
+    "attestation": ""
   },
   {
     "full_name": "sharkdp/bat",
@@ -1739,6 +3695,87 @@
     "attestation": ""
   },
   {
+    "full_name": "lencx/ChatGPT",
+    "description": "❄️ ChatGPT Desktop Application (Mac, Windows and Linux)",
+    "url": "https://github.com/lencx/ChatGPT",
+    "stars": 54662,
+    "license": "",
+    "topics": "ai,app,application,chatgpt,desktop-app,gpt,gpt-3,linux,macos,notes-app,openai,rust,tauri,webview,windows",
+    "language": "Rust",
+    "created_at": "2022-12-07T09:43:02Z",
+    "pushed_at": "2024-08-29T17:58:11Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v1.1.0",
+    "released_at": "2023-08-03T13:51:20Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "ChatGPT_1.1.0_linux_x86_64.AppImage.tar.gz",
+        "size": 81337072,
+        "browser_download_url": "https://github.com/lencx/ChatGPT/releases/download/v1.1.0/ChatGPT_1.1.0_linux_x86_64.AppImage.tar.gz",
+        "digest": null
+      },
+      {
+        "name": "ChatGPT_1.1.0_linux_x86_64.deb",
+        "size": 5342458,
+        "browser_download_url": "https://github.com/lencx/ChatGPT/releases/download/v1.1.0/ChatGPT_1.1.0_linux_x86_64.deb",
+        "digest": null
+      },
+      {
+        "name": "ChatGPT_1.1.0_macos_aarch64.app.tar.gz",
+        "size": 4996302,
+        "browser_download_url": "https://github.com/lencx/ChatGPT/releases/download/v1.1.0/ChatGPT_1.1.0_macos_aarch64.app.tar.gz",
+        "digest": null
+      },
+      {
+        "name": "ChatGPT_1.1.0_macos_aarch64.dmg",
+        "size": 5309057,
+        "browser_download_url": "https://github.com/lencx/ChatGPT/releases/download/v1.1.0/ChatGPT_1.1.0_macos_aarch64.dmg",
+        "digest": null
+      },
+      {
+        "name": "ChatGPT_1.1.0_macos_x86_64.app.tar.gz",
+        "size": 5074405,
+        "browser_download_url": "https://github.com/lencx/ChatGPT/releases/download/v1.1.0/ChatGPT_1.1.0_macos_x86_64.app.tar.gz",
+        "digest": null
+      },
+      {
+        "name": "ChatGPT_1.1.0_macos_x86_64.dmg",
+        "size": 5328662,
+        "browser_download_url": "https://github.com/lencx/ChatGPT/releases/download/v1.1.0/ChatGPT_1.1.0_macos_x86_64.dmg",
+        "digest": null
+      },
+      {
+        "name": "ChatGPT_1.1.0_windows_x86_64.msi",
+        "size": 6508544,
+        "browser_download_url": "https://github.com/lencx/ChatGPT/releases/download/v1.1.0/ChatGPT_1.1.0_windows_x86_64.msi",
+        "digest": null
+      },
+      {
+        "name": "ChatGPT_1.1.0_windows_x86_64.msi.zip",
+        "size": 4907160,
+        "browser_download_url": "https://github.com/lencx/ChatGPT/releases/download/v1.1.0/ChatGPT_1.1.0_windows_x86_64.msi.zip",
+        "digest": null
+      }
+    ],
+    "kind": "ferramenta",
+    "category": "Utilitários Rust",
+    "tags": "rust,github,descoberta",
+    "summary": null,
+    "trust_score": 63,
+    "trust_level": "🟡 ATENÇÃO",
+    "trust_notes": [
+      "🟢 Repositório consolidado (3 anos de histórico)",
+      "🔴 Sem atualizações há 787 dias",
+      "🟢 54662 estrelas no repositório",
+      "🟡 Sem licença open-source padronizada",
+      "🟡 Release sem hash SHA-256 publicado (releases antigas do GitHub e outras forjas não publicam)"
+    ],
+    "attestation": ""
+  },
+  {
     "full_name": "upscayl/upscayl",
     "description": "🆙 Upscayl - #1 Free and Open Source AI Image Upscaler for Linux, MacOS and Windows.",
     "url": "https://github.com/upscayl/upscayl",
@@ -1790,6 +3827,195 @@
     "attestation": ""
   },
   {
+    "full_name": "ClickHouse/ClickHouse",
+    "description": "ClickHouse® is a real-time analytics database management system",
+    "url": "https://github.com/ClickHouse/ClickHouse",
+    "stars": 50594,
+    "license": "Apache-2.0",
+    "topics": "ai,analytics,big-data,clickhouse,cloud-native,cpp,database,dbms,distributed,embedded,hacktoberfest,lakehouse,mpp,olap,rust,self-hosted,sql",
+    "language": "C++",
+    "created_at": "2016-06-02T08:28:18Z",
+    "pushed_at": "2026-10-25T19:54:59Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v26.10.2.103-stable",
+    "released_at": "2026-10-24T04:17:23Z",
+    "platforms": "linux,macos",
+    "assets": [
+      {
+        "name": "clickhouse-client-26.10.2.103.aarch64.rpm",
+        "size": 527144,
+        "browser_download_url": "https://github.com/ClickHouse/ClickHouse/releases/download/v26.10.2.103-stable/clickhouse-client-26.10.2.103.aarch64.rpm",
+        "digest": "sha256:8adccd2547fd8c5622b4d62b7cca97c9e32d49d6c7a85da239bf8f3a44bd83d4"
+      },
+      {
+        "name": "clickhouse-client-26.10.2.103.x86_64.rpm",
+        "size": 527140,
+        "browser_download_url": "https://github.com/ClickHouse/ClickHouse/releases/download/v26.10.2.103-stable/clickhouse-client-26.10.2.103.x86_64.rpm",
+        "digest": "sha256:6959025bfebe405429750db25332e0297cafa0c17788ed4f463cca75fcaf89bf"
+      },
+      {
+        "name": "clickhouse-client_26.10.2.103_amd64.deb",
+        "size": 525208,
+        "browser_download_url": "https://github.com/ClickHouse/ClickHouse/releases/download/v26.10.2.103-stable/clickhouse-client_26.10.2.103_amd64.deb",
+        "digest": "sha256:49dde7560f20573d4fe41de4fb56b421262742f4e6d269c2269ab2ba568d9242"
+      },
+      {
+        "name": "clickhouse-client_26.10.2.103_arm64.deb",
+        "size": 525212,
+        "browser_download_url": "https://github.com/ClickHouse/ClickHouse/releases/download/v26.10.2.103-stable/clickhouse-client_26.10.2.103_arm64.deb",
+        "digest": "sha256:0a8f04448d97f55af0be234d218da05dd60caa1cafeb4fac73dd53892c06dc16"
+      },
+      {
+        "name": "clickhouse-common-static-26.10.2.103.aarch64.rpm",
+        "size": 252475572,
+        "browser_download_url": "https://github.com/ClickHouse/ClickHouse/releases/download/v26.10.2.103-stable/clickhouse-common-static-26.10.2.103.aarch64.rpm",
+        "digest": "sha256:837bdf265009ed60e23209a7cbbb68bc9206082c797dda6f18423288100e1471"
+      },
+      {
+        "name": "clickhouse-common-static-26.10.2.103.x86_64.rpm",
+        "size": 278918394,
+        "browser_download_url": "https://github.com/ClickHouse/ClickHouse/releases/download/v26.10.2.103-stable/clickhouse-common-static-26.10.2.103.x86_64.rpm",
+        "digest": "sha256:c62932a5599e8989b827a3a07dea46cca97696ebf2a95b640b30fd98fae69395"
+      },
+      {
+        "name": "clickhouse-common-static-dbg-26.10.2.103.aarch64.rpm",
+        "size": 1445468466,
+        "browser_download_url": "https://github.com/ClickHouse/ClickHouse/releases/download/v26.10.2.103-stable/clickhouse-common-static-dbg-26.10.2.103.aarch64.rpm",
+        "digest": "sha256:3cd8113f4c2a3cb56b1304624d18fea1d4f760f7551061ede7bba363dc884774"
+      },
+      {
+        "name": "clickhouse-common-static-dbg-26.10.2.103.x86_64.rpm",
+        "size": 1448202870,
+        "browser_download_url": "https://github.com/ClickHouse/ClickHouse/releases/download/v26.10.2.103-stable/clickhouse-common-static-dbg-26.10.2.103.x86_64.rpm",
+        "digest": "sha256:a9bde500d3411a316a681d9afca22927ca767b378022d5edc3370ffae6619d75"
+      },
+      {
+        "name": "clickhouse-common-static-dbg_26.10.2.103_amd64.deb",
+        "size": 1447066668,
+        "browser_download_url": "https://github.com/ClickHouse/ClickHouse/releases/download/v26.10.2.103-stable/clickhouse-common-static-dbg_26.10.2.103_amd64.deb",
+        "digest": "sha256:c748a9f0e9b154d4c5ac57a9527c83b4726a43b222b24fa66ce21f9c8d67a5f7"
+      },
+      {
+        "name": "clickhouse-common-static-dbg_26.10.2.103_arm64.deb",
+        "size": 1445740352,
+        "browser_download_url": "https://github.com/ClickHouse/ClickHouse/releases/download/v26.10.2.103-stable/clickhouse-common-static-dbg_26.10.2.103_arm64.deb",
+        "digest": "sha256:d8bcd2a097633cbc69a57eb1dd61be579af3e87739848a95f8fd0aeb32287457"
+      },
+      {
+        "name": "clickhouse-common-static_26.10.2.103_amd64.deb",
+        "size": 278837932,
+        "browser_download_url": "https://github.com/ClickHouse/ClickHouse/releases/download/v26.10.2.103-stable/clickhouse-common-static_26.10.2.103_amd64.deb",
+        "digest": "sha256:90cb96c914907d8d15d05af8ad2fdfff07a3e184e7a3165123d1d471ae130c4b"
+      },
+      {
+        "name": "clickhouse-common-static_26.10.2.103_arm64.deb",
+        "size": 252504438,
+        "browser_download_url": "https://github.com/ClickHouse/ClickHouse/releases/download/v26.10.2.103-stable/clickhouse-common-static_26.10.2.103_arm64.deb",
+        "digest": "sha256:a7be0b0de2021677d8a131083043170c7c95fcaa9686f471a77fe55b2e240c7e"
+      },
+      {
+        "name": "clickhouse-keeper-26.10.2.103.aarch64.rpm",
+        "size": 163554268,
+        "browser_download_url": "https://github.com/ClickHouse/ClickHouse/releases/download/v26.10.2.103-stable/clickhouse-keeper-26.10.2.103.aarch64.rpm",
+        "digest": "sha256:3c0a01cd1a90481089a6cb1810502f95cfd88f5f3cebd3667b72009450aa2664"
+      },
+      {
+        "name": "clickhouse-keeper-26.10.2.103.x86_64.rpm",
+        "size": 183475966,
+        "browser_download_url": "https://github.com/ClickHouse/ClickHouse/releases/download/v26.10.2.103-stable/clickhouse-keeper-26.10.2.103.x86_64.rpm",
+        "digest": "sha256:c8d8710cb883027de9e5f3552566058a557c9fdd607cc8e6eca979bb587bb074"
+      },
+      {
+        "name": "clickhouse-keeper-dbg-26.10.2.103.aarch64.rpm",
+        "size": 982369361,
+        "browser_download_url": "https://github.com/ClickHouse/ClickHouse/releases/download/v26.10.2.103-stable/clickhouse-keeper-dbg-26.10.2.103.aarch64.rpm",
+        "digest": "sha256:52bf725b4a3b2e21a14d70f8775a0e356d2c4586ccee3fb105531e3fcdca1abc"
+      },
+      {
+        "name": "clickhouse-keeper-dbg-26.10.2.103.x86_64.rpm",
+        "size": 988793620,
+        "browser_download_url": "https://github.com/ClickHouse/ClickHouse/releases/download/v26.10.2.103-stable/clickhouse-keeper-dbg-26.10.2.103.x86_64.rpm",
+        "digest": "sha256:2f535145a5875a808544134273529af1503cb7f103a1e928ae46990bcc5a6727"
+      },
+      {
+        "name": "clickhouse-keeper-dbg_26.10.2.103_amd64.deb",
+        "size": 989011998,
+        "browser_download_url": "https://github.com/ClickHouse/ClickHouse/releases/download/v26.10.2.103-stable/clickhouse-keeper-dbg_26.10.2.103_amd64.deb",
+        "digest": "sha256:c642b6d1bcbeab3a4f3db8ddd87321b344af69711e2130aa652286bbbaafb115"
+      },
+      {
+        "name": "clickhouse-keeper-dbg_26.10.2.103_arm64.deb",
+        "size": 981879074,
+        "browser_download_url": "https://github.com/ClickHouse/ClickHouse/releases/download/v26.10.2.103-stable/clickhouse-keeper-dbg_26.10.2.103_arm64.deb",
+        "digest": "sha256:54d49f9060dd53e9a82d5717e89f949ffcd0de86548790fe802368b6bc1c3dd4"
+      },
+      {
+        "name": "clickhouse-keeper_26.10.2.103_amd64.deb",
+        "size": 183533596,
+        "browser_download_url": "https://github.com/ClickHouse/ClickHouse/releases/download/v26.10.2.103-stable/clickhouse-keeper_26.10.2.103_amd64.deb",
+        "digest": "sha256:e98e61bf30fef3ddc257f8b90644d47381248906bdaa5848fbd8b4276278ef65"
+      },
+      {
+        "name": "clickhouse-keeper_26.10.2.103_arm64.deb",
+        "size": 163532936,
+        "browser_download_url": "https://github.com/ClickHouse/ClickHouse/releases/download/v26.10.2.103-stable/clickhouse-keeper_26.10.2.103_arm64.deb",
+        "digest": "sha256:d39acdaf26f9af355b94392ca0bdda8a0ce7290f362396a3accda4b80057a108"
+      },
+      {
+        "name": "clickhouse-macos-aarch64.zip",
+        "size": 231976670,
+        "browser_download_url": "https://github.com/ClickHouse/ClickHouse/releases/download/v26.10.2.103-stable/clickhouse-macos-aarch64.zip",
+        "digest": "sha256:992a893f01bba4419a50b50d2ce4557e9e0c2f9f7f3ae344dd5a4361cb81ba88"
+      },
+      {
+        "name": "clickhouse-macos.zip",
+        "size": 257775906,
+        "browser_download_url": "https://github.com/ClickHouse/ClickHouse/releases/download/v26.10.2.103-stable/clickhouse-macos.zip",
+        "digest": "sha256:519cb8f3c53c96c1b7ce7ab633279bf7dc35a995c02385fa2bd99149437cc242"
+      },
+      {
+        "name": "clickhouse-server-26.10.2.103.aarch64.rpm",
+        "size": 562289,
+        "browser_download_url": "https://github.com/ClickHouse/ClickHouse/releases/download/v26.10.2.103-stable/clickhouse-server-26.10.2.103.aarch64.rpm",
+        "digest": "sha256:07f57cde949e37a12dfcf57aaffee57b41a8427a3e60eb5a86001cc3b23ff449"
+      },
+      {
+        "name": "clickhouse-server-26.10.2.103.x86_64.rpm",
+        "size": 562285,
+        "browser_download_url": "https://github.com/ClickHouse/ClickHouse/releases/download/v26.10.2.103-stable/clickhouse-server-26.10.2.103.x86_64.rpm",
+        "digest": "sha256:3721cac6a3cfcd18b312248ab7382ad9f3e84a7c02d84b35a7b3c3ef15f019c9"
+      },
+      {
+        "name": "clickhouse-server_26.10.2.103_amd64.deb",
+        "size": 558626,
+        "browser_download_url": "https://github.com/ClickHouse/ClickHouse/releases/download/v26.10.2.103-stable/clickhouse-server_26.10.2.103_amd64.deb",
+        "digest": "sha256:1277b41dd02dfde4c5027824032d223d50382f45da6d7048edcceadb5089e3dc"
+      },
+      {
+        "name": "clickhouse-server_26.10.2.103_arm64.deb",
+        "size": 558638,
+        "browser_download_url": "https://github.com/ClickHouse/ClickHouse/releases/download/v26.10.2.103-stable/clickhouse-server_26.10.2.103_arm64.deb",
+        "digest": "sha256:30f7580df3ae0fe6ad1faf97f0038f7b38a0a210aaf1c1df734218013a2e4d60"
+      }
+    ],
+    "kind": "ferramenta",
+    "category": "Utilitários Rust",
+    "tags": "rust,github,descoberta",
+    "summary": null,
+    "trust_score": 98,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório consolidado (10 anos de histórico)",
+      "🟢 Projeto ativo (atualizado há 0 dias)",
+      "🟢 50594 estrelas no repositório",
+      "🟢 Código aberto com licença Apache-2.0",
+      "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
+    ],
+    "attestation": ""
+  },
+  {
     "full_name": "x64dbg/x64dbg",
     "description": "An open-source user mode debugger for Windows. Optimized for reverse engineering and malware analysis.",
     "url": "https://github.com/x64dbg/x64dbg",
@@ -1825,6 +4051,45 @@
       "🟢 50014 estrelas no GitHub",
       "🟡 Sem licença open-source padronizada",
       "🟡 Release antiga sem hash SHA-256 pré-calculado pelo GitHub"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "herdrdev/herdr",
+    "description": "the runtime your coding agents live on",
+    "url": "https://github.com/herdrdev/herdr",
+    "stars": 45832,
+    "license": "Apache-2.0",
+    "topics": "agent,agent-orchestration,ai,ai-agents,claude-code,cli,codex,coding-agents,developer-tools,devtools,multiplexer,rust,terminal,terminal-multiplexer,terminal-ui,tmux,tui,workspace-manager",
+    "language": "Rust",
+    "created_at": "2026-03-27T17:54:33Z",
+    "pushed_at": "2026-10-23T21:54:15Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v0.9.5",
+    "released_at": "2026-10-14T16:07:28Z",
+    "platforms": "windows",
+    "assets": [
+      {
+        "name": "herdr-windows-x86_64.zip",
+        "size": 10037141,
+        "browser_download_url": "https://github.com/herdrdev/herdr/releases/download/v0.9.5/herdr-windows-x86_64.zip",
+        "digest": "sha256:d2c6c9c971c43a0bfdde8c692a9a1a7a45c3e4807cd01ae45662b4734fac1cbf"
+      }
+    ],
+    "kind": "ferramenta",
+    "category": "Utilitários Rust",
+    "tags": "rust,github,descoberta",
+    "summary": null,
+    "trust_score": 86,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟡 Repositório com 212 dias de existência",
+      "🟢 Projeto ativo (atualizado há 1 dias)",
+      "🟢 45832 estrelas no repositório",
+      "🟢 Código aberto com licença Apache-2.0",
+      "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
     ],
     "attestation": ""
   },
@@ -2364,6 +4629,111 @@
     "attestation": ""
   },
   {
+    "full_name": "tinyhumansai/openhuman",
+    "description": "The fastest, cheapest, most efficient open-source agent harness. Run more than 500 agents on a $10 VPS.",
+    "url": "https://github.com/tinyhumansai/openhuman",
+    "stars": 42340,
+    "license": "GPL-3.0",
+    "topics": "agent-orchestration,ai-agents,ai-assistant,desktop,llm,local-first,mcp,personal-ai,privacy,rust,second-brain,tauri",
+    "language": "Rust",
+    "created_at": "2026-02-18T20:01:27Z",
+    "pushed_at": "2026-10-26T00:28:01Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v0.64.15",
+    "released_at": "2026-10-09T05:08:30Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "openhuman-core-0.64.15-aarch64-unknown-linux-gnu.tar.gz",
+        "size": 146836299,
+        "browser_download_url": "https://github.com/tinyhumansai/openhuman/releases/download/v0.64.15/openhuman-core-0.64.15-aarch64-unknown-linux-gnu.tar.gz",
+        "digest": "sha256:eabac98af5f1feb711b4ffd48185aa06a233fa6bbcd1bcd4d733397dace03b9b"
+      },
+      {
+        "name": "openhuman-core-0.64.15-x86_64-unknown-linux-gnu.tar.gz",
+        "size": 156391904,
+        "browser_download_url": "https://github.com/tinyhumansai/openhuman/releases/download/v0.64.15/openhuman-core-0.64.15-x86_64-unknown-linux-gnu.tar.gz",
+        "digest": "sha256:f86ae0157b4ed28767c580c443e04027b62fe14e6f3260786f44cd265a242587"
+      },
+      {
+        "name": "OpenHuman_0.64.15_aarch64-apple-darwin.app.tar.gz",
+        "size": 95278073,
+        "browser_download_url": "https://github.com/tinyhumansai/openhuman/releases/download/v0.64.15/OpenHuman_0.64.15_aarch64-apple-darwin.app.tar.gz",
+        "digest": "sha256:5d8189743debc46d4dae6d8febe99511b91e2786f187a8b4f445b46422852bb8"
+      },
+      {
+        "name": "OpenHuman_0.64.15_aarch64.AppImage",
+        "size": 196246024,
+        "browser_download_url": "https://github.com/tinyhumansai/openhuman/releases/download/v0.64.15/OpenHuman_0.64.15_aarch64.AppImage",
+        "digest": "sha256:14564459534f24397d513525b81af93eb8fdbbab9e8f280d882738745fb88fa1"
+      },
+      {
+        "name": "OpenHuman_0.64.15_aarch64.dmg",
+        "size": 95435642,
+        "browser_download_url": "https://github.com/tinyhumansai/openhuman/releases/download/v0.64.15/OpenHuman_0.64.15_aarch64.dmg",
+        "digest": "sha256:00b175f6280046ed04fea925bd2d7454db4eebcc9fbe79553d81eb0ac46110b9"
+      },
+      {
+        "name": "OpenHuman_0.64.15_amd64.AppImage",
+        "size": 205257208,
+        "browser_download_url": "https://github.com/tinyhumansai/openhuman/releases/download/v0.64.15/OpenHuman_0.64.15_amd64.AppImage",
+        "digest": "sha256:2ca83b32e6bf15961dc44fafcb2cf8f9cdd6abeb8b27b6539dd028219becfe62"
+      },
+      {
+        "name": "OpenHuman_0.64.15_amd64.deb",
+        "size": 140000954,
+        "browser_download_url": "https://github.com/tinyhumansai/openhuman/releases/download/v0.64.15/OpenHuman_0.64.15_amd64.deb",
+        "digest": "sha256:6cd1be9842eed3e7c29eedec8a79c38746348b7e50cf9c8e228a4a9fe3c0bdb8"
+      },
+      {
+        "name": "OpenHuman_0.64.15_arm64.deb",
+        "size": 133051268,
+        "browser_download_url": "https://github.com/tinyhumansai/openhuman/releases/download/v0.64.15/OpenHuman_0.64.15_arm64.deb",
+        "digest": "sha256:7bf44ea02a0b194803e2a3526a6bafedb620d63c54c31bd14689499791464d3d"
+      },
+      {
+        "name": "OpenHuman_0.64.15_x64-setup.exe",
+        "size": 121433225,
+        "browser_download_url": "https://github.com/tinyhumansai/openhuman/releases/download/v0.64.15/OpenHuman_0.64.15_x64-setup.exe",
+        "digest": "sha256:fff6a9588c2f71334df8ec1f395b3bfae7395d77e84c97fef50950dd6411a2d6"
+      },
+      {
+        "name": "OpenHuman_0.64.15_x64.dmg",
+        "size": 104235224,
+        "browser_download_url": "https://github.com/tinyhumansai/openhuman/releases/download/v0.64.15/OpenHuman_0.64.15_x64.dmg",
+        "digest": "sha256:5454dc58e610f73a8cc62f2c5e3c91a63cf2bd648fa2f473e6671ea29822e2d0"
+      },
+      {
+        "name": "OpenHuman_0.64.15_x64_en-US.msi",
+        "size": 162436058,
+        "browser_download_url": "https://github.com/tinyhumansai/openhuman/releases/download/v0.64.15/OpenHuman_0.64.15_x64_en-US.msi",
+        "digest": "sha256:d3add5f3ca48b62b7ca93bb53b7990d35e3d40673e42c9a951915f459993fdd9"
+      },
+      {
+        "name": "OpenHuman_0.64.15_x86_64-apple-darwin.app.tar.gz",
+        "size": 104255042,
+        "browser_download_url": "https://github.com/tinyhumansai/openhuman/releases/download/v0.64.15/OpenHuman_0.64.15_x86_64-apple-darwin.app.tar.gz",
+        "digest": "sha256:6a84ad7fda04cacbf967d9d3d1736f34b36f981ee7fd6f020be3788547034f75"
+      }
+    ],
+    "kind": "ferramenta",
+    "category": "Utilitários Rust",
+    "tags": "rust,github,descoberta",
+    "summary": null,
+    "trust_score": 86,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟡 Repositório com 249 dias de existência",
+      "🟢 Projeto ativo (atualizado há 0 dias)",
+      "🟢 42340 estrelas no repositório",
+      "🟢 Código aberto com licença GPL-3.0",
+      "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
+    ],
+    "attestation": ""
+  },
+  {
     "full_name": "oobabooga/text-generation-webui",
     "description": "A Gradio web UI for Large Language Models. Supports transformers, GPTQ, AWQ, EXL2, llama.cpp",
     "url": "https://github.com/oobabooga/text-generation-webui",
@@ -2397,6 +4767,258 @@
       "🟢 Repositório oficial com suporte a dezenas de backends (llama.cpp, EXL2)",
       "🟢 Sem telemetria ou envio de dados para servidores externos",
       "🟢 Instalador automático em 1 clique para Windows"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "GyulyVGC/sniffnet",
+    "description": "Comfortably monitor your network traffic 🕵️‍♂️",
+    "url": "https://github.com/GyulyVGC/sniffnet",
+    "stars": 41694,
+    "license": "Apache-2.0",
+    "topics": "app,application,cybersecurity,gui,iced,ip-geolocation,ipfix,linux,macos,network,network-monitoring,networking,packet-capture,packet-sniffer,pcap,rust,security,tool,utility,windows",
+    "language": "Rust",
+    "created_at": "2022-07-31T21:55:56Z",
+    "pushed_at": "2026-10-21T13:03:33Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v1.5.1",
+    "released_at": "2026-07-22T07:54:30Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "Sniffnet_LinuxAppImage_amd64.AppImage",
+        "size": 21002744,
+        "browser_download_url": "https://github.com/GyulyVGC/sniffnet/releases/download/v1.5.1/Sniffnet_LinuxAppImage_amd64.AppImage",
+        "digest": "sha256:04f209d5e45157c57a6fdf34acf82359df88be36046af247fa55693beda7722f"
+      },
+      {
+        "name": "Sniffnet_LinuxAppImage_arm64.AppImage",
+        "size": 20224520,
+        "browser_download_url": "https://github.com/GyulyVGC/sniffnet/releases/download/v1.5.1/Sniffnet_LinuxAppImage_arm64.AppImage",
+        "digest": "sha256:dca39a8beca9002e7ca5b8ecd22f10f27c06723eae362a78ceaadba0eed70944"
+      },
+      {
+        "name": "Sniffnet_LinuxAppImage_armhf.AppImage",
+        "size": 20168068,
+        "browser_download_url": "https://github.com/GyulyVGC/sniffnet/releases/download/v1.5.1/Sniffnet_LinuxAppImage_armhf.AppImage",
+        "digest": "sha256:2847e1d751003313bce5d8cf87e29f6fa43bfbd749c67bcf45cc95f84c5664b0"
+      },
+      {
+        "name": "Sniffnet_LinuxAppImage_i386.AppImage",
+        "size": 21110136,
+        "browser_download_url": "https://github.com/GyulyVGC/sniffnet/releases/download/v1.5.1/Sniffnet_LinuxAppImage_i386.AppImage",
+        "digest": "sha256:f089c995ecfc983a00d84c0f8af81faffa9057bed72237a8c460021ffbff8b78"
+      },
+      {
+        "name": "Sniffnet_LinuxDEB_amd64.deb",
+        "size": 14561560,
+        "browser_download_url": "https://github.com/GyulyVGC/sniffnet/releases/download/v1.5.1/Sniffnet_LinuxDEB_amd64.deb",
+        "digest": "sha256:ba4586d5c84e45f9d5cc6deb2838652b69d4ce18e91a5e31eb1474f45d52ce98"
+      },
+      {
+        "name": "Sniffnet_LinuxDEB_arm64.deb",
+        "size": 13500176,
+        "browser_download_url": "https://github.com/GyulyVGC/sniffnet/releases/download/v1.5.1/Sniffnet_LinuxDEB_arm64.deb",
+        "digest": "sha256:9c9401ae495a5ca6e69a45722c79c58d798712db4b5d1f05c91eb457b5bc089f"
+      },
+      {
+        "name": "Sniffnet_LinuxDEB_armhf.deb",
+        "size": 13624296,
+        "browser_download_url": "https://github.com/GyulyVGC/sniffnet/releases/download/v1.5.1/Sniffnet_LinuxDEB_armhf.deb",
+        "digest": "sha256:7bb05d1bfcf6c2e2288a1f76258f3e1e0369c98f3ba68da9a380c07443227be6"
+      },
+      {
+        "name": "Sniffnet_LinuxDEB_i386.deb",
+        "size": 14732448,
+        "browser_download_url": "https://github.com/GyulyVGC/sniffnet/releases/download/v1.5.1/Sniffnet_LinuxDEB_i386.deb",
+        "digest": "sha256:a35f14833eafaaa8062671df6e96dcae4e5a94906002f17909f81f03ad01c39b"
+      },
+      {
+        "name": "Sniffnet_LinuxRPM_aarch64.rpm",
+        "size": 17494943,
+        "browser_download_url": "https://github.com/GyulyVGC/sniffnet/releases/download/v1.5.1/Sniffnet_LinuxRPM_aarch64.rpm",
+        "digest": "sha256:289d1c8a40d1ff784916e2ce4f8678b772610f55a0d8610b08182383572307ab"
+      },
+      {
+        "name": "Sniffnet_LinuxRPM_x86_64.rpm",
+        "size": 18118187,
+        "browser_download_url": "https://github.com/GyulyVGC/sniffnet/releases/download/v1.5.1/Sniffnet_LinuxRPM_x86_64.rpm",
+        "digest": "sha256:31b32726993ebe55eb9dc5b3eaca9a24058ea1372dcc2f1bcf747501e427e430"
+      },
+      {
+        "name": "Sniffnet_macOS_AppleSilicon.dmg",
+        "size": 19585013,
+        "browser_download_url": "https://github.com/GyulyVGC/sniffnet/releases/download/v1.5.1/Sniffnet_macOS_AppleSilicon.dmg",
+        "digest": "sha256:49f9169f8720d35f08133273d47b2cb983ad9b77636aa837301bbfb1a0a03774"
+      },
+      {
+        "name": "Sniffnet_macOS_Intel.dmg",
+        "size": 20054969,
+        "browser_download_url": "https://github.com/GyulyVGC/sniffnet/releases/download/v1.5.1/Sniffnet_macOS_Intel.dmg",
+        "digest": "sha256:5f6a720c7c09305dde71590e9e59f00bec733312399050efbaf379002eb9c107"
+      },
+      {
+        "name": "Sniffnet_Windows_arm64.msi",
+        "size": 20746240,
+        "browser_download_url": "https://github.com/GyulyVGC/sniffnet/releases/download/v1.5.1/Sniffnet_Windows_arm64.msi",
+        "digest": "sha256:54b52b1ce8bfd9e0d6d727da8db988bc6b6a843492c7ce4afc4709e8378eec9a"
+      },
+      {
+        "name": "Sniffnet_Windows_x64.msi",
+        "size": 21233664,
+        "browser_download_url": "https://github.com/GyulyVGC/sniffnet/releases/download/v1.5.1/Sniffnet_Windows_x64.msi",
+        "digest": "sha256:3f4dacf273b0e5270d4055a6561c5b0e1e0747ef6530f984cc42389ebc401700"
+      },
+      {
+        "name": "Sniffnet_Windows_x86.msi",
+        "size": 20578304,
+        "browser_download_url": "https://github.com/GyulyVGC/sniffnet/releases/download/v1.5.1/Sniffnet_Windows_x86.msi",
+        "digest": "sha256:eee53cbd9aaa80d8e046363c5a8881839a057618bb58b5ce942e562580ced234"
+      }
+    ],
+    "kind": "ferramenta",
+    "category": "Utilitários Rust",
+    "tags": "rust,github,descoberta",
+    "summary": null,
+    "trust_score": 98,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório consolidado (4 anos de histórico)",
+      "🟢 Projeto ativo (atualizado há 4 dias)",
+      "🟢 41694 estrelas no repositório",
+      "🟢 Código aberto com licença Apache-2.0",
+      "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "codewhale-hq/Codewhale",
+    "description": "Open-source agent for the terminal written in Rust. Use any provider or model. Issues & PRs always welcome",
+    "url": "https://github.com/codewhale-hq/Codewhale",
+    "stars": 41119,
+    "license": "MIT",
+    "topics": "agent-orchestration,ai-agent,cli,codewhale,coding-agent,developer-tools,local-first,mcp,multi-agent,multi-model,open-source,rust,terminal,tui",
+    "language": "Rust",
+    "created_at": "2026-01-19T18:21:01Z",
+    "pushed_at": "2026-10-26T02:05:22Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v0.10.2",
+    "released_at": "2026-10-24T17:31:14Z",
+    "platforms": "android,linux,macos,windows",
+    "assets": [
+      {
+        "name": "codew-windows-arm64.exe",
+        "size": 109250560,
+        "browser_download_url": "https://github.com/codewhale-hq/Codewhale/releases/download/v0.10.2/codew-windows-arm64.exe",
+        "digest": "sha256:cbb56b79e071089e98c09e3325e9e237b38b787dcba29c13fd06701d3528aa63"
+      },
+      {
+        "name": "codew-windows-x64.exe",
+        "size": 134734336,
+        "browser_download_url": "https://github.com/codewhale-hq/Codewhale/releases/download/v0.10.2/codew-windows-x64.exe",
+        "digest": "sha256:578280bec8d6e0ee9cfe97ee29de817535689f4078d8afd47384ff1941b1ee6c"
+      },
+      {
+        "name": "codewhale-android-arm64.tar.gz",
+        "size": 85081129,
+        "browser_download_url": "https://github.com/codewhale-hq/Codewhale/releases/download/v0.10.2/codewhale-android-arm64.tar.gz",
+        "digest": "sha256:c7107d1dc6eb944e98775835677544c7d020e532c1b9232f913f7594e181f3a7"
+      },
+      {
+        "name": "codewhale-linux-arm64.tar.gz",
+        "size": 84879881,
+        "browser_download_url": "https://github.com/codewhale-hq/Codewhale/releases/download/v0.10.2/codewhale-linux-arm64.tar.gz",
+        "digest": "sha256:d737fc57e2e0abb106c5a84fb33733316541857601a6237449c207bb06993387"
+      },
+      {
+        "name": "codewhale-linux-x64.tar.gz",
+        "size": 92854522,
+        "browser_download_url": "https://github.com/codewhale-hq/Codewhale/releases/download/v0.10.2/codewhale-linux-x64.tar.gz",
+        "digest": "sha256:ed666471d845549c922bb808c01e7d5553c3e97972d77ca411398002510f70d9"
+      },
+      {
+        "name": "codewhale-macos-arm64.tar.gz",
+        "size": 83416151,
+        "browser_download_url": "https://github.com/codewhale-hq/Codewhale/releases/download/v0.10.2/codewhale-macos-arm64.tar.gz",
+        "digest": "sha256:0462cc6332ea45cf8afdcc238b5b8493011efe06ca64a6738fa38d223690aa15"
+      },
+      {
+        "name": "codewhale-macos-x64.tar.gz",
+        "size": 89796859,
+        "browser_download_url": "https://github.com/codewhale-hq/Codewhale/releases/download/v0.10.2/codewhale-macos-x64.tar.gz",
+        "digest": "sha256:a3cefe3d0cc8880cb6284443e1045ba7642fd30d390ba1314783dde69a7eb61d"
+      },
+      {
+        "name": "codewhale-tui-windows-arm64.exe",
+        "size": 109250560,
+        "browser_download_url": "https://github.com/codewhale-hq/Codewhale/releases/download/v0.10.2/codewhale-tui-windows-arm64.exe",
+        "digest": "sha256:cbb56b79e071089e98c09e3325e9e237b38b787dcba29c13fd06701d3528aa63"
+      },
+      {
+        "name": "codewhale-tui-windows-x64.exe",
+        "size": 134734336,
+        "browser_download_url": "https://github.com/codewhale-hq/Codewhale/releases/download/v0.10.2/codewhale-tui-windows-x64.exe",
+        "digest": "sha256:578280bec8d6e0ee9cfe97ee29de817535689f4078d8afd47384ff1941b1ee6c"
+      },
+      {
+        "name": "codewhale-windows-arm64-portable.zip",
+        "size": 90465462,
+        "browser_download_url": "https://github.com/codewhale-hq/Codewhale/releases/download/v0.10.2/codewhale-windows-arm64-portable.zip",
+        "digest": "sha256:aa0bdd12c796668ee8923ff0afbd8b56104c06ea42b0eb703d24171665a2b23e"
+      },
+      {
+        "name": "codewhale-windows-arm64.exe",
+        "size": 109250560,
+        "browser_download_url": "https://github.com/codewhale-hq/Codewhale/releases/download/v0.10.2/codewhale-windows-arm64.exe",
+        "digest": "sha256:cbb56b79e071089e98c09e3325e9e237b38b787dcba29c13fd06701d3528aa63"
+      },
+      {
+        "name": "codewhale-windows-arm64.zip",
+        "size": 90467997,
+        "browser_download_url": "https://github.com/codewhale-hq/Codewhale/releases/download/v0.10.2/codewhale-windows-arm64.zip",
+        "digest": "sha256:5c771d7b8fa9ed417a188f09c92e76a230714fc4d6f282beaec97b886b62c292"
+      },
+      {
+        "name": "codewhale-windows-x64-portable.zip",
+        "size": 96696202,
+        "browser_download_url": "https://github.com/codewhale-hq/Codewhale/releases/download/v0.10.2/codewhale-windows-x64-portable.zip",
+        "digest": "sha256:5c2e07b8887d9aa4f344ccd47677ba215fd9f8a67c4ec347096fc7e1cd6c7410"
+      },
+      {
+        "name": "codewhale-windows-x64.exe",
+        "size": 134734336,
+        "browser_download_url": "https://github.com/codewhale-hq/Codewhale/releases/download/v0.10.2/codewhale-windows-x64.exe",
+        "digest": "sha256:578280bec8d6e0ee9cfe97ee29de817535689f4078d8afd47384ff1941b1ee6c"
+      },
+      {
+        "name": "codewhale-windows-x64.zip",
+        "size": 96698729,
+        "browser_download_url": "https://github.com/codewhale-hq/Codewhale/releases/download/v0.10.2/codewhale-windows-x64.zip",
+        "digest": "sha256:21b27337a24d2f555ca3b4a1c5c47f5808a4939a363be14076655c4521ab272c"
+      },
+      {
+        "name": "CodeWhaleSetup.exe",
+        "size": 48074206,
+        "browser_download_url": "https://github.com/codewhale-hq/Codewhale/releases/download/v0.10.2/CodeWhaleSetup.exe",
+        "digest": "sha256:b94d4a9f9d464ef8640b37dba664d7b574da6161b5d1ecf2fa6b551f24e9930a"
+      }
+    ],
+    "kind": "ferramenta",
+    "category": "Utilitários Rust",
+    "tags": "rust,github,descoberta",
+    "summary": null,
+    "trust_score": 86,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟡 Repositório com 279 dias de existência",
+      "🟢 Projeto ativo (atualizado há 0 dias)",
+      "🟢 41119 estrelas no repositório",
+      "🟢 Código aberto com licença MIT",
+      "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
     ],
     "attestation": ""
   },
@@ -2742,6 +5364,99 @@
     "attestation": ""
   },
   {
+    "full_name": "DioxusLabs/dioxus",
+    "description": "Fullstack app framework for web, desktop, and mobile.",
+    "url": "https://github.com/DioxusLabs/dioxus",
+    "stars": 39495,
+    "license": "Apache-2.0",
+    "topics": "android,css,desktop,html,ios,native,react,rust,ssr,ui,virtualdom,wasm,web",
+    "language": "Rust",
+    "created_at": "2021-01-15T01:57:26Z",
+    "pushed_at": "2026-10-26T02:41:49Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v0.7.10",
+    "released_at": "2026-07-30T23:46:58Z",
+    "platforms": "linux,windows",
+    "assets": [
+      {
+        "name": "dx-aarch64-apple-darwin.tar.gz",
+        "size": 30667334,
+        "browser_download_url": "https://github.com/DioxusLabs/dioxus/releases/download/v0.7.10/dx-aarch64-apple-darwin.tar.gz",
+        "digest": "sha256:342c92bc33dca60dadd725ed5e249923f049ae2e1e50b7477f4968d56695b425"
+      },
+      {
+        "name": "dx-aarch64-apple-darwin.zip",
+        "size": 30698859,
+        "browser_download_url": "https://github.com/DioxusLabs/dioxus/releases/download/v0.7.10/dx-aarch64-apple-darwin.zip",
+        "digest": "sha256:4aff37aea6b8fbce7bee3f8bbbea1bd71f60e0fa09537f35759f6494da861e37"
+      },
+      {
+        "name": "dx-aarch64-pc-windows-msvc.zip",
+        "size": 28012082,
+        "browser_download_url": "https://github.com/DioxusLabs/dioxus/releases/download/v0.7.10/dx-aarch64-pc-windows-msvc.zip",
+        "digest": "sha256:77e807cc7e5e036b3283186efd13fc2c2501f085ef93aaf817fd1728392f29a3"
+      },
+      {
+        "name": "dx-aarch64-unknown-linux-gnu.tar.gz",
+        "size": 32088961,
+        "browser_download_url": "https://github.com/DioxusLabs/dioxus/releases/download/v0.7.10/dx-aarch64-unknown-linux-gnu.tar.gz",
+        "digest": "sha256:8f1a17d3218700ffbe15e6540d936a178b2556fc801121a31082e3ba4ab9ef55"
+      },
+      {
+        "name": "dx-aarch64-unknown-linux-gnu.zip",
+        "size": 32088955,
+        "browser_download_url": "https://github.com/DioxusLabs/dioxus/releases/download/v0.7.10/dx-aarch64-unknown-linux-gnu.zip",
+        "digest": "sha256:16985f1e1f88fbcf48f3a3cbdbb0c10c9673d0846d88cbc43783b92fd60c8c95"
+      },
+      {
+        "name": "dx-x86_64-apple-darwin.tar.gz",
+        "size": 31941366,
+        "browser_download_url": "https://github.com/DioxusLabs/dioxus/releases/download/v0.7.10/dx-x86_64-apple-darwin.tar.gz",
+        "digest": "sha256:e3edbba285fa23a834aa7ceb558c9d8088cb3fbdcb48fb8c619532ed4d91cab7"
+      },
+      {
+        "name": "dx-x86_64-apple-darwin.zip",
+        "size": 31990583,
+        "browser_download_url": "https://github.com/DioxusLabs/dioxus/releases/download/v0.7.10/dx-x86_64-apple-darwin.zip",
+        "digest": "sha256:b2751a700b8b02f85fcdd8fe6e63c20876b4af9f0921c5be4c703e6f872b67ee"
+      },
+      {
+        "name": "dx-x86_64-pc-windows-msvc.zip",
+        "size": 29757092,
+        "browser_download_url": "https://github.com/DioxusLabs/dioxus/releases/download/v0.7.10/dx-x86_64-pc-windows-msvc.zip",
+        "digest": "sha256:45eb4f87b7f86fdba8508ee7e0ef1f9e13cf8f2ffcc6a2d5858d0e8ea7dd1531"
+      },
+      {
+        "name": "dx-x86_64-unknown-linux-gnu.tar.gz",
+        "size": 33223794,
+        "browser_download_url": "https://github.com/DioxusLabs/dioxus/releases/download/v0.7.10/dx-x86_64-unknown-linux-gnu.tar.gz",
+        "digest": "sha256:4363e4ed2a3f1eb7f4d38d2d59aed59ce43271c44c16b425e92c89a64761fbe7"
+      },
+      {
+        "name": "dx-x86_64-unknown-linux-gnu.zip",
+        "size": 33224633,
+        "browser_download_url": "https://github.com/DioxusLabs/dioxus/releases/download/v0.7.10/dx-x86_64-unknown-linux-gnu.zip",
+        "digest": "sha256:61d2132eaf3cd70ca1ac89a7ecc891fcd770e917a5869e29d465459371b26c83"
+      }
+    ],
+    "kind": "ferramenta",
+    "category": "Utilitários Rust",
+    "tags": "rust,github,descoberta",
+    "summary": null,
+    "trust_score": 98,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório consolidado (5 anos de histórico)",
+      "🟢 Projeto ativo (atualizado há 0 dias)",
+      "🟢 39495 estrelas no repositório",
+      "🟢 Código aberto com licença Apache-2.0",
+      "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
+    ],
+    "attestation": ""
+  },
+  {
     "full_name": "astral-sh/ruff",
     "description": "An extremely fast Python linter and code formatter, written in Rust",
     "url": "https://github.com/astral-sh/ruff",
@@ -2775,6 +5490,87 @@
       "🟢 Desenvolvido pela Astral",
       "🟢 Mais de 800 regras de linting em milissegundos",
       "🟢 Binário pré-compilado para Windows"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "spacedriveapp/spacedrive",
+    "description": "Spacedrive is an open source cross-platform file explorer, powered by a virtual distributed filesystem written in Rust.",
+    "url": "https://github.com/spacedriveapp/spacedrive",
+    "stars": 39301,
+    "license": "Apache-2.0",
+    "topics": "cross-platform,distributed-systems,encryption,file-manager,open-source,rust,storage,typescript",
+    "language": "Rust",
+    "created_at": "2021-09-27T05:09:04Z",
+    "pushed_at": "2026-10-13T01:42:48Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "0.4.3",
+    "released_at": "2025-03-24T14:16:59Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "Spacedrive-darwin-aarch64.dmg",
+        "size": 83734297,
+        "browser_download_url": "https://github.com/spacedriveapp/spacedrive/releases/download/0.4.3/Spacedrive-darwin-aarch64.dmg",
+        "digest": null
+      },
+      {
+        "name": "Spacedrive-darwin-x86_64.dmg",
+        "size": 89883866,
+        "browser_download_url": "https://github.com/spacedriveapp/spacedrive/releases/download/0.4.3/Spacedrive-darwin-x86_64.dmg",
+        "digest": null
+      },
+      {
+        "name": "Spacedrive-frontend-linux-x86_64.tar.xz",
+        "size": 13860952,
+        "browser_download_url": "https://github.com/spacedriveapp/spacedrive/releases/download/0.4.3/Spacedrive-frontend-linux-x86_64.tar.xz",
+        "digest": null
+      },
+      {
+        "name": "Spacedrive-linux-x86_64.deb",
+        "size": 89520954,
+        "browser_download_url": "https://github.com/spacedriveapp/spacedrive/releases/download/0.4.3/Spacedrive-linux-x86_64.deb",
+        "digest": null
+      },
+      {
+        "name": "Spacedrive-Updater-darwin-aarch64.tar.gz",
+        "size": 82730007,
+        "browser_download_url": "https://github.com/spacedriveapp/spacedrive/releases/download/0.4.3/Spacedrive-Updater-darwin-aarch64.tar.gz",
+        "digest": null
+      },
+      {
+        "name": "Spacedrive-Updater-darwin-x86_64.tar.gz",
+        "size": 88998089,
+        "browser_download_url": "https://github.com/spacedriveapp/spacedrive/releases/download/0.4.3/Spacedrive-Updater-darwin-x86_64.tar.gz",
+        "digest": null
+      },
+      {
+        "name": "Spacedrive-Updater-windows-x86_64.zip",
+        "size": 89448606,
+        "browser_download_url": "https://github.com/spacedriveapp/spacedrive/releases/download/0.4.3/Spacedrive-Updater-windows-x86_64.zip",
+        "digest": null
+      },
+      {
+        "name": "Spacedrive-windows-x86_64.msi",
+        "size": 91103232,
+        "browser_download_url": "https://github.com/spacedriveapp/spacedrive/releases/download/0.4.3/Spacedrive-windows-x86_64.msi",
+        "digest": null
+      }
+    ],
+    "kind": "ferramenta",
+    "category": "Utilitários Rust",
+    "tags": "rust,github,descoberta",
+    "summary": null,
+    "trust_score": 88,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório consolidado (5 anos de histórico)",
+      "🟢 Projeto ativo (atualizado há 13 dias)",
+      "🟢 39301 estrelas no repositório",
+      "🟢 Código aberto com licença Apache-2.0",
+      "🟡 Release sem hash SHA-256 publicado (releases antigas do GitHub e outras forjas não publicam)"
     ],
     "attestation": ""
   },
@@ -2915,6 +5711,81 @@
     "attestation": "ausente"
   },
   {
+    "full_name": "servo/servo",
+    "description": "Servo aims to empower developers with a lightweight, high-performance alternative for embedding web technologies in applications.",
+    "url": "https://github.com/servo/servo",
+    "stars": 38232,
+    "license": "MPL-2.0",
+    "topics": "browser,rust,servo,web,webbrowser,webengine,webplatform",
+    "language": "Rust",
+    "created_at": "2012-02-08T19:07:25Z",
+    "pushed_at": "2026-10-26T01:54:42Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v0.7.0",
+    "released_at": "2026-10-05T18:32:02Z",
+    "platforms": "android,linux,macos,windows",
+    "assets": [
+      {
+        "name": "servo-aarch64-android.apk",
+        "size": 115768080,
+        "browser_download_url": "https://github.com/servo/servo/releases/download/v0.7.0/servo-aarch64-android.apk",
+        "digest": "sha256:7ec0019584898801ee8ebcf78195cf7644a1103ec6e252a32e6fbe3626aa8329"
+      },
+      {
+        "name": "servo-aarch64-apple-darwin.dmg",
+        "size": 114699280,
+        "browser_download_url": "https://github.com/servo/servo/releases/download/v0.7.0/servo-aarch64-apple-darwin.dmg",
+        "digest": "sha256:1f9b5b6e4b97a499e8c68e6b52527b904916eca9b0b90f472e4b0ebde73d3014"
+      },
+      {
+        "name": "servo-aarch64-linux-gnu.tar.gz",
+        "size": 48162008,
+        "browser_download_url": "https://github.com/servo/servo/releases/download/v0.7.0/servo-aarch64-linux-gnu.tar.gz",
+        "digest": "sha256:034f66ec113fcf7ced0534cba2899b6bc578402309ad4bddb69e5803587f5513"
+      },
+      {
+        "name": "servo-x86_64-apple-darwin.dmg",
+        "size": 117496015,
+        "browser_download_url": "https://github.com/servo/servo/releases/download/v0.7.0/servo-x86_64-apple-darwin.dmg",
+        "digest": "sha256:d72af3dbb0679d4736df6632326b144899c6e03f6b7747df79ae4b2bfc374824"
+      },
+      {
+        "name": "servo-x86_64-linux-gnu.tar.gz",
+        "size": 49312528,
+        "browser_download_url": "https://github.com/servo/servo/releases/download/v0.7.0/servo-x86_64-linux-gnu.tar.gz",
+        "digest": "sha256:728eba1be1cc1851e05dfaa90e18f98ab8644dd2355bedb0b8a5e89795ebe333"
+      },
+      {
+        "name": "servo-x86_64-windows-msvc.exe",
+        "size": 114272331,
+        "browser_download_url": "https://github.com/servo/servo/releases/download/v0.7.0/servo-x86_64-windows-msvc.exe",
+        "digest": "sha256:0731012a33c876cfe8eae26cbb68fd532da42b585a70240820eb3d56169711a1"
+      },
+      {
+        "name": "servo-x86_64-windows-msvc.zip",
+        "size": 103179362,
+        "browser_download_url": "https://github.com/servo/servo/releases/download/v0.7.0/servo-x86_64-windows-msvc.zip",
+        "digest": "sha256:49d4b2c2d3576f93fad70812ee9e42820f5b84da9103f2a633838109a2fcde53"
+      }
+    ],
+    "kind": "ferramenta",
+    "category": "Utilitários Rust",
+    "tags": "rust,github,descoberta",
+    "summary": null,
+    "trust_score": 98,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório consolidado (14 anos de histórico)",
+      "🟢 Projeto ativo (atualizado há 0 dias)",
+      "🟢 38232 estrelas no repositório",
+      "🟢 Código aberto com licença MPL-2.0",
+      "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
+    ],
+    "attestation": ""
+  },
+  {
     "full_name": "Anything-AI/anything-llm",
     "description": "The all-in-one Desktop & Enterprise AI app for local & cloud LLMs with full privacy",
     "url": "https://github.com/Anything-AI/anything-llm",
@@ -2948,6 +5819,51 @@
       "🟢 Repositório oficial do AnythingLLM",
       "🟢 Banco vetorial embutido e suporte a Ollama e LM Studio",
       "🟢 Instalador oficial para Windows"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "can1357/oh-my-pi",
+    "description": "⌥ Coding agent with the IDE wired in. Built by Stencil Labs.",
+    "url": "https://github.com/can1357/oh-my-pi",
+    "stars": 36604,
+    "license": "MIT",
+    "topics": "ai-agent,ai-coding-agent,anthropic,bun,claude,cli,coding-assistant,llm,mcp,multi-provider,openai,rust,terminal,tui,typescript",
+    "language": "TypeScript",
+    "created_at": "2025-12-31T14:01:28Z",
+    "pushed_at": "2026-10-25T22:25:48Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v18.12.6",
+    "released_at": "2026-10-21T21:02:53Z",
+    "platforms": "windows",
+    "assets": [
+      {
+        "name": "omp-windows-arm64.exe",
+        "size": 209006080,
+        "browser_download_url": "https://github.com/can1357/oh-my-pi/releases/download/v18.12.6/omp-windows-arm64.exe",
+        "digest": "sha256:f1c2291275c66de8dba0af248df7075a8adcfdecbafee35afc873e8a5ac63b01"
+      },
+      {
+        "name": "omp-windows-x64.exe",
+        "size": 224254976,
+        "browser_download_url": "https://github.com/can1357/oh-my-pi/releases/download/v18.12.6/omp-windows-x64.exe",
+        "digest": "sha256:73d73c11dc8821cf939441a964992aefc9c5b0d5a4418e9e8985a46439b60eef"
+      }
+    ],
+    "kind": "ferramenta",
+    "category": "Utilitários Rust",
+    "tags": "rust,github,descoberta",
+    "summary": null,
+    "trust_score": 86,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟡 Repositório com 298 dias de existência",
+      "🟢 Projeto ativo (atualizado há 0 dias)",
+      "🟢 36604 estrelas no repositório",
+      "🟢 Código aberto com licença MIT",
+      "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
     ],
     "attestation": ""
   },
@@ -3026,6 +5942,159 @@
     "attestation": ""
   },
   {
+    "full_name": "rustfs/rustfs",
+    "description": "RustFS is an open-source, S3-compatible high-performance object storage system supporting migration and coexistence with other S3-compatible platforms such as MinIO and Ceph.",
+    "url": "https://github.com/rustfs/rustfs",
+    "stars": 35368,
+    "license": "Apache-2.0",
+    "topics": "ai-native,ai-storage,amazon-s3,bigdata,cloud-native,filesystem,minio,multi-cloud,object-storage,objectstorage,rust,s3",
+    "language": "Rust",
+    "created_at": "2023-11-23T13:45:10Z",
+    "pushed_at": "2026-10-26T02:40:04Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "1.0.4",
+    "released_at": "2026-10-25T16:26:17Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "rustfs-linux-aarch64-gnu-latest.zip",
+        "size": 111555472,
+        "browser_download_url": "https://github.com/rustfs/rustfs/releases/download/1.0.4/rustfs-linux-aarch64-gnu-latest.zip",
+        "digest": "sha256:5c2d4dad2685f41635441b685dc4dead225f84bce2a9a365d87f8151ec88a049"
+      },
+      {
+        "name": "rustfs-linux-aarch64-gnu-v1.0.4.deb",
+        "size": 78600686,
+        "browser_download_url": "https://github.com/rustfs/rustfs/releases/download/1.0.4/rustfs-linux-aarch64-gnu-v1.0.4.deb",
+        "digest": "sha256:635a5229a776f900edb03d84dabefcf276a86124c098e06161393781a4e7d2ba"
+      },
+      {
+        "name": "rustfs-linux-aarch64-gnu-v1.0.4.rpm",
+        "size": 109145819,
+        "browser_download_url": "https://github.com/rustfs/rustfs/releases/download/1.0.4/rustfs-linux-aarch64-gnu-v1.0.4.rpm",
+        "digest": "sha256:dcb6fcfca93e038a21aead86596783cc927c4296967958c7cf74cc39d4681344"
+      },
+      {
+        "name": "rustfs-linux-aarch64-gnu-v1.0.4.zip",
+        "size": 111555472,
+        "browser_download_url": "https://github.com/rustfs/rustfs/releases/download/1.0.4/rustfs-linux-aarch64-gnu-v1.0.4.zip",
+        "digest": "sha256:5c2d4dad2685f41635441b685dc4dead225f84bce2a9a365d87f8151ec88a049"
+      },
+      {
+        "name": "rustfs-linux-aarch64-musl-latest.zip",
+        "size": 93747785,
+        "browser_download_url": "https://github.com/rustfs/rustfs/releases/download/1.0.4/rustfs-linux-aarch64-musl-latest.zip",
+        "digest": "sha256:81414fd0e41969f4f5c2e0555951cee76d3f224c112c269c80f52b31276f187a"
+      },
+      {
+        "name": "rustfs-linux-aarch64-musl-v1.0.4.deb",
+        "size": 67658124,
+        "browser_download_url": "https://github.com/rustfs/rustfs/releases/download/1.0.4/rustfs-linux-aarch64-musl-v1.0.4.deb",
+        "digest": "sha256:252cdf3933ff3cf95232586051e6af9f6a0b49f61bf22b00013d6b6c845b5e35"
+      },
+      {
+        "name": "rustfs-linux-aarch64-musl-v1.0.4.rpm",
+        "size": 93514757,
+        "browser_download_url": "https://github.com/rustfs/rustfs/releases/download/1.0.4/rustfs-linux-aarch64-musl-v1.0.4.rpm",
+        "digest": "sha256:a335fd3527ffccadb12df35a222a53b215294a2b99e8b55d72c6c4b87bef6e90"
+      },
+      {
+        "name": "rustfs-linux-aarch64-musl-v1.0.4.zip",
+        "size": 93747785,
+        "browser_download_url": "https://github.com/rustfs/rustfs/releases/download/1.0.4/rustfs-linux-aarch64-musl-v1.0.4.zip",
+        "digest": "sha256:81414fd0e41969f4f5c2e0555951cee76d3f224c112c269c80f52b31276f187a"
+      },
+      {
+        "name": "rustfs-linux-x86_64-gnu-latest.zip",
+        "size": 115273440,
+        "browser_download_url": "https://github.com/rustfs/rustfs/releases/download/1.0.4/rustfs-linux-x86_64-gnu-latest.zip",
+        "digest": "sha256:4a25e48f5b5ae610a679b5324206962c6fb0eb20a9fa7ab6cb20e178cf6c534b"
+      },
+      {
+        "name": "rustfs-linux-x86_64-gnu-v1.0.4.deb",
+        "size": 80379688,
+        "browser_download_url": "https://github.com/rustfs/rustfs/releases/download/1.0.4/rustfs-linux-x86_64-gnu-v1.0.4.deb",
+        "digest": "sha256:37a7b5668a9073c72d9e55c7e08e0029feba114139ecca3205a2719e5a8c3a0a"
+      },
+      {
+        "name": "rustfs-linux-x86_64-gnu-v1.0.4.rpm",
+        "size": 112315624,
+        "browser_download_url": "https://github.com/rustfs/rustfs/releases/download/1.0.4/rustfs-linux-x86_64-gnu-v1.0.4.rpm",
+        "digest": "sha256:6a2e7a915c2675d110a752c5a6d2878577de2e6df5701ceb3592c4e20d1e0db6"
+      },
+      {
+        "name": "rustfs-linux-x86_64-gnu-v1.0.4.zip",
+        "size": 115273440,
+        "browser_download_url": "https://github.com/rustfs/rustfs/releases/download/1.0.4/rustfs-linux-x86_64-gnu-v1.0.4.zip",
+        "digest": "sha256:4a25e48f5b5ae610a679b5324206962c6fb0eb20a9fa7ab6cb20e178cf6c534b"
+      },
+      {
+        "name": "rustfs-linux-x86_64-musl-latest.zip",
+        "size": 101969573,
+        "browser_download_url": "https://github.com/rustfs/rustfs/releases/download/1.0.4/rustfs-linux-x86_64-musl-latest.zip",
+        "digest": "sha256:4924ad4b699b9f59943051efedae2d1eb6d4cac503a1b0384c4b25f7c2c31b5c"
+      },
+      {
+        "name": "rustfs-linux-x86_64-musl-v1.0.4.deb",
+        "size": 72800280,
+        "browser_download_url": "https://github.com/rustfs/rustfs/releases/download/1.0.4/rustfs-linux-x86_64-musl-v1.0.4.deb",
+        "digest": "sha256:1fe9ae2aa6e27cdff37d281f65c60a0c44177df4abef623807fab45dd12a58d4"
+      },
+      {
+        "name": "rustfs-linux-x86_64-musl-v1.0.4.rpm",
+        "size": 101224384,
+        "browser_download_url": "https://github.com/rustfs/rustfs/releases/download/1.0.4/rustfs-linux-x86_64-musl-v1.0.4.rpm",
+        "digest": "sha256:c89e1e77b688a0b7755ae59f87b7679527a1f05d059c449abc95b2bd718ac372"
+      },
+      {
+        "name": "rustfs-linux-x86_64-musl-v1.0.4.zip",
+        "size": 101969573,
+        "browser_download_url": "https://github.com/rustfs/rustfs/releases/download/1.0.4/rustfs-linux-x86_64-musl-v1.0.4.zip",
+        "digest": "sha256:4924ad4b699b9f59943051efedae2d1eb6d4cac503a1b0384c4b25f7c2c31b5c"
+      },
+      {
+        "name": "rustfs-macos-aarch64-latest.zip",
+        "size": 91302787,
+        "browser_download_url": "https://github.com/rustfs/rustfs/releases/download/1.0.4/rustfs-macos-aarch64-latest.zip",
+        "digest": "sha256:49057482769d7904ef95dc40457d71122f48cbb8e9e0725a0817a3ec6daf8270"
+      },
+      {
+        "name": "rustfs-macos-aarch64-v1.0.4.zip",
+        "size": 91302787,
+        "browser_download_url": "https://github.com/rustfs/rustfs/releases/download/1.0.4/rustfs-macos-aarch64-v1.0.4.zip",
+        "digest": "sha256:49057482769d7904ef95dc40457d71122f48cbb8e9e0725a0817a3ec6daf8270"
+      },
+      {
+        "name": "rustfs-windows-x86_64-latest.zip",
+        "size": 110271038,
+        "browser_download_url": "https://github.com/rustfs/rustfs/releases/download/1.0.4/rustfs-windows-x86_64-latest.zip",
+        "digest": "sha256:2e3af0b187dd70435dfdefe5f61aae7eede5a21fc9a2a2f07e289f727adbcfa6"
+      },
+      {
+        "name": "rustfs-windows-x86_64-v1.0.4.zip",
+        "size": 110271038,
+        "browser_download_url": "https://github.com/rustfs/rustfs/releases/download/1.0.4/rustfs-windows-x86_64-v1.0.4.zip",
+        "digest": "sha256:2e3af0b187dd70435dfdefe5f61aae7eede5a21fc9a2a2f07e289f727adbcfa6"
+      }
+    ],
+    "kind": "ferramenta",
+    "category": "Utilitários Rust",
+    "tags": "rust,github,descoberta",
+    "summary": null,
+    "trust_score": 98,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório consolidado (2 anos de histórico)",
+      "🟢 Projeto ativo (atualizado há 0 dias)",
+      "🟢 35368 estrelas no repositório",
+      "🟢 Código aberto com licença Apache-2.0",
+      "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
+    ],
+    "attestation": ""
+  },
+  {
     "full_name": "FreeCAD/FreeCAD",
     "description": "Official source code of FreeCAD, a free and opensource multiplatform 3D parametric modeler.",
     "url": "https://github.com/FreeCAD/FreeCAD",
@@ -3089,6 +6158,225 @@
       "🟢 Repositório verificado e oficial",
       "🟢 Código aberto e auditável",
       "🟢 Instaladores e executáveis disponíveis em Releases"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "qarmin/czkawka",
+    "description": "Multi functional app to find duplicates, empty folders, similar images etc.",
+    "url": "https://github.com/qarmin/czkawka",
+    "stars": 34538,
+    "license": "NOASSERTION",
+    "topics": "cleaner,duplicates,multiplatform,optimization,optimizer,rust,similar-images,similar-music,similar-videos",
+    "language": "Fluent",
+    "created_at": "2020-09-01T17:37:29Z",
+    "pushed_at": "2026-09-16T17:34:11Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "12.0.2",
+    "released_at": "2026-09-09T19:48:14Z",
+    "platforms": "android,linux,macos,windows",
+    "assets": [
+      {
+        "name": "cedinia.apk",
+        "size": 20071566,
+        "browser_download_url": "https://github.com/qarmin/czkawka/releases/download/12.0.2/cedinia.apk",
+        "digest": "sha256:0333d6eb64faf8b3ee64b07ae72a99f2e256db21e649b918170c7ac82ce6ffde"
+      },
+      {
+        "name": "linux_krokiet_all_backends_arm64.zip",
+        "size": 28012940,
+        "browser_download_url": "https://github.com/qarmin/czkawka/releases/download/12.0.2/linux_krokiet_all_backends_arm64.zip",
+        "digest": "sha256:c1c7112ee30afb8b8255bfc296978e9132b9cbd1ed435b31d992fad05de1cf9c"
+      },
+      {
+        "name": "linux_krokiet_all_backends_x86_64.zip",
+        "size": 29466274,
+        "browser_download_url": "https://github.com/qarmin/czkawka/releases/download/12.0.2/linux_krokiet_all_backends_x86_64.zip",
+        "digest": "sha256:ee1012c0c66b987616aa23516dbe2dd1cb220e9377ac3a0b0f72aa411e71ec27"
+      },
+      {
+        "name": "linux_krokiet_heif_raw_avif_all_backends_arm64.zip",
+        "size": 28898304,
+        "browser_download_url": "https://github.com/qarmin/czkawka/releases/download/12.0.2/linux_krokiet_heif_raw_avif_all_backends_arm64.zip",
+        "digest": "sha256:a220400976d975b4f1b8643646e6373ce06c79fd98e98dc63cc6e97fe232aa3f"
+      },
+      {
+        "name": "linux_krokiet_heif_raw_avif_all_backends_x86_64.zip",
+        "size": 30308706,
+        "browser_download_url": "https://github.com/qarmin/czkawka/releases/download/12.0.2/linux_krokiet_heif_raw_avif_all_backends_x86_64.zip",
+        "digest": "sha256:27b009113139c10d91994d672e7c57d927ac251b07baedef252c420c560ad533"
+      },
+      {
+        "name": "mac_krokiet_all_backends_arm64.zip",
+        "size": 29354182,
+        "browser_download_url": "https://github.com/qarmin/czkawka/releases/download/12.0.2/mac_krokiet_all_backends_arm64.zip",
+        "digest": "sha256:b7514b5963b585bb6e103534ef4e2ec883b2f1a135a2c74323f413f3c7d260f5"
+      },
+      {
+        "name": "mac_krokiet_heif_avif_all_backends_arm64.zip",
+        "size": 31141151,
+        "browser_download_url": "https://github.com/qarmin/czkawka/releases/download/12.0.2/mac_krokiet_heif_avif_all_backends_arm64.zip",
+        "digest": "sha256:6e329d21b846b1305df81dd66c08c51950b1737c4bdaec8c2f9fbcc7717b15db"
+      },
+      {
+        "name": "windows_czkawka_cli.exe",
+        "size": 48670208,
+        "browser_download_url": "https://github.com/qarmin/czkawka/releases/download/12.0.2/windows_czkawka_cli.exe",
+        "digest": "sha256:eb7c2009d2dd49cf5202acbd65370caece0a3f819b9515e727cedb1ec088ed1a"
+      },
+      {
+        "name": "windows_czkawka_gui_gtk_412.zip",
+        "size": 88805585,
+        "browser_download_url": "https://github.com/qarmin/czkawka/releases/download/12.0.2/windows_czkawka_gui_gtk_412.zip",
+        "digest": "sha256:de7e8a01cf16caf742a2da350f5c9a49477cdc75a63d05d0ea18fd1c50737285"
+      },
+      {
+        "name": "windows_krokiet_on_linux.exe",
+        "size": 54742528,
+        "browser_download_url": "https://github.com/qarmin/czkawka/releases/download/12.0.2/windows_krokiet_on_linux.exe",
+        "digest": "sha256:2daf2b008c35556573829c5f752888d5028a0b988bfae2dc32ebf0e976233441"
+      },
+      {
+        "name": "windows_krokiet_on_windows_all_backends.zip",
+        "size": 28726627,
+        "browser_download_url": "https://github.com/qarmin/czkawka/releases/download/12.0.2/windows_krokiet_on_windows_all_backends.zip",
+        "digest": "sha256:e1448221dd5df8c79653e25d094ec138150632a7b1929454648e0015ca4066ac"
+      },
+      {
+        "name": "windows_krokiet_on_windows_femtovg_wgpu.exe",
+        "size": 65567744,
+        "browser_download_url": "https://github.com/qarmin/czkawka/releases/download/12.0.2/windows_krokiet_on_windows_femtovg_wgpu.exe",
+        "digest": "sha256:6374de477106e8135b9b96e424b8490d47ec70327af36dc3efed7ac90a705df3"
+      },
+      {
+        "name": "windows_krokiet_on_windows_skia_opengl.exe",
+        "size": 66189312,
+        "browser_download_url": "https://github.com/qarmin/czkawka/releases/download/12.0.2/windows_krokiet_on_windows_skia_opengl.exe",
+        "digest": "sha256:102d97dd4bd8ffe798136c45137a4986f0e31f355a593fc64dcfd415e705554f"
+      },
+      {
+        "name": "windows_krokiet_on_windows_skia_vulkan.exe",
+        "size": 68155392,
+        "browser_download_url": "https://github.com/qarmin/czkawka/releases/download/12.0.2/windows_krokiet_on_windows_skia_vulkan.exe",
+        "digest": "sha256:35a77107380f19417c24016448c6371c199b2f46e816c85779e36eb819fb02b5"
+      }
+    ],
+    "kind": "ferramenta",
+    "category": "Utilitários Rust",
+    "tags": "rust,github,descoberta",
+    "summary": null,
+    "trust_score": 88,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório consolidado (6 anos de histórico)",
+      "🟢 Projeto ativo (atualizado há 39 dias)",
+      "🟢 34538 estrelas no repositório",
+      "🟡 Sem licença open-source padronizada",
+      "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "fish-shell/fish-shell",
+    "description": "The user-friendly command line shell.",
+    "url": "https://github.com/fish-shell/fish-shell",
+    "stars": 34344,
+    "license": "NOASSERTION",
+    "topics": "fish,rust,shell,terminal",
+    "language": "Rust",
+    "created_at": "2012-05-10T03:00:55Z",
+    "pushed_at": "2026-10-22T17:21:51Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "4.9.3",
+    "released_at": "2026-09-08T19:27:08Z",
+    "platforms": "linux,macos",
+    "assets": [
+      {
+        "name": "fish-4.9.3-linux-aarch64.tar.xz",
+        "size": 2916008,
+        "browser_download_url": "https://github.com/fish-shell/fish-shell/releases/download/4.9.3/fish-4.9.3-linux-aarch64.tar.xz",
+        "digest": "sha256:57349f0111728c64b703a84e611aa97ff4d1fa8466385d64e67bd5bc3ffa49fc"
+      },
+      {
+        "name": "fish-4.9.3-linux-x86_64.tar.xz",
+        "size": 3217572,
+        "browser_download_url": "https://github.com/fish-shell/fish-shell/releases/download/4.9.3/fish-4.9.3-linux-x86_64.tar.xz",
+        "digest": "sha256:8f643d10ad1abb0ef7072764c01ceb5cf61b2d373fda400cf60f0bad69b7e095"
+      },
+      {
+        "name": "fish-4.9.3.pkg",
+        "size": 23868345,
+        "browser_download_url": "https://github.com/fish-shell/fish-shell/releases/download/4.9.3/fish-4.9.3.pkg",
+        "digest": "sha256:fb489929e25e66b8c026a1da8935f68f828134e115a1706f360ed73149b843a9"
+      }
+    ],
+    "kind": "ferramenta",
+    "category": "Utilitários Rust",
+    "tags": "rust,github,descoberta",
+    "summary": null,
+    "trust_score": 88,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório consolidado (14 anos de histórico)",
+      "🟢 Projeto ativo (atualizado há 3 dias)",
+      "🟢 34344 estrelas no repositório",
+      "🟡 Sem licença open-source padronizada",
+      "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "swc-project/swc",
+    "description": "Rust-based platform for the Web",
+    "url": "https://github.com/swc-project/swc",
+    "stars": 34203,
+    "license": "Apache-2.0",
+    "topics": "babel,compiler,ecmascript,ecmascript-parser,javascript,parser,rust,swc,typescript,typescript-compiler,typescript-parser",
+    "language": "Rust",
+    "created_at": "2017-12-22T11:40:14Z",
+    "pushed_at": "2026-10-26T02:43:27Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v1.16.20",
+    "released_at": "2026-10-22T11:42:08Z",
+    "platforms": "windows",
+    "assets": [
+      {
+        "name": "swc-win32-arm64-msvc.exe",
+        "size": 16806400,
+        "browser_download_url": "https://github.com/swc-project/swc/releases/download/v1.16.20/swc-win32-arm64-msvc.exe",
+        "digest": "sha256:a44d7ea804e754b54ddfd8599a6451aa9dc8733929d6a4cc26e4b19f6be3774e"
+      },
+      {
+        "name": "swc-win32-ia32-msvc.exe",
+        "size": 15104512,
+        "browser_download_url": "https://github.com/swc-project/swc/releases/download/v1.16.20/swc-win32-ia32-msvc.exe",
+        "digest": "sha256:ead7a6bf4ad16d808b6c4e087a224c0e57e5cf059dbb5c1bbbe7e2cd23d796bc"
+      },
+      {
+        "name": "swc-win32-x64-msvc.exe",
+        "size": 24477696,
+        "browser_download_url": "https://github.com/swc-project/swc/releases/download/v1.16.20/swc-win32-x64-msvc.exe",
+        "digest": "sha256:77e7e013f99bf47580c204593027e810c3962440daf247e85887e2f635e787fd"
+      }
+    ],
+    "kind": "ferramenta",
+    "category": "Utilitários Rust",
+    "tags": "rust,github,descoberta",
+    "summary": null,
+    "trust_score": 98,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório consolidado (8 anos de histórico)",
+      "🟢 Projeto ativo (atualizado há 0 dias)",
+      "🟢 34203 estrelas no repositório",
+      "🟢 Código aberto com licença Apache-2.0",
+      "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
     ],
     "attestation": ""
   },

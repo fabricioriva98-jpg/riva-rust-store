@@ -106,7 +106,21 @@ Linha de comando útil: `search`, `show dono/repo`, `verify dono/repo`, `downloa
 - Otimizador não inventa valor: dado que não foi lido aparece como `optimizer::NOT_READ`.
 - Nenhum caminho deste PC (`E:\Fabricio`, `C:\Users\fabri`) no código (`codigo_distribuido_nao_tem_caminhos_deste_pc`).
 
-Feito e testado: avaliação, correções G1–G3, fases 1, 2 e 3 do `IDEIAS-MELHORIAS-24.10.26.md` (resumo lá), rodada social e identidade visual com espaço educacional interativo. Catálogo com 133 itens. Testes automatizados mantidos em 138 (todos passando).
+Feito e testado: avaliação, correções G1–G3, fases 1, 2 e 3 do `IDEIAS-MELHORIAS-24.10.26.md` (resumo lá), rodada social e identidade visual com espaço educacional interativo. Catálogo com 157 itens. Testes automatizados aumentados para 139 (todos passando).
+
+Rodada Formatação de Código (rustfmt) & Badges Visuais de Atualização (26/10, noite — Antigravity / Gemini):
+- **Formatação Automática de Código via `rustfmt` (`terminal_studio.rs`, `gui/terminal_studio.rs`)**:
+  - Implementada função assíncrona segura [`terminal_studio::format_rust_code`] que invoca o `rustfmt` oficial com edição 2021 e limite de tempo `QUICK`, formatando e indentando o código Rust do editor em 1 clique.
+  - Botão interativo `✨ Formatar (rustfmt)` integrado na barra de ferramentas do editor da aba `💻 Editor & IDE`, com feedback visual instantâneo e tratamento de erros de sintaxe.
+  - Detecção dinâmica de `rustfmt` adicionada a `RustEnvInfo::rustfmt_installed` e exibida na barra de status da toolchain Rust (`rustfmt: ✔`).
+  - Suporte a executar `rustfmt` diretamente no terminal interativo adicionando-o à lista `is_direct_tool`.
+- **Badges Visuais e Destaque de Atualização nos Apps (`gui.rs`)**:
+  - `render_grid_card`: borda destacada em âmbar brilhante (`Stroke::new(1.6, Color32::from_rgb(235, 135, 20))`) quando há atualização disponível, além do pill `⬆ ATUALIZAÇÃO` no banner superior e `✔ Instalado` para aplicativos instalados.
+  - `render_list_card`: borda em âmbar para apps desatualizados e pill detalhado mostrando a transição de versões (`⬆ ATUALIZAÇÃO`).
+  - `render_details`: novo card de alerta com ícone `🔔`, destacando em caixa dedicada a disponibilidade de nova versão com indicação clara da versão local e da nova release lançada no GitHub.
+- **Catálogo Expandido Autonomamente**: catálogo sincronizado automaticamente pelo motor diário de 24h, expandindo de 133 para **157 aplicativos verificados** (novos apps como `swc-project/swc`, `fish-shell` e novas releases como `yt-dlp 2026.10.26`).
+- **Internacionalização e Testes**: 7 novas chaves traduzidas em `src/i18n.rs`. **139 testes unitários passando 100%** (incluindo novo teste `formatacao_de_codigo_com_rustfmt_funciona`), zero novos avisos no Clippy.
+- **Binários de Release**: executáveis `RRS - Riva Rust Store.exe` e `Instalador - RRS Riva Rust Store.exe` atualizados na raiz (18.231.808 bytes) e validados por CLI (`search "swc"`). Backups preventivos em `Obsoleto\gitstore-exe-antes-rustfmt-badges-26.10.26\`.
 
 Rodada Terminal & IDE Dedicada do Rust Aprimorada: Abas, Histórico ↑/↓ e Console Moderno (25/10, noite — Antigravity / Gemini):
 - **Organização em 3 Abas Dedicadas (`gui/terminal_studio.rs`)**:
