@@ -1,7 +1,7 @@
 ---
 tipo: instrucoes-continuidade
 projeto: RRS - Riva Rust Store (gitstore 0.3.0)
-atualizado: 2026-10-27
+atualizado: 2026-10-30
 autor: Claude (Opus 5.5) / Antigravity (Gemini 4 Argon)
 ---
 # Instruções para outra IA continuar a RRS
@@ -95,6 +95,13 @@ Linha de comando útil: `search`, `show dono/repo`, `verify dono/repo`, `downloa
 - Interface: confira na tela com o banco separado (seção 3) e descreva o que viu.
 
 ## 6. Estado em 25/10/2026
+
+**Revisão do Claude das rodadas do Antigravity de 25/10** (feita em 25/10, conferida em 30/10 sobre o commit `4cbdcea`). O Fabricio pediu só o registro: nada foi corrigido. Pendentes:
+- **R1. Selo de confiável sem verificação real (fere a regra 7).** 155 dos 157 apps estão como "🟢 CONFIÁVEL"; 146 têm a atestação não conferida (campo vazio) e 65 não têm `digest` SHA-256 em nenhum asset (47 deles com nota 90 ou mais); 36 trazem a nota "Repositório verificado e oficial", que nenhuma verificação do código gera. O texto abaixo chama os 157 de "verificados". Os 26 links de download a seguir dão 404 (conferido em 30/10 com `curl -I -L` no primeiro asset de cada um): zellij, atuin, eza, navi, presenterm, broot, erdtree, dolphin, rpcs3, duckstation, flycast, RetroArch, ares, OpenTTD, jak-project, sm64ex, uqm, hedgewars, Craft, rizin, mitmproxy, stable-diffusion-webui, ComfyUI, text-generation-webui, whisper.cpp e anything-llm. [Inferência] Esses itens foram escritos à mão, com nomes de arquivo supostos.
+- **R2. Sincronização diária ligada por padrão e gravando no `catalog.json`.** `auto_sync_daily` vem ligada (`db.rs:477-482`); `spawn_github_sync` (`gui.rs:1307`) insere apps achados por `topic:rust stars:>1000` sem curadoria (tag `descoberta`: 24 hoje, todos com `summary` vazio, contra a regra da seção 5) e regrava o `catalog.json` do projeto, que vai embutido no .exe (`gui.rs:1426`). Proposta (pendente): sincronização desligada por padrão, achados numa lista para revisão e nenhuma exportação automática do catálogo.
+- **R3. Terminal externo quebra com apóstrofo no caminho.** `terminal_studio.rs:213` monta `Set-Location '{}'` sem dobrar o `'`. Proposta (pendente): escapar `'` como `''` ou abrir o processo com `current_dir`.
+- Testes em 25/10: `cargo test` 138/138; `cargo clippy --all-targets` só com os 8 avisos antigos.
+- Em 30/10 a árvore tinha alterações sem commit e sem autor registrado: `src/gui.rs` e `src/i18n.rs` (tiram a seção "SEU PC", com Biblioteca e Comunidade, do menu) e `catalog.json` (regravado pela sincronização). O Claude não mexeu nelas.
 
 **Análise do Claude (25/10, 13:25)**: `ANALISE-25.10.26.md`. Os 3 graves foram **corrigidos às 13:50**, os médios M1–M6 **às 14:10** e M7/M8 (git local e build no C:) **às 14:25** (testes: 137); os baixos B1–B8 continuam pendentes. Regras novas que os testes cobram:
 - A interface **não** pede pintura contínua: tarefa em segundo plano entrega o resultado pela fila `BgQueue` (que acorda a tela); `request_repaint_after` só enquanto há download, tarefa (`busy_task`), aviso ou Modo TV, no ritmo de `PerformanceMode::active_interval` / `gamepad_poll_interval`.
