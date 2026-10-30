@@ -79,7 +79,7 @@ Linha de comando útil: `search`, `show dono/repo`, `verify dono/repo`, `downloa
 | `ide.rs` | detecção e espelhamento para IDEs externas (VS Code e Google Antigravity), abertura de workspace/arquivos e instalador de extensões |
 | `terminal_studio.rs` | execução não-bloqueante de comandos de terminal (cargo, rustc, rustup, git) com histórico categorizado |
 | `theme.rs` | sistema de temas visuais (Escuro Clássico, Antigravity Deep Space, Cyberpunk Neon, Matrix Hacker, Dracula Synthwave, Modo Claro) e paleta de cores de destaque |
-| `gui.rs` | interface principal (egui); submódulos `gui\extras.rs` (fase 2), `gui\phase3.rs` (fase 3), `gui\tv.rs` (Modo TV), `gui\settings.rs` (página Configurações), `gui\social.rs` (avisos, comunidade, compartilhar), `gui\learn.rs` (Estúdio Aprender Rust), `gui\rust_lib.rs` (Biblioteca Rust) e `gui\terminal_studio.rs` (Terminal & IDEs) |
+| `gui.rs` | interface principal (egui); submódulos `gui\extras.rs` (fase 2), `gui\phase3.rs` (fase 3), `gui\settings.rs` (página Configurações), `gui\social.rs` (avisos, comunidade, compartilhar), `gui\learn.rs` (Estúdio Aprender Rust), `gui\rust_lib.rs` (Biblioteca Rust) e `gui\terminal_studio.rs` (Terminal & IDEs) |
 
 ## 5. Regras do código (os testes cobram)
 
@@ -113,6 +113,24 @@ Linha de comando útil: `search`, `show dono/repo`, `verify dono/repo`, `downloa
 - Nenhum caminho deste PC (`E:\Fabricio`, `C:\Users\fabri`) no código (`codigo_distribuido_nao_tem_caminhos_deste_pc`).
 
 Feito e testado: avaliação, correções G1–G3, fases 1, 2 e 3 do `IDEIAS-MELHORIAS-24.10.26.md` (resumo lá), rodada social e identidade visual com espaço educacional interativo. Catálogo com 157 itens. Testes automatizados aumentados para 139 (todos passando).
+
+Rodada Remoção do Modo TV / Tela Cheia (30/10, tarde — Antigravity / Gemini):
+- **Pedido Explícito do Usuário**: "tire o 'Modo TV' ou tela cheia do aplicativo", mantendo o RRS como uma aplicação limpa de desktop focada no desenvolvimento e aprendizado Rust.
+- **Remoção do Modo TV & Tela Cheia (`src/gui/tv.rs`, `src/gui.rs`, `Cargo.toml`)**:
+  - Removido o botão da barra lateral `🎮 Modo TV (tela cheia)` e o acionamento de tela cheia no egui viewport (`send_viewport_cmd(Fullscreen)`).
+  - Removido o módulo `src/gui/tv.rs` com os controles de grade, analógico e navegação de TV.
+  - Eliminada a dependência pesada `gilrs = "0.11"` do `Cargo.toml` (e suas dezenas de dependências de XInput/DirectInput para polling de controle em segundo plano).
+  - Campos `tv_mode`, `tv_index`, `gamepads`, `tv_stick` removidos de `StoreGui`.
+  - Simplificado `PerformanceMode`: removido método `gamepad_poll_interval` e atualizadas descrições para downloads e tarefas.
+- **Segurança e Rastreabilidade (`F:\NAS\Obsoleto\`)**:
+  - Backup preventivo completo em `F:\NAS\Obsoleto\gitstore-src-antes-remover-modo-tv-30.10.26\`.
+  - Arquivo retirado preservado em `F:\NAS\Obsoleto\gitstore-modulos-removidos-30.10.26\tv.rs`.
+  - Registro em `F:\NAS\Obsoleto\MOVIMENTACOES-30.10.26-remover-modo-tv.csv` e script `DESFAZER-30.10.26-remover-modo-tv.ps1`.
+- **Integridade, i18n e Qualidade**:
+  - Tabela `i18n.rs` limpa sem strings órfãs do Modo TV.
+  - **122 testes unitários automatizados passando 100%**.
+  - Clippy com zero avisos novos.
+  - Binários de release recompilados e validados na raiz (`RRS - Riva Rust Store.exe` e `Instalador - RRS Riva Rust Store.exe`), com backup dos anteriores em `Obsoleto\gitstore-exe-antes-remover-modo-tv-30.10.26\`.
 
 Rodada Remoção do Otimizador do PC e Conquistas (27/10, noite — Antigravity / Gemini):
 - **Pedido Explícito do Usuário**: Remoção completa do "Otimizador do PC" e de "Perfil & Conquistas" para garantir total não-invasividade ao computador, focando 100% no ecossistema Rust.

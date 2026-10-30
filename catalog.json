@@ -97,7 +97,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (6 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 3 dias)",
+      "🟢 Projeto ativo (atualizado há 6 dias)",
       "🟢 201501 estrelas no repositório",
       "🟢 Código aberto com licença Unlicense",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
@@ -117,57 +117,57 @@
     "fork": false,
     "archived": false,
     "has_issues": true,
-    "latest_tag": "v0.40.11",
-    "released_at": "2026-10-24T00:30:13Z",
+    "latest_tag": "v0.40.13",
+    "released_at": "2026-10-28T19:55:04Z",
     "platforms": "macos,windows",
     "assets": [
       {
         "name": "ollama-darwin.tgz",
-        "size": 181324349,
-        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.11/ollama-darwin.tgz",
-        "digest": "sha256:aea7d3f2e32371b7644a6e2ec8d4f26820a0e3965918cce8a46cef3e947f6291"
+        "size": 186689993,
+        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.13/ollama-darwin.tgz",
+        "digest": "sha256:bae29252232b9e1358cf5801a7d65a07442af18fb5467cb68c7fc3711f59c511"
       },
       {
         "name": "Ollama-darwin.zip",
-        "size": 220606101,
-        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.11/Ollama-darwin.zip",
-        "digest": "sha256:cff3c721f69b8efb186c4c75775e1e777516ca9c2863065a25367f739e7623c4"
+        "size": 229773910,
+        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.13/Ollama-darwin.zip",
+        "digest": "sha256:da3189f87034d224beb0708d77b95180bc03872f6e269d59bd888a216055c58a"
       },
       {
         "name": "ollama-windows-amd64-mlx.zip",
-        "size": 924052574,
-        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.11/ollama-windows-amd64-mlx.zip",
-        "digest": "sha256:b238066fe8366e5dfd4169007db352f951c4da44f702790dff7eef88179d32df"
+        "size": 924245826,
+        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.13/ollama-windows-amd64-mlx.zip",
+        "digest": "sha256:1181760e824237110bb030175ac829907f7574620b9fadc6e19667c9d147a4a2"
       },
       {
         "name": "ollama-windows-amd64-rocm.zip",
-        "size": 256580003,
-        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.11/ollama-windows-amd64-rocm.zip",
-        "digest": "sha256:0b59b01491c47e9e6ffe9a15b3a24c929bc5a102413970cffd5f0fab420f34d3"
+        "size": 257076385,
+        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.13/ollama-windows-amd64-rocm.zip",
+        "digest": "sha256:2ab082d5414d51ef4cd675543c976770743c90e3cad0d9deb540160ae3b25573"
       },
       {
         "name": "ollama-windows-amd64.zip",
-        "size": 1586356606,
-        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.11/ollama-windows-amd64.zip",
-        "digest": "sha256:bda4a493ba8a7c24d57263cd843cd68cee84f44aed4299eeed532acad7eda12a"
+        "size": 1601969847,
+        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.13/ollama-windows-amd64.zip",
+        "digest": "sha256:7afa38624fa62ee5d8293422d0ab084c1bb4603134c7f4dafce11a033b57cc19"
       },
       {
         "name": "ollama-windows-arm64.zip",
-        "size": 213324911,
-        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.11/ollama-windows-arm64.zip",
-        "digest": "sha256:a43eeaea23bef3157b0f7d42216fe8a8fecdd7a9f06722f7f8e623470308bd9a"
+        "size": 215929275,
+        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.13/ollama-windows-arm64.zip",
+        "digest": "sha256:32324e770eef0416abb77e42a31a9d79bd752bd9c28582e422666ba24550d56c"
       },
       {
         "name": "Ollama.dmg",
-        "size": 221356115,
-        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.11/Ollama.dmg",
-        "digest": "sha256:dc5213ea6fec466eaa266c1ae698655b9cf104e708b17d03b8511e2f48e84f10"
+        "size": 230530413,
+        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.13/Ollama.dmg",
+        "digest": "sha256:da6b0fe8654ca731530b23a9ca9ac386abc6aef0f741c788239adcb91173eaec"
       },
       {
         "name": "OllamaSetup.exe",
-        "size": 1662012016,
-        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.11/OllamaSetup.exe",
-        "digest": "sha256:87309d23b423abeae1d8df2f98df95f94bf35659debfdf3761d65b7b62a75508"
+        "size": 1676266440,
+        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.13/OllamaSetup.exe",
+        "digest": "sha256:9e3c76e54e7184c68e88a2378b909bf59bbe454f83c076cb4f4a717e946ae719"
       }
     ],
     "kind": "ai-app",
@@ -178,7 +178,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (3 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 2 dias)",
+      "🟢 Projeto ativo (atualizado há 5 dias)",
       "🟢 184652 estrelas no repositório",
       "🟢 Código aberto com licença MIT",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
@@ -198,87 +198,87 @@
     "fork": false,
     "archived": false,
     "has_issues": true,
-    "latest_tag": "v4.0.21",
-    "released_at": "2026-10-26T13:47:11Z",
+    "latest_tag": "v4.0.22",
+    "released_at": "2026-10-30T03:51:34Z",
     "platforms": "linux,macos,windows",
     "assets": [
       {
-        "name": "CC-Switch-v4.0.21-Linux-arm64.AppImage",
-        "size": 94489096,
-        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.21/CC-Switch-v4.0.21-Linux-arm64.AppImage",
-        "digest": "sha256:e551e709a2f4bb3ebeb9a0b0c3d4b318ca23551bf7d5516ee45ac1fd48a06c2c"
+        "name": "CC-Switch-v4.0.22-Linux-arm64.AppImage",
+        "size": 94763528,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.22/CC-Switch-v4.0.22-Linux-arm64.AppImage",
+        "digest": "sha256:b00ffbe004fe7885ddc7fa33badb965a2cf4d626a259287ea9a4f89fa78bc66e"
       },
       {
-        "name": "CC-Switch-v4.0.21-Linux-arm64.deb",
-        "size": 17606252,
-        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.21/CC-Switch-v4.0.21-Linux-arm64.deb",
-        "digest": "sha256:5dce53662d87df22a7818aeb96c229fe2752248b47f7f7fac166ff70fb3d05c1"
+        "name": "CC-Switch-v4.0.22-Linux-arm64.deb",
+        "size": 17899716,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.22/CC-Switch-v4.0.22-Linux-arm64.deb",
+        "digest": "sha256:b2bb866503bfc2c974ce2d646bb6e7ceda233e6f28b79d70253504c0c1e1755d"
       },
       {
-        "name": "CC-Switch-v4.0.21-Linux-arm64.rpm",
-        "size": 17607101,
-        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.21/CC-Switch-v4.0.21-Linux-arm64.rpm",
-        "digest": "sha256:6d118246ec8f58b91a782c728c30ac7815f9b2d9237516c9815a09b01483440b"
+        "name": "CC-Switch-v4.0.22-Linux-arm64.rpm",
+        "size": 17897125,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.22/CC-Switch-v4.0.22-Linux-arm64.rpm",
+        "digest": "sha256:b7452e8dd27124745dc2863e3a18c8659da2ab90c5f41677fadf1e12a58a4c84"
       },
       {
-        "name": "CC-Switch-v4.0.21-Linux-x86_64.AppImage",
-        "size": 97065464,
-        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.21/CC-Switch-v4.0.21-Linux-x86_64.AppImage",
-        "digest": "sha256:8a69d94e0b94beffcd41aa79253359ab865bcc57473235dc9a5c0cb952534457"
+        "name": "CC-Switch-v4.0.22-Linux-x86_64.AppImage",
+        "size": 97339896,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.22/CC-Switch-v4.0.22-Linux-x86_64.AppImage",
+        "digest": "sha256:9090a1bc5f58ccbc72444302c1a3d8001dd1b00fbff7b0d6b64bd1be58077313"
       },
       {
-        "name": "CC-Switch-v4.0.21-Linux-x86_64.deb",
-        "size": 18403900,
-        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.21/CC-Switch-v4.0.21-Linux-x86_64.deb",
-        "digest": "sha256:ea2f6ca82da004820e09e0c473ca7254bf9291282f00272e9e2adf8f114e3e61"
+        "name": "CC-Switch-v4.0.22-Linux-x86_64.deb",
+        "size": 18678292,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.22/CC-Switch-v4.0.22-Linux-x86_64.deb",
+        "digest": "sha256:6e6a43e0f48bfa1120867e4ba2959aa45b553332d9fec4213a1f5e5dbadcb3c5"
       },
       {
-        "name": "CC-Switch-v4.0.21-Linux-x86_64.rpm",
-        "size": 18404528,
-        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.21/CC-Switch-v4.0.21-Linux-x86_64.rpm",
-        "digest": "sha256:1765dcd90af88c8cdd04c886af4a620f9d2a941dd77d4cca533a485dafd9bb29"
+        "name": "CC-Switch-v4.0.22-Linux-x86_64.rpm",
+        "size": 18683456,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.22/CC-Switch-v4.0.22-Linux-x86_64.rpm",
+        "digest": "sha256:8cc29dd18170e52db3e8c8038bbc6cf20ea9e47a0db4dc9b81d8f355a2c8019d"
       },
       {
-        "name": "CC-Switch-v4.0.21-macOS.dmg",
-        "size": 36852461,
-        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.21/CC-Switch-v4.0.21-macOS.dmg",
-        "digest": "sha256:504a64f9c858927c08e6d86301f0ecc638e8650202d39945694fcd64d8d1973b"
+        "name": "CC-Switch-v4.0.22-macOS.dmg",
+        "size": 37468607,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.22/CC-Switch-v4.0.22-macOS.dmg",
+        "digest": "sha256:d79c1e81d93e4e561ec9094b3de1e79eee1590dfc5751dc7b30004b1986f0b70"
       },
       {
-        "name": "CC-Switch-v4.0.21-macOS.tar.gz",
-        "size": 37889032,
-        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.21/CC-Switch-v4.0.21-macOS.tar.gz",
-        "digest": "sha256:2ecba09beeba2d9c3a952b4a5387b073d24838ad5c1f4326959ab25b5bbb3192"
+        "name": "CC-Switch-v4.0.22-macOS.tar.gz",
+        "size": 38507418,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.22/CC-Switch-v4.0.22-macOS.tar.gz",
+        "digest": "sha256:fb8cd946881fe0d0c4d7434a0281ced71a931b59e4f32d9cdef0f5a129c13782"
       },
       {
-        "name": "CC-Switch-v4.0.21-macOS.zip",
-        "size": 36910711,
-        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.21/CC-Switch-v4.0.21-macOS.zip",
-        "digest": "sha256:2277745abeed3ae72d135585e695735402744185460cd43764eaccf08a7b7f67"
+        "name": "CC-Switch-v4.0.22-macOS.zip",
+        "size": 37520712,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.22/CC-Switch-v4.0.22-macOS.zip",
+        "digest": "sha256:cbd141a63ea53d2d72d0a28cacb898298238b0d6540542af91d8ba9c53f22d31"
       },
       {
-        "name": "CC-Switch-v4.0.21-Windows-arm64-Portable.zip",
-        "size": 17274134,
-        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.21/CC-Switch-v4.0.21-Windows-arm64-Portable.zip",
-        "digest": "sha256:3ebde12cc321e27bcf4e0783a419ea46900bb99cb69990b0c9768549b17d83b7"
+        "name": "CC-Switch-v4.0.22-Windows-arm64-Portable.zip",
+        "size": 17551291,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.22/CC-Switch-v4.0.22-Windows-arm64-Portable.zip",
+        "digest": "sha256:e2ee8cda0d716ecec77f5940464b2bc91ea07cd20919900d9a306497745bcce3"
       },
       {
-        "name": "CC-Switch-v4.0.21-Windows-arm64.msi",
-        "size": 17473536,
-        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.21/CC-Switch-v4.0.21-Windows-arm64.msi",
-        "digest": "sha256:6e595c26c3189eaf4f9b1a4352e0ba49178061e57f89da2b14cf03ab20da81c8"
+        "name": "CC-Switch-v4.0.22-Windows-arm64.msi",
+        "size": 17743872,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.22/CC-Switch-v4.0.22-Windows-arm64.msi",
+        "digest": "sha256:c7d23e7ea3e45f8a8f41d408398b6170b106dd828d44d56b2dd4cee8ad4c1bfb"
       },
       {
-        "name": "CC-Switch-v4.0.21-Windows-Portable.zip",
-        "size": 18186399,
-        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.21/CC-Switch-v4.0.21-Windows-Portable.zip",
-        "digest": "sha256:6291de97f030e965fabd361418c349f5c0b390e46d55b5fa806cf967f5201a38"
+        "name": "CC-Switch-v4.0.22-Windows-Portable.zip",
+        "size": 18474271,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.22/CC-Switch-v4.0.22-Windows-Portable.zip",
+        "digest": "sha256:f6ab1023d8ba3b72505c5e1267a85d69e8e8a10f35c235d39395cb67ad81f875"
       },
       {
-        "name": "CC-Switch-v4.0.21-Windows.msi",
-        "size": 18206720,
-        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.21/CC-Switch-v4.0.21-Windows.msi",
-        "digest": "sha256:16e9904023720abba117dd16aa11d020aa7e9546ac08bb7c6eab610e78e95ab3"
+        "name": "CC-Switch-v4.0.22-Windows.msi",
+        "size": 18477056,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.22/CC-Switch-v4.0.22-Windows.msi",
+        "digest": "sha256:3082108e964090380001b65017e544472b8bc39f03b3ccff47f1eaf010bdaa58"
       }
     ],
     "kind": "ferramenta",
@@ -289,7 +289,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (1 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 1 dias)",
+      "🟢 Projeto ativo (atualizado há 4 dias)",
       "🟢 148572 estrelas no repositório",
       "🟢 Código aberto com licença MIT",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
@@ -509,7 +509,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (6 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 3 dias)",
+      "🟢 Projeto ativo (atualizado há 6 dias)",
       "🟢 126818 estrelas no repositório",
       "🟢 Código aberto com licença AGPL-3.0",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
@@ -668,7 +668,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (12 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 3 dias)",
+      "🟢 Projeto ativo (atualizado há 6 dias)",
       "🟢 119009 estrelas no repositório",
       "🟢 Código aberto com licença MIT",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
@@ -725,7 +725,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (7 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 2 dias)",
+      "🟢 Projeto ativo (atualizado há 5 dias)",
       "🟢 114500 estrelas no repositório",
       "🟢 Código aberto com licença MIT",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
@@ -806,7 +806,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (7 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 2 dias)",
+      "🟢 Projeto ativo (atualizado há 5 dias)",
       "🟢 112186 estrelas no repositório",
       "🟢 Código aberto com licença Apache-2.0",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
@@ -947,7 +947,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (8 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 2 dias)",
+      "🟢 Projeto ativo (atualizado há 5 dias)",
       "🟢 108757 estrelas no repositório",
       "🟢 Código aberto com licença MIT",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
@@ -1160,7 +1160,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (5 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 1 dias)",
+      "🟢 Projeto ativo (atualizado há 4 dias)",
       "🟢 96406 estrelas no repositório",
       "🟡 Sem licença open-source padronizada",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
@@ -1313,7 +1313,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (3 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 6 dias)",
+      "🟢 Projeto ativo (atualizado há 9 dias)",
       "🟢 95451 estrelas no repositório",
       "🟢 Código aberto com licença Apache-2.0",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
@@ -1352,7 +1352,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (7 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 5 dias)",
+      "🟢 Projeto ativo (atualizado há 8 dias)",
       "🟢 93941 estrelas no repositório",
       "🟢 Código aberto com licença Apache-2.0",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"

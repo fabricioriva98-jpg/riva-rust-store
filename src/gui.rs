@@ -19,7 +19,6 @@ mod settings;
 mod social;
 mod rust_lib;
 mod terminal_studio;
-mod tv;
 
 /// Etapas do login com o GitHub (código no navegador ou token pessoal).
 #[derive(Debug, Clone, PartialEq)]
@@ -263,10 +262,6 @@ pub struct StoreGui {
     /// Repositório vindo do crates.io: ao verificar, entra no catálogo como ferramenta de terminal.
     pending_cli: Option<String>,
     crate_input: String,
-    tv_mode: bool,
-    tv_index: usize,
-    gamepads: Option<gilrs::Gilrs>,
-    tv_stick: (i8, i8),
     login_state: LoginState,
     login_cancel: Arc<std::sync::atomic::AtomicBool>,
     oauth_client_id: String,
@@ -483,10 +478,6 @@ impl StoreGui {
             ai_busy: false,
             pending_cli: None,
             crate_input: String::new(),
-            tv_mode: false,
-            tv_index: 0,
-            gamepads: None,
-            tv_stick: (0, 0),
             login_state: LoginState::Idle,
             login_cancel: Arc::new(std::sync::atomic::AtomicBool::new(false)),
             oauth_client_id,
@@ -959,7 +950,7 @@ impl StoreGui {
                         self.auth_token = Some(token);
                         self.github_user = Some(user);
                         self.login_state = LoginState::Idle;
-                        self.section = NavSection::Community;
+                        self.section = NavSection::Settings;
                     }
                     Err(e) => self.login_state = LoginState::Failed(e),
                 },
@@ -1466,7 +1457,7 @@ impl StoreGui {
     }
 
     /// Abre um app instalado, mede o tempo de jogo e faz backup dos saves quando ele fecha
-    /// (se a pasta de saves estiver configurada). Usado pelo botão "Jogar" e pelo Modo TV.
+    /// (se a pasta de saves estiver configurada). Usado pelo botão "Jogar".
     fn launch_installed(&mut self, app: &App) {
         let Some(inst) = &app.installed else { return };
         let path = self.installed_path(&inst.file_path);
@@ -1540,13 +1531,7 @@ impl StoreGui {
 impl eframe::App for StoreGui {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         self.process_background(ctx);
-        if self.tv_mode {
-            self.render_tv(ctx);
-            return;
-        }
 
-        let updates_count = self.apps.iter().filter(|a| a.has_update()).count();
-        let installed_count = self.apps.iter().filter(|a| a.installed.is_some()).count();
         let re_count = self
             .apps
             .iter()
@@ -1666,25 +1651,6 @@ impl eframe::App for StoreGui {
 
                 ui.add_space(14.0);
                 ui.label(
-                    RichText::new(tr(self.lang, "SEU PC"))
-                        .size(11.0)
-                        .strong()
-                        .color(Color32::from_rgb(120, 130, 150)),
-                );
-                ui.add_space(4.0);
-
-                let lib_label = if updates_count > 0 {
-                    format!("📦  {} ({installed_count})  ⬆{updates_count}", tr(self.lang, "Biblioteca"))
-                } else if !self.wishlist.is_empty() {
-                    format!("📦  {} ({installed_count})  🔁{}", tr(self.lang, "Biblioteca"), self.wishlist.len())
-                } else {
-                    format!("📦  {} ({installed_count})", tr(self.lang, "Minha Biblioteca"))
-                };
-                nav_button(ui, &mut self.section, NavSection::Library, &lib_label);
-                nav_button(ui, &mut self.section, NavSection::Community, &tr(self.lang, "💬  Comunidade"));
-
-                ui.add_space(12.0);
-                ui.label(
                     RichText::new(tr(self.lang, "ESTÚDIO RUST"))
                         .size(11.0)
                         .strong()
@@ -1727,18 +1693,7 @@ impl eframe::App for StoreGui {
                 ui.add_space(10.0);
 
                 ui.checkbox(&mut self.only_trusted, tr(self.lang, "🛡 Só Verificados (70+)"));
-                ui.add_space(6.0);
-                if ui
-                    .add(
-                        egui::Button::new(RichText::new(tr(self.lang, "🎮 Modo TV (tela cheia)")).strong())
-                            .min_size(Vec2::new(ui.available_width(), 28.0)),
-                    )
-                    .on_hover_text(tr(self.lang, "Biblioteca em tela cheia para jogar com controle ou teclado (inclui Steam, Epic e GOG)."))
-                    .clicked()
-                {
-                    self.enter_tv_mode(ctx);
-                }
-                ui.add_space(6.0);
+                ui.add_space(8.0);
 
                 let btn_text = if let Some(task) = &self.busy_task {
                     task.clone()
@@ -4113,7 +4068,6 @@ mod tests {
             ("gui/rust_lib.rs", include_str!("gui/rust_lib.rs")),
             ("gui/settings.rs", include_str!("gui/settings.rs")),
             ("gui/social.rs", include_str!("gui/social.rs")),
-            ("gui/tv.rs", include_str!("gui/tv.rs")),
         ];
         let call = ["spawn_terminal", "_cmd("].concat();
         let run = ["run_terminal", "_command("].concat();

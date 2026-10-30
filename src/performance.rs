@@ -1,7 +1,7 @@
 //! Gerenciador de Perfis de Desempenho da RRS.
 //! Parada, a interface não é redesenhada em nenhum perfil (o egui só pinta com entrada do usuário
 //! ou evento de tarefa). O perfil decide o ritmo de pintura enquanto há algo em andamento
-//! (download, tarefa, Modo TV com controle): Eco economiza, Performance deixa mais fluido.
+//! (download, tarefa em segundo plano): Eco economiza, Performance deixa mais fluido.
 
 use std::time::Duration;
 
@@ -57,9 +57,9 @@ impl PerformanceMode {
 
     pub fn description(self) -> &'static str {
         match self {
-            PerformanceMode::Eco => "Atualiza o progresso de downloads e tarefas e o controle do Modo TV com menos frequência. Parada, a loja não usa o processador.",
-            PerformanceMode::Normal => "Equilíbrio entre fluidez e consumo durante downloads, tarefas e no Modo TV. Parada, a loja não usa o processador.",
-            PerformanceMode::Performance => "Progresso e controle do Modo TV mais fluidos; gasta mais processador só enquanto algo está em andamento.",
+            PerformanceMode::Eco => "Atualiza o progresso de downloads e tarefas com menos frequência. Parada, a loja não usa o processador.",
+            PerformanceMode::Normal => "Equilíbrio entre fluidez e consumo durante downloads e tarefas. Parada, a loja não usa o processador.",
+            PerformanceMode::Performance => "Progresso de downloads e tarefas mais fluido; gasta mais processador só enquanto algo está em andamento.",
         }
     }
 
@@ -69,15 +69,6 @@ impl PerformanceMode {
             PerformanceMode::Eco => Duration::from_millis(250),
             PerformanceMode::Normal => Duration::from_millis(100),
             PerformanceMode::Performance => Duration::from_millis(33),
-        }
-    }
-
-    /// Intervalo de consulta ao controle no Modo TV (o controle não gera eventos de janela).
-    pub fn gamepad_poll_interval(self) -> Duration {
-        match self {
-            PerformanceMode::Eco => Duration::from_millis(100),
-            PerformanceMode::Normal => Duration::from_millis(50),
-            PerformanceMode::Performance => Duration::from_millis(16),
         }
     }
 }
@@ -96,10 +87,9 @@ mod tests {
 
     #[test]
     fn intervalos_seguem_a_ordem_dos_perfis() {
-        for f in [PerformanceMode::active_interval, PerformanceMode::gamepad_poll_interval] {
-            assert!(f(PerformanceMode::Performance) < f(PerformanceMode::Normal));
-            assert!(f(PerformanceMode::Normal) < f(PerformanceMode::Eco));
-        }
+        let f = PerformanceMode::active_interval;
+        assert!(f(PerformanceMode::Performance) < f(PerformanceMode::Normal));
+        assert!(f(PerformanceMode::Normal) < f(PerformanceMode::Eco));
     }
 
     #[test]
@@ -107,7 +97,6 @@ mod tests {
         // 33 ms já é fluido para barra de progresso; menos que isso só gastaria CPU
         for m in PerformanceMode::ALL {
             assert!(m.active_interval() >= Duration::from_millis(33), "{m:?}");
-            assert!(m.gamepad_poll_interval() >= Duration::from_millis(16), "{m:?}");
         }
     }
 }
