@@ -2,7 +2,11 @@
 name = "gitstore"
 version = "0.3.0"
 edition = "2021"
-description = "Loja, catálogo e verificador de apps e jogos gratuitos distribuídos no GitHub"
+description = "Loja, catálogo e verificador de apps e jogos gratuitos distribuídos no GitHub + Rust Studio & IDE"
+authors = ["Fabricio Riva <fabricioriva98@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+keywords = ["rust", "store", "ide", "learning", "security"]
 
 [dependencies]
 anyhow = "1"

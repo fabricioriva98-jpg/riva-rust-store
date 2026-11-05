@@ -97,7 +97,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (6 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 6 dias)",
+      "🟢 Projeto ativo (atualizado há 13 dias)",
       "🟢 201501 estrelas no repositório",
       "🟢 Código aberto com licença Unlicense",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
@@ -117,57 +117,57 @@
     "fork": false,
     "archived": false,
     "has_issues": true,
-    "latest_tag": "v0.40.13",
-    "released_at": "2026-10-28T19:55:04Z",
+    "latest_tag": "v0.40.14",
+    "released_at": "2026-11-03T01:40:40Z",
     "platforms": "macos,windows",
     "assets": [
       {
         "name": "ollama-darwin.tgz",
-        "size": 186689993,
-        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.13/ollama-darwin.tgz",
-        "digest": "sha256:bae29252232b9e1358cf5801a7d65a07442af18fb5467cb68c7fc3711f59c511"
+        "size": 186686970,
+        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.14/ollama-darwin.tgz",
+        "digest": "sha256:f3bf9a528e908da0da5a2b3a4ad3252a369d62186501dc4880261e8d9023bff5"
       },
       {
         "name": "Ollama-darwin.zip",
-        "size": 229773910,
-        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.13/Ollama-darwin.zip",
-        "digest": "sha256:da3189f87034d224beb0708d77b95180bc03872f6e269d59bd888a216055c58a"
+        "size": 229782554,
+        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.14/Ollama-darwin.zip",
+        "digest": "sha256:9047386fb6811f54fc98b12ce4fea42a6ee5ce9e1bbc0c8196499f347054bcb5"
       },
       {
         "name": "ollama-windows-amd64-mlx.zip",
-        "size": 924245826,
-        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.13/ollama-windows-amd64-mlx.zip",
-        "digest": "sha256:1181760e824237110bb030175ac829907f7574620b9fadc6e19667c9d147a4a2"
+        "size": 924245834,
+        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.14/ollama-windows-amd64-mlx.zip",
+        "digest": "sha256:33b8d1079cb1e9a02de4e21acd8d318f1b84bc9726fee753d1a5814b3331eb38"
       },
       {
         "name": "ollama-windows-amd64-rocm.zip",
-        "size": 257076385,
-        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.13/ollama-windows-amd64-rocm.zip",
-        "digest": "sha256:2ab082d5414d51ef4cd675543c976770743c90e3cad0d9deb540160ae3b25573"
+        "size": 257076401,
+        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.14/ollama-windows-amd64-rocm.zip",
+        "digest": "sha256:50d9e93f041dfa4958db0e9ac8e88c2f85a670902f12d7271c889c11a52b31a9"
       },
       {
         "name": "ollama-windows-amd64.zip",
-        "size": 1601969847,
-        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.13/ollama-windows-amd64.zip",
-        "digest": "sha256:7afa38624fa62ee5d8293422d0ab084c1bb4603134c7f4dafce11a033b57cc19"
+        "size": 1601954968,
+        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.14/ollama-windows-amd64.zip",
+        "digest": "sha256:65d68cade6cf6375f398b518224f8c8a15e062387f38cf477abfc848de7e7e29"
       },
       {
         "name": "ollama-windows-arm64.zip",
-        "size": 215929275,
-        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.13/ollama-windows-arm64.zip",
-        "digest": "sha256:32324e770eef0416abb77e42a31a9d79bd752bd9c28582e422666ba24550d56c"
+        "size": 215932926,
+        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.14/ollama-windows-arm64.zip",
+        "digest": "sha256:df8a4e954587ac65ba52ec26b453490a21cd58f80b55f75cf0d706f1506764a8"
       },
       {
         "name": "Ollama.dmg",
-        "size": 230530413,
-        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.13/Ollama.dmg",
-        "digest": "sha256:da6b0fe8654ca731530b23a9ca9ac386abc6aef0f741c788239adcb91173eaec"
+        "size": 230541627,
+        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.14/Ollama.dmg",
+        "digest": "sha256:683ca9baf3d4257f31fdd0004193527797c861be9d6dfb8c4617ba0800c170f9"
       },
       {
         "name": "OllamaSetup.exe",
-        "size": 1676266440,
-        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.13/OllamaSetup.exe",
-        "digest": "sha256:9e3c76e54e7184c68e88a2378b909bf59bbe454f83c076cb4f4a717e946ae719"
+        "size": 1675999728,
+        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.14/OllamaSetup.exe",
+        "digest": "sha256:e069c7cc7d4808f77684e81efa0b1f853a5190b4b8f070bc8fd63041180e3eba"
       }
     ],
     "kind": "ai-app",
@@ -178,7 +178,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (3 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 5 dias)",
+      "🟢 Projeto ativo (atualizado há 11 dias)",
       "🟢 184652 estrelas no repositório",
       "🟢 Código aberto com licença MIT",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
@@ -198,87 +198,87 @@
     "fork": false,
     "archived": false,
     "has_issues": true,
-    "latest_tag": "v4.0.22",
-    "released_at": "2026-10-30T03:51:34Z",
+    "latest_tag": "v4.0.26",
+    "released_at": "2026-11-05T15:25:55Z",
     "platforms": "linux,macos,windows",
     "assets": [
       {
-        "name": "CC-Switch-v4.0.22-Linux-arm64.AppImage",
-        "size": 94763528,
-        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.22/CC-Switch-v4.0.22-Linux-arm64.AppImage",
-        "digest": "sha256:b00ffbe004fe7885ddc7fa33badb965a2cf4d626a259287ea9a4f89fa78bc66e"
+        "name": "CC-Switch-v4.0.26-Linux-arm64.AppImage",
+        "size": 95726088,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.26/CC-Switch-v4.0.26-Linux-arm64.AppImage",
+        "digest": "sha256:faf0810362aa7ca6e3bb913b2843de9433a124d79fc2a67225ea2d96fa21aa1e"
       },
       {
-        "name": "CC-Switch-v4.0.22-Linux-arm64.deb",
-        "size": 17899716,
-        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.22/CC-Switch-v4.0.22-Linux-arm64.deb",
-        "digest": "sha256:b2bb866503bfc2c974ce2d646bb6e7ceda233e6f28b79d70253504c0c1e1755d"
+        "name": "CC-Switch-v4.0.26-Linux-arm64.deb",
+        "size": 18980544,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.26/CC-Switch-v4.0.26-Linux-arm64.deb",
+        "digest": "sha256:ae4e5cdf242e0dc1b0c0a0e36b0d967d08cfc64635e8f43fe70c409a86083b41"
       },
       {
-        "name": "CC-Switch-v4.0.22-Linux-arm64.rpm",
-        "size": 17897125,
-        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.22/CC-Switch-v4.0.22-Linux-arm64.rpm",
-        "digest": "sha256:b7452e8dd27124745dc2863e3a18c8659da2ab90c5f41677fadf1e12a58a4c84"
+        "name": "CC-Switch-v4.0.26-Linux-arm64.rpm",
+        "size": 18986900,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.26/CC-Switch-v4.0.26-Linux-arm64.rpm",
+        "digest": "sha256:0a3724c417948bb6d8bef8999b6fb3fdf8eb1ec62aaab31245ac948e7609fd26"
       },
       {
-        "name": "CC-Switch-v4.0.22-Linux-x86_64.AppImage",
-        "size": 97339896,
-        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.22/CC-Switch-v4.0.22-Linux-x86_64.AppImage",
-        "digest": "sha256:9090a1bc5f58ccbc72444302c1a3d8001dd1b00fbff7b0d6b64bd1be58077313"
+        "name": "CC-Switch-v4.0.26-Linux-x86_64.AppImage",
+        "size": 98535928,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.26/CC-Switch-v4.0.26-Linux-x86_64.AppImage",
+        "digest": "sha256:122fd96f3e5eb820b713742a8a92490965eb6485956d8d1c1d63905100b6e5d1"
       },
       {
-        "name": "CC-Switch-v4.0.22-Linux-x86_64.deb",
-        "size": 18678292,
-        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.22/CC-Switch-v4.0.22-Linux-x86_64.deb",
-        "digest": "sha256:6e6a43e0f48bfa1120867e4ba2959aa45b553332d9fec4213a1f5e5dbadcb3c5"
+        "name": "CC-Switch-v4.0.26-Linux-x86_64.deb",
+        "size": 19855978,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.26/CC-Switch-v4.0.26-Linux-x86_64.deb",
+        "digest": "sha256:6d30e1f08315db59f5f7928869ad7f3442624d45580cfb7c877e54134b55ae3a"
       },
       {
-        "name": "CC-Switch-v4.0.22-Linux-x86_64.rpm",
-        "size": 18683456,
-        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.22/CC-Switch-v4.0.22-Linux-x86_64.rpm",
-        "digest": "sha256:8cc29dd18170e52db3e8c8038bbc6cf20ea9e47a0db4dc9b81d8f355a2c8019d"
+        "name": "CC-Switch-v4.0.26-Linux-x86_64.rpm",
+        "size": 19864634,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.26/CC-Switch-v4.0.26-Linux-x86_64.rpm",
+        "digest": "sha256:335f3dfe675994c8c2e41ea63e8917158e417ff001fb350579a0ece0f1181424"
       },
       {
-        "name": "CC-Switch-v4.0.22-macOS.dmg",
-        "size": 37468607,
-        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.22/CC-Switch-v4.0.22-macOS.dmg",
-        "digest": "sha256:d79c1e81d93e4e561ec9094b3de1e79eee1590dfc5751dc7b30004b1986f0b70"
+        "name": "CC-Switch-v4.0.26-macOS.dmg",
+        "size": 39898297,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.26/CC-Switch-v4.0.26-macOS.dmg",
+        "digest": "sha256:da8efc3b3604e57218a2a3ab2a94d29f05623cfc26a3b551f3ad90e8e06b604f"
       },
       {
-        "name": "CC-Switch-v4.0.22-macOS.tar.gz",
-        "size": 38507418,
-        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.22/CC-Switch-v4.0.22-macOS.tar.gz",
-        "digest": "sha256:fb8cd946881fe0d0c4d7434a0281ced71a931b59e4f32d9cdef0f5a129c13782"
+        "name": "CC-Switch-v4.0.26-macOS.tar.gz",
+        "size": 41053971,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.26/CC-Switch-v4.0.26-macOS.tar.gz",
+        "digest": "sha256:6c6d43b99b101744cee864fa31751cf76fd0ad4c1c2084a105dfcac6853936ee"
       },
       {
-        "name": "CC-Switch-v4.0.22-macOS.zip",
-        "size": 37520712,
-        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.22/CC-Switch-v4.0.22-macOS.zip",
-        "digest": "sha256:cbd141a63ea53d2d72d0a28cacb898298238b0d6540542af91d8ba9c53f22d31"
+        "name": "CC-Switch-v4.0.26-macOS.zip",
+        "size": 39974605,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.26/CC-Switch-v4.0.26-macOS.zip",
+        "digest": "sha256:a4a28cbfdbbc29d2d9e29d5b93d804e5d38074f5b3fb439725a818f70ab85e27"
       },
       {
-        "name": "CC-Switch-v4.0.22-Windows-arm64-Portable.zip",
-        "size": 17551291,
-        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.22/CC-Switch-v4.0.22-Windows-arm64-Portable.zip",
-        "digest": "sha256:e2ee8cda0d716ecec77f5940464b2bc91ea07cd20919900d9a306497745bcce3"
+        "name": "CC-Switch-v4.0.26-Windows-arm64-Portable.zip",
+        "size": 18691696,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.26/CC-Switch-v4.0.26-Windows-arm64-Portable.zip",
+        "digest": "sha256:8acbcede4c29d9cfd1d05437f6962a39e8203191a1b286dd8f9996875caeb7d9"
       },
       {
-        "name": "CC-Switch-v4.0.22-Windows-arm64.msi",
-        "size": 17743872,
-        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.22/CC-Switch-v4.0.22-Windows-arm64.msi",
-        "digest": "sha256:c7d23e7ea3e45f8a8f41d408398b6170b106dd828d44d56b2dd4cee8ad4c1bfb"
+        "name": "CC-Switch-v4.0.26-Windows-arm64.msi",
+        "size": 18829312,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.26/CC-Switch-v4.0.26-Windows-arm64.msi",
+        "digest": "sha256:930a150082917bef618e34d095595ec7f4b32f2fd5c7e4a90ec8c1b58d766334"
       },
       {
-        "name": "CC-Switch-v4.0.22-Windows-Portable.zip",
-        "size": 18474271,
-        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.22/CC-Switch-v4.0.22-Windows-Portable.zip",
-        "digest": "sha256:f6ab1023d8ba3b72505c5e1267a85d69e8e8a10f35c235d39395cb67ad81f875"
+        "name": "CC-Switch-v4.0.26-Windows-Portable.zip",
+        "size": 19706783,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.26/CC-Switch-v4.0.26-Windows-Portable.zip",
+        "digest": "sha256:27bb044bd7e9e44e9fff662cca5b8e91ac4794f5bccd8ae591360e265a37c8f9"
       },
       {
-        "name": "CC-Switch-v4.0.22-Windows.msi",
-        "size": 18477056,
-        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.22/CC-Switch-v4.0.22-Windows.msi",
-        "digest": "sha256:3082108e964090380001b65017e544472b8bc39f03b3ccff47f1eaf010bdaa58"
+        "name": "CC-Switch-v4.0.26-Windows.msi",
+        "size": 19660800,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.26/CC-Switch-v4.0.26-Windows.msi",
+        "digest": "sha256:35836d4c7b2e5abdf3cc1743d99cb92a64fd23968fe3af059781f034511db96e"
       }
     ],
     "kind": "ferramenta",
@@ -289,7 +289,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (1 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 4 dias)",
+      "🟢 Projeto ativo (atualizado há 11 dias)",
       "🟢 148572 estrelas no repositório",
       "🟢 Código aberto com licença MIT",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
@@ -346,159 +346,159 @@
     "fork": false,
     "archived": false,
     "has_issues": true,
-    "latest_tag": "1.5.0",
-    "released_at": "2026-09-30T16:11:03Z",
+    "latest_tag": "1.5.1",
+    "released_at": "2026-11-01T16:13:27Z",
     "platforms": "android,linux,macos,windows",
     "assets": [
       {
-        "name": "rustdesk-1.5.0-0.aarch64-suse.rpm",
-        "size": 32959275,
-        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.0/rustdesk-1.5.0-0.aarch64-suse.rpm",
-        "digest": "sha256:b7a9ca68aa3d80a0364c8ccf1b08ab8f6ad4f95e0dda9c435bbd8bec6ad2de1d"
+        "name": "rustdesk-1.5.1-0.aarch64-suse.rpm",
+        "size": 33529911,
+        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.1/rustdesk-1.5.1-0.aarch64-suse.rpm",
+        "digest": "sha256:868d3d8bf0faa8f01db43dce92bbcff3db5f1cab33d95caa9dee6b8b82a363c6"
       },
       {
-        "name": "rustdesk-1.5.0-0.aarch64.rpm",
-        "size": 32959223,
-        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.0/rustdesk-1.5.0-0.aarch64.rpm",
-        "digest": "sha256:1b436234e51ca59bfd3beba6ba81096be13a22a7e2f8b94bd45218b8c77e5e13"
+        "name": "rustdesk-1.5.1-0.aarch64.rpm",
+        "size": 33529853,
+        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.1/rustdesk-1.5.1-0.aarch64.rpm",
+        "digest": "sha256:b26753b64c9fcb26855bb9bd1fbefc22c146875d2376f892581ab6d79764f669"
       },
       {
-        "name": "rustdesk-1.5.0-0.x86_64-suse.rpm",
-        "size": 33732987,
-        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.0/rustdesk-1.5.0-0.x86_64-suse.rpm",
-        "digest": "sha256:4cd654cc01fc2543cb24cb373dcabfa750ad6b51d9ea90ff51f6a6cd096bc5ff"
+        "name": "rustdesk-1.5.1-0.x86_64-suse.rpm",
+        "size": 34346763,
+        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.1/rustdesk-1.5.1-0.x86_64-suse.rpm",
+        "digest": "sha256:6a4156c8c2ffa5655a5d0d205ba12be5f81a7c2e3d24259ee974bd2762c4e708"
       },
       {
-        "name": "rustdesk-1.5.0-0.x86_64.rpm",
-        "size": 33732946,
-        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.0/rustdesk-1.5.0-0.x86_64.rpm",
-        "digest": "sha256:96e4246d62a992630dacac3472f356ad517a5ef6d0cd8ea02b5648bc1cabff26"
+        "name": "rustdesk-1.5.1-0.x86_64.rpm",
+        "size": 34346724,
+        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.1/rustdesk-1.5.1-0.x86_64.rpm",
+        "digest": "sha256:089b95378e8e9a064d71577293d3eb04784f087e8213204da4d5464bcb9e0807"
       },
       {
-        "name": "rustdesk-1.5.0-aarch64-signed.apk",
-        "size": 28766338,
-        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.0/rustdesk-1.5.0-aarch64-signed.apk",
-        "digest": "sha256:dc37d05c0d382455e19cf9acc9dc89f7f8cf01264b2643fb4f71f6bb15bf9b4f"
+        "name": "rustdesk-1.5.1-aarch64-signed.apk",
+        "size": 29262010,
+        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.1/rustdesk-1.5.1-aarch64-signed.apk",
+        "digest": "sha256:cfc44193ef96dd601d25c9a29f1aa5385effdbaae33d2abbb1d88495797f6b84"
       },
       {
-        "name": "rustdesk-1.5.0-aarch64.AppImage",
-        "size": 84883976,
-        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.0/rustdesk-1.5.0-aarch64.AppImage",
-        "digest": "sha256:7a5d56ffb9f90650d298b39f682b33f5ee55e8acd7360033c7027f37e69c069f"
+        "name": "rustdesk-1.5.1-aarch64.AppImage",
+        "size": 80337416,
+        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.1/rustdesk-1.5.1-aarch64.AppImage",
+        "digest": "sha256:47c1be6f26ee261101ed155bcd1923ab682ebfc5bc546e5b4399cb1a5b4097ed"
       },
       {
-        "name": "rustdesk-1.5.0-aarch64.deb",
-        "size": 23194980,
-        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.0/rustdesk-1.5.0-aarch64.deb",
-        "digest": "sha256:1f2fc9be8321c10347aa33cb13198c6a956aec272c5e58ac81f4c0ef04037df3"
+        "name": "rustdesk-1.5.1-aarch64.deb",
+        "size": 23594612,
+        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.1/rustdesk-1.5.1-aarch64.deb",
+        "digest": "sha256:d1471ed916dc21e3ae3965f936c51944e1f2635a6d521fcc4663486696018465"
       },
       {
-        "name": "rustdesk-1.5.0-aarch64.dmg",
-        "size": 29874038,
-        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.0/rustdesk-1.5.0-aarch64.dmg",
-        "digest": "sha256:3929b0a4321e7d0f561a317059798be882d65decc59681eb77061f8efe56fbf4"
+        "name": "rustdesk-1.5.1-aarch64.dmg",
+        "size": 30548457,
+        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.1/rustdesk-1.5.1-aarch64.dmg",
+        "digest": "sha256:1b94182cba2375ea29a196f2c8183f7feaa00588474ecd76c92c2303ffd70d7b"
       },
       {
-        "name": "rustdesk-1.5.0-aarch64.exe",
-        "size": 23857008,
-        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.0/rustdesk-1.5.0-aarch64.exe",
-        "digest": "sha256:b660dbd7fd5ba4723447bb642dd95063f3a2abad76f5544d024f3b1c029dd87e"
+        "name": "rustdesk-1.5.1-aarch64.exe",
+        "size": 24252784,
+        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.1/rustdesk-1.5.1-aarch64.exe",
+        "digest": "sha256:54de7328a4a2bff0b9e60d1268f7b239c45d11ab4dff4fed0c88a8a3b0fbe516"
       },
       {
-        "name": "rustdesk-1.5.0-aarch64.flatpak",
-        "size": 23141344,
-        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.0/rustdesk-1.5.0-aarch64.flatpak",
-        "digest": "sha256:29af72e4768c1bd86a9a5f2f022b9fd9804963c4243a6287fa8873d841bbb6b6"
+        "name": "rustdesk-1.5.1-aarch64.flatpak",
+        "size": 23484664,
+        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.1/rustdesk-1.5.1-aarch64.flatpak",
+        "digest": "sha256:dde91bc78c0e9b469f6deab501f71dceaabbabd62bdc5d0446d3dad5f3a3d637"
       },
       {
-        "name": "rustdesk-1.5.0-aarch64.msi",
-        "size": 24428544,
-        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.0/rustdesk-1.5.0-aarch64.msi",
-        "digest": "sha256:ec4dc1afa5ae3d6a8ecceab1a681bfd17ed56400056c8fa1c182decf43eab1f7"
+        "name": "rustdesk-1.5.1-aarch64.msi",
+        "size": 24842240,
+        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.1/rustdesk-1.5.1-aarch64.msi",
+        "digest": "sha256:71900b5212fdc4af20d0d9ba9d6fc1f43767a16cd022bb55e46a17e3b7dc21c1"
       },
       {
-        "name": "rustdesk-1.5.0-armv7-sciter.deb",
-        "size": 14913220,
-        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.0/rustdesk-1.5.0-armv7-sciter.deb",
-        "digest": "sha256:e98e4dba368dc17ff79c8b04dadf1028b6e3ebe0ba85312267c948cca1e67bc5"
+        "name": "rustdesk-1.5.1-armv7-sciter.deb",
+        "size": 15238164,
+        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.1/rustdesk-1.5.1-armv7-sciter.deb",
+        "digest": "sha256:560aaa3c89a9fc5eb3ebb9afe7260acf637b1ba72f3ca17129391430418eab90"
       },
       {
-        "name": "rustdesk-1.5.0-armv7-signed.apk",
-        "size": 27213962,
-        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.0/rustdesk-1.5.0-armv7-signed.apk",
-        "digest": "sha256:14e0bbccfca1bce9ea03350ad95b763064bda2481a36312420403f6cb1e0f71a"
+        "name": "rustdesk-1.5.1-armv7-signed.apk",
+        "size": 27676866,
+        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.1/rustdesk-1.5.1-armv7-signed.apk",
+        "digest": "sha256:f219ceedf07c9439f8a56fb7a4fd32afa88c5c242dd045e6ef825447a6ef45d6"
       },
       {
-        "name": "rustdesk-1.5.0-universal-signed.apk",
-        "size": 77451974,
-        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.0/rustdesk-1.5.0-universal-signed.apk",
-        "digest": "sha256:b7910dea1b6ec4a079aa753e0432c2269b843d89d900c7a3930b6ec13f3ba112"
+        "name": "rustdesk-1.5.1-universal-signed.apk",
+        "size": 78930686,
+        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.1/rustdesk-1.5.1-universal-signed.apk",
+        "digest": "sha256:640644b46723afb01c344c069954cfed850c748c1cef3e93f9700106aab6d5f1"
       },
       {
-        "name": "rustdesk-1.5.0-x86-sciter.exe",
-        "size": 13377392,
-        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.0/rustdesk-1.5.0-x86-sciter.exe",
-        "digest": "sha256:9f5e99ed33c08d3f61dd4e3d0dc06b927836bb518acd7047ffb0a68b9b138bf0"
+        "name": "rustdesk-1.5.1-x86-sciter.exe",
+        "size": 13645680,
+        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.1/rustdesk-1.5.1-x86-sciter.exe",
+        "digest": "sha256:fbc9d8f59602bf6b1b419902cd8c77cd236393e6fe74635393e8a9cf4c765483"
       },
       {
-        "name": "rustdesk-1.5.0-x86_64-sciter.deb",
-        "size": 18004180,
-        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.0/rustdesk-1.5.0-x86_64-sciter.deb",
-        "digest": "sha256:28155784ba24d6f3a77eea129f8ca2b150f7d06945bbdc16ff41a0085a9f53b5"
+        "name": "rustdesk-1.5.1-x86_64-sciter.deb",
+        "size": 18334832,
+        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.1/rustdesk-1.5.1-x86_64-sciter.deb",
+        "digest": "sha256:562247ee5e786426d51734bc7b531ad4b7c6f848b9de518d408208458f07ac65"
       },
       {
-        "name": "rustdesk-1.5.0-x86_64-sciter.flatpak",
-        "size": 17870480,
-        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.0/rustdesk-1.5.0-x86_64-sciter.flatpak",
-        "digest": "sha256:0691b0abb3082550c4024684ca52d89dc8c522132399d616ee51b022e50b6d30"
+        "name": "rustdesk-1.5.1-x86_64-sciter.flatpak",
+        "size": 18191408,
+        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.1/rustdesk-1.5.1-x86_64-sciter.flatpak",
+        "digest": "sha256:951f8fb6fa7fe3d9afb1a747cfd28fc892016909ed62a2309fae1d21eb42d76b"
       },
       {
-        "name": "rustdesk-1.5.0-x86_64-signed.apk",
-        "size": 28237942,
-        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.0/rustdesk-1.5.0-x86_64-signed.apk",
-        "digest": "sha256:b6c41f81a0bbe99c8a95b01078866d72d285b7b732a2b94f5f5542a9c4bcadf6"
+        "name": "rustdesk-1.5.1-x86_64-signed.apk",
+        "size": 28782766,
+        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.1/rustdesk-1.5.1-x86_64-signed.apk",
+        "digest": "sha256:75977356cee4a2dd0c1dd8e93d09ea7f712aa4ef25f190fdad27b9e9200dbb33"
       },
       {
-        "name": "rustdesk-1.5.0-x86_64.AppImage",
-        "size": 87992824,
-        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.0/rustdesk-1.5.0-x86_64.AppImage",
-        "digest": "sha256:422ebb915b4c709f3511cfa2941abcefdcb1d3d60f673f5a20cf88a4ab2c9aa5"
+        "name": "rustdesk-1.5.1-x86_64.AppImage",
+        "size": 88472056,
+        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.1/rustdesk-1.5.1-x86_64.AppImage",
+        "digest": "sha256:bb8b7ccb3f50a201dccdc89b46385cff90f33e60b4730faeda9fa5504ac4dce6"
       },
       {
-        "name": "rustdesk-1.5.0-x86_64.deb",
-        "size": 24940796,
-        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.0/rustdesk-1.5.0-x86_64.deb",
-        "digest": "sha256:4e2b9701d25a7ef373f3d09bda584a37d6902f97a6ab15f2e86d4a5783e2a0ec"
+        "name": "rustdesk-1.5.1-x86_64.deb",
+        "size": 25337156,
+        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.1/rustdesk-1.5.1-x86_64.deb",
+        "digest": "sha256:b5d682ad90cb7571ecbdbf26eef58d3c4514e726a74ef6d08ce3f0b114ef0bd9"
       },
       {
-        "name": "rustdesk-1.5.0-x86_64.dmg",
-        "size": 36878402,
-        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.0/rustdesk-1.5.0-x86_64.dmg",
-        "digest": "sha256:1ca3cbfbe7f2bd28b50c93fcd50d4a0b671dc76d18be27cea99d3a65767eb526"
+        "name": "rustdesk-1.5.1-x86_64.dmg",
+        "size": 37691902,
+        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.1/rustdesk-1.5.1-x86_64.dmg",
+        "digest": "sha256:457e45a26d3f0919221e6db3dfb8c6a12ca65190307b53a907c3c51b762eb008"
       },
       {
-        "name": "rustdesk-1.5.0-x86_64.exe",
-        "size": 25887600,
-        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.0/rustdesk-1.5.0-x86_64.exe",
-        "digest": "sha256:8555777215510d83d2d61c9dc984e4fcc838bd7e79f9d18a42585431f5e8bb47"
+        "name": "rustdesk-1.5.1-x86_64.exe",
+        "size": 26211184,
+        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.1/rustdesk-1.5.1-x86_64.exe",
+        "digest": "sha256:319206042390ebfcba934cf0baa2f612f34de463c78c843b7cb8c22097c4bf7b"
       },
       {
-        "name": "rustdesk-1.5.0-x86_64.flatpak",
-        "size": 24741448,
-        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.0/rustdesk-1.5.0-x86_64.flatpak",
-        "digest": "sha256:33b34138122ceaac4db1244a3420df104961d781c17f6cd865ece5764c034610"
+        "name": "rustdesk-1.5.1-x86_64.flatpak",
+        "size": 25181624,
+        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.1/rustdesk-1.5.1-x86_64.flatpak",
+        "digest": "sha256:d070227b9fb1050c32325714f8d08c90815635d06f7d02ef29663290c1e8c1fc"
       },
       {
-        "name": "rustdesk-1.5.0-x86_64.msi",
-        "size": 26345472,
-        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.0/rustdesk-1.5.0-x86_64.msi",
-        "digest": "sha256:624fe792ab1d76b35134dab84bff97a6bcd14043ffd090a2c6a2800f77580495"
+        "name": "rustdesk-1.5.1-x86_64.msi",
+        "size": 26718208,
+        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.1/rustdesk-1.5.1-x86_64.msi",
+        "digest": "sha256:71069183cbc6124273138684ab4032d2211e83efa035886f9c774fe1d3eba3f0"
       },
       {
-        "name": "rustdesk-unattended-wayland-1.5.0-x86_64.deb",
-        "size": 25161220,
-        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.0/rustdesk-unattended-wayland-1.5.0-x86_64.deb",
-        "digest": "sha256:9eed5e9f4b47af8ed41585c399cb2c0d2870e801c99645330dea1063ad844e09"
+        "name": "rustdesk-unattended-wayland-1.5.1-x86_64.deb",
+        "size": 25573768,
+        "browser_download_url": "https://github.com/rustdesk/rustdesk/releases/download/1.5.1/rustdesk-unattended-wayland-1.5.1-x86_64.deb",
+        "digest": "sha256:f7760dad505b5eca1e99531f15b4de21e83acc7dbfce77a3ba456ef2afb0e961"
       }
     ],
     "kind": "app",
@@ -509,7 +509,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (6 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 6 dias)",
+      "🟢 Projeto ativo (atualizado há 12 dias)",
       "🟢 126818 estrelas no repositório",
       "🟢 Código aberto com licença AGPL-3.0",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
@@ -668,7 +668,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (12 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 6 dias)",
+      "🟢 Projeto ativo (atualizado há 13 dias)",
       "🟢 119009 estrelas no repositório",
       "🟢 Código aberto com licença MIT",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
@@ -725,7 +725,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (7 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 5 dias)",
+      "🟢 Projeto ativo (atualizado há 11 dias)",
       "🟢 114500 estrelas no repositório",
       "🟢 Código aberto com licença MIT",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
@@ -806,7 +806,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (7 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 5 dias)",
+      "🟢 Projeto ativo (atualizado há 11 dias)",
       "🟢 112186 estrelas no repositório",
       "🟢 Código aberto com licença Apache-2.0",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
@@ -947,7 +947,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (8 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 5 dias)",
+      "🟢 Projeto ativo (atualizado há 11 dias)",
       "🟢 108757 estrelas no repositório",
       "🟢 Código aberto com licença MIT",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
@@ -1160,7 +1160,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (5 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 4 dias)",
+      "🟢 Projeto ativo (atualizado há 10 dias)",
       "🟢 96406 estrelas no repositório",
       "🟡 Sem licença open-source padronizada",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
@@ -1313,7 +1313,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (3 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 9 dias)",
+      "🟢 Projeto ativo (atualizado há 15 dias)",
       "🟢 95451 estrelas no repositório",
       "🟢 Código aberto com licença Apache-2.0",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
@@ -1352,7 +1352,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (7 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 8 dias)",
+      "🟢 Projeto ativo (atualizado há 14 dias)",
       "🟢 93941 estrelas no repositório",
       "🟢 Código aberto com licença Apache-2.0",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"

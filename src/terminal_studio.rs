@@ -210,7 +210,8 @@ pub fn open_native_terminal(working_dir: &Path) -> Result<(), String> {
         return Ok(());
     }
     Command::new("powershell")
-        .args(["-NoExit", "-Command", &format!("Set-Location '{}'", dir.display())])
+        .current_dir(dir)
+        .arg("-NoExit")
         .spawn()
         .map_err(|e| format!("Não foi possível abrir o terminal: {e}"))?;
     Ok(())
