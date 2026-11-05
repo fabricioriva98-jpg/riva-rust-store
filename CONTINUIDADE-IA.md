@@ -1,7 +1,7 @@
 ---
 tipo: instrucoes-continuidade
 projeto: RRS - Riva Rust Store (gitstore 0.3.0)
-atualizado: 2026-10-30
+atualizado: 2026-11-05
 autor: Claude (Opus 5.5) / Antigravity (Gemini 4 Argon)
 ---
 # Instruções para outra IA continuar a RRS
@@ -113,6 +113,16 @@ Linha de comando útil: `search`, `show dono/repo`, `verify dono/repo`, `downloa
 - Nenhum caminho deste PC (`E:\Fabricio`, `C:\Users\fabri`) no código (`codigo_distribuido_nao_tem_caminhos_deste_pc`).
 
 Feito e testado: avaliação, correções G1–G3, fases 1, 2 e 3 do `IDEIAS-MELHORIAS-24.10.26.md` (resumo lá), rodada social e identidade visual com espaço educacional interativo. Catálogo com 157 itens. Testes automatizados aumentados para 139 (todos passando).
+
+Rodada Preparação para Publicação Open Source no GitHub (05/11, tarde — Antigravity / Gemini):
+- **Objetivo**: Preparar o projeto RRS para publicação pública e gratuita no GitHub como software livre.
+- **Ações Realizadas**:
+  - Adicionado arquivo `LICENSE` oficial com a licença **MIT** em nome de Fabricio Riva.
+  - Metadados do pacote enriquecidos no `Cargo.toml` (`authors`, `license`, `readme`, `keywords`).
+  - `README.md` totalmente reformulado e profissionalizado: visão geral, badges modernos, detalhamento das 150+ ferramentas, Estúdio Aprender Rust (30 lições), Biblioteca de Crates (60+), Terminal & IDE integrada, privacidade e guia de compilação/instalação.
+  - Correção em `terminal_studio.rs`: `open_native_terminal` atualizado para usar `.current_dir(dir)` no PowerShell, resolvendo com segurança qualquer problema de escape de aspas ou apóstrofos no caminho.
+  - Verificação de `.gitignore`: banco local (`*.db`), arquivos temporários e executáveis da raiz protegidos de subida acidental no repositório.
+  - **122 testes unitários passando 100%**.
 
 Rodada Remoção do Modo TV / Tela Cheia (30/10, tarde — Antigravity / Gemini):
 - **Pedido Explícito do Usuário**: "tire o 'Modo TV' ou tela cheia do aplicativo", mantendo o RRS como uma aplicação limpa de desktop focada no desenvolvimento e aprendizado Rust.
