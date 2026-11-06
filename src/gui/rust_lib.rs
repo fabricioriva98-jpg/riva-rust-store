@@ -43,7 +43,7 @@ impl StoreGui {
             if ui
                 .selectable_label(
                     self.rust_lib_active_tab == 0,
-                    RichText::new(self.tr("📚 Módulos & Crates (60+)")).strong().size(13.5),
+                    RichText::new(self.tr("📚 Módulos & Crates (80+)")).strong().size(13.5),
                 )
                 .clicked()
             {

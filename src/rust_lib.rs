@@ -2095,7 +2095,522 @@ fn main() {
         cargo_dep: Some(r#"tracing = "0.1""#),
         docs_url: "https://docs.rs/tracing/latest/tracing/",
     },
+    RustLibItem {
+        id: "crate_ratatui",
+        name: "ratatui",
+        category: LibCategory::Ecosystem,
+        summary: "Framework moderno para construção de interfaces ricas de terminal (TUI) com widgets e layout responsivo.",
+        description: "\
+Sucessor espiritual e fork mantido ativamente do tui-rs. O Ratatui permite desenhar dashboards, exploradores de arquivos \
+e ferramentas interativas no terminal com suporte a cores truecolor, mouse, layouts flexíveis e integração nativa com crossterm.",
+        key_types: &["Terminal", "Frame", "Layout", "Block", "Paragraph", "List", "Table"],
+        key_methods: &[
+            "Terminal::new(backend)",
+            "terminal.draw(|f| ...)",
+            "Layout::default().constraints(...)",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// ratatui = "0.28"
+// crossterm = "0.28"
 
+fn main() {
+    println!("ratatui: construção de interfaces interativas e dashboards direto no terminal!");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"ratatui = "0.28""#),
+        docs_url: "https://docs.rs/ratatui/latest/ratatui/",
+    },
+    RustLibItem {
+        id: "crate_hyper",
+        name: "hyper",
+        category: LibCategory::Net,
+        summary: "Biblioteca HTTP/1.1 e HTTP/2 assíncrona, robusta e de alta performance que alimenta boa parte da web em Rust.",
+        description: "\
+Implementação fundacional de HTTP em Rust puro, mantida pelo time Tokio. Serve como motor subjacente para frameworks de alto nível \
+como Axum e Reqwest, oferecendo controle cirúrgico sobre conexões, headers, multiplexação HTTP/2 e streaming de buffers.",
+        key_types: &["Request<Incoming>", "Response<BoxBody>", "client::conn::http1", "server::conn::http2"],
+        key_methods: &[
+            "Builder::new()",
+            "serve_connection()",
+            "send_request()",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// hyper = { version = "1.0", features = ["full"] }
+
+fn main() {
+    println!("hyper: motor HTTP assíncrono ultra-rápido de baixo nível para servidores e clientes.");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"hyper = { version = "1.0", features = ["full"] }"#),
+        docs_url: "https://docs.rs/hyper/latest/hyper/",
+    },
+    RustLibItem {
+        id: "crate_tonic",
+        name: "tonic",
+        category: LibCategory::Net,
+        summary: "Implementação nativa de gRPC sobre HTTP/2 com geração automática de código a partir de Protocol Buffers.",
+        description: "\
+Construído sobre Tokio, Prost e Hyper, o Tonic fornece suporte completo a gRPC de nível de produção. \
+Suporta chamadas unárias, streaming de cliente, streaming de servidor, streaming bidirecional e TLS.",
+        key_types: &["Request<T>", "Response<T>", "Status", "transport::Server", "transport::Channel"],
+        key_methods: &[
+            "Server::builder()",
+            "add_service()",
+            "serve()",
+            "Channel::from_static()",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// tonic = "0.12"
+// prost = "0.13"
+
+fn main() {
+    println!("tonic: comunicação gRPC assíncrona e tipada de altíssima velocidade em Rust.");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"tonic = "0.12""#),
+        docs_url: "https://docs.rs/tonic/latest/tonic/",
+    },
+    RustLibItem {
+        id: "crate_diesel",
+        name: "diesel",
+        category: LibCategory::Database,
+        summary: "ORM e construtor de consultas seguro contra falhas em tempo de compilação para Postgres, MySQL e SQLite.",
+        description: "\
+O Diesel elimina erros comuns de SQL ao garantir em tempo de compilação que suas consultas sejam sintaticamente válidas \
+e correspondam aos tipos do seu banco. Gera migrações seguras e código com zero custo de abstração.",
+        key_types: &["PgConnection", "SqliteConnection", "QueryDsl", "RunQueryDsl", "Insertable"],
+        key_methods: &[
+            "establish()",
+            "select()",
+            "filter()",
+            "load()",
+            "execute()",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// diesel = { version = "2.2", features = ["postgres"] }
+
+fn main() {
+    println!("diesel: ORM robusto e tipado garantindo consultas SQL válidas em tempo de compilação.");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"diesel = { version = "2.2", features = ["postgres"] }"#),
+        docs_url: "https://docs.rs/diesel/latest/diesel/",
+    },
+    RustLibItem {
+        id: "crate_sea_orm",
+        name: "sea-orm",
+        category: LibCategory::Database,
+        summary: "ORM relacional 100% assíncrono e dinâmico construído sobre SQLx para arquiteturas de microsserviços.",
+        description: "\
+Projetado desde o início para Rust assíncrono (Tokio e async-std). Oferece tipagem estática elegante para entidades, \
+suporte a relacionamentos 1-to-N e N-to-N, paginação integrada e migrações fluentes com suporte a Postgres, MySQL e SQLite.",
+        key_types: &["Database", "EntityTrait", "ActiveModelTrait", "Select", "DatabaseConnection"],
+        key_methods: &[
+            "Database::connect()",
+            "Entity::find()",
+            "ActiveModel::insert()",
+            "filter()",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// sea-orm = { version = "1.0", features = ["sqlx-postgres", "runtime-tokio-rustls"] }
+
+fn main() {
+    println!("sea-orm: ORM assíncrono e ergonômico para trabalhar com bancos de dados relacionais.");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"sea-orm = { version = "1.0", features = ["sqlx-postgres", "runtime-tokio-rustls"] }"#),
+        docs_url: "https://docs.rs/sea-orm/latest/sea_orm/",
+    },
+    RustLibItem {
+        id: "crate_polars",
+        name: "polars",
+        category: LibCategory::Ecosystem,
+        summary: "Biblioteca de DataFrames ultrarrápida com execução vetorizada e motor de consulta Lazy com Apache Arrow.",
+        description: "\
+Escrito do zero em Rust, o Polars é uma das ferramentas analíticas mais velozes do mundo. \
+Fornece API de DataFrames no estilo Pandas/R, mas com paralelismo automático multi-thread via Rayon e otimizador de plano lazy.",
+        key_types: &["DataFrame", "Series", "LazyFrame", "col", "lit", "Expr"],
+        key_methods: &[
+            "df.lazy()",
+            ".filter()",
+            ".group_by()",
+            ".agg()",
+            ".collect()",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// polars = { version = "0.43", features = ["lazy", "parquet"] }
+
+fn main() {
+    println!("polars: processamento analítico e DataFrames em velocidade nativa com suporte a Arrow.");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"polars = { version = "0.43", features = ["lazy"] }"#),
+        docs_url: "https://docs.rs/polars/latest/polars/",
+    },
+    RustLibItem {
+        id: "crate_ndarray",
+        name: "ndarray",
+        category: LibCategory::Ecosystem,
+        summary: "Arrays n-dimensionais com suporte a álgebra linear, fatiamento dimensional e computação numérica estilo NumPy.",
+        description: "\
+A espinha dorsal científica de Rust. Fornece tipos Array1, Array2, ArrayD genéricos com fatiamento eficiente, \
+broadcasting, operações elemento a elemento e aceleração BLAS/LAPACK opcional.",
+        key_types: &["Array", "Array1", "Array2", "ArrayView", "s!", "Axis"],
+        key_methods: &[
+            "Array::zeros()",
+            "Array::from_vec()",
+            ".slice()",
+            ".dot()",
+            ".mapv()",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// ndarray = "0.16"
+
+fn main() {
+    println!("ndarray: arrays multidimensionais e computação numérica avançada para Rust.");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"ndarray = "0.16""#),
+        docs_url: "https://docs.rs/ndarray/latest/ndarray/",
+    },
+    RustLibItem {
+        id: "crate_candle_core",
+        name: "candle-core",
+        category: LibCategory::Ecosystem,
+        summary: "Framework minimalista de Machine Learning e Deep Learning da Hugging Face focado em inferência e leveza.",
+        description: "\
+Criado pela Hugging Face para rodar modelos modernos de IA (Llama, Whisper, Stable Diffusion, etc.) \
+com baixo consumo de memória e sem o peso do PyTorch/libtorch. Suporta aceleração CUDA, Metal e CPU com AVX/NEON.",
+        key_types: &["Tensor", "Device", "DType", "Shape", "VarMap"],
+        key_methods: &[
+            "Tensor::new()",
+            "Tensor::zeros()",
+            ".matmul()",
+            ".to_device()",
+            ".forward()",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// candle-core = "0.7"
+
+fn main() {
+    println!("candle: inferência de inteligência artificial rápida e sem dependências pesadas.");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"candle-core = "0.7""#),
+        docs_url: "https://docs.rs/candle-core/latest/candle_core/",
+    },
+    RustLibItem {
+        id: "crate_rustls",
+        name: "rustls",
+        category: LibCategory::Net,
+        summary: "Biblioteca TLS (Transport Layer Security) moderna, segura por design e escrita inteiramente em Rust puro.",
+        description: "\
+Alternativa moderna e imune a vulnerabilidades de memória comuns do OpenSSL. Suporta TLS 1.2 e TLS 1.3, \
+criptografia rápida com ring ou aws-lc-rs e é usada por projetos de grande porte como curl, Caddy e Linkerd.",
+        key_types: &["ClientConfig", "ServerConfig", "Stream", "CertificateDer", "PrivateKeyDer"],
+        key_methods: &[
+            "ClientConfig::builder()",
+            "with_root_certificates()",
+            "connect()",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// rustls = "0.23"
+
+fn main() {
+    println!("rustls: segurança TLS contemporânea livre de vulnerabilidades C/OpenSSL.");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"rustls = "0.23""#),
+        docs_url: "https://docs.rs/rustls/latest/rustls/",
+    },
+    RustLibItem {
+        id: "crate_ring",
+        name: "ring",
+        category: LibCategory::Ecosystem,
+        summary: "Operações criptográficas focadas em segurança, primitivas rápidas (AES, ChaCha20, SHA, Ed25519) e tempo constante.",
+        description: "\
+Implementação focada em criptografia de chaves públicas, criptografia simétrica e assinaturas digitais \
+com resistência comprovada a ataques de temporização (constant-time execution). Núcleo criptográfico do ecossistema.",
+        key_types: &["digest::Digest", "signature::Ed25519KeyPair", "aead::OpeningKey", "rand::SystemRandom"],
+        key_methods: &[
+            "digest::digest()",
+            "key_pair.sign()",
+            "open_in_place()",
+            "seal_in_place()",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// ring = "0.17"
+
+fn main() {
+    println!("ring: primitivas criptográficas velozes e seguras contra ataques de temporização.");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"ring = "0.17""#),
+        docs_url: "https://docs.rs/ring/latest/ring/",
+    },
+    RustLibItem {
+        id: "crate_nom",
+        name: "nom",
+        category: LibCategory::Ecosystem,
+        summary: "Framework de combinadores de parsers sem alocação, ideal para parsing de protocolos binários e texto.",
+        description: "\
+O Nom é o padrão de excelência para escrever analisadores sintáticos em Rust sem copiar dados da memória (zero-copy parsing). \
+Permite compor pequenos parsers em gramáticas completas de forma legível e com performance máxima.",
+        key_types: &["IResult<I, O>", "Parser", "tag", "take_while", "map_res"],
+        key_methods: &[
+            "nom::bytes::complete::tag()",
+            "nom::character::complete::digit1()",
+            ".parse()",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// nom = "7.1"
+
+fn main() {
+    println!("nom: construção modular e zero-copy de parsers de protocolos e formatos de dados.");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"nom = "7.1""#),
+        docs_url: "https://docs.rs/nom/latest/nom/",
+    },
+    RustLibItem {
+        id: "crate_syn",
+        name: "syn",
+        category: LibCategory::Ecosystem,
+        summary: "Parser completo de sintaxe Rust para análise de código e desenvolvimento de procedural macros robustas.",
+        description: "\
+Analisa código Rust e o transforma em uma Árvore de Sintaxe Abstrata (AST) tipada. É o crate fundamental sobre o qual \
+praticamente todas as macros declarativas (#[derive], macros de atributo) do ecossistema Rust (como Serde e Clap) são criadas.",
+        key_types: &["DeriveInput", "ItemStruct", "ItemEnum", "Type", "Expr", "Path"],
+        key_methods: &[
+            "syn::parse_macro_input!()",
+            "syn::parse_str()",
+            "syn::parse2()",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// syn = { version = "2.0", features = ["full", "extra-traits"] }
+
+fn main() {
+    println!("syn: análise sintática da linguagem Rust para metaprogramação com proc-macros.");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"syn = { version = "2.0", features = ["full"] }"#),
+        docs_url: "https://docs.rs/syn/latest/syn/",
+    },
+    RustLibItem {
+        id: "crate_quote",
+        name: "quote",
+        category: LibCategory::Ecosystem,
+        summary: "Quasi-quoting idiomático para geração limpa de tokens Rust em procedural macros.",
+        description: "\
+Complemento direto do `syn`. Permite escrever código Rust diretamente dentro da macro quote! { ... } \
+interpolando variáveis e tipos da AST de forma intuitiva, convertendo estruturas de dados em tokens válidos para o compilador.",
+        key_types: &["quote!", "ToTokens", "TokenStreamExt", "format_ident!"],
+        key_methods: &[
+            "quote! { ... }",
+            "format_ident!(\"{}\", name)",
+            ".to_token_stream()",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// quote = "1.0"
+// proc-macro2 = "1.0"
+
+fn main() {
+    println!("quote: geração elegante de código Rust via interpolação de tokens em procedural macros.");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"quote = "1.0""#),
+        docs_url: "https://docs.rs/quote/latest/quote/",
+    },
+    RustLibItem {
+        id: "crate_notify",
+        name: "notify",
+        category: LibCategory::FsIo,
+        summary: "Monitoramento em tempo real de eventos do sistema de arquivos com suporte nativo entre plataformas.",
+        description: "\
+Notifica sua aplicação sempre que arquivos ou pastas forem criados, modificados, renomeados ou excluídos. \
+Utiliza as APIs de eventos mais eficientes do SO (ReadDirectoryChangesW no Windows, inotify no Linux, FSEvents no macOS).",
+        key_types: &["RecommendedWatcher", "Event", "EventKind", "RecursiveMode", "Watcher"],
+        key_methods: &[
+            "recommended_watcher()",
+            "watcher.watch(path, mode)",
+            "watcher.unwatch()",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// notify = "6.1"
+
+fn main() {
+    println!("notify: monitoramento de alterações em arquivos e pastas com eventos em tempo real.");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"notify = "6.1""#),
+        docs_url: "https://docs.rs/notify/latest/notify/",
+    },
+    RustLibItem {
+        id: "crate_criterion",
+        name: "criterion",
+        category: LibCategory::Ecosystem,
+        summary: "Microbenchmarking com rigor estatístico, detecção de regressões de desempenho e gráficos detalhados.",
+        description: "\
+A ferramenta de benchmarking mais avançada de Rust. Isola ruído do sistema operacional com amostragem estatística \
+rigorosa (intervalos de confiança, teste t de Student) e detecta variações mínimas de nanosegundos em execuções de código.",
+        key_types: &["Criterion", "BenchmarkGroup", "BenchmarkId", "criterion_group!", "criterion_main!"],
+        key_methods: &[
+            "c.bench_function(\"nome\", |b| b.iter(|| ...))",
+            "c.benchmark_group()",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// [dev-dependencies]
+// criterion = { version = "0.5", features = ["html_reports"] }
+
+fn main() {
+    println!("criterion: medição estatística precisa de tempo de CPU e regressão de performance.");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"criterion = "0.5""#),
+        docs_url: "https://docs.rs/criterion/latest/criterion/",
+    },
+    RustLibItem {
+        id: "crate_mockall",
+        name: "mockall",
+        category: LibCategory::Ecosystem,
+        summary: "Framework completo para criação de Mocks e stubs em testes unitários com suporte a traits e structs.",
+        description: "\
+Permite isolar dependências externas como conexões de rede, bancos de dados ou relógios em testes automatizados. \
+Gera implementações falsas com #[automock] permitindo configurar expectativas, valores de retorno e contagem de chamadas.",
+        key_types: &["#[automock]", "mock!", "Sequence", "Predicate"],
+        key_methods: &[
+            ".expect()",
+            ".returning()",
+            ".times()",
+            ".with()",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// [dev-dependencies]
+// mockall = "0.13"
+
+fn main() {
+    println!("mockall: isolamento de componentes e testes unitários controlados com mocks tipados.");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"mockall = "0.13""#),
+        docs_url: "https://docs.rs/mockall/latest/mockall/",
+    },
+    RustLibItem {
+        id: "crate_proptest",
+        name: "proptest",
+        category: LibCategory::Ecosystem,
+        summary: "Testes baseados em propriedades com encolhimento automático de casos de falha (QuickCheck moderno).",
+        description: "\
+Em vez de testar poucos exemplos manuais, define propriedades lógicas invariantes e gera milhares de entradas \
+aleatórias para tentar quebrar seu código. Quando encontra um bug, encolhe (shrink) a entrada até o menor contraexemplo possível.",
+        key_types: &["proptest!", "Strategy", "Just", "prop_compose!", "TestRunner"],
+        key_methods: &[
+            "proptest! { #[test] fn prop_test(val in any::<u32>()) { ... } }",
+            "prop_assert!",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// [dev-dependencies]
+// proptest = "1.5"
+
+fn main() {
+    println!("proptest: busca automática por bugs e contraexemplos através de property testing.");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"proptest = "1.5""#),
+        docs_url: "https://docs.rs/proptest/latest/proptest/",
+    },
+    RustLibItem {
+        id: "crate_zeroize",
+        name: "zeroize",
+        category: LibCategory::MemoryTypes,
+        summary: "Limpeza segura e garantida de segredos em memória contra otimizações agressivas do compilador.",
+        description: "\
+Compiladores modernos frequentemente descartam instruções que limpam buffers de memória se a variável não for usada em seguida. \
+O zeroize utiliza barreiras de memória e código volátil para garantir que senhas, chaves criptográficas e tokens sejam apagados da RAM.",
+        key_types: &["Zeroize", "ZeroizeOnDrop", "Zeroizing<Z>"],
+        key_methods: &[
+            ".zeroize()",
+            "Zeroizing::new(secret)",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// zeroize = { version = "1.8", features = ["derive"] }
+
+fn main() {
+    println!("zeroize: eliminação garantida de segredos e chaves criptográficas da memória RAM.");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"zeroize = { version = "1.8", features = ["derive"] }"#),
+        docs_url: "https://docs.rs/zeroize/latest/zeroize/",
+    },
+    RustLibItem {
+        id: "crate_semver",
+        name: "semver",
+        category: LibCategory::Ecosystem,
+        summary: "Análise, validação e comparação de versões seguindo as regras oficiais do Semantic Versioning 2.0.0.",
+        description: "\
+O mesmo motor que alimenta o Cargo para gerenciar compatibilidade entre versões de pacotes. \
+Permite analisar números de versão (major, minor, patch, pre-release) e avaliar operadores de restrição como ^1.2, ~2.0 e >=1.0, <2.0.",
+        key_types: &["Version", "VersionReq", "Op", "Prerelease", "BuildMetadata"],
+        key_methods: &[
+            "Version::parse()",
+            "VersionReq::parse()",
+            "req.matches(&version)",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// semver = "1.0"
+
+fn main() {
+    println!("semver: compatibilidade, checagem e resolução de especificações semver 2.0.");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"semver = "1.0""#),
+        docs_url: "https://docs.rs/semver/latest/semver/",
+    },
+    RustLibItem {
+        id: "crate_env_logger",
+        name: "env_logger",
+        category: LibCategory::Ecosystem,
+        summary: "Logger configurável via variáveis de ambiente (RUST_LOG) ideal para desenvolvimento e ferramentas CLI.",
+        description: "\
+Implementação simples e altamente popular para o crate log. Permite habilitar e filtrar saídas de debug ou trace \
+em módulos específicos dinamicamente no terminal apenas definindo a variável RUST_LOG=info ou RUST_LOG=meu_crate=debug.",
+        key_types: &["Builder", "Env", "Target", "TimestampPrecision"],
+        key_methods: &[
+            "env_logger::init()",
+            "Builder::from_env().init()",
+            "Builder::new()",
+        ],
+        example_code: r##"// Adicione no Cargo.toml:
+// log = "0.4"
+// env_logger = "0.11"
+
+fn main() {
+    println!("env_logger: ativação e filtragem rápida de logs de debug via variável RUST_LOG.");
+}
+"##,
+        is_std: false,
+        cargo_dep: Some(r#"env_logger = "0.11""#),
+        docs_url: "https://docs.rs/env_logger/latest/env_logger/",
+    },
 
 ];
 
@@ -2127,7 +2642,7 @@ mod tests {
 
     #[test]
     fn catalogo_de_bibliotecas_tem_itens_validos() {
-        assert!(RUST_LIBS.len() >= 60, "devem existir mais de 60 bibliotecas documentadas (atual: {})", RUST_LIBS.len());
+        assert!(RUST_LIBS.len() >= 80, "devem existir pelo menos 80 bibliotecas documentadas (atual: {})", RUST_LIBS.len());
         let mut ids = std::collections::HashSet::new();
         for lib in RUST_LIBS {
             assert!(ids.insert(lib.id), "id repetido: {}", lib.id);

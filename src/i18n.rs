@@ -699,7 +699,7 @@ pub static TABLE: &[(&str, &str)] = &[
     ("📄 Versão para Impressão & Salvar PDF ↗", "📄 Print & Save PDF Version ↗"),
     ("📖 O Livro Oficial de Rust (PDF & Web)", "📖 The Official Rust Book (PDF & Web)"),
     ("📖 O Livro da Linguagem Rust (The Official Rust Book)", "📖 The Rust Programming Language (The Official Rust Book)"),
-    ("📚 Módulos & Crates (60+)", "📚 Modules & Crates (60+)"),
+    ("📚 Módulos & Crates (80+)", "📚 Modules & Crates (80+)"),
     ("📦 Novo Projeto Cargo:", "📦 New Cargo Project:"),
     ("🦀 Toolchain Rust do Sistema:", "🦀 System Rust Toolchain:"),
 

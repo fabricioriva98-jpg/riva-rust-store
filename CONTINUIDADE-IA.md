@@ -114,6 +114,16 @@ Linha de comando útil: `search`, `show dono/repo`, `verify dono/repo`, `downloa
 
 Feito e testado: avaliação, correções G1–G3, fases 1, 2 e 3 do `IDEIAS-MELHORIAS-24.10.26.md` (resumo lá), rodada social e identidade visual com espaço educacional interativo. Catálogo com 157 itens. Testes automatizados aumentados para 139 (todos passando).
 
+Rodada Expansão de Bibliotecas (Catálogo de Apps e Módulos Rust) (06/11, manhã - Antigravity / Gemini):
+- **Objetivo**: Atender ao pedido do Fabricio para ampliar significativamente o catálogo de aplicativos e a biblioteca de estudo e referência Rust da RRS.
+- **Ações Realizadas**:
+  - **Catálogo de Aplicativos**: Expandido de 157 para **170 ferramentas oficiais** via GitHub API, com metadados completos, assets e tags conferidos (`gitui`, `delta`, `meilisearch`, `surrealdb`, `mise`, `tokei`, `git-cliff`, `procs`, `sd`, `aichat`, `rye`, `diskus`, `boringtun`).
+  - **Biblioteca Rust (`src/rust_lib.rs`, `src/gui/rust_lib.rs`)**: Expandida de 60 para **80 módulos e crates** (`📚 Módulos & Crates (80+)`), abrangendo TUI (`ratatui`), Web/Redes (`hyper`, `tonic`, `rustls`), ORMs (`diesel`, `sea-orm`), Data Science/ML (`polars`, `ndarray`, `candle-core`), Metaprogramação (`nom`, `syn`, `quote`), Sistema/Segurança (`notify`, `ring`, `zeroize`, `semver`, `env_logger`) e Testes (`criterion`, `mockall`, `proptest`).
+  - **Internacionalização**: Paridade total em `src/i18n.rs` (`📚 Módulos & Crates (80+)` / `📚 Modules & Crates (80+)`).
+  - **Testes e Qualidade**: 122 testes unitários automatizados aprovados (100% de sucesso) e 0 alertas novos no Clippy.
+  - **Binários de Release**: `RRS - Riva Rust Store.exe` e `Instalador - RRS Riva Rust Store.exe` atualizados na raiz com backups prévios em `F:\NAS\Obsoleto\gitstore-exe-antes-expansao-06.11.26\`.
+  - **Rastreabilidade**: Backup preventivo em `Obsoleto\gitstore-src-antes-expansao-bibliotecas-06.11.26\`, registro CSV `MOVIMENTACOES-06.11.26-expansao-bibliotecas.csv` e script `DESFAZER-06.11.26-expansao-bibliotecas.ps1`.
+
 Rodada Preparação para Publicação Open Source no GitHub (05/11, tarde — Antigravity / Gemini):
 - **Objetivo**: Preparar o projeto RRS para publicação pública e gratuita no GitHub como software livre.
 - **Ações Realizadas**:

@@ -5,7 +5,7 @@
 
 [![Rust](https://img.shields.io/badge/Language-Rust%202021-orange.svg)](https://www.rust-lang.org/)
 [![GUI](https://img.shields.io/badge/GUI-egui%200.31%20(Native)-blue.svg)](https://github.com/emilk/egui)
-[![Catalog](https://img.shields.io/badge/Catalog-150%2B%20Verified%20Apps-green.svg)](#-catálogo-e-gerenciador-de-aplicativos)
+[![Catalog](https://img.shields.io/badge/Catalog-170%20Verified%20Apps-green.svg)](#-catálogo-e-gerenciador-de-aplicativos)
 [![License](https://img.shields.io/badge/License-MIT-brightgreen.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/Platform-Windows%20x64-lightgrey.svg)](#-instalação-e-execução)
 
@@ -20,7 +20,7 @@ A **RRS (Riva Rust Store)** é uma estação de trabalho completa desenvolvida p
 ## 🚀 Principais Funcionalidades
 
 ### 🏪 1. Catálogo e Gerenciador de Aplicativos
-* **150+ Aplicativos e Jogos Curados**: Softwares utilitários de alta performance (ripgrep, bat, eza, zellij, fd, alacritty, nushell, uv, ollama, etc.) e jogos de código aberto.
+* **170 Aplicativos e Jogos Curados**: Softwares utilitários de alta performance (ripgrep, bat, eza, zellij, fd, alacritty, nushell, uv, ollama, etc.) e jogos de código aberto.
 * **Segurança e Integridade Criptográfica**:
   * Conferência automática de **SHA-256** contra os *digests* oficiais das Releases do GitHub.
   * Validação de atestados de compilação oficial (*Build Attestation*) via GitHub CLI (`gh attestation verify`).
@@ -45,13 +45,19 @@ A **RRS (Riva Rust Store)** é uma estação de trabalho completa desenvolvida p
 
 ---
 
-### 📚 3. Biblioteca Rust (std & 60+ Crates Oficiais)
+### 📚 3. Biblioteca Rust (std & 80+ Crates Oficiais)
 * Referência técnica offline rápida dos módulos da biblioteca padrão (`std::collections`, `std::sync`, `std::fs`, `std::net`, `std::time`, etc.).
-* Documentação sintetizada, casos de uso e snippets funcionais das **60+ crates mais importantes do ecossistema**:
+* Documentação sintetizada, casos de uso e snippets funcionais das **80+ crates mais importantes do ecossistema**:
   * *Serialização & Web*: `serde`, `serde_json`, `tokio`, `axum`, `reqwest`, `tower`.
   * *Concorrência & Dados*: `rayon`, `crossbeam`, `dashmap`, `parking_lot`, `flume`.
   * *CLI & Terminal*: `clap`, `dialoguer`, `indicatif`, `crossterm`.
   * *Utilitários*: `anyhow`, `thiserror`, `tracing`, `rand`, `uuid`, `dotenvy`.
+  * *TUI & Terminal*: `ratatui`, `crossterm`, `indicatif`, `dialoguer`.
+  * *Bancos de Dados & ORM*: `sqlx`, `rusqlite`, `diesel`, `sea-orm`.
+  * *Ciência de Dados & ML*: `polars`, `ndarray`, `candle-core`.
+  * *Parsers, Macros & Metaprogramação*: `nom`, `syn`, `quote`.
+  * *Segurança & Criptografia*: `rustls`, `ring`, `zeroize`.
+  * *Testes Avançados*: `criterion`, `mockall`, `proptest`.
 
 ---
 
@@ -158,7 +164,7 @@ RRS/
 │   ├── gui/
 │   │   ├── learn.rs         # Interface do Estúdio Aprender Rust (30 lições)
 │   │   ├── terminal_studio.rs # Editor, Console e Gerenciador de Projetos Cargo
-│   │   ├── rust_lib.rs      # Referência visual de 60+ Crates e módulos std
+│   │   ├── rust_lib.rs      # Referência visual de 80+ Crates e módulos std
 │   │   ├── settings.rs      # Painel de configurações, temas e credenciais
 │   │   └── social.rs        # Compartilhamento seguro de biblioteca e discussões
 │   ├── db.rs                # Camada SQLite embutida (rusqlite), catálogo e histórico
