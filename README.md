@@ -94,8 +94,8 @@ A **RRS (Riva Rust Store)** é uma estação de trabalho completa desenvolvida p
 ### Opção 1: Baixar os Executáveis Prontos (Windows x64)
 
 Você pode baixar os executáveis diretamente na aba [**Releases**](https://github.com/fabricioriva98-jpg/riva-rust-store/releases) deste repositório:
-* **[RRS-Riva-Rust-Store.exe](https://github.com/fabricioriva98-jpg/riva-rust-store/releases/download/v0.3.0/RRS-Riva-Rust-Store.exe)**: Versão portátil oficial. Basta baixar e executar diretamente (não precisa instalar).
-* **[Instalador-RRS.exe](https://github.com/fabricioriva98-jpg/riva-rust-store/releases/download/v0.3.0/Instalador-RRS.exe)**: Instalador oficial com assistente de instalação e atalhos.
+* **[RRS-Riva-Rust-Store.exe](https://github.com/fabricioriva98-jpg/riva-rust-store/releases/download/v0.4.0/RRS-Riva-Rust-Store.exe)**: Versão portátil oficial. Basta baixar e executar diretamente (não precisa instalar).
+* **[Instalador-RRS.exe](https://github.com/fabricioriva98-jpg/riva-rust-store/releases/download/v0.4.0/Instalador-RRS.exe)**: Instalador oficial com assistente de instalação e atalhos.
 
 ### Opção 2: Compilar a partir do Código-Fonte
 

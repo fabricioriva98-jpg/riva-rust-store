@@ -1,6 +1,6 @@
 ---
 tipo: instrucoes-continuidade
-projeto: RRS - Riva Rust Store (gitstore 0.3.0)
+projeto: RRS - Riva Rust Store (gitstore 0.4.0)
 atualizado: 2026-11-05
 autor: Claude (Opus 5.5) / Antigravity (Gemini 4 Argon)
 ---
