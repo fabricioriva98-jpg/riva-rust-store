@@ -79,52 +79,98 @@ pub fn detect_ides() -> Vec<IdeInfo> {
     ides
 }
 
-/// Localiza o executável do Visual Studio Code (`Code.exe`, nunca o `code.cmd`).
+/// Localiza o executável do Visual Studio Code.
 fn find_vscode() -> Option<PathBuf> {
-    let standard = ["LOCALAPPDATA", "ProgramFiles", "ProgramFiles(x86)"].into_iter().filter_map(|var| {
-        let base = PathBuf::from(std::env::var_os(var)?);
-        let sub = if var == "LOCALAPPDATA" { r"Programs\Microsoft VS Code\Code.exe" } else { r"Microsoft VS Code\Code.exe" };
-        Some(base.join(sub))
-    });
-    for p in standard {
-        if p.is_file() {
-            return Some(p);
+    #[cfg(target_os = "windows")]
+    {
+        let standard = ["LOCALAPPDATA", "ProgramFiles", "ProgramFiles(x86)"].into_iter().filter_map(|var| {
+            let base = PathBuf::from(std::env::var_os(var)?);
+            let sub = if var == "LOCALAPPDATA" { r"Programs\Microsoft VS Code\Code.exe" } else { r"Microsoft VS Code\Code.exe" };
+            Some(base.join(sub))
+        });
+        for p in standard {
+            if p.is_file() {
+                return Some(p);
+            }
         }
+        find_in_path("code").and_then(|cli| code_exe_from_cli(&cli))
     }
-    // Instalação em outro lugar: o instalador põe `<pasta>\bin` no PATH
-    find_in_path("code").and_then(|cli| code_exe_from_cli(&cli))
+    #[cfg(target_os = "macos")]
+    {
+        let mac_paths = [
+            PathBuf::from("/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code"),
+            PathBuf::from("/Applications/Visual Studio Code.app/Contents/MacOS/Electron"),
+        ];
+        for p in mac_paths {
+            if p.is_file() {
+                return Some(p);
+            }
+        }
+        find_in_path("code")
+    }
+    #[cfg(all(not(target_os = "windows"), not(target_os = "macos")))]
+    {
+        find_in_path("code")
+    }
 }
 
-/// `...\Microsoft VS Code\bin\code.cmd` → `...\Microsoft VS Code\Code.exe`.
+/// Linha de comando do VS Code (`code`) → executável correspondente.
 fn code_exe_from_cli(cli: &Path) -> Option<PathBuf> {
-    let exe = cli.parent()?.parent()?.join("Code.exe");
-    exe.is_file().then_some(exe)
+    #[cfg(target_os = "windows")]
+    {
+        let exe = cli.parent()?.parent()?.join("Code.exe");
+        exe.is_file().then_some(exe)
+    }
+    #[cfg(not(target_os = "windows"))]
+    {
+        Some(cli.to_path_buf())
+    }
 }
 
-/// `...\Microsoft VS Code\Code.exe` → `...\Microsoft VS Code\bin\code.cmd` (a linha de comando oficial).
+/// Executável do VS Code → linha de comando oficial (`code` / `code.cmd`).
 fn code_cli_from_exe(exe: &Path) -> Option<PathBuf> {
-    let cli = exe.parent()?.join("bin").join("code.cmd");
-    cli.is_file().then_some(cli)
+    #[cfg(target_os = "windows")]
+    {
+        let cli = exe.parent()?.join("bin").join("code.cmd");
+        cli.is_file().then_some(cli)
+    }
+    #[cfg(not(target_os = "windows"))]
+    {
+        find_in_path("code").or_else(|| Some(exe.to_path_buf()))
+    }
 }
 
 /// Localiza o executável do Google Antigravity.
 fn find_antigravity() -> Option<PathBuf> {
+    #[cfg(target_os = "windows")]
     if let Ok(local_app_data) = std::env::var("LOCALAPPDATA") {
         let p = PathBuf::from(&local_app_data).join(r"Programs\antigravity\Antigravity.exe");
         if p.is_file() {
             return Some(p);
         }
-        // (O `antigravity-updater\pending\Antigravity-x64.exe` é o instalador da próxima versão: abrir uma
-        // pasta com ele rodaria a instalação, por isso não entra aqui.)
     }
-
+    #[cfg(target_os = "macos")]
+    {
+        let p = PathBuf::from("/Applications/Antigravity.app/Contents/MacOS/Antigravity");
+        if p.is_file() {
+            return Some(p);
+        }
+    }
     find_in_path("antigravity").or_else(|| find_in_path("agy"))
 }
 
 /// Localiza o executável do Cursor.
 fn find_cursor() -> Option<PathBuf> {
+    #[cfg(target_os = "windows")]
     if let Ok(local_app_data) = std::env::var("LOCALAPPDATA") {
         let p = PathBuf::from(local_app_data).join(r"Programs\cursor\Cursor.exe");
+        if p.is_file() {
+            return Some(p);
+        }
+    }
+    #[cfg(target_os = "macos")]
+    {
+        let p = PathBuf::from("/Applications/Cursor.app/Contents/MacOS/Cursor");
         if p.is_file() {
             return Some(p);
         }
@@ -134,8 +180,16 @@ fn find_cursor() -> Option<PathBuf> {
 
 /// Localiza o JetBrains RustRover.
 fn find_rustrover() -> Option<PathBuf> {
+    #[cfg(target_os = "windows")]
     if let Ok(local_app_data) = std::env::var("LOCALAPPDATA") {
         let p = PathBuf::from(local_app_data).join(r"Programs\RustRover\bin\rustrover64.exe");
+        if p.is_file() {
+            return Some(p);
+        }
+    }
+    #[cfg(target_os = "macos")]
+    {
+        let p = PathBuf::from("/Applications/RustRover.app/Contents/MacOS/rustrover");
         if p.is_file() {
             return Some(p);
         }
@@ -143,16 +197,18 @@ fn find_rustrover() -> Option<PathBuf> {
     find_in_path("rustrover64").or_else(|| find_in_path("rustrover"))
 }
 
-/// Busca um executável no PATH do sistema, sem abrir processo (antes era um PowerShell por busca,
-/// cerca de 300 ms cada).
+/// Busca um executável no PATH do sistema, sem abrir processo.
 fn find_in_path(cmd: &str) -> Option<PathBuf> {
     let path = std::env::var_os("PATH")?;
+    #[cfg(target_os = "windows")]
     let exts: Vec<String> = std::env::var("PATHEXT")
         .unwrap_or_else(|_| ".COM;.EXE;.BAT;.CMD".into())
         .split(';')
         .filter(|e| !e.is_empty())
         .map(|e| e.to_ascii_lowercase())
         .collect();
+    #[cfg(not(target_os = "windows"))]
+    let exts: Vec<String> = vec!["".to_string()];
     find_in_dirs(cmd, std::env::split_paths(&path), &exts)
 }
 

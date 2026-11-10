@@ -143,12 +143,22 @@ fn read_capped_into(mut r: impl Read, max: usize, buf: &Mutex<(Vec<u8>, bool)>) 
     }
 }
 
-/// Encerra o processo e os filhos dele (`cargo run` abre o programa compilado; o PowerShell abre o comando).
+/// Encerra o processo e os filhos dele (`cargo run` abre o programa compilado; o terminal abre o comando).
 fn kill_tree(child: &mut Child) {
     #[cfg(target_os = "windows")]
     {
         let _ = Command::new("taskkill")
             .args(["/PID", &child.id().to_string(), "/T", "/F"])
+            .stdin(Stdio::null())
+            .stdout(Stdio::null())
+            .stderr(Stdio::null())
+            .status();
+    }
+    #[cfg(not(target_os = "windows"))]
+    {
+        let pid = child.id().to_string();
+        let _ = Command::new("pkill")
+            .args(["-P", &pid])
             .stdin(Stdio::null())
             .stdout(Stdio::null())
             .stderr(Stdio::null())
@@ -161,9 +171,17 @@ fn kill_tree(child: &mut Child) {
 mod tests {
     use super::*;
 
-    fn powershell(script: &str) -> Command {
+    #[cfg(target_os = "windows")]
+    fn test_cmd(script: &str) -> Command {
         let mut c = Command::new("powershell");
         c.args(["-NoProfile", "-NonInteractive", "-Command", script]);
+        c
+    }
+
+    #[cfg(not(target_os = "windows"))]
+    fn test_cmd(script: &str) -> Command {
+        let mut c = Command::new("sh");
+        c.args(["-c", script]);
         c
     }
 
@@ -184,7 +202,11 @@ mod tests {
     #[test]
     fn processo_que_nao_termina_e_parado_no_tempo_maximo() {
         let limits = Limits { timeout: Duration::from_secs(2), max_output: 1024 };
-        let out = run_limited(powershell("Start-Sleep -Seconds 60"), limits, None).unwrap();
+        #[cfg(target_os = "windows")]
+        let cmd = test_cmd("Start-Sleep -Seconds 60");
+        #[cfg(not(target_os = "windows"))]
+        let cmd = test_cmd("sleep 60");
+        let out = run_limited(cmd, limits, None).unwrap();
         assert!(out.timed_out);
         assert!(!out.success());
         assert!(out.elapsed < Duration::from_secs(15), "{:?}", out.elapsed);
@@ -199,14 +221,22 @@ mod tests {
             std::thread::sleep(Duration::from_millis(1500));
             c2.store(true, Ordering::Relaxed);
         });
-        let out = run_limited(powershell("Start-Sleep -Seconds 60"), TERMINAL, Some(&cancel)).unwrap();
+        #[cfg(target_os = "windows")]
+        let cmd = test_cmd("Start-Sleep -Seconds 60");
+        #[cfg(not(target_os = "windows"))]
+        let cmd = test_cmd("sleep 60");
+        let out = run_limited(cmd, TERMINAL, Some(&cancel)).unwrap();
         assert!(out.cancelled);
         assert!(out.elapsed < Duration::from_secs(15), "{:?}", out.elapsed);
     }
 
     #[test]
     fn comando_normal_devolve_saida_e_sucesso() {
-        let out = run_limited(powershell("Write-Output 'ola'; exit 0"), QUICK, None).unwrap();
+        #[cfg(target_os = "windows")]
+        let cmd = test_cmd("Write-Output 'ola'; exit 0");
+        #[cfg(not(target_os = "windows"))]
+        let cmd = test_cmd("echo 'ola'; exit 0");
+        let out = run_limited(cmd, QUICK, None).unwrap();
         assert!(out.success(), "{out:?}");
         assert_eq!(out.stdout.trim(), "ola");
         assert!(out.notice(QUICK).is_none());

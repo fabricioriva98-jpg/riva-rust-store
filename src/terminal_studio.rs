@@ -45,6 +45,7 @@ impl TerminalOutput {
 /// portátil, a própria pasta do programa.
 pub fn default_projects_dir() -> PathBuf {
     let documents = std::env::var_os("USERPROFILE")
+        .or_else(|| std::env::var_os("HOME"))
         .map(|h| PathBuf::from(h).join("Documents"))
         .filter(|p| p.is_dir())
         .unwrap_or_else(std::env::temp_dir);
@@ -79,10 +80,19 @@ pub fn run_terminal_command(working_dir: &Path, raw_cmd: &str, cancel: &AtomicBo
         c.args(&parts[1..]);
         c
     } else {
-        // Demais comandos usam PowerShell nativo (nunca cmd.exe)
-        let mut c = Command::new("powershell");
-        c.args(["-NoProfile", "-NonInteractive", "-Command", trimmed]);
-        c
+        #[cfg(target_os = "windows")]
+        {
+            let mut c = Command::new("powershell");
+            c.args(["-NoProfile", "-NonInteractive", "-Command", trimmed]);
+            c
+        }
+        #[cfg(not(target_os = "windows"))]
+        {
+            let shell = std::env::var("SHELL").unwrap_or_else(|_| "/bin/sh".into());
+            let mut c = Command::new(shell);
+            c.args(["-c", trimmed]);
+            c
+        }
     };
     cmd.current_dir(working_dir);
     finish(trimmed.to_string(), subprocess::run_limited(cmd, subprocess::TERMINAL, Some(cancel)), subprocess::TERMINAL)
@@ -199,32 +209,73 @@ pub fn create_cargo_project(parent_dir: &Path, name: &str, is_bin: bool) -> Resu
     }
 }
 
-/// Abre o terminal nativo do Windows (Windows Terminal 'wt' ou PowerShell) na pasta indicada.
+/// Abre o terminal nativo na pasta indicada.
 pub fn open_native_terminal(working_dir: &Path) -> Result<(), String> {
     let dir = if working_dir.is_dir() { working_dir } else { Path::new(".") };
-    let wt = Command::new("wt")
-        .arg("-d")
-        .arg(dir)
-        .spawn();
-    if wt.is_ok() {
-        return Ok(());
+    #[cfg(target_os = "windows")]
+    {
+        let wt = Command::new("wt")
+            .arg("-d")
+            .arg(dir)
+            .spawn();
+        if wt.is_ok() {
+            return Ok(());
+        }
+        Command::new("powershell")
+            .current_dir(dir)
+            .arg("-NoExit")
+            .spawn()
+            .map_err(|e| format!("Não foi possível abrir o terminal: {e}"))?;
+        Ok(())
     }
-    Command::new("powershell")
-        .current_dir(dir)
-        .arg("-NoExit")
-        .spawn()
-        .map_err(|e| format!("Não foi possível abrir o terminal: {e}"))?;
-    Ok(())
+    #[cfg(target_os = "macos")]
+    {
+        Command::new("open")
+            .arg("-a")
+            .arg("Terminal")
+            .arg(dir)
+            .spawn()
+            .map_err(|e| format!("Não foi possível abrir o terminal: {e}"))?;
+        Ok(())
+    }
+    #[cfg(not(any(target_os = "windows", target_os = "macos")))]
+    {
+        for term in &["x-terminal-emulator", "gnome-terminal", "konsole", "xfce4-terminal", "alacritty", "kitty", "xterm"] {
+            if Command::new(term).current_dir(dir).spawn().is_ok() {
+                return Ok(());
+            }
+        }
+        Err("Nenhum emulador de terminal suportado foi encontrado.".into())
+    }
 }
 
-/// Abre a pasta no Windows Explorer.
+/// Abre a pasta no gerenciador de arquivos nativo.
 pub fn open_in_explorer(working_dir: &Path) -> Result<(), String> {
     let dir = if working_dir.is_dir() { working_dir } else { Path::new(".") };
-    Command::new("explorer")
-        .arg(dir)
-        .spawn()
-        .map_err(|e| format!("Não foi possível abrir o Windows Explorer: {e}"))?;
-    Ok(())
+    #[cfg(target_os = "windows")]
+    {
+        Command::new("explorer")
+            .arg(dir)
+            .spawn()
+            .map_err(|e| format!("Não foi possível abrir o Windows Explorer: {e}"))?;
+        Ok(())
+    }
+    #[cfg(target_os = "macos")]
+    {
+        Command::new("open")
+            .arg(dir)
+            .spawn()
+            .map_err(|e| format!("Não foi possível abrir o Finder: {e}"))?;
+        Ok(())
+    }
+    #[cfg(not(any(target_os = "windows", target_os = "macos")))]
+    {
+        Command::new("xdg-open")
+            .arg(dir)
+            .spawn()
+            .map_err(|e| format!("Não foi possível abrir o gerenciador de arquivos: {e}"))?;
+        Ok(())
+    }
 }
 
 /// Avalia uma expressão Rust ou código instantâneo gerando uma compilação temporária em rustc.

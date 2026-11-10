@@ -7,7 +7,7 @@
 [![GUI](https://img.shields.io/badge/GUI-egui%200.31%20(Native)-blue.svg)](https://github.com/emilk/egui)
 [![Catalog](https://img.shields.io/badge/Catalog-170%20Verified%20Apps-green.svg)](#-catálogo-e-gerenciador-de-aplicativos)
 [![License](https://img.shields.io/badge/License-MIT-brightgreen.svg)](LICENSE)
-[![Platform](https://img.shields.io/badge/Platform-Windows%20x64-lightgrey.svg)](#-instalação-e-execução)
+[![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)](#-instalação-e-execução)
 
 ---
 

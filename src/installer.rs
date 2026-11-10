@@ -6,11 +6,15 @@ use std::process::Command;
 /// Marcador gravado na pasta pela instalação; a desinstalação só age em pastas que o tenham
 /// (ou o executável principal, em instalações anteriores ao marcador).
 pub const INSTALL_MARKER: &str = "rrs-install.json";
+#[cfg(target_os = "windows")]
 const MAIN_EXE: &str = "RRS - Riva Rust Store.exe";
+#[cfg(not(target_os = "windows"))]
+const MAIN_EXE: &str = "rrs";
 
 /// Únicos arquivos que a desinstalação apaga. A pasta `downloads/` (apps e jogos baixados) é mantida.
 const INSTALLED_FILES: &[&str] = &[
     MAIN_EXE,
+    "rrs",
     "rrs.exe",
     "catalog.json",
     "gitstore.db",
@@ -20,21 +24,39 @@ const INSTALLED_FILES: &[&str] = &[
     INSTALL_MARKER,
 ];
 
-/// Retorna a pasta padrão de instalação no Windows:
-/// `%LOCALAPPDATA%\Programs\RRS-RivaRustStore`
+/// Retorna a pasta padrão de instalação conforme o sistema operacional.
 pub fn default_install_dir() -> PathBuf {
-    if let Ok(local_app_data) = std::env::var("LOCALAPPDATA") {
-        PathBuf::from(local_app_data)
-            .join("Programs")
-            .join("RRS-RivaRustStore")
-    } else if let Ok(user_profile) = std::env::var("USERPROFILE") {
-        PathBuf::from(user_profile)
-            .join("AppData")
-            .join("Local")
-            .join("Programs")
-            .join("RRS-RivaRustStore")
-    } else {
-        PathBuf::from("C:\\RRS-RivaRustStore")
+    #[cfg(target_os = "windows")]
+    {
+        if let Ok(local_app_data) = std::env::var("LOCALAPPDATA") {
+            PathBuf::from(local_app_data)
+                .join("Programs")
+                .join("RRS-RivaRustStore")
+        } else if let Ok(user_profile) = std::env::var("USERPROFILE") {
+            PathBuf::from(user_profile)
+                .join("AppData")
+                .join("Local")
+                .join("Programs")
+                .join("RRS-RivaRustStore")
+        } else {
+            PathBuf::from("C:\\RRS-RivaRustStore")
+        }
+    }
+    #[cfg(target_os = "macos")]
+    {
+        if let Some(home) = std::env::var_os("HOME") {
+            PathBuf::from(home).join("Applications").join("RRS-RivaRustStore")
+        } else {
+            PathBuf::from("/Applications/RRS-RivaRustStore")
+        }
+    }
+    #[cfg(all(not(target_os = "windows"), not(target_os = "macos")))]
+    {
+        if let Some(home) = std::env::var_os("HOME") {
+            PathBuf::from(home).join(".local").join("share").join("rrs")
+        } else {
+            PathBuf::from("/usr/local/share/rrs")
+        }
     }
 }
 
@@ -113,8 +135,18 @@ pub fn perform_install(opts: &InstallOptions) -> Result<PathBuf> {
         let _ = crate::db::import_catalog(&conn, &catalog_path);
     }
 
-    // Cria atalhos no Windows (.lnk) e adiciona ao PATH via PowerShell
+    // Cria atalhos e adiciona ao PATH
+    #[cfg(target_os = "windows")]
     create_windows_shortcuts_and_path(
+        &target_gui_exe,
+        &opts.install_dir,
+        opts.desktop_shortcut,
+        opts.start_menu_shortcut,
+        opts.add_to_user_path,
+    )?;
+
+    #[cfg(not(target_os = "windows"))]
+    create_unix_shortcuts_and_path(
         &target_gui_exe,
         &opts.install_dir,
         opts.desktop_shortcut,
@@ -183,7 +215,10 @@ pub fn perform_uninstall(install_dir: &Path) -> Result<UninstallReport> {
             install_dir.display()
         );
     }
+    #[cfg(target_os = "windows")]
     remove_windows_shortcuts()?;
+    #[cfg(not(target_os = "windows"))]
+    remove_unix_shortcuts()?;
     remove_installed_files(install_dir)
 }
 
@@ -288,6 +323,69 @@ fn remove_windows_shortcuts() -> Result<()> {
         let _ = Command::new("powershell")
             .args(["-NoProfile", "-NonInteractive", "-WindowStyle", "Hidden", "-Command", script])
             .status();
+    }
+    Ok(())
+}
+
+#[cfg(not(target_os = "windows"))]
+fn create_unix_shortcuts_and_path(
+    target_exe: &Path,
+    working_dir: &Path,
+    desktop: bool,
+    start_menu: bool,
+    add_path: bool,
+) -> Result<()> {
+    if let Some(home) = std::env::var_os("HOME") {
+        let home = PathBuf::from(home);
+
+        let desktop_entry = format!(
+            "[Desktop Entry]\n\
+             Type=Application\n\
+             Name=RRS - Riva Rust Store\n\
+             Comment=Loja Verificada de Apps e Jogos do GitHub + Tradutor C/C++ para Rust\n\
+             Exec=\"{}\"\n\
+             Path=\"{}\"\n\
+             Terminal=false\n\
+             Categories=Development;Utility;\n",
+            target_exe.display(),
+            working_dir.display(),
+        );
+
+        if start_menu {
+            let app_dir = home.join(".local").join("share").join("applications");
+            let _ = std::fs::create_dir_all(&app_dir);
+            let _ = std::fs::write(app_dir.join("rrs.desktop"), &desktop_entry);
+        }
+
+        if desktop {
+            let desk_dir = home.join("Desktop");
+            if desk_dir.is_dir() {
+                let _ = std::fs::write(desk_dir.join("rrs.desktop"), &desktop_entry);
+            }
+        }
+
+        if add_path {
+            let bin_dir = home.join(".local").join("bin");
+            let _ = std::fs::create_dir_all(&bin_dir);
+            let symlink = bin_dir.join("rrs");
+            let _ = std::fs::remove_file(&symlink);
+            #[cfg(unix)]
+            {
+                use std::os::unix::fs::symlink as unix_symlink;
+                let _ = unix_symlink(target_exe, symlink);
+            }
+        }
+    }
+    Ok(())
+}
+
+#[cfg(not(target_os = "windows"))]
+fn remove_unix_shortcuts() -> Result<()> {
+    if let Some(home) = std::env::var_os("HOME") {
+        let home = PathBuf::from(home);
+        let _ = std::fs::remove_file(home.join(".local").join("share").join("applications").join("rrs.desktop"));
+        let _ = std::fs::remove_file(home.join("Desktop").join("rrs.desktop"));
+        let _ = std::fs::remove_file(home.join(".local").join("bin").join("rrs"));
     }
     Ok(())
 }

@@ -16,7 +16,14 @@ pub fn sandbox_exe() -> PathBuf {
 }
 
 pub fn available() -> bool {
-    sandbox_exe().is_file()
+    #[cfg(target_os = "windows")]
+    {
+        sandbox_exe().is_file()
+    }
+    #[cfg(not(target_os = "windows"))]
+    {
+        false
+    }
 }
 
 fn xml_escape(s: &str) -> String {

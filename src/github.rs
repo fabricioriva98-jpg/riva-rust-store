@@ -331,12 +331,7 @@ pub fn pick_best_asset(assets: &[Asset]) -> Option<usize> {
     if assets.is_empty() {
         return None;
     }
-    let current_os = match std::env::consts::OS {
-        "windows" => "windows",
-        "linux" => "linux",
-        "macos" => "macos",
-        other => other,
-    };
+    let current_os = std::env::consts::OS;
     let is_64 = std::env::consts::ARCH == "x86_64";
 
     assets

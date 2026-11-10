@@ -292,6 +292,21 @@ Rodada Métricas da Biblioteca, Changelog de Releases e Diagnóstico de Dependê
   - **139 testes unitários aprovados (100% de sucesso)**, 0 novos avisos de clippy.
   - Binários de release `RRS - Riva Rust Store.exe` e `Instalador - RRS Riva Rust Store.exe` atualizados na raiz (18.249.728 bytes).
 
+Rodada Suporte Multiplataforma & CI/CD GitHub Actions (10/11, tarde — Antigravity / Gemini 4 Argon):
+- **Suporte Multiplataforma Nativo (Windows, Linux, macOS)**:
+  - `Cargo.toml`: configuração de dependências por SO com `keyring` (features `windows-native`, `linux-native` Secret Service e `apple-native` Keychain). `winresource` restrito ao target Windows.
+  - `src/terminal_studio.rs`: suporte a diretórios de projetos Unix (`~/Documents/Projetos Rust`), execução de comandos shell `$SHELL -c` com fallback para `/bin/sh -c`, emuladores de terminal nativos no macOS (`open -a Terminal`) e Linux (`x-terminal-emulator`, `gnome-terminal`, etc.), e abertura de pastas no gerenciador de arquivos (`open` / `xdg-open`).
+  - `src/saves.rs`: suporte a compactação e restauração de saves multiplataforma (`zip -r` / `unzip -o` no Linux/macOS e PowerShell no Windows).
+  - `src/ide.rs`: detecção inteligente de editores (VS Code, Cursor, RustRover, Antigravity) no macOS (`/Applications/...`) e Linux (`find_in_path`), resolução do PATH com `PATHEXT` no Windows e binários diretos no Unix.
+  - `src/launchers.rs`: descoberta da Steam no Linux (`~/.local/share/Steam`, `~/.steam/steam`, Flatpak) e macOS (`~/Library/Application Support/Steam`).
+  - `src/downloader.rs`: execução de URIs de lojas (`steam://`) via `open` no macOS e `xdg-open` no Linux.
+  - `src/installer.rs`: suporte a diretórios de instalação padrão no macOS (`~/Applications/RRS-RivaRustStore`) e Linux (`~/.local/share/rrs`), geração de arquivos `.desktop` (`~/.local/share/applications/rrs.desktop`) e symlink em `~/.local/bin/rrs`.
+  - `src/sandbox.rs`: Windows Sandbox desativado graciosamente fora do Windows.
+  - `src/subprocess.rs`: terminação de subprocessos via `pkill` no Unix e `taskkill` no Windows; testes automatizados compatíveis com `sh -c` e `powershell`.
+  - `.github/workflows/ci.yml`: matriz de testes contínuos para `windows-latest`, `ubuntu-latest` e `macos-latest` (com cache e dependências de compilação X11/GL).
+  - `.github/workflows/release.yml`: pipeline de compilação automatizada para releases com suporte a `x86_64-pc-windows-msvc`, `x86_64-unknown-linux-gnu`, `aarch64-apple-darwin` (Apple Silicon) e `x86_64-apple-darwin` (Intel).
+  - 122 testes aprovados (100% de sucesso).
+
 Rodada Sincronização de Lojas, Rust Intermediário & Otimizador do PC (25/10, manhã — Antigravity / Gemini):
 - **Sincronização Multi-Lojas de Games**: suporte expandido em `launchers.rs` e `gui/phase3.rs` para 8 lojas principais: Steam, Epic Games, GOG, Xbox / Microsoft Store / PC Game Pass, EA App, Ubisoft Connect, Battle.net e Riot Games (Vanguard/LoL/Valorant). Botão de sincronização em 1 clique e filtros por loja com contador dinâmico.
 - **Espaço Aprender Rust Intermediário**: expansão de `learn.rs` para 20 lições completas (10 básicas + 10 intermediárias: Ownership & Borrowing, Traits, Generics, Closures, Iteradores avançados, Multithreading com std::thread, Canais mpsc, Smart Pointers Box, Leitura/Escrita de Arquivos fs e Mini-Projeto CLI Gerenciador de Tarefas). Filtros de nível no topo (`Todos`, `Básico`, `Intermediário`), pills visuais e diagnóstico pedagógico com suporte a erros de tempo de vida e bounds de traits.

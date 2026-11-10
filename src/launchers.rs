@@ -187,19 +187,38 @@ pub fn steam_game_from_manifest(acf: &str) -> Option<ExternalGame> {
 fn steam_root() -> Option<PathBuf> {
     let mut candidates = Vec::new();
     #[cfg(target_os = "windows")]
-    if let Ok(out) = std::process::Command::new("reg")
-        .args(["query", r"HKCU\Software\Valve\Steam", "/v", "SteamPath"])
-        .output()
     {
-        let text = String::from_utf8_lossy(&out.stdout).to_string();
-        if let Some(line) = text.lines().find(|l| l.contains("SteamPath")) {
-            if let Some(v) = line.splitn(3, "    ").nth(2) {
-                candidates.push(PathBuf::from(v.trim().replace('/', "\\")));
+        if let Ok(out) = std::process::Command::new("reg")
+            .args(["query", r"HKCU\Software\Valve\Steam", "/v", "SteamPath"])
+            .output()
+        {
+            let text = String::from_utf8_lossy(&out.stdout).to_string();
+            if let Some(line) = text.lines().find(|l| l.contains("SteamPath")) {
+                if let Some(v) = line.splitn(3, "    ").nth(2) {
+                    candidates.push(PathBuf::from(v.trim().replace('/', "\\")));
+                }
             }
         }
+        candidates.push(PathBuf::from(r"C:\Program Files (x86)\Steam"));
+        candidates.push(PathBuf::from(r"C:\Program Files\Steam"));
     }
-    candidates.push(PathBuf::from(r"C:\Program Files (x86)\Steam"));
-    candidates.push(PathBuf::from(r"C:\Program Files\Steam"));
+    #[cfg(target_os = "linux")]
+    {
+        if let Some(home) = std::env::var_os("HOME") {
+            let home = PathBuf::from(home);
+            candidates.push(home.join(".local/share/Steam"));
+            candidates.push(home.join(".steam/steam"));
+            candidates.push(home.join(".steam/root"));
+            candidates.push(home.join(".var/app/com.valvesoftware.Steam/.local/share/Steam"));
+        }
+    }
+    #[cfg(target_os = "macos")]
+    {
+        if let Some(home) = std::env::var_os("HOME") {
+            let home = PathBuf::from(home);
+            candidates.push(home.join("Library/Application Support/Steam"));
+        }
+    }
     candidates.into_iter().find(|p| p.join("steamapps").is_dir())
 }
 

@@ -97,7 +97,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (6 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 13 dias)",
+      "🟢 Projeto ativo (atualizado há 17 dias)",
       "🟢 201501 estrelas no repositório",
       "🟢 Código aberto com licença Unlicense",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
@@ -117,57 +117,57 @@
     "fork": false,
     "archived": false,
     "has_issues": true,
-    "latest_tag": "v0.40.15",
-    "released_at": "2026-11-03T22:52:31Z",
+    "latest_tag": "v0.40.16",
+    "released_at": "2026-11-09T18:21:19Z",
     "platforms": "macos,windows",
     "assets": [
       {
         "name": "ollama-darwin.tgz",
-        "size": 185971671,
-        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.15/ollama-darwin.tgz",
-        "digest": "sha256:607c79d5d6315ef9d896db83adde736a4c0057196329843544e79b95afb260a8"
+        "size": 186116182,
+        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.16/ollama-darwin.tgz",
+        "digest": "sha256:a743717494315da7cd352982b805f6b992d4b4452ca117fd5fbf86c4ee46fca0"
       },
       {
         "name": "Ollama-darwin.zip",
-        "size": 229106611,
-        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.15/Ollama-darwin.zip",
-        "digest": "sha256:de3298b9897828480c361c101e3efd2d3c499d08882c8ee972df524064abc3db"
+        "size": 229245253,
+        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.16/Ollama-darwin.zip",
+        "digest": "sha256:4715531bc49d21337381b193765041e535a9fb4716f84e5d6eccc3a9af1b5303"
       },
       {
         "name": "ollama-windows-amd64-mlx.zip",
-        "size": 924352914,
-        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.15/ollama-windows-amd64-mlx.zip",
-        "digest": "sha256:248a8af134536ba0e497618495f3be08749e37c0b71e367f2be3450fc60d577f"
+        "size": 924352895,
+        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.16/ollama-windows-amd64-mlx.zip",
+        "digest": "sha256:69608e7d24d140c19a8b31f79f5a9d6d3df72de3c52b8cb47b71535680aa53b1"
       },
       {
         "name": "ollama-windows-amd64-rocm.zip",
-        "size": 258790357,
-        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.15/ollama-windows-amd64-rocm.zip",
-        "digest": "sha256:2f5e81675329a5de2477a4a25823d55d5c3ead8d59522e92eac1664ab492faeb"
+        "size": 258665009,
+        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.16/ollama-windows-amd64-rocm.zip",
+        "digest": "sha256:0daf19f77f678a02264b5fa398d6988dece19832ca1682f1f7b8f81450d1f574"
       },
       {
         "name": "ollama-windows-amd64.zip",
-        "size": 1614941966,
-        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.15/ollama-windows-amd64.zip",
-        "digest": "sha256:9ca74a7ab66ec86870b1eecac7df160df08dc4e3a291ab5d2d59bcf9310221c6"
+        "size": 1618244995,
+        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.16/ollama-windows-amd64.zip",
+        "digest": "sha256:50fcf5ad54277f2fa5d173ebfc93bcb017adbc0c9ef2314daabc96ca9e6aa64e"
       },
       {
         "name": "ollama-windows-arm64.zip",
-        "size": 217149782,
-        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.15/ollama-windows-arm64.zip",
-        "digest": "sha256:35ce5195b57496dbc9ecbaa6593807e6ac26cbb53cf1f8bb57ac58daafa58574"
+        "size": 386918926,
+        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.16/ollama-windows-arm64.zip",
+        "digest": "sha256:86d2b329cae3125684ff29b506623710b68e1393f679594f1c6aa267beac31c2"
       },
       {
         "name": "Ollama.dmg",
-        "size": 229819232,
-        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.15/Ollama.dmg",
-        "digest": "sha256:46b2cd03d4f2b110a67207a9c411a2837134abb07a3e64584a1de317d4ca2383"
+        "size": 229996388,
+        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.16/Ollama.dmg",
+        "digest": "sha256:b48d74a2d8c6a0592c816a4f85643d8d8608ad592abafbe95c04128a73c398c6"
       },
       {
         "name": "OllamaSetup.exe",
-        "size": 1689667936,
-        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.15/OllamaSetup.exe",
-        "digest": "sha256:106ef3d2a02437810fba6f574914b1413c512ea84ddd4f184c8e7f434b6f5564"
+        "size": 1857663944,
+        "browser_download_url": "https://github.com/ollama/ollama/releases/download/v0.40.16/OllamaSetup.exe",
+        "digest": "sha256:84db4f756ddc9e091142a85cdc0f7ae5db68bc9b3e075f114388b326f8ed912d"
       }
     ],
     "kind": "ai-app",
@@ -178,7 +178,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (3 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 12 dias)",
+      "🟢 Projeto ativo (atualizado há 16 dias)",
       "🟢 184652 estrelas no repositório",
       "🟢 Código aberto com licença MIT",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
@@ -198,87 +198,87 @@
     "fork": false,
     "archived": false,
     "has_issues": true,
-    "latest_tag": "v4.0.26",
-    "released_at": "2026-11-05T15:25:55Z",
+    "latest_tag": "v4.0.28",
+    "released_at": "2026-11-08T15:56:25Z",
     "platforms": "linux,macos,windows",
     "assets": [
       {
-        "name": "CC-Switch-v4.0.26-Linux-arm64.AppImage",
-        "size": 95726088,
-        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.26/CC-Switch-v4.0.26-Linux-arm64.AppImage",
-        "digest": "sha256:faf0810362aa7ca6e3bb913b2843de9433a124d79fc2a67225ea2d96fa21aa1e"
+        "name": "CC-Switch-v4.0.28-Linux-arm64.AppImage",
+        "size": 95812104,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.28/CC-Switch-v4.0.28-Linux-arm64.AppImage",
+        "digest": "sha256:4ed5f7704052693b1cbc7095598551e2f94a6289a54950bd2bfc1aac4a5ac37c"
       },
       {
-        "name": "CC-Switch-v4.0.26-Linux-arm64.deb",
-        "size": 18980544,
-        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.26/CC-Switch-v4.0.26-Linux-arm64.deb",
-        "digest": "sha256:ae4e5cdf242e0dc1b0c0a0e36b0d967d08cfc64635e8f43fe70c409a86083b41"
+        "name": "CC-Switch-v4.0.28-Linux-arm64.deb",
+        "size": 19084458,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.28/CC-Switch-v4.0.28-Linux-arm64.deb",
+        "digest": "sha256:986c6fa940509ec9c676c07c0b9698152d5dab9d6f21852184f68e3e2465e15a"
       },
       {
-        "name": "CC-Switch-v4.0.26-Linux-arm64.rpm",
-        "size": 18986900,
-        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.26/CC-Switch-v4.0.26-Linux-arm64.rpm",
-        "digest": "sha256:0a3724c417948bb6d8bef8999b6fb3fdf8eb1ec62aaab31245ac948e7609fd26"
+        "name": "CC-Switch-v4.0.28-Linux-arm64.rpm",
+        "size": 19091356,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.28/CC-Switch-v4.0.28-Linux-arm64.rpm",
+        "digest": "sha256:7939aead4f5af8cf1d23f086866a92e635de14c48f120e3310a568170e8aede3"
       },
       {
-        "name": "CC-Switch-v4.0.26-Linux-x86_64.AppImage",
-        "size": 98535928,
-        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.26/CC-Switch-v4.0.26-Linux-x86_64.AppImage",
-        "digest": "sha256:122fd96f3e5eb820b713742a8a92490965eb6485956d8d1c1d63905100b6e5d1"
+        "name": "CC-Switch-v4.0.28-Linux-x86_64.AppImage",
+        "size": 98630136,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.28/CC-Switch-v4.0.28-Linux-x86_64.AppImage",
+        "digest": "sha256:19640a4df129b35dd176763a5d64746a8f9c4d4625573350be11df036cea7433"
       },
       {
-        "name": "CC-Switch-v4.0.26-Linux-x86_64.deb",
-        "size": 19855978,
-        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.26/CC-Switch-v4.0.26-Linux-x86_64.deb",
-        "digest": "sha256:6d30e1f08315db59f5f7928869ad7f3442624d45580cfb7c877e54134b55ae3a"
+        "name": "CC-Switch-v4.0.28-Linux-x86_64.deb",
+        "size": 19967334,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.28/CC-Switch-v4.0.28-Linux-x86_64.deb",
+        "digest": "sha256:41df68b6171fe8cca621d7106d35cd07537a854c20bf42af2a5e5e189d15f93e"
       },
       {
-        "name": "CC-Switch-v4.0.26-Linux-x86_64.rpm",
-        "size": 19864634,
-        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.26/CC-Switch-v4.0.26-Linux-x86_64.rpm",
-        "digest": "sha256:335f3dfe675994c8c2e41ea63e8917158e417ff001fb350579a0ece0f1181424"
+        "name": "CC-Switch-v4.0.28-Linux-x86_64.rpm",
+        "size": 19972267,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.28/CC-Switch-v4.0.28-Linux-x86_64.rpm",
+        "digest": "sha256:c8049412449814f3c6033636541527cb07d3aca716ce5403c13b99023a3370e3"
       },
       {
-        "name": "CC-Switch-v4.0.26-macOS.dmg",
-        "size": 39898297,
-        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.26/CC-Switch-v4.0.26-macOS.dmg",
-        "digest": "sha256:da8efc3b3604e57218a2a3ab2a94d29f05623cfc26a3b551f3ad90e8e06b604f"
+        "name": "CC-Switch-v4.0.28-macOS.dmg",
+        "size": 40147163,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.28/CC-Switch-v4.0.28-macOS.dmg",
+        "digest": "sha256:311b956704a6b8482844d4290a636d5f24731281a201d0960966292df49df879"
       },
       {
-        "name": "CC-Switch-v4.0.26-macOS.tar.gz",
-        "size": 41053971,
-        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.26/CC-Switch-v4.0.26-macOS.tar.gz",
-        "digest": "sha256:6c6d43b99b101744cee864fa31751cf76fd0ad4c1c2084a105dfcac6853936ee"
+        "name": "CC-Switch-v4.0.28-macOS.tar.gz",
+        "size": 41258808,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.28/CC-Switch-v4.0.28-macOS.tar.gz",
+        "digest": "sha256:488ff18b14cb6363b2de560d962d24bc75b827c4a41e841963f4e616557940db"
       },
       {
-        "name": "CC-Switch-v4.0.26-macOS.zip",
-        "size": 39974605,
-        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.26/CC-Switch-v4.0.26-macOS.zip",
-        "digest": "sha256:a4a28cbfdbbc29d2d9e29d5b93d804e5d38074f5b3fb439725a818f70ab85e27"
+        "name": "CC-Switch-v4.0.28-macOS.zip",
+        "size": 40178950,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.28/CC-Switch-v4.0.28-macOS.zip",
+        "digest": "sha256:4594f9c5b88e150b50bbc7a95d96406c7f471de472846e5289d97c86f6374619"
       },
       {
-        "name": "CC-Switch-v4.0.26-Windows-arm64-Portable.zip",
-        "size": 18691696,
-        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.26/CC-Switch-v4.0.26-Windows-arm64-Portable.zip",
-        "digest": "sha256:8acbcede4c29d9cfd1d05437f6962a39e8203191a1b286dd8f9996875caeb7d9"
+        "name": "CC-Switch-v4.0.28-Windows-arm64-Portable.zip",
+        "size": 18796659,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.28/CC-Switch-v4.0.28-Windows-arm64-Portable.zip",
+        "digest": "sha256:cce4ea4e311acb3cebce31c84c188f3b85b9c5413e2dee1c9d011db3487615f8"
       },
       {
-        "name": "CC-Switch-v4.0.26-Windows-arm64.msi",
-        "size": 18829312,
-        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.26/CC-Switch-v4.0.26-Windows-arm64.msi",
-        "digest": "sha256:930a150082917bef618e34d095595ec7f4b32f2fd5c7e4a90ec8c1b58d766334"
+        "name": "CC-Switch-v4.0.28-Windows-arm64.msi",
+        "size": 18931712,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.28/CC-Switch-v4.0.28-Windows-arm64.msi",
+        "digest": "sha256:4d95a4636ac07ca4f6f16e1a2ca43730df82211da44c9ff79311d9c54e8cc3bd"
       },
       {
-        "name": "CC-Switch-v4.0.26-Windows-Portable.zip",
-        "size": 19706783,
-        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.26/CC-Switch-v4.0.26-Windows-Portable.zip",
-        "digest": "sha256:27bb044bd7e9e44e9fff662cca5b8e91ac4794f5bccd8ae591360e265a37c8f9"
+        "name": "CC-Switch-v4.0.28-Windows-Portable.zip",
+        "size": 19791217,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.28/CC-Switch-v4.0.28-Windows-Portable.zip",
+        "digest": "sha256:c690bc6ef1bc0bce62db50d8d089abf50eaa0c98f18765016b920f3c14b0c770"
       },
       {
-        "name": "CC-Switch-v4.0.26-Windows.msi",
-        "size": 19660800,
-        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.26/CC-Switch-v4.0.26-Windows.msi",
-        "digest": "sha256:35836d4c7b2e5abdf3cc1743d99cb92a64fd23968fe3af059781f034511db96e"
+        "name": "CC-Switch-v4.0.28-Windows.msi",
+        "size": 19742720,
+        "browser_download_url": "https://github.com/farion1231/cc-switch/releases/download/v4.0.28/CC-Switch-v4.0.28-Windows.msi",
+        "digest": "sha256:21d1fa306ce7fcccf67661fc6f654644f772d0d2e0408b4bbf7b2b35efca454a"
       }
     ],
     "kind": "ferramenta",
@@ -289,7 +289,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (1 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 11 dias)",
+      "🟢 Projeto ativo (atualizado há 15 dias)",
       "🟢 148572 estrelas no repositório",
       "🟢 Código aberto com licença MIT",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
@@ -509,7 +509,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (6 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 13 dias)",
+      "🟢 Projeto ativo (atualizado há 17 dias)",
       "🟢 126818 estrelas no repositório",
       "🟢 Código aberto com licença AGPL-3.0",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
@@ -668,7 +668,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (12 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 13 dias)",
+      "🟢 Projeto ativo (atualizado há 17 dias)",
       "🟢 119009 estrelas no repositório",
       "🟢 Código aberto com licença MIT",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
@@ -725,7 +725,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (7 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 12 dias)",
+      "🟢 Projeto ativo (atualizado há 16 dias)",
       "🟢 114500 estrelas no repositório",
       "🟢 Código aberto com licença MIT",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
@@ -947,7 +947,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (8 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 12 dias)",
+      "🟢 Projeto ativo (atualizado há 16 dias)",
       "🟢 108757 estrelas no repositório",
       "🟢 Código aberto com licença MIT",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
@@ -1160,7 +1160,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (5 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 11 dias)",
+      "🟢 Projeto ativo (atualizado há 15 dias)",
       "🟢 96406 estrelas no repositório",
       "🟡 Sem licença open-source padronizada",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
@@ -1313,7 +1313,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (3 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 16 dias)",
+      "🟢 Projeto ativo (atualizado há 20 dias)",
       "🟢 95451 estrelas no repositório",
       "🟢 Código aberto com licença Apache-2.0",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
@@ -1352,7 +1352,7 @@
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
       "🟢 Repositório consolidado (7 anos de histórico)",
-      "🟢 Projeto ativo (atualizado há 15 dias)",
+      "🟢 Projeto ativo (atualizado há 19 dias)",
       "🟢 93941 estrelas no repositório",
       "🟢 Código aberto com licença Apache-2.0",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
@@ -3599,6 +3599,56 @@
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
     ],
     "attestation": "ausente"
+  },
+  {
+    "full_name": "meilisearch/meilisearch",
+    "description": "A lightning-fast search engine API bringing AI-powered hybrid search to your sites and applications.",
+    "url": "https://github.com/meilisearch/meilisearch",
+    "stars": 59801,
+    "license": "NOASSERTION",
+    "topics": "api,search,database,engine",
+    "language": "Rust",
+    "created_at": "",
+    "pushed_at": "2026-11-05T10:32:54Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v1.56.1",
+    "released_at": "2026-11-02T09:38:53Z",
+    "platforms": "linux,windows",
+    "assets": [
+      {
+        "name": "meilisearch-enterprise-windows-amd64.exe",
+        "size": 354613760,
+        "browser_download_url": "https://github.com/meilisearch/meilisearch/releases/download/v1.56.1/meilisearch-enterprise-windows-amd64.exe",
+        "digest": "sha256:sha256:8887e7268ab8cfd5e2b619a173433c1c10807468012ec110c459a2511df5c554"
+      },
+      {
+        "name": "meilisearch-windows-amd64.exe",
+        "size": 353019904,
+        "browser_download_url": "https://github.com/meilisearch/meilisearch/releases/download/v1.56.1/meilisearch-windows-amd64.exe",
+        "digest": "sha256:sha256:ac6d2506cafe862c93a6add533e125a19852339ec21303413120bde84aad3a48"
+      },
+      {
+        "name": "meilisearch.deb",
+        "size": 59599432,
+        "browser_download_url": "https://github.com/meilisearch/meilisearch/releases/download/v1.56.1/meilisearch.deb",
+        "digest": "sha256:sha256:4a830c31ecbac661e9e6bece486edf5628dd33af4cb734e551ce6d9366566028"
+      }
+    ],
+    "kind": "tool",
+    "category": "search,server,database",
+    "tags": "api,search,database,engine",
+    "summary": "Motor de busca open source ultrarrápido, tolerante a erros e com relevância instantânea.",
+    "trust_score": 95,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório oficial consolidado no GitHub",
+      "🟢 Projeto altamente ativo (59801 estrelas)",
+      "🟢 Código aberto com licença NOASSERTION",
+      "🟢 Escrito nativamente em Rust de alta performance"
+    ],
+    "attestation": ""
   },
   {
     "full_name": "astral-sh/uv",
@@ -5905,6 +5955,158 @@
     "attestation": ""
   },
   {
+    "full_name": "jdx/mise",
+    "description": "dev tools, env vars, task runner",
+    "url": "https://github.com/jdx/mise",
+    "stars": 35857,
+    "license": "MIT",
+    "topics": "dev-tools,runtime,env,cli",
+    "language": "Rust",
+    "created_at": "",
+    "pushed_at": "2026-11-06T12:26:50Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v2026.11.3",
+    "released_at": "2026-11-06T11:18:41Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "mise-v2026.11.3-linux-arm64-musl.tar.gz",
+        "size": 61809288,
+        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-linux-arm64-musl.tar.gz",
+        "digest": "sha256:sha256:975fcaac68ddf1a667ceceab30168989d3645f6894b39b40a7b0e6de94096101"
+      },
+      {
+        "name": "mise-v2026.11.3-linux-arm64-musl.tar.xz",
+        "size": 35105696,
+        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-linux-arm64-musl.tar.xz",
+        "digest": "sha256:sha256:99d682753610ca05b916db458bcc6d4843aa32a1fe0444abbd0d6b63f030ff63"
+      },
+      {
+        "name": "mise-v2026.11.3-linux-arm64.tar.gz",
+        "size": 61588925,
+        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-linux-arm64.tar.gz",
+        "digest": "sha256:sha256:13547a80d1dc2d5f81bb183023732f4981486e894d060e30993cc4364b4af51d"
+      },
+      {
+        "name": "mise-v2026.11.3-linux-arm64.tar.xz",
+        "size": 34904280,
+        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-linux-arm64.tar.xz",
+        "digest": "sha256:sha256:c661208bc2e58e85f10ab75eb2c2193604547ccae7c3a3151fb730cd081a6360"
+      },
+      {
+        "name": "mise-v2026.11.3-linux-armv7-musl.tar.gz",
+        "size": 64852135,
+        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-linux-armv7-musl.tar.gz",
+        "digest": "sha256:sha256:9f13230e608338262a75fe9e1956733f157ebeb5ce7b14fef77c966547c70c78"
+      },
+      {
+        "name": "mise-v2026.11.3-linux-armv7-musl.tar.xz",
+        "size": 37218780,
+        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-linux-armv7-musl.tar.xz",
+        "digest": "sha256:sha256:2177593c83c9170eb2f003f57ce5aa5fadd40b7bd924f84b7e80ca43e3c779cf"
+      },
+      {
+        "name": "mise-v2026.11.3-linux-armv7.tar.gz",
+        "size": 65600619,
+        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-linux-armv7.tar.gz",
+        "digest": "sha256:sha256:d6f40bf7d39db8a65431610567771b840cd62f7eab291879ac2b711019a5f2b8"
+      },
+      {
+        "name": "mise-v2026.11.3-linux-armv7.tar.xz",
+        "size": 37756332,
+        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-linux-armv7.tar.xz",
+        "digest": "sha256:sha256:45a27838b2bc02cffa25e38798460b4fa0c1bada3dfa1b336c9b2bd688692eb6"
+      },
+      {
+        "name": "mise-v2026.11.3-linux-x64-musl.tar.gz",
+        "size": 55523034,
+        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-linux-x64-musl.tar.gz",
+        "digest": "sha256:sha256:af4122789a7ede3e2c308c9aaa03e55d0d88956ba6bece2cd46b002630e38f9c"
+      },
+      {
+        "name": "mise-v2026.11.3-linux-x64-musl.tar.xz",
+        "size": 34394296,
+        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-linux-x64-musl.tar.xz",
+        "digest": "sha256:sha256:ff168b74976c18e271f431a867a38e5ccb005b07b0552c0b02eb6d006123b806"
+      },
+      {
+        "name": "mise-v2026.11.3-linux-x64.tar.gz",
+        "size": 60427770,
+        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-linux-x64.tar.gz",
+        "digest": "sha256:sha256:837acae6defb8c9ad74823f6e38856633bacb04c65c1ac67d952749847543bd9"
+      },
+      {
+        "name": "mise-v2026.11.3-linux-x64.tar.xz",
+        "size": 35876508,
+        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-linux-x64.tar.xz",
+        "digest": "sha256:sha256:04e4a7aef2d68259589ba118f8a73a8be0884c5e3f451ad2eeb4e3b6713c9914"
+      },
+      {
+        "name": "mise-v2026.11.3-macos-arm64.tar.gz",
+        "size": 48876757,
+        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-macos-arm64.tar.gz",
+        "digest": "sha256:sha256:de9a54330fee4edede51a3cf6196bbf522f01c5e3fd981e0bebea33f561a0431"
+      },
+      {
+        "name": "mise-v2026.11.3-macos-arm64.tar.xz",
+        "size": 29262832,
+        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-macos-arm64.tar.xz",
+        "digest": "sha256:sha256:fa49089e8168effd6d612390fc300aea1fd76f2bdd8649d6359650944fe37263"
+      },
+      {
+        "name": "mise-v2026.11.3-macos-x64.tar.gz",
+        "size": 64733735,
+        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-macos-x64.tar.gz",
+        "digest": "sha256:sha256:88389a4a624a7279ec8d2d06e5c0fbd874ce4f5de791767883b32f62f4e1d62c"
+      },
+      {
+        "name": "mise-v2026.11.3-macos-x64.tar.xz",
+        "size": 41904780,
+        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-macos-x64.tar.xz",
+        "digest": "sha256:sha256:113d5da9ab55f7780e278c7db6843e1ee76fdbd4ec5c18083dfa3731de886cfa"
+      },
+      {
+        "name": "mise-v2026.11.3-windows-arm64.exe",
+        "size": 210785912,
+        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-windows-arm64.exe",
+        "digest": "sha256:sha256:de122d82cda43f79471fa315f3dd15daccca097cb71334e015d3ed079882c042"
+      },
+      {
+        "name": "mise-v2026.11.3-windows-arm64.zip",
+        "size": 78173302,
+        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-windows-arm64.zip",
+        "digest": "sha256:sha256:a5a612259dadf8785e0f013e30e4a91bdaea1c6bed7a00345849d10cdc0ad940"
+      },
+      {
+        "name": "mise-v2026.11.3-windows-x64.exe",
+        "size": 252753016,
+        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-windows-x64.exe",
+        "digest": "sha256:sha256:4f796228c826ad6225d608e2029278b31677c8919508574498877543ed3431d8"
+      },
+      {
+        "name": "mise-v2026.11.3-windows-x64.zip",
+        "size": 85689004,
+        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-windows-x64.zip",
+        "digest": "sha256:sha256:ee9001a7f396d3c5e53f6f64fa9edc328d53bc3001cccfcd4faf69d09ffe62b2"
+      }
+    ],
+    "kind": "tool",
+    "category": "cli,developer-tools",
+    "tags": "dev-tools,runtime,env,cli",
+    "summary": "Gerenciador poliglota de ferramentas de desenvolvimento, variáveis de ambiente e tarefas.",
+    "trust_score": 92,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório oficial consolidado no GitHub",
+      "🟢 Projeto altamente ativo (35857 estrelas)",
+      "🟢 Código aberto com licença MIT",
+      "🟢 Escrito nativamente em Rust de alta performance"
+    ],
+    "attestation": ""
+  },
+  {
     "full_name": "nushell/nushell",
     "description": "A new type of shell",
     "url": "https://github.com/nushell/nushell",
@@ -6456,6 +6658,178 @@
       "🟢 Repositório verificado e oficial",
       "🟢 Código aberto e auditável",
       "🟢 Instaladores e executáveis disponíveis em Releases"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "surrealdb/surrealdb",
+    "description": "A scalable, distributed, collaborative, document-graph database, for the realtime web",
+    "url": "https://github.com/surrealdb/surrealdb",
+    "stars": 33287,
+    "license": "NOASSERTION",
+    "topics": "database,nosql,sql,graph",
+    "language": "Rust",
+    "created_at": "",
+    "pushed_at": "2026-11-03T15:49:32Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v4.0.0",
+    "released_at": "2026-11-03T15:22:58Z",
+    "platforms": "linux,windows",
+    "assets": [
+      {
+        "name": "surreal-v4.0.0.darwin-amd64.tgz",
+        "size": 88267796,
+        "browser_download_url": "https://github.com/surrealdb/surrealdb/releases/download/v4.0.0/surreal-v4.0.0.darwin-amd64.tgz",
+        "digest": "sha256:sha256:7ef3eecf5b1a3e31928784e4a7a91f943ec8d882fe22df5cdf7e6c7b37ea771f"
+      },
+      {
+        "name": "surreal-v4.0.0.darwin-arm64.tgz",
+        "size": 79726294,
+        "browser_download_url": "https://github.com/surrealdb/surrealdb/releases/download/v4.0.0/surreal-v4.0.0.darwin-arm64.tgz",
+        "digest": "sha256:sha256:9e0b48796d73308bc717936142b676f3c83c58980275f784e738051eca8f6a18"
+      },
+      {
+        "name": "surreal-v4.0.0.darwin-universal.tgz",
+        "size": 167991877,
+        "browser_download_url": "https://github.com/surrealdb/surrealdb/releases/download/v4.0.0/surreal-v4.0.0.darwin-universal.tgz",
+        "digest": "sha256:sha256:70c7c507034690278c9add52e3f60f545c247dbd7c62a2d69c1aa9b6c5074538"
+      },
+      {
+        "name": "surreal-v4.0.0.linux-amd64.tgz",
+        "size": 88781210,
+        "browser_download_url": "https://github.com/surrealdb/surrealdb/releases/download/v4.0.0/surreal-v4.0.0.linux-amd64.tgz",
+        "digest": "sha256:sha256:e910760179b9f13d0773ce98ac50f9a537051156365239284c2dc687adf3049d"
+      },
+      {
+        "name": "surreal-v4.0.0.linux-arm64.tgz",
+        "size": 83312743,
+        "browser_download_url": "https://github.com/surrealdb/surrealdb/releases/download/v4.0.0/surreal-v4.0.0.linux-arm64.tgz",
+        "digest": "sha256:sha256:3d0feff9c3b56a05f168175bd1585e144093c36e740c32c40cf6e51d3466b81c"
+      },
+      {
+        "name": "surreal-v4.0.0.windows-amd64.exe",
+        "size": 286956032,
+        "browser_download_url": "https://github.com/surrealdb/surrealdb/releases/download/v4.0.0/surreal-v4.0.0.windows-amd64.exe",
+        "digest": "sha256:sha256:0184ff8ac150a968e86d551960455f1b3f5825767bb755f572d3f987f366773b"
+      }
+    ],
+    "kind": "tool",
+    "category": "database,server",
+    "tags": "database,nosql,sql,graph",
+    "summary": "Banco de dados multimodelo distribuído em Rust que combina SQL, documentos e grafos.",
+    "trust_score": 91,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório oficial consolidado no GitHub",
+      "🟢 Projeto altamente ativo (33287 estrelas)",
+      "🟢 Código aberto com licença NOASSERTION",
+      "🟢 Escrito nativamente em Rust de alta performance"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "dandavison/delta",
+    "description": "A syntax-highlighting pager for git, diff, grep, rg --json, and blame output",
+    "url": "https://github.com/dandavison/delta",
+    "stars": 32672,
+    "license": "MIT",
+    "topics": "git,diff,terminal,syntax",
+    "language": "Rust",
+    "created_at": "",
+    "pushed_at": "2026-10-28T02:45:33Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "0.20.1",
+    "released_at": "2026-10-04T19:38:10Z",
+    "platforms": "linux,windows",
+    "assets": [
+      {
+        "name": "delta-0.20.1-aarch64-apple-darwin.tar.gz",
+        "size": 3022152,
+        "browser_download_url": "https://github.com/dandavison/delta/releases/download/0.20.1/delta-0.20.1-aarch64-apple-darwin.tar.gz",
+        "digest": "sha256:sha256:bc1839cea69288d4673a24faffbb825d408ca907e0f7d33b1678c9e6cdd5e58e"
+      },
+      {
+        "name": "delta-0.20.1-aarch64-unknown-linux-gnu.tar.gz",
+        "size": 3158438,
+        "browser_download_url": "https://github.com/dandavison/delta/releases/download/0.20.1/delta-0.20.1-aarch64-unknown-linux-gnu.tar.gz",
+        "digest": "sha256:sha256:da7f4338f593572ff426ae153e0870e2fdc72729416eff551b40cdeb67940db8"
+      },
+      {
+        "name": "delta-0.20.1-arm-unknown-linux-gnueabihf.tar.gz",
+        "size": 3151729,
+        "browser_download_url": "https://github.com/dandavison/delta/releases/download/0.20.1/delta-0.20.1-arm-unknown-linux-gnueabihf.tar.gz",
+        "digest": "sha256:sha256:e9e746fe1eb4ed49d71ed0122e9a7d78a14976b9b0b6ece9d691c4d9d7ce75f8"
+      },
+      {
+        "name": "delta-0.20.1-i686-unknown-linux-gnu.tar.gz",
+        "size": 3532313,
+        "browser_download_url": "https://github.com/dandavison/delta/releases/download/0.20.1/delta-0.20.1-i686-unknown-linux-gnu.tar.gz",
+        "digest": "sha256:sha256:64e9ca5594233757a66e23b60ca9cc352cc93c85101a1542bb60ed627bc334a3"
+      },
+      {
+        "name": "delta-0.20.1-x86_64-pc-windows-msvc.zip",
+        "size": 3450186,
+        "browser_download_url": "https://github.com/dandavison/delta/releases/download/0.20.1/delta-0.20.1-x86_64-pc-windows-msvc.zip",
+        "digest": "sha256:sha256:c9af7484b33f1dbc1312a892fc7d5753a6d3365140a4000d49e575a2de742c25"
+      },
+      {
+        "name": "delta-0.20.1-x86_64-unknown-linux-gnu.tar.gz",
+        "size": 3338688,
+        "browser_download_url": "https://github.com/dandavison/delta/releases/download/0.20.1/delta-0.20.1-x86_64-unknown-linux-gnu.tar.gz",
+        "digest": "sha256:sha256:50f08c879f84c81ceb220e476491a7f492d2c9c671e79918cc44badf961a6240"
+      },
+      {
+        "name": "delta-0.20.1-x86_64-unknown-linux-musl.tar.gz",
+        "size": 3403612,
+        "browser_download_url": "https://github.com/dandavison/delta/releases/download/0.20.1/delta-0.20.1-x86_64-unknown-linux-musl.tar.gz",
+        "digest": "sha256:sha256:69dcb4043f55c29118f408c6efd30115e0a4e0a6709253343b8c8fa814ab4a31"
+      },
+      {
+        "name": "git-delta-musl_0.20.1_amd64.deb",
+        "size": 2684336,
+        "browser_download_url": "https://github.com/dandavison/delta/releases/download/0.20.1/git-delta-musl_0.20.1_amd64.deb",
+        "digest": "sha256:sha256:9c3a78d1937c7a9e097f0caf4ac2454b9571af85e5d800865dd6aa3e42c58653"
+      },
+      {
+        "name": "git-delta_0.20.1_amd64.deb",
+        "size": 2633688,
+        "browser_download_url": "https://github.com/dandavison/delta/releases/download/0.20.1/git-delta_0.20.1_amd64.deb",
+        "digest": "sha256:sha256:0683067a4cbbcc19b9fd2841253131d1b37ccfa724725098d811d4d0d9fcc25b"
+      },
+      {
+        "name": "git-delta_0.20.1_arm64.deb",
+        "size": 2390896,
+        "browser_download_url": "https://github.com/dandavison/delta/releases/download/0.20.1/git-delta_0.20.1_arm64.deb",
+        "digest": "sha256:sha256:6e08b734d611037eb9eb5db883cab7ac0a089216a9efdc1d2caac44319029c28"
+      },
+      {
+        "name": "git-delta_0.20.1_armhf.deb",
+        "size": 2379732,
+        "browser_download_url": "https://github.com/dandavison/delta/releases/download/0.20.1/git-delta_0.20.1_armhf.deb",
+        "digest": "sha256:sha256:f4af789a74ad728ba7ab081417c17a6af1b45c7e31db291703310de0b0dd0129"
+      },
+      {
+        "name": "git-delta_0.20.1_i386.deb",
+        "size": 2798116,
+        "browser_download_url": "https://github.com/dandavison/delta/releases/download/0.20.1/git-delta_0.20.1_i386.deb",
+        "digest": "sha256:sha256:da8a6a179216c406d959b57f2e2411aaed292c9bb70079bc4d2c2a134e923fc2"
+      }
+    ],
+    "kind": "tool",
+    "category": "cli",
+    "tags": "git,diff,terminal,syntax",
+    "summary": "Paginador com destaque de sintaxe e visualização clara de diferenças para Git, diff e grep.",
+    "trust_score": 91,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório oficial consolidado no GitHub",
+      "🟢 Projeto altamente ativo (32672 estrelas)",
+      "🟢 Código aberto com licença MIT",
+      "🟢 Escrito nativamente em Rust de alta performance"
     ],
     "attestation": ""
   },
@@ -7803,6 +8177,86 @@
     "attestation": ""
   },
   {
+    "full_name": "extrawurst/gitui",
+    "description": "Blazing 💥 fast terminal-ui for git written in rust 🦀",
+    "url": "https://github.com/gitui-org/gitui",
+    "stars": 22627,
+    "license": "MIT",
+    "topics": "git,terminal,tui,gui",
+    "language": "Rust",
+    "created_at": "",
+    "pushed_at": "2026-10-06T07:08:04Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v0.28.1",
+    "released_at": "2026-03-24T23:26:28Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "gitui-linux-aarch64.tar.gz",
+        "size": 6987794,
+        "browser_download_url": "https://github.com/gitui-org/gitui/releases/download/v0.28.1/gitui-linux-aarch64.tar.gz",
+        "digest": "sha256:sha256:2a640da05b73e9152a7bf92bfd7c23acd9d60438f4f2cabb62357014a5fd7c28"
+      },
+      {
+        "name": "gitui-linux-arm.tar.gz",
+        "size": 6148015,
+        "browser_download_url": "https://github.com/gitui-org/gitui/releases/download/v0.28.1/gitui-linux-arm.tar.gz",
+        "digest": "sha256:sha256:8ab9ba5930c45325de22ec0947f1a50ebd4a0701ee0079a24b57dba2696b514a"
+      },
+      {
+        "name": "gitui-linux-armv7.tar.gz",
+        "size": 6110712,
+        "browser_download_url": "https://github.com/gitui-org/gitui/releases/download/v0.28.1/gitui-linux-armv7.tar.gz",
+        "digest": "sha256:sha256:8e0eb3d2f14946a11d76b752b1d9a78519d5e2b7abd8dac171bf6a05d05ace5a"
+      },
+      {
+        "name": "gitui-linux-x86_64.tar.gz",
+        "size": 6840775,
+        "browser_download_url": "https://github.com/gitui-org/gitui/releases/download/v0.28.1/gitui-linux-x86_64.tar.gz",
+        "digest": "sha256:sha256:f6149b9ae203397158b0c89c13cfde718e7121d3d3cd2ebc597f93d6628d9b5b"
+      },
+      {
+        "name": "gitui-mac-x86.tar.gz",
+        "size": 5823957,
+        "browser_download_url": "https://github.com/gitui-org/gitui/releases/download/v0.28.1/gitui-mac-x86.tar.gz",
+        "digest": "sha256:sha256:27e2f558ca7ebbc7b5fc4c1f61285355d2ea4735610e906579e5b3c8736e7685"
+      },
+      {
+        "name": "gitui-mac.tar.gz",
+        "size": 6023751,
+        "browser_download_url": "https://github.com/gitui-org/gitui/releases/download/v0.28.1/gitui-mac.tar.gz",
+        "digest": "sha256:sha256:3b519a593383841289361bacf579d4a222169aa7ebbdeae6cc449d488d8bb967"
+      },
+      {
+        "name": "gitui-win.msi",
+        "size": 6213632,
+        "browser_download_url": "https://github.com/gitui-org/gitui/releases/download/v0.28.1/gitui-win.msi",
+        "digest": "sha256:sha256:6b720d82c4afaeb5ed07eb5b99c4e89868b5df59530528cb873cf1a8d2d598e3"
+      },
+      {
+        "name": "gitui-win.tar.gz",
+        "size": 4757777,
+        "browser_download_url": "https://github.com/gitui-org/gitui/releases/download/v0.28.1/gitui-win.tar.gz",
+        "digest": "sha256:sha256:fab116ccdf9ae4e17378db912d76cc26e60aefd2226f44e665120dea166867e4"
+      }
+    ],
+    "kind": "app",
+    "category": "cli",
+    "tags": "git,terminal,tui,gui",
+    "summary": "Interface de terminal (TUI) ultrarrápida para gerenciamento e navegação de repositórios Git.",
+    "trust_score": 86,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório oficial consolidado no GitHub",
+      "🟢 Projeto altamente ativo (22627 estrelas)",
+      "🟢 Código aberto com licença MIT",
+      "🟢 Escrito nativamente em Rust de alta performance"
+    ],
+    "attestation": ""
+  },
+  {
     "full_name": "Wilfred/difftastic",
     "description": "A structural diff that understands syntax",
     "url": "https://github.com/Wilfred/difftastic",
@@ -8767,6 +9221,37 @@
     "attestation": ""
   },
   {
+    "full_name": "XAMPPRocky/tokei",
+    "description": "Count your code, quickly.",
+    "url": "https://github.com/XAMPPRocky/tokei",
+    "stars": 15045,
+    "license": "NOASSERTION",
+    "topics": "code,metrics,statistics,cli",
+    "language": "Rust",
+    "created_at": "",
+    "pushed_at": "2026-09-06T17:28:57Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": false,
+    "latest_tag": "v15.0.0",
+    "released_at": "2026-09-06T17:29:00Z",
+    "platforms": "windows,linux,macos",
+    "assets": [],
+    "kind": "tool",
+    "category": "cli,metrics",
+    "tags": "code,metrics,statistics,cli",
+    "summary": "Utilitário rápido que analisa o código-fonte e exibe estatísticas detalhadas de linhas de código.",
+    "trust_score": 82,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório oficial consolidado no GitHub",
+      "🟢 Projeto altamente ativo (15045 estrelas)",
+      "🟢 Código aberto com licença NOASSERTION",
+      "🟢 Escrito nativamente em Rust de alta performance"
+    ],
+    "attestation": ""
+  },
+  {
     "full_name": "hrydgard/ppsspp",
     "description": "A PSP emulator for Android, Windows, Mac, Linux and iOS, written in C++. Want to contribute? Join us on Discord at https://discord.gg/5NJB6dD or just send pull requests / issues.",
     "url": "https://github.com/hrydgard/ppsspp",
@@ -8886,6 +9371,50 @@
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
     ],
     "attestation": "ausente"
+  },
+  {
+    "full_name": "astral-sh/rye",
+    "description": "a Hassle-Free Python Experience",
+    "url": "https://github.com/astral-sh/rye",
+    "stars": 14112,
+    "license": "MIT",
+    "topics": "python,packaging,virtualenv,cargo",
+    "language": "Rust",
+    "created_at": "",
+    "pushed_at": "2026-02-05T00:39:05Z",
+    "fork": false,
+    "archived": true,
+    "has_issues": true,
+    "latest_tag": "0.44.0",
+    "released_at": "2025-02-26T23:56:38Z",
+    "platforms": "windows",
+    "assets": [
+      {
+        "name": "rye-x86-windows.exe",
+        "size": 12265472,
+        "browser_download_url": "https://github.com/astral-sh/rye/releases/download/0.44.0/rye-x86-windows.exe",
+        "digest": ""
+      },
+      {
+        "name": "rye-x86_64-windows.exe",
+        "size": 14453248,
+        "browser_download_url": "https://github.com/astral-sh/rye/releases/download/0.44.0/rye-x86_64-windows.exe",
+        "digest": ""
+      }
+    ],
+    "kind": "tool",
+    "category": "cli,python",
+    "tags": "python,packaging,virtualenv,cargo",
+    "summary": "Gerenciador moderno de ambientes e empacotamento de projetos Python construído em Rust.",
+    "trust_score": 82,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório oficial consolidado no GitHub",
+      "🟢 Projeto altamente ativo (14112 estrelas)",
+      "🟢 Código aberto com licença MIT",
+      "🟢 Escrito nativamente em Rust de alta performance"
+    ],
+    "attestation": ""
   },
   {
     "full_name": "dolphin-emu/dolphin",
@@ -9391,6 +9920,122 @@
     "attestation": ""
   },
   {
+    "full_name": "orhun/git-cliff",
+    "description": "A highly customizable Changelog Generator that follows Conventional Commit specifications ⛰️ ",
+    "url": "https://github.com/orhun/git-cliff",
+    "stars": 12400,
+    "license": "Apache-2.0",
+    "topics": "git,changelog,automation,cli",
+    "language": "Rust",
+    "created_at": "",
+    "pushed_at": "2026-11-02T09:11:17Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v2.14.2",
+    "released_at": "2026-09-18T21:22:51Z",
+    "platforms": "linux,windows",
+    "assets": [
+      {
+        "name": "git-cliff-2.14.2-aarch64-apple-darwin.tar.gz",
+        "size": 6783346,
+        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2-aarch64-apple-darwin.tar.gz",
+        "digest": "sha256:sha256:a0be97e237d440d34c5e508ec21d070b2c85cbb8be48a46a56f9a4e8bd247f05"
+      },
+      {
+        "name": "git-cliff-2.14.2-aarch64-pc-windows-msvc.zip",
+        "size": 6945947,
+        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2-aarch64-pc-windows-msvc.zip",
+        "digest": "sha256:sha256:5fb69daea6e47daebd91abbd4c24cfb74c13547c96fa7e5a252f8f7a3c7585aa"
+      },
+      {
+        "name": "git-cliff-2.14.2-aarch64-unknown-linux-gnu.tar.gz",
+        "size": 7181645,
+        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2-aarch64-unknown-linux-gnu.tar.gz",
+        "digest": "sha256:sha256:69e208f6e4baef3a0f9b759d5f44223aa9336b86c691072a3d0c98d35a816e69"
+      },
+      {
+        "name": "git-cliff-2.14.2-aarch64-unknown-linux-musl.tar.gz",
+        "size": 7240693,
+        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2-aarch64-unknown-linux-musl.tar.gz",
+        "digest": "sha256:sha256:4be21b21ec9699af4d330b224aeba8a41d41d8f5b351ca2da8a9ea2bdc36380f"
+      },
+      {
+        "name": "git-cliff-2.14.2-i686-pc-windows-msvc.zip",
+        "size": 6582272,
+        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2-i686-pc-windows-msvc.zip",
+        "digest": "sha256:sha256:af2de7815687bff0391ed1dd83ed591c7d5e2e694bd4c2d9097199b820302efe"
+      },
+      {
+        "name": "git-cliff-2.14.2-i686-unknown-linux-gnu.tar.gz",
+        "size": 7629414,
+        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2-i686-unknown-linux-gnu.tar.gz",
+        "digest": "sha256:sha256:38f29fc94162302672216bb8a464fb9c5b2d441053623fb266b1774804106147"
+      },
+      {
+        "name": "git-cliff-2.14.2-i686-unknown-linux-musl.tar.gz",
+        "size": 7505658,
+        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2-i686-unknown-linux-musl.tar.gz",
+        "digest": "sha256:sha256:0d50739873de0daaeef1ed61345fbd2967e785cff40f7ae99bcbc3a530f9abdf"
+      },
+      {
+        "name": "git-cliff-2.14.2-x86_64-apple-darwin.tar.gz",
+        "size": 7269932,
+        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2-x86_64-apple-darwin.tar.gz",
+        "digest": "sha256:sha256:4e647d2deb152aca1e987f225cf42b080b991dd98f3bce4027ef95446d982ac3"
+      },
+      {
+        "name": "git-cliff-2.14.2-x86_64-pc-windows-gnu.zip",
+        "size": 7528061,
+        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2-x86_64-pc-windows-gnu.zip",
+        "digest": "sha256:sha256:ab802a72a1fbdd1e06f17001728cb801d04a180f320efb0ec94af84d2f6adbc7"
+      },
+      {
+        "name": "git-cliff-2.14.2-x86_64-pc-windows-msvc.zip",
+        "size": 7428304,
+        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2-x86_64-pc-windows-msvc.zip",
+        "digest": "sha256:sha256:6ece2112b3f4af462190ecbea4aeb1315fff6af415629b597f84319073c31131"
+      },
+      {
+        "name": "git-cliff-2.14.2-x86_64-unknown-linux-gnu.tar.gz",
+        "size": 7782813,
+        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2-x86_64-unknown-linux-gnu.tar.gz",
+        "digest": "sha256:sha256:24f397c733add5390fdceee3a2088588ab0d5f944ce00d34cb7029b888cf2db4"
+      },
+      {
+        "name": "git-cliff-2.14.2-x86_64-unknown-linux-musl.tar.gz",
+        "size": 7955124,
+        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2-x86_64-unknown-linux-musl.tar.gz",
+        "digest": "sha256:sha256:fa21e2fc70046fcfd0e43e5e4613873ab799aff3d9dc8559c00d31b270e417d0"
+      },
+      {
+        "name": "git-cliff-2.14.2.deb",
+        "size": 4104308,
+        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2.deb",
+        "digest": "sha256:sha256:b6c5a9cdb4a7d090003f503fafac4d8ab0f7118eae728151953a6c6e98c89d94"
+      },
+      {
+        "name": "git-cliff-2.14.2.x86_64.rpm",
+        "size": 4470246,
+        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2.x86_64.rpm",
+        "digest": "sha256:sha256:90067e567a6875560dc395419e342ddd1f9b435a384081c739591ec442d9fb4e"
+      }
+    ],
+    "kind": "tool",
+    "category": "cli,git",
+    "tags": "git,changelog,automation,cli",
+    "summary": "Gerador altamente customizável de Changelogs a partir de mensagens de commits convencionais.",
+    "trust_score": 81,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório oficial consolidado no GitHub",
+      "🟢 Projeto altamente ativo (12400 estrelas)",
+      "🟢 Código aberto com licença Apache-2.0",
+      "🟢 Escrito nativamente em Rust de alta performance"
+    ],
+    "attestation": ""
+  },
+  {
     "full_name": "LostRuins/koboldcpp",
     "description": "KoboldCpp - Run GGUF AI models locally with a KoboldAI UI. One File. Zero Install.",
     "url": "https://github.com/LostRuins/koboldcpp",
@@ -9837,6 +10482,98 @@
       "🟢 10892 estrelas no GitHub",
       "🟢 Código aberto com licença GPL-3.0",
       "🟢 Todos os instaladores possuem hash SHA-256 oficial do GitHub"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "sigoden/aichat",
+    "description": "All-in-one LLM CLI tool featuring Shell Assistant, Chat-REPL, RAG, AI Tools & Agents, with access to OpenAI, Claude, Gemini, Ollama, Groq, and more.",
+    "url": "https://github.com/sigoden/aichat",
+    "stars": 10548,
+    "license": "Apache-2.0",
+    "topics": "ai,llm,chatgpt,cli,terminal",
+    "language": "Rust",
+    "created_at": "",
+    "pushed_at": "2026-02-23T11:16:42Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v0.30.0",
+    "released_at": "2025-07-06T23:48:31Z",
+    "platforms": "linux,windows",
+    "assets": [
+      {
+        "name": "aichat-v0.30.0-aarch64-apple-darwin.tar.gz",
+        "size": 5044993,
+        "browser_download_url": "https://github.com/sigoden/aichat/releases/download/v0.30.0/aichat-v0.30.0-aarch64-apple-darwin.tar.gz",
+        "digest": "sha256:sha256:680d36ed7f7ba8a2c2490a099df26c9da54495903c27956109a89c87eeb9edb3"
+      },
+      {
+        "name": "aichat-v0.30.0-aarch64-pc-windows-msvc.zip",
+        "size": 5087866,
+        "browser_download_url": "https://github.com/sigoden/aichat/releases/download/v0.30.0/aichat-v0.30.0-aarch64-pc-windows-msvc.zip",
+        "digest": "sha256:sha256:2f381e70ddaf0831df7e0181a1d25d700bb0d7e53287393a47fd435c253d6091"
+      },
+      {
+        "name": "aichat-v0.30.0-aarch64-unknown-linux-musl.tar.gz",
+        "size": 5464580,
+        "browser_download_url": "https://github.com/sigoden/aichat/releases/download/v0.30.0/aichat-v0.30.0-aarch64-unknown-linux-musl.tar.gz",
+        "digest": "sha256:sha256:eb1cd0948569404c5d9d01c10b32b902e11f8231073315456454dec246bdf26e"
+      },
+      {
+        "name": "aichat-v0.30.0-arm-unknown-linux-musleabihf.tar.gz",
+        "size": 5158772,
+        "browser_download_url": "https://github.com/sigoden/aichat/releases/download/v0.30.0/aichat-v0.30.0-arm-unknown-linux-musleabihf.tar.gz",
+        "digest": "sha256:sha256:30676a28a3e32f7a682bb98c44963d872d37f21db275b74282d3774668537bef"
+      },
+      {
+        "name": "aichat-v0.30.0-armv7-unknown-linux-musleabihf.tar.gz",
+        "size": 5097936,
+        "browser_download_url": "https://github.com/sigoden/aichat/releases/download/v0.30.0/aichat-v0.30.0-armv7-unknown-linux-musleabihf.tar.gz",
+        "digest": "sha256:sha256:e79f0f245a990b27fd7456e658991c4131951d786864349594e4f8299c3e3f43"
+      },
+      {
+        "name": "aichat-v0.30.0-i686-pc-windows-msvc.zip",
+        "size": 4815660,
+        "browser_download_url": "https://github.com/sigoden/aichat/releases/download/v0.30.0/aichat-v0.30.0-i686-pc-windows-msvc.zip",
+        "digest": "sha256:sha256:d5b019fc65cff50f1e97cdd2687f9e4a2af94768c47e0cdd738b9685cfc5ccdc"
+      },
+      {
+        "name": "aichat-v0.30.0-i686-unknown-linux-musl.tar.gz",
+        "size": 5441627,
+        "browser_download_url": "https://github.com/sigoden/aichat/releases/download/v0.30.0/aichat-v0.30.0-i686-unknown-linux-musl.tar.gz",
+        "digest": "sha256:sha256:e843cdc0603ffc97679a0a51a9eaa81fe59e44d8f57e9e9ca9f8f4132c0dcb90"
+      },
+      {
+        "name": "aichat-v0.30.0-x86_64-apple-darwin.tar.gz",
+        "size": 5195911,
+        "browser_download_url": "https://github.com/sigoden/aichat/releases/download/v0.30.0/aichat-v0.30.0-x86_64-apple-darwin.tar.gz",
+        "digest": "sha256:sha256:94aa09315773929e027bcb399f78661c2ddffd887b65348bae446601989d9ddd"
+      },
+      {
+        "name": "aichat-v0.30.0-x86_64-pc-windows-msvc.zip",
+        "size": 5252563,
+        "browser_download_url": "https://github.com/sigoden/aichat/releases/download/v0.30.0/aichat-v0.30.0-x86_64-pc-windows-msvc.zip",
+        "digest": "sha256:sha256:89df8c4ccd6dad310ac713eb5d550494ae7fa14722cde346588fab38ff4afd8f"
+      },
+      {
+        "name": "aichat-v0.30.0-x86_64-unknown-linux-musl.tar.gz",
+        "size": 5759120,
+        "browser_download_url": "https://github.com/sigoden/aichat/releases/download/v0.30.0/aichat-v0.30.0-x86_64-unknown-linux-musl.tar.gz",
+        "digest": "sha256:sha256:6b0cc08c5ceb551dc52bfac2221752f82215be5908c70605d655e9b91ab1557c"
+      }
+    ],
+    "kind": "ai-app",
+    "category": "cli,ai",
+    "tags": "ai,llm,chatgpt,cli,terminal",
+    "summary": "CLI completa de inteligência artificial com suporte a múltiplos modelos e assistente de terminal.",
+    "trust_score": 80,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório oficial consolidado no GitHub",
+      "🟢 Projeto altamente ativo (10548 estrelas)",
+      "🟢 Código aberto com licença Apache-2.0",
+      "🟢 Escrito nativamente em Rust de alta performance"
     ],
     "attestation": ""
   },
@@ -10556,6 +11293,123 @@
     "attestation": ""
   },
   {
+    "full_name": "chmln/sd",
+    "description": "Intuitive find & replace CLI (sed alternative)",
+    "url": "https://github.com/chmln/sd",
+    "stars": 7413,
+    "license": "MIT",
+    "topics": "sed,find,replace,regex",
+    "language": "Rust",
+    "created_at": "",
+    "pushed_at": "2026-02-25T19:26:21Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v1.1.0",
+    "released_at": "2026-02-25T19:27:05Z",
+    "platforms": "linux,windows",
+    "assets": [
+      {
+        "name": "sd-v1.1.0-aarch64-apple-darwin.tar.gz",
+        "size": 852694,
+        "browser_download_url": "https://github.com/chmln/sd/releases/download/v1.1.0/sd-v1.1.0-aarch64-apple-darwin.tar.gz",
+        "digest": "sha256:sha256:4bd3c09226376ca0a1d69589c91e86276fae36c5fbaaee669afce583f6682030"
+      },
+      {
+        "name": "sd-v1.1.0-aarch64-unknown-linux-musl.tar.gz",
+        "size": 924956,
+        "browser_download_url": "https://github.com/chmln/sd/releases/download/v1.1.0/sd-v1.1.0-aarch64-unknown-linux-musl.tar.gz",
+        "digest": "sha256:sha256:ec8c93c0533ff21f4851d11566808d4082544baf063d9b96ea77c27e98b7cd99"
+      },
+      {
+        "name": "sd-v1.1.0-arm-unknown-linux-gnueabihf.tar.gz",
+        "size": 896137,
+        "browser_download_url": "https://github.com/chmln/sd/releases/download/v1.1.0/sd-v1.1.0-arm-unknown-linux-gnueabihf.tar.gz",
+        "digest": "sha256:sha256:e7ab29aaba6bf927421106fdc5b7591fdcb5aa575a7d9d43a36db6e093ae6263"
+      },
+      {
+        "name": "sd-v1.1.0-armv7-unknown-linux-gnueabihf.tar.gz",
+        "size": 884126,
+        "browser_download_url": "https://github.com/chmln/sd/releases/download/v1.1.0/sd-v1.1.0-armv7-unknown-linux-gnueabihf.tar.gz",
+        "digest": "sha256:sha256:4eeb5b285bbe44249ab64b2966394c540edaf56f94fa7ec9583e068b8fbff290"
+      },
+      {
+        "name": "sd-v1.1.0-x86_64-apple-darwin.tar.gz",
+        "size": 927982,
+        "browser_download_url": "https://github.com/chmln/sd/releases/download/v1.1.0/sd-v1.1.0-x86_64-apple-darwin.tar.gz",
+        "digest": "sha256:sha256:1fca1e9c91813a8aac6821063c923107ba0f66a83309e095edcd3b202f67f97e"
+      },
+      {
+        "name": "sd-v1.1.0-x86_64-pc-windows-gnu.zip",
+        "size": 915261,
+        "browser_download_url": "https://github.com/chmln/sd/releases/download/v1.1.0/sd-v1.1.0-x86_64-pc-windows-gnu.zip",
+        "digest": "sha256:sha256:c460cd35514d1877ff7116034567c95c92b62f9f662f53a34bb02f96edf0483c"
+      },
+      {
+        "name": "sd-v1.1.0-x86_64-pc-windows-msvc.zip",
+        "size": 888027,
+        "browser_download_url": "https://github.com/chmln/sd/releases/download/v1.1.0/sd-v1.1.0-x86_64-pc-windows-msvc.zip",
+        "digest": "sha256:sha256:59837c2e7c911099aca1cc46b663bcdc5a949fd3e9fbbaf34fc73e5d5d71007c"
+      },
+      {
+        "name": "sd-v1.1.0-x86_64-unknown-linux-gnu.tar.gz",
+        "size": 988815,
+        "browser_download_url": "https://github.com/chmln/sd/releases/download/v1.1.0/sd-v1.1.0-x86_64-unknown-linux-gnu.tar.gz",
+        "digest": "sha256:sha256:3613eca74cd686739bb5a6d68319aa56c747e7315274d02323a2ca2b1c5d82d2"
+      },
+      {
+        "name": "sd-v1.1.0-x86_64-unknown-linux-musl.tar.gz",
+        "size": 1049511,
+        "browser_download_url": "https://github.com/chmln/sd/releases/download/v1.1.0/sd-v1.1.0-x86_64-unknown-linux-musl.tar.gz",
+        "digest": "sha256:sha256:02f00f4777d43e8e95b7b8d49e1a0d6e502fed4b8e79c1c8b8063857a30caa2e"
+      }
+    ],
+    "kind": "tool",
+    "category": "cli,text",
+    "tags": "sed,find,replace,regex",
+    "summary": "Substituto simples, intuitivo e muito rápido para o sed, especializado em busca e substituição por regex.",
+    "trust_score": 78,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório oficial consolidado no GitHub",
+      "🟢 Projeto altamente ativo (7413 estrelas)",
+      "🟢 Código aberto com licença MIT",
+      "🟢 Escrito nativamente em Rust de alta performance"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "cloudflare/boringtun",
+    "description": "Userspace WireGuard® Implementation in Rust",
+    "url": "https://github.com/cloudflare/boringtun",
+    "stars": 7252,
+    "license": "BSD-3-Clause",
+    "topics": "wireguard,vpn,network,crypto",
+    "language": "Rust",
+    "created_at": "",
+    "pushed_at": "2026-06-29T06:18:56Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "boringtun-cli-0.5.2",
+    "released_at": "2022-07-20T17:04:19Z",
+    "platforms": "windows,linux,macos",
+    "assets": [],
+    "kind": "tool",
+    "category": "network,security",
+    "tags": "wireguard,vpn,network,crypto",
+    "summary": "Implementação de alta performance em espaço de usuário do protocolo WireGuard em Rust.",
+    "trust_score": 78,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório oficial consolidado no GitHub",
+      "🟢 Projeto altamente ativo (7252 estrelas)",
+      "🟢 Código aberto com licença BSD-3-Clause",
+      "🟢 Escrito nativamente em Rust de alta performance"
+    ],
+    "attestation": ""
+  },
+  {
     "full_name": "bleachbit/bleachbit",
     "description": "BleachBit system cleaner for Windows and Linux",
     "url": "https://github.com/bleachbit/bleachbit",
@@ -10775,6 +11629,74 @@
       "🟢 Código aberto com licença GPL-3.0",
       "🟡 Aba de Issues desativada no repositório",
       "🟡 Release antiga sem hash SHA-256 pré-calculado pelo GitHub"
+    ],
+    "attestation": ""
+  },
+  {
+    "full_name": "dalance/procs",
+    "description": "A modern replacement for ps written in Rust",
+    "url": "https://github.com/dalance/procs",
+    "stars": 6218,
+    "license": "MIT",
+    "topics": "process,system,ps,cli",
+    "language": "Rust",
+    "created_at": "",
+    "pushed_at": "2026-11-02T20:08:21Z",
+    "fork": false,
+    "archived": false,
+    "has_issues": true,
+    "latest_tag": "v0.14.12",
+    "released_at": "2026-06-25T10:12:30Z",
+    "platforms": "linux,macos,windows",
+    "assets": [
+      {
+        "name": "procs-0.14.12-1.x86_64.rpm",
+        "size": 2555456,
+        "browser_download_url": "https://github.com/dalance/procs/releases/download/v0.14.12/procs-0.14.12-1.x86_64.rpm",
+        "digest": "sha256:sha256:27a79f0b921e93a61f651f36d3e6e99ac865d881b4c0936244f739de41becb37"
+      },
+      {
+        "name": "procs-v0.14.12-aarch64-linux.zip",
+        "size": 2400955,
+        "browser_download_url": "https://github.com/dalance/procs/releases/download/v0.14.12/procs-v0.14.12-aarch64-linux.zip",
+        "digest": "sha256:sha256:74b4f82acc6fe553cbd5af20ba0baac420b42bef9bb0cbb38fef14b8317d9f91"
+      },
+      {
+        "name": "procs-v0.14.12-aarch64-mac.zip",
+        "size": 2095351,
+        "browser_download_url": "https://github.com/dalance/procs/releases/download/v0.14.12/procs-v0.14.12-aarch64-mac.zip",
+        "digest": "sha256:sha256:20c7a33426ed7a43c3e13a48f2d1866ecc979a8ad46733f86ddc78ab7f12d49c"
+      },
+      {
+        "name": "procs-v0.14.12-x86_64-linux.zip",
+        "size": 2565746,
+        "browser_download_url": "https://github.com/dalance/procs/releases/download/v0.14.12/procs-v0.14.12-x86_64-linux.zip",
+        "digest": "sha256:sha256:81964faf9d5cd0e9f399d5d0954fb6fe4d4d9f7d3cbec4507633df5a45b11713"
+      },
+      {
+        "name": "procs-v0.14.12-x86_64-mac.zip",
+        "size": 2233395,
+        "browser_download_url": "https://github.com/dalance/procs/releases/download/v0.14.12/procs-v0.14.12-x86_64-mac.zip",
+        "digest": "sha256:sha256:2c276f40c99051984942a5b135b74ce4bc9184984a1543dddfcf275bde71d8d4"
+      },
+      {
+        "name": "procs-v0.14.12-x86_64-windows.zip",
+        "size": 1571894,
+        "browser_download_url": "https://github.com/dalance/procs/releases/download/v0.14.12/procs-v0.14.12-x86_64-windows.zip",
+        "digest": "sha256:sha256:4928c399ae78ee82f99139a5629077b8d90a58599d834584dd4e613cb60c83d0"
+      }
+    ],
+    "kind": "tool",
+    "category": "cli,system",
+    "tags": "process,system,ps,cli",
+    "summary": "Substituto moderno para o comando ps do Unix/Windows, com exibição de portas TCP, memória e CPU.",
+    "trust_score": 78,
+    "trust_level": "🟢 CONFIÁVEL",
+    "trust_notes": [
+      "🟢 Repositório oficial consolidado no GitHub",
+      "🟢 Projeto altamente ativo (6218 estrelas)",
+      "🟢 Código aberto com licença MIT",
+      "🟢 Escrito nativamente em Rust de alta performance"
     ],
     "attestation": ""
   },
@@ -12239,1403 +13161,21 @@
     "attestation": ""
   },
   {
-    "full_name": "The-Ur-Quan-Masters/uqm",
-    "description": "The Ur-Quan Masters: HD modern port of the classic space adventure Star Control II",
-    "url": "https://github.com/The-Ur-Quan-Masters/uqm",
-    "stars": 1200,
-    "license": "GPL-2.0",
-    "topics": "adventure,c,classic,open-source,rpg,space,star-control",
-    "language": "C",
-    "created_at": "2013-02-10T12:00:00Z",
-    "pushed_at": "2026-10-15T14:00:00Z",
-    "fork": false,
-    "archived": false,
-    "has_issues": true,
-    "latest_tag": "v0.8.0",
-    "released_at": "2026-06-10T18:00:00Z",
-    "platforms": "windows",
-    "assets": [
-      {
-        "name": "uqm-0.8.0-installer.exe",
-        "size": 28400120,
-        "browser_download_url": "https://github.com/The-Ur-Quan-Masters/uqm/releases/download/v0.8.0/uqm-0.8.0-installer.exe",
-        "digest": ""
-      }
-    ],
-    "kind": "game",
-    "category": "Espacial • Clássico Remasterizado",
-    "tags": "game,space,adventure,sci-fi,retro,classic",
-    "summary": "Port oficial de código aberto da lendária ópera espacial Star Control II com áudio orquestrado, gráficos em alta resolução e diálogos dublados.",
-    "trust_score": 98,
-    "trust_level": "🟢 CONFIÁVEL",
-    "trust_notes": [
-      "🟢 Autorizado pelos criadores originais do jogo",
-      "🟢 Código aberto em C",
-      "🟢 Instalador oficial e seguro para Windows"
-    ],
-    "attestation": ""
-  },
-  {
-    "full_name": "extrawurst/gitui",
-    "description": "Blazing 💥 fast terminal-ui for git written in rust 🦀",
-    "url": "https://github.com/gitui-org/gitui",
-    "stars": 22627,
-    "license": "MIT",
-    "topics": "git,terminal,tui,gui",
-    "pushed_at": "2026-10-06T07:08:04Z",
-    "fork": false,
-    "archived": false,
-    "has_issues": true,
-    "latest_tag": "v0.28.1",
-    "released_at": "2026-03-24T23:26:28Z",
-    "platforms": "windows,linux,macos",
-    "assets": [
-      {
-        "name": "gitui-linux-aarch64.tar.gz",
-        "size": 6987794,
-        "browser_download_url": "https://github.com/gitui-org/gitui/releases/download/v0.28.1/gitui-linux-aarch64.tar.gz",
-        "digest": "sha256:sha256:2a640da05b73e9152a7bf92bfd7c23acd9d60438f4f2cabb62357014a5fd7c28"
-      },
-      {
-        "name": "gitui-linux-arm.tar.gz",
-        "size": 6148015,
-        "browser_download_url": "https://github.com/gitui-org/gitui/releases/download/v0.28.1/gitui-linux-arm.tar.gz",
-        "digest": "sha256:sha256:8ab9ba5930c45325de22ec0947f1a50ebd4a0701ee0079a24b57dba2696b514a"
-      },
-      {
-        "name": "gitui-linux-armv7.tar.gz",
-        "size": 6110712,
-        "browser_download_url": "https://github.com/gitui-org/gitui/releases/download/v0.28.1/gitui-linux-armv7.tar.gz",
-        "digest": "sha256:sha256:8e0eb3d2f14946a11d76b752b1d9a78519d5e2b7abd8dac171bf6a05d05ace5a"
-      },
-      {
-        "name": "gitui-linux-x86_64.tar.gz",
-        "size": 6840775,
-        "browser_download_url": "https://github.com/gitui-org/gitui/releases/download/v0.28.1/gitui-linux-x86_64.tar.gz",
-        "digest": "sha256:sha256:f6149b9ae203397158b0c89c13cfde718e7121d3d3cd2ebc597f93d6628d9b5b"
-      },
-      {
-        "name": "gitui-mac-x86.tar.gz",
-        "size": 5823957,
-        "browser_download_url": "https://github.com/gitui-org/gitui/releases/download/v0.28.1/gitui-mac-x86.tar.gz",
-        "digest": "sha256:sha256:27e2f558ca7ebbc7b5fc4c1f61285355d2ea4735610e906579e5b3c8736e7685"
-      },
-      {
-        "name": "gitui-mac.tar.gz",
-        "size": 6023751,
-        "browser_download_url": "https://github.com/gitui-org/gitui/releases/download/v0.28.1/gitui-mac.tar.gz",
-        "digest": "sha256:sha256:3b519a593383841289361bacf579d4a222169aa7ebbdeae6cc449d488d8bb967"
-      },
-      {
-        "name": "gitui-win.msi",
-        "size": 6213632,
-        "browser_download_url": "https://github.com/gitui-org/gitui/releases/download/v0.28.1/gitui-win.msi",
-        "digest": "sha256:sha256:6b720d82c4afaeb5ed07eb5b99c4e89868b5df59530528cb873cf1a8d2d598e3"
-      },
-      {
-        "name": "gitui-win.tar.gz",
-        "size": 4757777,
-        "browser_download_url": "https://github.com/gitui-org/gitui/releases/download/v0.28.1/gitui-win.tar.gz",
-        "digest": "sha256:sha256:fab116ccdf9ae4e17378db912d76cc26e60aefd2226f44e665120dea166867e4"
-      }
-    ],
-    "kind": "app",
-    "category": "cli",
-    "tags": "git,terminal,tui,gui",
-    "summary": "Interface de terminal (TUI) ultrarrápida para gerenciamento e navegação de repositórios Git.",
-    "language": "Rust",
-    "trust_score": 86,
-    "trust_level": "🟢 CONFIÁVEL",
-    "trust_notes": [
-      "🟢 Repositório oficial consolidado no GitHub",
-      "🟢 Projeto altamente ativo (22627 estrelas)",
-      "🟢 Código aberto com licença MIT",
-      "🟢 Escrito nativamente em Rust de alta performance"
-    ],
-    "attestation": "",
-    "installed": null
-  },
-  {
-    "full_name": "dandavison/delta",
-    "description": "A syntax-highlighting pager for git, diff, grep, rg --json, and blame output",
-    "url": "https://github.com/dandavison/delta",
-    "stars": 32672,
-    "license": "MIT",
-    "topics": "git,diff,terminal,syntax",
-    "pushed_at": "2026-10-28T02:45:33Z",
-    "fork": false,
-    "archived": false,
-    "has_issues": true,
-    "latest_tag": "0.20.1",
-    "released_at": "2026-10-04T19:38:10Z",
-    "platforms": "windows,linux,macos",
-    "assets": [
-      {
-        "name": "delta-0.20.1-aarch64-apple-darwin.tar.gz",
-        "size": 3022152,
-        "browser_download_url": "https://github.com/dandavison/delta/releases/download/0.20.1/delta-0.20.1-aarch64-apple-darwin.tar.gz",
-        "digest": "sha256:sha256:bc1839cea69288d4673a24faffbb825d408ca907e0f7d33b1678c9e6cdd5e58e"
-      },
-      {
-        "name": "delta-0.20.1-aarch64-unknown-linux-gnu.tar.gz",
-        "size": 3158438,
-        "browser_download_url": "https://github.com/dandavison/delta/releases/download/0.20.1/delta-0.20.1-aarch64-unknown-linux-gnu.tar.gz",
-        "digest": "sha256:sha256:da7f4338f593572ff426ae153e0870e2fdc72729416eff551b40cdeb67940db8"
-      },
-      {
-        "name": "delta-0.20.1-arm-unknown-linux-gnueabihf.tar.gz",
-        "size": 3151729,
-        "browser_download_url": "https://github.com/dandavison/delta/releases/download/0.20.1/delta-0.20.1-arm-unknown-linux-gnueabihf.tar.gz",
-        "digest": "sha256:sha256:e9e746fe1eb4ed49d71ed0122e9a7d78a14976b9b0b6ece9d691c4d9d7ce75f8"
-      },
-      {
-        "name": "delta-0.20.1-i686-unknown-linux-gnu.tar.gz",
-        "size": 3532313,
-        "browser_download_url": "https://github.com/dandavison/delta/releases/download/0.20.1/delta-0.20.1-i686-unknown-linux-gnu.tar.gz",
-        "digest": "sha256:sha256:64e9ca5594233757a66e23b60ca9cc352cc93c85101a1542bb60ed627bc334a3"
-      },
-      {
-        "name": "delta-0.20.1-x86_64-pc-windows-msvc.zip",
-        "size": 3450186,
-        "browser_download_url": "https://github.com/dandavison/delta/releases/download/0.20.1/delta-0.20.1-x86_64-pc-windows-msvc.zip",
-        "digest": "sha256:sha256:c9af7484b33f1dbc1312a892fc7d5753a6d3365140a4000d49e575a2de742c25"
-      },
-      {
-        "name": "delta-0.20.1-x86_64-unknown-linux-gnu.tar.gz",
-        "size": 3338688,
-        "browser_download_url": "https://github.com/dandavison/delta/releases/download/0.20.1/delta-0.20.1-x86_64-unknown-linux-gnu.tar.gz",
-        "digest": "sha256:sha256:50f08c879f84c81ceb220e476491a7f492d2c9c671e79918cc44badf961a6240"
-      },
-      {
-        "name": "delta-0.20.1-x86_64-unknown-linux-musl.tar.gz",
-        "size": 3403612,
-        "browser_download_url": "https://github.com/dandavison/delta/releases/download/0.20.1/delta-0.20.1-x86_64-unknown-linux-musl.tar.gz",
-        "digest": "sha256:sha256:69dcb4043f55c29118f408c6efd30115e0a4e0a6709253343b8c8fa814ab4a31"
-      },
-      {
-        "name": "git-delta-musl_0.20.1_amd64.deb",
-        "size": 2684336,
-        "browser_download_url": "https://github.com/dandavison/delta/releases/download/0.20.1/git-delta-musl_0.20.1_amd64.deb",
-        "digest": "sha256:sha256:9c3a78d1937c7a9e097f0caf4ac2454b9571af85e5d800865dd6aa3e42c58653"
-      },
-      {
-        "name": "git-delta_0.20.1_amd64.deb",
-        "size": 2633688,
-        "browser_download_url": "https://github.com/dandavison/delta/releases/download/0.20.1/git-delta_0.20.1_amd64.deb",
-        "digest": "sha256:sha256:0683067a4cbbcc19b9fd2841253131d1b37ccfa724725098d811d4d0d9fcc25b"
-      },
-      {
-        "name": "git-delta_0.20.1_arm64.deb",
-        "size": 2390896,
-        "browser_download_url": "https://github.com/dandavison/delta/releases/download/0.20.1/git-delta_0.20.1_arm64.deb",
-        "digest": "sha256:sha256:6e08b734d611037eb9eb5db883cab7ac0a089216a9efdc1d2caac44319029c28"
-      },
-      {
-        "name": "git-delta_0.20.1_armhf.deb",
-        "size": 2379732,
-        "browser_download_url": "https://github.com/dandavison/delta/releases/download/0.20.1/git-delta_0.20.1_armhf.deb",
-        "digest": "sha256:sha256:f4af789a74ad728ba7ab081417c17a6af1b45c7e31db291703310de0b0dd0129"
-      },
-      {
-        "name": "git-delta_0.20.1_i386.deb",
-        "size": 2798116,
-        "browser_download_url": "https://github.com/dandavison/delta/releases/download/0.20.1/git-delta_0.20.1_i386.deb",
-        "digest": "sha256:sha256:da8a6a179216c406d959b57f2e2411aaed292c9bb70079bc4d2c2a134e923fc2"
-      }
-    ],
-    "kind": "tool",
-    "category": "cli",
-    "tags": "git,diff,terminal,syntax",
-    "summary": "Paginador com destaque de sintaxe e visualização clara de diferenças para Git, diff e grep.",
-    "language": "Rust",
-    "trust_score": 91,
-    "trust_level": "🟢 CONFIÁVEL",
-    "trust_notes": [
-      "🟢 Repositório oficial consolidado no GitHub",
-      "🟢 Projeto altamente ativo (32672 estrelas)",
-      "🟢 Código aberto com licença MIT",
-      "🟢 Escrito nativamente em Rust de alta performance"
-    ],
-    "attestation": "",
-    "installed": null
-  },
-  {
-    "full_name": "meilisearch/meilisearch",
-    "description": "A lightning-fast search engine API bringing AI-powered hybrid search to your sites and applications.",
-    "url": "https://github.com/meilisearch/meilisearch",
-    "stars": 59801,
-    "license": "NOASSERTION",
-    "topics": "api,search,database,engine",
-    "pushed_at": "2026-11-05T10:32:54Z",
-    "fork": false,
-    "archived": false,
-    "has_issues": true,
-    "latest_tag": "v1.56.1",
-    "released_at": "2026-11-02T09:38:53Z",
-    "platforms": "windows,linux,macos",
-    "assets": [
-      {
-        "name": "meilisearch-enterprise-linux-aarch64",
-        "size": 352770696,
-        "browser_download_url": "https://github.com/meilisearch/meilisearch/releases/download/v1.56.1/meilisearch-enterprise-linux-aarch64",
-        "digest": "sha256:sha256:b41b7b708a698670b5ae221ddcc2c9bf3aeae56c04fb6514157503f080f2fd29"
-      },
-      {
-        "name": "meilisearch-enterprise-linux-amd64",
-        "size": 359229872,
-        "browser_download_url": "https://github.com/meilisearch/meilisearch/releases/download/v1.56.1/meilisearch-enterprise-linux-amd64",
-        "digest": "sha256:sha256:11287c94779572c7c418596cedf41c5d42b6ddb82e116a3707f1d5276be81497"
-      },
-      {
-        "name": "meilisearch-enterprise-linux-riscv64",
-        "size": 351810408,
-        "browser_download_url": "https://github.com/meilisearch/meilisearch/releases/download/v1.56.1/meilisearch-enterprise-linux-riscv64",
-        "digest": "sha256:sha256:9c43b59635f60e24ff71c4802d907b6e377dac51fee4167f095eaa2f7d8a461b"
-      },
-      {
-        "name": "meilisearch-enterprise-macos-amd64",
-        "size": 353150232,
-        "browser_download_url": "https://github.com/meilisearch/meilisearch/releases/download/v1.56.1/meilisearch-enterprise-macos-amd64",
-        "digest": "sha256:sha256:8bf177afc320a519e39e196c6808ca8f93dea05c3e3effc582947dcd57e0d8e3"
-      },
-      {
-        "name": "meilisearch-enterprise-macos-apple-silicon",
-        "size": 350062240,
-        "browser_download_url": "https://github.com/meilisearch/meilisearch/releases/download/v1.56.1/meilisearch-enterprise-macos-apple-silicon",
-        "digest": "sha256:sha256:c5941e66c54381750a81a13a5f5e2735ca58f7580676f573ffa82752999e89fa"
-      },
-      {
-        "name": "meilisearch-enterprise-windows-amd64.exe",
-        "size": 354613760,
-        "browser_download_url": "https://github.com/meilisearch/meilisearch/releases/download/v1.56.1/meilisearch-enterprise-windows-amd64.exe",
-        "digest": "sha256:sha256:8887e7268ab8cfd5e2b619a173433c1c10807468012ec110c459a2511df5c554"
-      },
-      {
-        "name": "meilisearch-error-codes.json",
-        "size": 52030,
-        "browser_download_url": "https://github.com/meilisearch/meilisearch/releases/download/v1.56.1/meilisearch-error-codes.json",
-        "digest": "sha256:sha256:68037a6fe45a36e8c2fa4c3f5601ec21c36e1be54cd3656585915f88991defa9"
-      },
-      {
-        "name": "meilisearch-linux-aarch64",
-        "size": 350917296,
-        "browser_download_url": "https://github.com/meilisearch/meilisearch/releases/download/v1.56.1/meilisearch-linux-aarch64",
-        "digest": "sha256:sha256:f73987f92b094fd15b79956f9bfc9e8fc7294ad6ad610ebf8a4403c170890726"
-      },
-      {
-        "name": "meilisearch-linux-amd64",
-        "size": 357299624,
-        "browser_download_url": "https://github.com/meilisearch/meilisearch/releases/download/v1.56.1/meilisearch-linux-amd64",
-        "digest": "sha256:sha256:b2c7a647d4cdfdd7a901466bfd6797077b849e90f5eb2c0f5b1d05869592e27e"
-      },
-      {
-        "name": "meilisearch-linux-riscv64",
-        "size": 350051728,
-        "browser_download_url": "https://github.com/meilisearch/meilisearch/releases/download/v1.56.1/meilisearch-linux-riscv64",
-        "digest": "sha256:sha256:7998cb198608e587014c6c598138b1871d4eecfe6e78b3a4168da3df5fca64c7"
-      },
-      {
-        "name": "meilisearch-macos-amd64",
-        "size": 351344024,
-        "browser_download_url": "https://github.com/meilisearch/meilisearch/releases/download/v1.56.1/meilisearch-macos-amd64",
-        "digest": "sha256:sha256:cfd3d4214df99a0270227924cedb62f4db6a857c2ec26723a33b3086f59c3985"
-      },
-      {
-        "name": "meilisearch-macos-apple-silicon",
-        "size": 348419472,
-        "browser_download_url": "https://github.com/meilisearch/meilisearch/releases/download/v1.56.1/meilisearch-macos-apple-silicon",
-        "digest": "sha256:sha256:293b48304c8452cf67c5ab3f5882e542bfe63d52f357bb155f576412cb6f739d"
-      },
-      {
-        "name": "meilisearch-openapi.json",
-        "size": 833876,
-        "browser_download_url": "https://github.com/meilisearch/meilisearch/releases/download/v1.56.1/meilisearch-openapi.json",
-        "digest": "sha256:sha256:0c9972d7dbbb53725e36cc10aa66c0ee1ae7621ecb7895fd9760c55c79b97459"
-      },
-      {
-        "name": "meilisearch-windows-amd64.exe",
-        "size": 353019904,
-        "browser_download_url": "https://github.com/meilisearch/meilisearch/releases/download/v1.56.1/meilisearch-windows-amd64.exe",
-        "digest": "sha256:sha256:ac6d2506cafe862c93a6add533e125a19852339ec21303413120bde84aad3a48"
-      },
-      {
-        "name": "meilisearch.deb",
-        "size": 59599432,
-        "browser_download_url": "https://github.com/meilisearch/meilisearch/releases/download/v1.56.1/meilisearch.deb",
-        "digest": "sha256:sha256:4a830c31ecbac661e9e6bece486edf5628dd33af4cb734e551ce6d9366566028"
-      }
-    ],
-    "kind": "tool",
-    "category": "search,server,database",
-    "tags": "api,search,database,engine",
-    "summary": "Motor de busca open source ultrarrápido, tolerante a erros e com relevância instantânea.",
-    "language": "Rust",
-    "trust_score": 95,
-    "trust_level": "🟢 CONFIÁVEL",
-    "trust_notes": [
-      "🟢 Repositório oficial consolidado no GitHub",
-      "🟢 Projeto altamente ativo (59801 estrelas)",
-      "🟢 Código aberto com licença NOASSERTION",
-      "🟢 Escrito nativamente em Rust de alta performance"
-    ],
-    "attestation": "",
-    "installed": null
-  },
-  {
-    "full_name": "surrealdb/surrealdb",
-    "description": "A scalable, distributed, collaborative, document-graph database, for the realtime web",
-    "url": "https://github.com/surrealdb/surrealdb",
-    "stars": 33287,
-    "license": "NOASSERTION",
-    "topics": "database,nosql,sql,graph",
-    "pushed_at": "2026-11-03T15:49:32Z",
-    "fork": false,
-    "archived": false,
-    "has_issues": true,
-    "latest_tag": "v4.0.0",
-    "released_at": "2026-11-03T15:22:58Z",
-    "platforms": "windows,linux,macos",
-    "assets": [
-      {
-        "name": "LICENSE",
-        "size": 4633,
-        "browser_download_url": "https://github.com/surrealdb/surrealdb/releases/download/v4.0.0/LICENSE",
-        "digest": "sha256:sha256:98a94ac615f88370865016487b436fa404560910bd329794ed7502277a94b805"
-      },
-      {
-        "name": "surreal-v4.0.0.darwin-amd64.tgz",
-        "size": 88267796,
-        "browser_download_url": "https://github.com/surrealdb/surrealdb/releases/download/v4.0.0/surreal-v4.0.0.darwin-amd64.tgz",
-        "digest": "sha256:sha256:7ef3eecf5b1a3e31928784e4a7a91f943ec8d882fe22df5cdf7e6c7b37ea771f"
-      },
-      {
-        "name": "surreal-v4.0.0.darwin-arm64.tgz",
-        "size": 79726294,
-        "browser_download_url": "https://github.com/surrealdb/surrealdb/releases/download/v4.0.0/surreal-v4.0.0.darwin-arm64.tgz",
-        "digest": "sha256:sha256:9e0b48796d73308bc717936142b676f3c83c58980275f784e738051eca8f6a18"
-      },
-      {
-        "name": "surreal-v4.0.0.darwin-universal.tgz",
-        "size": 167991877,
-        "browser_download_url": "https://github.com/surrealdb/surrealdb/releases/download/v4.0.0/surreal-v4.0.0.darwin-universal.tgz",
-        "digest": "sha256:sha256:70c7c507034690278c9add52e3f60f545c247dbd7c62a2d69c1aa9b6c5074538"
-      },
-      {
-        "name": "surreal-v4.0.0.linux-amd64.tgz",
-        "size": 88781210,
-        "browser_download_url": "https://github.com/surrealdb/surrealdb/releases/download/v4.0.0/surreal-v4.0.0.linux-amd64.tgz",
-        "digest": "sha256:sha256:e910760179b9f13d0773ce98ac50f9a537051156365239284c2dc687adf3049d"
-      },
-      {
-        "name": "surreal-v4.0.0.linux-arm64.tgz",
-        "size": 83312743,
-        "browser_download_url": "https://github.com/surrealdb/surrealdb/releases/download/v4.0.0/surreal-v4.0.0.linux-arm64.tgz",
-        "digest": "sha256:sha256:3d0feff9c3b56a05f168175bd1585e144093c36e740c32c40cf6e51d3466b81c"
-      },
-      {
-        "name": "surreal-v4.0.0.windows-amd64.exe",
-        "size": 286956032,
-        "browser_download_url": "https://github.com/surrealdb/surrealdb/releases/download/v4.0.0/surreal-v4.0.0.windows-amd64.exe",
-        "digest": "sha256:sha256:0184ff8ac150a968e86d551960455f1b3f5825767bb755f572d3f987f366773b"
-      }
-    ],
-    "kind": "tool",
-    "category": "database,server",
-    "tags": "database,nosql,sql,graph",
-    "summary": "Banco de dados multimodelo distribuído em Rust que combina SQL, documentos e grafos.",
-    "language": "Rust",
-    "trust_score": 91,
-    "trust_level": "🟢 CONFIÁVEL",
-    "trust_notes": [
-      "🟢 Repositório oficial consolidado no GitHub",
-      "🟢 Projeto altamente ativo (33287 estrelas)",
-      "🟢 Código aberto com licença NOASSERTION",
-      "🟢 Escrito nativamente em Rust de alta performance"
-    ],
-    "attestation": "",
-    "installed": null
-  },
-  {
-    "full_name": "jdx/mise",
-    "description": "dev tools, env vars, task runner",
-    "url": "https://github.com/jdx/mise",
-    "stars": 35857,
-    "license": "MIT",
-    "topics": "dev-tools,runtime,env,cli",
-    "pushed_at": "2026-11-06T12:26:50Z",
-    "fork": false,
-    "archived": false,
-    "has_issues": true,
-    "latest_tag": "v2026.11.3",
-    "released_at": "2026-11-06T11:18:41Z",
-    "platforms": "windows,linux,macos",
-    "assets": [
-      {
-        "name": "install.ps1",
-        "size": 13127,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/install.ps1",
-        "digest": "sha256:sha256:47b7724534c8f9fd2907b5ac05dffc6d1fb0b113be933e737c51b02f62400e1a"
-      },
-      {
-        "name": "install.ps1.minisig",
-        "size": 306,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/install.ps1.minisig",
-        "digest": "sha256:sha256:7ea6359418c7edc76aaea7f791589b9e6663f73877de6173b73445581d77cda3"
-      },
-      {
-        "name": "install.ps1.sig",
-        "size": 5685,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/install.ps1.sig",
-        "digest": "sha256:sha256:e38fdad1ba31d5281e8efd570f060c1167902690753be4b4b6e494960c49a01c"
-      },
-      {
-        "name": "install.sh",
-        "size": 17361,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/install.sh",
-        "digest": "sha256:sha256:4b10a637258803f8df4b167545784a3575a5fcb2dd228ed43e2f9aef333c7e09"
-      },
-      {
-        "name": "install.sh.minisig",
-        "size": 305,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/install.sh.minisig",
-        "digest": "sha256:sha256:41b59d3929813031c9ac13503658b3ca782156ad48d183746a228102d14e8b55"
-      },
-      {
-        "name": "install.sh.sig",
-        "size": 6566,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/install.sh.sig",
-        "digest": "sha256:sha256:7d4921b139315b45f61425e033ba95b651cf5311d4b6eb213c66f0089a8dc69b"
-      },
-      {
-        "name": "mise-v2026.11.3-linux-arm64",
-        "size": 155149208,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-linux-arm64",
-        "digest": "sha256:sha256:a9a2a66bbbe87ea9cc849e1f006606ae2b34f3d3ba56a54d5cd5d64b6557d164"
-      },
-      {
-        "name": "mise-v2026.11.3-linux-arm64-musl",
-        "size": 155185752,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-linux-arm64-musl",
-        "digest": "sha256:sha256:78c87fb8c8af031755f9241cbcd1886cd458c75e8f324020015445a776789e38"
-      },
-      {
-        "name": "mise-v2026.11.3-linux-arm64-musl.tar.gz",
-        "size": 61809288,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-linux-arm64-musl.tar.gz",
-        "digest": "sha256:sha256:975fcaac68ddf1a667ceceab30168989d3645f6894b39b40a7b0e6de94096101"
-      },
-      {
-        "name": "mise-v2026.11.3-linux-arm64-musl.tar.xz",
-        "size": 35105696,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-linux-arm64-musl.tar.xz",
-        "digest": "sha256:sha256:99d682753610ca05b916db458bcc6d4843aa32a1fe0444abbd0d6b63f030ff63"
-      },
-      {
-        "name": "mise-v2026.11.3-linux-arm64-musl.tar.zst",
-        "size": 43253102,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-linux-arm64-musl.tar.zst",
-        "digest": "sha256:sha256:2686a6831e2673722b294c9d69d0fcd6105fccdb42500c2db152908156648627"
-      },
-      {
-        "name": "mise-v2026.11.3-linux-arm64.tar.gz",
-        "size": 61588925,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-linux-arm64.tar.gz",
-        "digest": "sha256:sha256:13547a80d1dc2d5f81bb183023732f4981486e894d060e30993cc4364b4af51d"
-      },
-      {
-        "name": "mise-v2026.11.3-linux-arm64.tar.xz",
-        "size": 34904280,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-linux-arm64.tar.xz",
-        "digest": "sha256:sha256:c661208bc2e58e85f10ab75eb2c2193604547ccae7c3a3151fb730cd081a6360"
-      },
-      {
-        "name": "mise-v2026.11.3-linux-arm64.tar.zst",
-        "size": 42955085,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-linux-arm64.tar.zst",
-        "digest": "sha256:sha256:492a59860b09abddb9ace0fb9442c609cb27e6e8c0b8ac24344fde48a9e8dbb3"
-      },
-      {
-        "name": "mise-v2026.11.3-linux-armv7",
-        "size": 164792056,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-linux-armv7",
-        "digest": "sha256:sha256:ed1b15b98f54e2eb328c9d8f4a69fcfc3cb5b83d32aa71385af6fa0336e23438"
-      },
-      {
-        "name": "mise-v2026.11.3-linux-armv7-musl",
-        "size": 165249084,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-linux-armv7-musl",
-        "digest": "sha256:sha256:3796f55533a3c235ca288e60f120147d733f071e7c3644c4b2d2dcf1f9f6d73e"
-      },
-      {
-        "name": "mise-v2026.11.3-linux-armv7-musl.tar.gz",
-        "size": 64852135,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-linux-armv7-musl.tar.gz",
-        "digest": "sha256:sha256:9f13230e608338262a75fe9e1956733f157ebeb5ce7b14fef77c966547c70c78"
-      },
-      {
-        "name": "mise-v2026.11.3-linux-armv7-musl.tar.xz",
-        "size": 37218780,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-linux-armv7-musl.tar.xz",
-        "digest": "sha256:sha256:2177593c83c9170eb2f003f57ce5aa5fadd40b7bd924f84b7e80ca43e3c779cf"
-      },
-      {
-        "name": "mise-v2026.11.3-linux-armv7-musl.tar.zst",
-        "size": 46217737,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-linux-armv7-musl.tar.zst",
-        "digest": "sha256:sha256:dd96a750b64f216fafd96edfe7412de09f366e20dc79ce668366e6731b2593eb"
-      },
-      {
-        "name": "mise-v2026.11.3-linux-armv7.tar.gz",
-        "size": 65600619,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-linux-armv7.tar.gz",
-        "digest": "sha256:sha256:d6f40bf7d39db8a65431610567771b840cd62f7eab291879ac2b711019a5f2b8"
-      },
-      {
-        "name": "mise-v2026.11.3-linux-armv7.tar.xz",
-        "size": 37756332,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-linux-armv7.tar.xz",
-        "digest": "sha256:sha256:45a27838b2bc02cffa25e38798460b4fa0c1bada3dfa1b336c9b2bd688692eb6"
-      },
-      {
-        "name": "mise-v2026.11.3-linux-armv7.tar.zst",
-        "size": 46845112,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-linux-armv7.tar.zst",
-        "digest": "sha256:sha256:f3fb83449e60204248e96828b65fdab8f02d682e636f3dec17a2bcac49f6caf9"
-      },
-      {
-        "name": "mise-v2026.11.3-linux-x64",
-        "size": 177830976,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-linux-x64",
-        "digest": "sha256:sha256:c2f7e814cb39f60b7f67a0ff36cb805e94128bf2dff09d175309d0f095b8cc3b"
-      },
-      {
-        "name": "mise-v2026.11.3-linux-x64-musl",
-        "size": 159277072,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-linux-x64-musl",
-        "digest": "sha256:sha256:72f1cb4591ee2ba90150022c3ee8aea4dd88fadac10c56d04ede4faffb5a1b03"
-      },
-      {
-        "name": "mise-v2026.11.3-linux-x64-musl.tar.gz",
-        "size": 55523034,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-linux-x64-musl.tar.gz",
-        "digest": "sha256:sha256:af4122789a7ede3e2c308c9aaa03e55d0d88956ba6bece2cd46b002630e38f9c"
-      },
-      {
-        "name": "mise-v2026.11.3-linux-x64-musl.tar.xz",
-        "size": 34394296,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-linux-x64-musl.tar.xz",
-        "digest": "sha256:sha256:ff168b74976c18e271f431a867a38e5ccb005b07b0552c0b02eb6d006123b806"
-      },
-      {
-        "name": "mise-v2026.11.3-linux-x64-musl.tar.zst",
-        "size": 39247649,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-linux-x64-musl.tar.zst",
-        "digest": "sha256:sha256:75e3da89bb1a8b20b85e1976cc6fd7291ff7d031db7b3daee20c00645c8a8a30"
-      },
-      {
-        "name": "mise-v2026.11.3-linux-x64.tar.gz",
-        "size": 60427770,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-linux-x64.tar.gz",
-        "digest": "sha256:sha256:837acae6defb8c9ad74823f6e38856633bacb04c65c1ac67d952749847543bd9"
-      },
-      {
-        "name": "mise-v2026.11.3-linux-x64.tar.xz",
-        "size": 35876508,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-linux-x64.tar.xz",
-        "digest": "sha256:sha256:04e4a7aef2d68259589ba118f8a73a8be0884c5e3f451ad2eeb4e3b6713c9914"
-      },
-      {
-        "name": "mise-v2026.11.3-linux-x64.tar.zst",
-        "size": 43200892,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-linux-x64.tar.zst",
-        "digest": "sha256:sha256:aecb9bdaec0de3cc4da51aea5f7cdb628582e627cccb71f50779cac78d7166a0"
-      },
-      {
-        "name": "mise-v2026.11.3-macos-arm64",
-        "size": 141305312,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-macos-arm64",
-        "digest": "sha256:sha256:6d39119ab914c54ab865204dee9337c71b83a7ed1e730f663c2fc3453e38fe9c"
-      },
-      {
-        "name": "mise-v2026.11.3-macos-arm64.tar.gz",
-        "size": 48876757,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-macos-arm64.tar.gz",
-        "digest": "sha256:sha256:de9a54330fee4edede51a3cf6196bbf522f01c5e3fd981e0bebea33f561a0431"
-      },
-      {
-        "name": "mise-v2026.11.3-macos-arm64.tar.xz",
-        "size": 29262832,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-macos-arm64.tar.xz",
-        "digest": "sha256:sha256:fa49089e8168effd6d612390fc300aea1fd76f2bdd8649d6359650944fe37263"
-      },
-      {
-        "name": "mise-v2026.11.3-macos-arm64.tar.zst",
-        "size": 44622243,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-macos-arm64.tar.zst",
-        "digest": "sha256:sha256:cdbd89668ba19a8ddbd531c2d9678e920a112351c3a90ba4eca27220825e2b0d"
-      },
-      {
-        "name": "mise-v2026.11.3-macos-x64",
-        "size": 172898672,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-macos-x64",
-        "digest": "sha256:sha256:49f32abd93f54147af0599a1c9583d2092df8e7250c9fe635783a7932c4087ef"
-      },
-      {
-        "name": "mise-v2026.11.3-macos-x64.tar.gz",
-        "size": 64733735,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-macos-x64.tar.gz",
-        "digest": "sha256:sha256:88389a4a624a7279ec8d2d06e5c0fbd874ce4f5de791767883b32f62f4e1d62c"
-      },
-      {
-        "name": "mise-v2026.11.3-macos-x64.tar.xz",
-        "size": 41904780,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-macos-x64.tar.xz",
-        "digest": "sha256:sha256:113d5da9ab55f7780e278c7db6843e1ee76fdbd4ec5c18083dfa3731de886cfa"
-      },
-      {
-        "name": "mise-v2026.11.3-macos-x64.tar.zst",
-        "size": 59423015,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-macos-x64.tar.zst",
-        "digest": "sha256:sha256:010aadae8d80f3473103c904252b1e58bcb4d119c9435c6f12075d65f7999ab1"
-      },
-      {
-        "name": "mise-v2026.11.3-windows-arm64.exe",
-        "size": 210785912,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-windows-arm64.exe",
-        "digest": "sha256:sha256:de122d82cda43f79471fa315f3dd15daccca097cb71334e015d3ed079882c042"
-      },
-      {
-        "name": "mise-v2026.11.3-windows-arm64.zip",
-        "size": 78173302,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-windows-arm64.zip",
-        "digest": "sha256:sha256:a5a612259dadf8785e0f013e30e4a91bdaea1c6bed7a00345849d10cdc0ad940"
-      },
-      {
-        "name": "mise-v2026.11.3-windows-x64.exe",
-        "size": 252753016,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-windows-x64.exe",
-        "digest": "sha256:sha256:4f796228c826ad6225d608e2029278b31677c8919508574498877543ed3431d8"
-      },
-      {
-        "name": "mise-v2026.11.3-windows-x64.zip",
-        "size": 85689004,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise-v2026.11.3-windows-x64.zip",
-        "digest": "sha256:sha256:ee9001a7f396d3c5e53f6f64fa9edc328d53bc3001cccfcd4faf69d09ffe62b2"
-      },
-      {
-        "name": "mise.bash",
-        "size": 3990,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise.bash",
-        "digest": "sha256:sha256:b2ef33deebe8ffd9e09c395474f2ab0be6ae7d0457399d3f7907ab12d070c33d"
-      },
-      {
-        "name": "mise.fish",
-        "size": 3435,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise.fish",
-        "digest": "sha256:sha256:6ce5a37ef20997b45566abe1fedd98f06b370e3cd8b3ec5e039a51ced22e9c08"
-      },
-      {
-        "name": "mise.powershell",
-        "size": 4618,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise.powershell",
-        "digest": "sha256:sha256:8901a0c4f205a958f61483d8e3f0877643632c3c5928fc404abb7323028aea93"
-      },
-      {
-        "name": "mise.usage.kdl",
-        "size": 496468,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise.usage.kdl",
-        "digest": "sha256:sha256:1148c0e3b1f1e8f09b50d1c040255108dd240a9224a2ce3f4ccc3d2071e4a399"
-      },
-      {
-        "name": "mise.zsh",
-        "size": 5172,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/mise.zsh",
-        "digest": "sha256:sha256:4701bffd3e4db0188d03ab9bbcdf429d13b95f18218dbc08f23c388218d35640"
-      },
-      {
-        "name": "packslip.sigstore.json",
-        "size": 40787,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/packslip.sigstore.json",
-        "digest": "sha256:sha256:dd3f2dabfb120d5239590beca43f7886e896a07afe98dd32e19c803e4efbbfb5"
-      },
-      {
-        "name": "SHASUMS256.asc",
-        "size": 4570,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/SHASUMS256.asc",
-        "digest": "sha256:sha256:a2a5bf0a8b110df51352be7d8eff33b2ae0f5708bd7df831d6cb453673977e57"
-      },
-      {
-        "name": "SHASUMS256.txt",
-        "size": 3688,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/SHASUMS256.txt",
-        "digest": "sha256:sha256:1ed365b61c55b2c6a458f6aa2881cf7bc6f1cf9e24368554e3a0e9186321b29a"
-      },
-      {
-        "name": "SHASUMS256.txt.minisig",
-        "size": 309,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/SHASUMS256.txt.minisig",
-        "digest": "sha256:sha256:70550fabc964415b177427d8f74b813d049135ce15544d7abc221bfac8485aba"
-      },
-      {
-        "name": "SHASUMS512.asc",
-        "size": 7021,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/SHASUMS512.asc",
-        "digest": "sha256:sha256:88ecd5f3845e41b1c8ddf2d85f71b4923db08e12c4c5b6876f33fa60e7aca479"
-      },
-      {
-        "name": "SHASUMS512.txt",
-        "size": 6139,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/SHASUMS512.txt",
-        "digest": "sha256:sha256:ab9035461bd0ca23357919149bbc9ec1e8ba2cd15d7f4043788b2fe9dd86c1ae"
-      },
-      {
-        "name": "SHASUMS512.txt.minisig",
-        "size": 309,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/SHASUMS512.txt.minisig",
-        "digest": "sha256:sha256:c9b7c943c4b4dcf3ca467d600b1a5991e9fecb60302a68a7b83bb189fe345965"
-      },
-      {
-        "name": "v2026.11.3.tar.gz.sig",
-        "size": 566,
-        "browser_download_url": "https://github.com/jdx/mise/releases/download/v2026.11.3/v2026.11.3.tar.gz.sig",
-        "digest": "sha256:sha256:d82cd1005cd84f78f125e6027622efd71d79bba4a49242bfdd00082dfe570161"
-      }
-    ],
-    "kind": "tool",
-    "category": "cli,developer-tools",
-    "tags": "dev-tools,runtime,env,cli",
-    "summary": "Gerenciador poliglota de ferramentas de desenvolvimento, variáveis de ambiente e tarefas.",
-    "language": "Rust",
-    "trust_score": 92,
-    "trust_level": "🟢 CONFIÁVEL",
-    "trust_notes": [
-      "🟢 Repositório oficial consolidado no GitHub",
-      "🟢 Projeto altamente ativo (35857 estrelas)",
-      "🟢 Código aberto com licença MIT",
-      "🟢 Escrito nativamente em Rust de alta performance"
-    ],
-    "attestation": "",
-    "installed": null
-  },
-  {
-    "full_name": "XAMPPRocky/tokei",
-    "description": "Count your code, quickly.",
-    "url": "https://github.com/XAMPPRocky/tokei",
-    "stars": 15045,
-    "license": "NOASSERTION",
-    "topics": "code,metrics,statistics,cli",
-    "pushed_at": "2026-09-06T17:28:57Z",
-    "fork": false,
-    "archived": false,
-    "has_issues": false,
-    "latest_tag": "v15.0.0",
-    "released_at": "2026-09-06T17:29:00Z",
-    "platforms": "windows,linux,macos",
-    "assets": [],
-    "kind": "tool",
-    "category": "cli,metrics",
-    "tags": "code,metrics,statistics,cli",
-    "summary": "Utilitário rápido que analisa o código-fonte e exibe estatísticas detalhadas de linhas de código.",
-    "language": "Rust",
-    "trust_score": 82,
-    "trust_level": "🟢 CONFIÁVEL",
-    "trust_notes": [
-      "🟢 Repositório oficial consolidado no GitHub",
-      "🟢 Projeto altamente ativo (15045 estrelas)",
-      "🟢 Código aberto com licença NOASSERTION",
-      "🟢 Escrito nativamente em Rust de alta performance"
-    ],
-    "attestation": "",
-    "installed": null
-  },
-  {
-    "full_name": "orhun/git-cliff",
-    "description": "A highly customizable Changelog Generator that follows Conventional Commit specifications ⛰️ ",
-    "url": "https://github.com/orhun/git-cliff",
-    "stars": 12400,
-    "license": "Apache-2.0",
-    "topics": "git,changelog,automation,cli",
-    "pushed_at": "2026-11-02T09:11:17Z",
-    "fork": false,
-    "archived": false,
-    "has_issues": true,
-    "latest_tag": "v2.14.2",
-    "released_at": "2026-09-18T21:22:51Z",
-    "platforms": "windows,linux,macos",
-    "assets": [
-      {
-        "name": "git-cliff-2.14.2-aarch64-apple-darwin.tar.gz",
-        "size": 6783346,
-        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2-aarch64-apple-darwin.tar.gz",
-        "digest": "sha256:sha256:a0be97e237d440d34c5e508ec21d070b2c85cbb8be48a46a56f9a4e8bd247f05"
-      },
-      {
-        "name": "git-cliff-2.14.2-aarch64-apple-darwin.tar.gz.sha512",
-        "size": 175,
-        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2-aarch64-apple-darwin.tar.gz.sha512",
-        "digest": "sha256:sha256:fa3adfcf75e4a1a237aa98904db3a3bc1a6d41b4f51d12a3fcfc8b5839cd8d6b"
-      },
-      {
-        "name": "git-cliff-2.14.2-aarch64-apple-darwin.tar.gz.sig",
-        "size": 594,
-        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2-aarch64-apple-darwin.tar.gz.sig",
-        "digest": "sha256:sha256:77afad23d2f44fb264a16b0d66f92cf20803a73519841bb56aa6f424866d5dd6"
-      },
-      {
-        "name": "git-cliff-2.14.2-aarch64-pc-windows-msvc.zip",
-        "size": 6945947,
-        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2-aarch64-pc-windows-msvc.zip",
-        "digest": "sha256:sha256:5fb69daea6e47daebd91abbd4c24cfb74c13547c96fa7e5a252f8f7a3c7585aa"
-      },
-      {
-        "name": "git-cliff-2.14.2-aarch64-unknown-linux-gnu.tar.gz",
-        "size": 7181645,
-        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2-aarch64-unknown-linux-gnu.tar.gz",
-        "digest": "sha256:sha256:69e208f6e4baef3a0f9b759d5f44223aa9336b86c691072a3d0c98d35a816e69"
-      },
-      {
-        "name": "git-cliff-2.14.2-aarch64-unknown-linux-gnu.tar.gz.sha512",
-        "size": 180,
-        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2-aarch64-unknown-linux-gnu.tar.gz.sha512",
-        "digest": "sha256:sha256:6c7ea5ecb7d2b91765591293473ee391857e41098186d5200e5eb48c16ff8360"
-      },
-      {
-        "name": "git-cliff-2.14.2-aarch64-unknown-linux-gnu.tar.gz.sig",
-        "size": 566,
-        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2-aarch64-unknown-linux-gnu.tar.gz.sig",
-        "digest": "sha256:sha256:b42371dcb4cb416eca16658d4f324cd06333c4f2bd4c2284057be868ea6a78b2"
-      },
-      {
-        "name": "git-cliff-2.14.2-aarch64-unknown-linux-musl.tar.gz",
-        "size": 7240693,
-        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2-aarch64-unknown-linux-musl.tar.gz",
-        "digest": "sha256:sha256:4be21b21ec9699af4d330b224aeba8a41d41d8f5b351ca2da8a9ea2bdc36380f"
-      },
-      {
-        "name": "git-cliff-2.14.2-aarch64-unknown-linux-musl.tar.gz.sha512",
-        "size": 181,
-        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2-aarch64-unknown-linux-musl.tar.gz.sha512",
-        "digest": "sha256:sha256:c6bddc0800b5db77cb407e4a0a9e810ba0c2665c3e6eb290f3e3096fe4fca46a"
-      },
-      {
-        "name": "git-cliff-2.14.2-aarch64-unknown-linux-musl.tar.gz.sig",
-        "size": 566,
-        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2-aarch64-unknown-linux-musl.tar.gz.sig",
-        "digest": "sha256:sha256:86987a0929a9310b508b9afa1b66604687c40f24f610798433d3c1a462ef4837"
-      },
-      {
-        "name": "git-cliff-2.14.2-i686-pc-windows-msvc.zip",
-        "size": 6582272,
-        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2-i686-pc-windows-msvc.zip",
-        "digest": "sha256:sha256:af2de7815687bff0391ed1dd83ed591c7d5e2e694bd4c2d9097199b820302efe"
-      },
-      {
-        "name": "git-cliff-2.14.2-i686-unknown-linux-gnu.tar.gz",
-        "size": 7629414,
-        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2-i686-unknown-linux-gnu.tar.gz",
-        "digest": "sha256:sha256:38f29fc94162302672216bb8a464fb9c5b2d441053623fb266b1774804106147"
-      },
-      {
-        "name": "git-cliff-2.14.2-i686-unknown-linux-gnu.tar.gz.sha512",
-        "size": 177,
-        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2-i686-unknown-linux-gnu.tar.gz.sha512",
-        "digest": "sha256:sha256:4869073e1d2b05999080f5994f993cc2f81d57f9b2da06365ad072fa8c9cd7af"
-      },
-      {
-        "name": "git-cliff-2.14.2-i686-unknown-linux-gnu.tar.gz.sig",
-        "size": 566,
-        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2-i686-unknown-linux-gnu.tar.gz.sig",
-        "digest": "sha256:sha256:fc422ac671b3a9ef30ff172302ea460681268760d0a0defca0fcb839279c7381"
-      },
-      {
-        "name": "git-cliff-2.14.2-i686-unknown-linux-musl.tar.gz",
-        "size": 7505658,
-        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2-i686-unknown-linux-musl.tar.gz",
-        "digest": "sha256:sha256:0d50739873de0daaeef1ed61345fbd2967e785cff40f7ae99bcbc3a530f9abdf"
-      },
-      {
-        "name": "git-cliff-2.14.2-i686-unknown-linux-musl.tar.gz.sha512",
-        "size": 178,
-        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2-i686-unknown-linux-musl.tar.gz.sha512",
-        "digest": "sha256:sha256:ca1a7c999a339bc1cad6b23db5347cb6e60c9ce48a829502b844eeccef51f3e6"
-      },
-      {
-        "name": "git-cliff-2.14.2-i686-unknown-linux-musl.tar.gz.sig",
-        "size": 566,
-        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2-i686-unknown-linux-musl.tar.gz.sig",
-        "digest": "sha256:sha256:ebef8d02b07f9ca9f7a3ea8bae67a923dcb18cabf57c5fd7919831780d6467ac"
-      },
-      {
-        "name": "git-cliff-2.14.2-x86_64-apple-darwin.tar.gz",
-        "size": 7269932,
-        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2-x86_64-apple-darwin.tar.gz",
-        "digest": "sha256:sha256:4e647d2deb152aca1e987f225cf42b080b991dd98f3bce4027ef95446d982ac3"
-      },
-      {
-        "name": "git-cliff-2.14.2-x86_64-apple-darwin.tar.gz.sha512",
-        "size": 174,
-        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2-x86_64-apple-darwin.tar.gz.sha512",
-        "digest": "sha256:sha256:16ac82718c56aa0a33c0e58d54e71e9289c2d51be8dd7807154bf4aac0a0b80d"
-      },
-      {
-        "name": "git-cliff-2.14.2-x86_64-apple-darwin.tar.gz.sig",
-        "size": 594,
-        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2-x86_64-apple-darwin.tar.gz.sig",
-        "digest": "sha256:sha256:1280e4d48c1ab9369293767dd334a9f1b808f17ddbdb582028e84934adaaac86"
-      },
-      {
-        "name": "git-cliff-2.14.2-x86_64-pc-windows-gnu.zip",
-        "size": 7528061,
-        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2-x86_64-pc-windows-gnu.zip",
-        "digest": "sha256:sha256:ab802a72a1fbdd1e06f17001728cb801d04a180f320efb0ec94af84d2f6adbc7"
-      },
-      {
-        "name": "git-cliff-2.14.2-x86_64-pc-windows-msvc.zip",
-        "size": 7428304,
-        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2-x86_64-pc-windows-msvc.zip",
-        "digest": "sha256:sha256:6ece2112b3f4af462190ecbea4aeb1315fff6af415629b597f84319073c31131"
-      },
-      {
-        "name": "git-cliff-2.14.2-x86_64-unknown-linux-gnu.tar.gz",
-        "size": 7782813,
-        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2-x86_64-unknown-linux-gnu.tar.gz",
-        "digest": "sha256:sha256:24f397c733add5390fdceee3a2088588ab0d5f944ce00d34cb7029b888cf2db4"
-      },
-      {
-        "name": "git-cliff-2.14.2-x86_64-unknown-linux-gnu.tar.gz.sha512",
-        "size": 179,
-        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2-x86_64-unknown-linux-gnu.tar.gz.sha512",
-        "digest": "sha256:sha256:6d46959b317e600f85578da668aa85aeb7416f5e78c77cfe3cc1192652b5ba9a"
-      },
-      {
-        "name": "git-cliff-2.14.2-x86_64-unknown-linux-gnu.tar.gz.sig",
-        "size": 566,
-        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2-x86_64-unknown-linux-gnu.tar.gz.sig",
-        "digest": "sha256:sha256:fefbfc72065716ed6b0ffc07e98919ab2ef4aca352d4312b2013e6ee2490e939"
-      },
-      {
-        "name": "git-cliff-2.14.2-x86_64-unknown-linux-musl.tar.gz",
-        "size": 7955124,
-        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2-x86_64-unknown-linux-musl.tar.gz",
-        "digest": "sha256:sha256:fa21e2fc70046fcfd0e43e5e4613873ab799aff3d9dc8559c00d31b270e417d0"
-      },
-      {
-        "name": "git-cliff-2.14.2-x86_64-unknown-linux-musl.tar.gz.sha512",
-        "size": 180,
-        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2-x86_64-unknown-linux-musl.tar.gz.sha512",
-        "digest": "sha256:sha256:ca651cfe4faf126fb1dad2cc4697b4ccbbc0aafe7570c2d3feb08534b4689773"
-      },
-      {
-        "name": "git-cliff-2.14.2-x86_64-unknown-linux-musl.tar.gz.sig",
-        "size": 566,
-        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2-x86_64-unknown-linux-musl.tar.gz.sig",
-        "digest": "sha256:sha256:8223127775abd7146e96554918f06fbcf4ce76570eaf5af887e7e4106ef7dedf"
-      },
-      {
-        "name": "git-cliff-2.14.2.deb",
-        "size": 4104308,
-        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2.deb",
-        "digest": "sha256:sha256:b6c5a9cdb4a7d090003f503fafac4d8ab0f7118eae728151953a6c6e98c89d94"
-      },
-      {
-        "name": "git-cliff-2.14.2.x86_64.rpm",
-        "size": 4470246,
-        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/git-cliff-2.14.2.x86_64.rpm",
-        "digest": "sha256:sha256:90067e567a6875560dc395419e342ddd1f9b435a384081c739591ec442d9fb4e"
-      },
-      {
-        "name": "orhun-git-cliff-git-cliff_sha-5d996de.spdx.json",
-        "size": 2573522,
-        "browser_download_url": "https://github.com/orhun/git-cliff/releases/download/v2.14.2/orhun-git-cliff-git-cliff_sha-5d996de.spdx.json",
-        "digest": "sha256:sha256:b785a1b1c945e249e2d9d54ad998edce42cdf63f2d1ffd28f5baad2b69a836e5"
-      }
-    ],
-    "kind": "tool",
-    "category": "cli,git",
-    "tags": "git,changelog,automation,cli",
-    "summary": "Gerador altamente customizável de Changelogs a partir de mensagens de commits convencionais.",
-    "language": "Rust",
-    "trust_score": 81,
-    "trust_level": "🟢 CONFIÁVEL",
-    "trust_notes": [
-      "🟢 Repositório oficial consolidado no GitHub",
-      "🟢 Projeto altamente ativo (12400 estrelas)",
-      "🟢 Código aberto com licença Apache-2.0",
-      "🟢 Escrito nativamente em Rust de alta performance"
-    ],
-    "attestation": "",
-    "installed": null
-  },
-  {
-    "full_name": "dalance/procs",
-    "description": "A modern replacement for ps written in Rust",
-    "url": "https://github.com/dalance/procs",
-    "stars": 6218,
-    "license": "MIT",
-    "topics": "process,system,ps,cli",
-    "pushed_at": "2026-11-02T20:08:21Z",
-    "fork": false,
-    "archived": false,
-    "has_issues": true,
-    "latest_tag": "v0.14.12",
-    "released_at": "2026-06-25T10:12:30Z",
-    "platforms": "windows,linux,macos",
-    "assets": [
-      {
-        "name": "procs-0.14.12-1.x86_64.rpm",
-        "size": 2555456,
-        "browser_download_url": "https://github.com/dalance/procs/releases/download/v0.14.12/procs-0.14.12-1.x86_64.rpm",
-        "digest": "sha256:sha256:27a79f0b921e93a61f651f36d3e6e99ac865d881b4c0936244f739de41becb37"
-      },
-      {
-        "name": "procs-v0.14.12-aarch64-linux.zip",
-        "size": 2400955,
-        "browser_download_url": "https://github.com/dalance/procs/releases/download/v0.14.12/procs-v0.14.12-aarch64-linux.zip",
-        "digest": "sha256:sha256:74b4f82acc6fe553cbd5af20ba0baac420b42bef9bb0cbb38fef14b8317d9f91"
-      },
-      {
-        "name": "procs-v0.14.12-aarch64-mac.zip",
-        "size": 2095351,
-        "browser_download_url": "https://github.com/dalance/procs/releases/download/v0.14.12/procs-v0.14.12-aarch64-mac.zip",
-        "digest": "sha256:sha256:20c7a33426ed7a43c3e13a48f2d1866ecc979a8ad46733f86ddc78ab7f12d49c"
-      },
-      {
-        "name": "procs-v0.14.12-x86_64-linux.zip",
-        "size": 2565746,
-        "browser_download_url": "https://github.com/dalance/procs/releases/download/v0.14.12/procs-v0.14.12-x86_64-linux.zip",
-        "digest": "sha256:sha256:81964faf9d5cd0e9f399d5d0954fb6fe4d4d9f7d3cbec4507633df5a45b11713"
-      },
-      {
-        "name": "procs-v0.14.12-x86_64-mac.zip",
-        "size": 2233395,
-        "browser_download_url": "https://github.com/dalance/procs/releases/download/v0.14.12/procs-v0.14.12-x86_64-mac.zip",
-        "digest": "sha256:sha256:2c276f40c99051984942a5b135b74ce4bc9184984a1543dddfcf275bde71d8d4"
-      },
-      {
-        "name": "procs-v0.14.12-x86_64-windows.zip",
-        "size": 1571894,
-        "browser_download_url": "https://github.com/dalance/procs/releases/download/v0.14.12/procs-v0.14.12-x86_64-windows.zip",
-        "digest": "sha256:sha256:4928c399ae78ee82f99139a5629077b8d90a58599d834584dd4e613cb60c83d0"
-      }
-    ],
-    "kind": "tool",
-    "category": "cli,system",
-    "tags": "process,system,ps,cli",
-    "summary": "Substituto moderno para o comando ps do Unix/Windows, com exibição de portas TCP, memória e CPU.",
-    "language": "Rust",
-    "trust_score": 78,
-    "trust_level": "🟢 CONFIÁVEL",
-    "trust_notes": [
-      "🟢 Repositório oficial consolidado no GitHub",
-      "🟢 Projeto altamente ativo (6218 estrelas)",
-      "🟢 Código aberto com licença MIT",
-      "🟢 Escrito nativamente em Rust de alta performance"
-    ],
-    "attestation": "",
-    "installed": null
-  },
-  {
-    "full_name": "chmln/sd",
-    "description": "Intuitive find & replace CLI (sed alternative)",
-    "url": "https://github.com/chmln/sd",
-    "stars": 7413,
-    "license": "MIT",
-    "topics": "sed,find,replace,regex",
-    "pushed_at": "2026-02-25T19:26:21Z",
-    "fork": false,
-    "archived": false,
-    "has_issues": true,
-    "latest_tag": "v1.1.0",
-    "released_at": "2026-02-25T19:27:05Z",
-    "platforms": "windows,linux,macos",
-    "assets": [
-      {
-        "name": "sd-v1.1.0-aarch64-apple-darwin.tar.gz",
-        "size": 852694,
-        "browser_download_url": "https://github.com/chmln/sd/releases/download/v1.1.0/sd-v1.1.0-aarch64-apple-darwin.tar.gz",
-        "digest": "sha256:sha256:4bd3c09226376ca0a1d69589c91e86276fae36c5fbaaee669afce583f6682030"
-      },
-      {
-        "name": "sd-v1.1.0-aarch64-unknown-linux-musl.tar.gz",
-        "size": 924956,
-        "browser_download_url": "https://github.com/chmln/sd/releases/download/v1.1.0/sd-v1.1.0-aarch64-unknown-linux-musl.tar.gz",
-        "digest": "sha256:sha256:ec8c93c0533ff21f4851d11566808d4082544baf063d9b96ea77c27e98b7cd99"
-      },
-      {
-        "name": "sd-v1.1.0-arm-unknown-linux-gnueabihf.tar.gz",
-        "size": 896137,
-        "browser_download_url": "https://github.com/chmln/sd/releases/download/v1.1.0/sd-v1.1.0-arm-unknown-linux-gnueabihf.tar.gz",
-        "digest": "sha256:sha256:e7ab29aaba6bf927421106fdc5b7591fdcb5aa575a7d9d43a36db6e093ae6263"
-      },
-      {
-        "name": "sd-v1.1.0-armv7-unknown-linux-gnueabihf.tar.gz",
-        "size": 884126,
-        "browser_download_url": "https://github.com/chmln/sd/releases/download/v1.1.0/sd-v1.1.0-armv7-unknown-linux-gnueabihf.tar.gz",
-        "digest": "sha256:sha256:4eeb5b285bbe44249ab64b2966394c540edaf56f94fa7ec9583e068b8fbff290"
-      },
-      {
-        "name": "sd-v1.1.0-x86_64-apple-darwin.tar.gz",
-        "size": 927982,
-        "browser_download_url": "https://github.com/chmln/sd/releases/download/v1.1.0/sd-v1.1.0-x86_64-apple-darwin.tar.gz",
-        "digest": "sha256:sha256:1fca1e9c91813a8aac6821063c923107ba0f66a83309e095edcd3b202f67f97e"
-      },
-      {
-        "name": "sd-v1.1.0-x86_64-pc-windows-gnu.zip",
-        "size": 915261,
-        "browser_download_url": "https://github.com/chmln/sd/releases/download/v1.1.0/sd-v1.1.0-x86_64-pc-windows-gnu.zip",
-        "digest": "sha256:sha256:c460cd35514d1877ff7116034567c95c92b62f9f662f53a34bb02f96edf0483c"
-      },
-      {
-        "name": "sd-v1.1.0-x86_64-pc-windows-msvc.zip",
-        "size": 888027,
-        "browser_download_url": "https://github.com/chmln/sd/releases/download/v1.1.0/sd-v1.1.0-x86_64-pc-windows-msvc.zip",
-        "digest": "sha256:sha256:59837c2e7c911099aca1cc46b663bcdc5a949fd3e9fbbaf34fc73e5d5d71007c"
-      },
-      {
-        "name": "sd-v1.1.0-x86_64-unknown-linux-gnu.tar.gz",
-        "size": 988815,
-        "browser_download_url": "https://github.com/chmln/sd/releases/download/v1.1.0/sd-v1.1.0-x86_64-unknown-linux-gnu.tar.gz",
-        "digest": "sha256:sha256:3613eca74cd686739bb5a6d68319aa56c747e7315274d02323a2ca2b1c5d82d2"
-      },
-      {
-        "name": "sd-v1.1.0-x86_64-unknown-linux-musl.tar.gz",
-        "size": 1049511,
-        "browser_download_url": "https://github.com/chmln/sd/releases/download/v1.1.0/sd-v1.1.0-x86_64-unknown-linux-musl.tar.gz",
-        "digest": "sha256:sha256:02f00f4777d43e8e95b7b8d49e1a0d6e502fed4b8e79c1c8b8063857a30caa2e"
-      }
-    ],
-    "kind": "tool",
-    "category": "cli,text",
-    "tags": "sed,find,replace,regex",
-    "summary": "Substituto simples, intuitivo e muito rápido para o sed, especializado em busca e substituição por regex.",
-    "language": "Rust",
-    "trust_score": 78,
-    "trust_level": "🟢 CONFIÁVEL",
-    "trust_notes": [
-      "🟢 Repositório oficial consolidado no GitHub",
-      "🟢 Projeto altamente ativo (7413 estrelas)",
-      "🟢 Código aberto com licença MIT",
-      "🟢 Escrito nativamente em Rust de alta performance"
-    ],
-    "attestation": "",
-    "installed": null
-  },
-  {
-    "full_name": "sigoden/aichat",
-    "description": "All-in-one LLM CLI tool featuring Shell Assistant, Chat-REPL, RAG, AI Tools & Agents, with access to OpenAI, Claude, Gemini, Ollama, Groq, and more.",
-    "url": "https://github.com/sigoden/aichat",
-    "stars": 10548,
-    "license": "Apache-2.0",
-    "topics": "ai,llm,chatgpt,cli,terminal",
-    "pushed_at": "2026-02-23T11:16:42Z",
-    "fork": false,
-    "archived": false,
-    "has_issues": true,
-    "latest_tag": "v0.30.0",
-    "released_at": "2025-07-06T23:48:31Z",
-    "platforms": "windows,linux,macos",
-    "assets": [
-      {
-        "name": "aichat-v0.30.0-aarch64-apple-darwin.tar.gz",
-        "size": 5044993,
-        "browser_download_url": "https://github.com/sigoden/aichat/releases/download/v0.30.0/aichat-v0.30.0-aarch64-apple-darwin.tar.gz",
-        "digest": "sha256:sha256:680d36ed7f7ba8a2c2490a099df26c9da54495903c27956109a89c87eeb9edb3"
-      },
-      {
-        "name": "aichat-v0.30.0-aarch64-pc-windows-msvc.zip",
-        "size": 5087866,
-        "browser_download_url": "https://github.com/sigoden/aichat/releases/download/v0.30.0/aichat-v0.30.0-aarch64-pc-windows-msvc.zip",
-        "digest": "sha256:sha256:2f381e70ddaf0831df7e0181a1d25d700bb0d7e53287393a47fd435c253d6091"
-      },
-      {
-        "name": "aichat-v0.30.0-aarch64-unknown-linux-musl.tar.gz",
-        "size": 5464580,
-        "browser_download_url": "https://github.com/sigoden/aichat/releases/download/v0.30.0/aichat-v0.30.0-aarch64-unknown-linux-musl.tar.gz",
-        "digest": "sha256:sha256:eb1cd0948569404c5d9d01c10b32b902e11f8231073315456454dec246bdf26e"
-      },
-      {
-        "name": "aichat-v0.30.0-arm-unknown-linux-musleabihf.tar.gz",
-        "size": 5158772,
-        "browser_download_url": "https://github.com/sigoden/aichat/releases/download/v0.30.0/aichat-v0.30.0-arm-unknown-linux-musleabihf.tar.gz",
-        "digest": "sha256:sha256:30676a28a3e32f7a682bb98c44963d872d37f21db275b74282d3774668537bef"
-      },
-      {
-        "name": "aichat-v0.30.0-armv7-unknown-linux-musleabihf.tar.gz",
-        "size": 5097936,
-        "browser_download_url": "https://github.com/sigoden/aichat/releases/download/v0.30.0/aichat-v0.30.0-armv7-unknown-linux-musleabihf.tar.gz",
-        "digest": "sha256:sha256:e79f0f245a990b27fd7456e658991c4131951d786864349594e4f8299c3e3f43"
-      },
-      {
-        "name": "aichat-v0.30.0-i686-pc-windows-msvc.zip",
-        "size": 4815660,
-        "browser_download_url": "https://github.com/sigoden/aichat/releases/download/v0.30.0/aichat-v0.30.0-i686-pc-windows-msvc.zip",
-        "digest": "sha256:sha256:d5b019fc65cff50f1e97cdd2687f9e4a2af94768c47e0cdd738b9685cfc5ccdc"
-      },
-      {
-        "name": "aichat-v0.30.0-i686-unknown-linux-musl.tar.gz",
-        "size": 5441627,
-        "browser_download_url": "https://github.com/sigoden/aichat/releases/download/v0.30.0/aichat-v0.30.0-i686-unknown-linux-musl.tar.gz",
-        "digest": "sha256:sha256:e843cdc0603ffc97679a0a51a9eaa81fe59e44d8f57e9e9ca9f8f4132c0dcb90"
-      },
-      {
-        "name": "aichat-v0.30.0-x86_64-apple-darwin.tar.gz",
-        "size": 5195911,
-        "browser_download_url": "https://github.com/sigoden/aichat/releases/download/v0.30.0/aichat-v0.30.0-x86_64-apple-darwin.tar.gz",
-        "digest": "sha256:sha256:94aa09315773929e027bcb399f78661c2ddffd887b65348bae446601989d9ddd"
-      },
-      {
-        "name": "aichat-v0.30.0-x86_64-pc-windows-msvc.zip",
-        "size": 5252563,
-        "browser_download_url": "https://github.com/sigoden/aichat/releases/download/v0.30.0/aichat-v0.30.0-x86_64-pc-windows-msvc.zip",
-        "digest": "sha256:sha256:89df8c4ccd6dad310ac713eb5d550494ae7fa14722cde346588fab38ff4afd8f"
-      },
-      {
-        "name": "aichat-v0.30.0-x86_64-unknown-linux-musl.tar.gz",
-        "size": 5759120,
-        "browser_download_url": "https://github.com/sigoden/aichat/releases/download/v0.30.0/aichat-v0.30.0-x86_64-unknown-linux-musl.tar.gz",
-        "digest": "sha256:sha256:6b0cc08c5ceb551dc52bfac2221752f82215be5908c70605d655e9b91ab1557c"
-      }
-    ],
-    "kind": "ai-app",
-    "category": "cli,ai",
-    "tags": "ai,llm,chatgpt,cli,terminal",
-    "summary": "CLI completa de inteligência artificial com suporte a múltiplos modelos e assistente de terminal.",
-    "language": "Rust",
-    "trust_score": 80,
-    "trust_level": "🟢 CONFIÁVEL",
-    "trust_notes": [
-      "🟢 Repositório oficial consolidado no GitHub",
-      "🟢 Projeto altamente ativo (10548 estrelas)",
-      "🟢 Código aberto com licença Apache-2.0",
-      "🟢 Escrito nativamente em Rust de alta performance"
-    ],
-    "attestation": "",
-    "installed": null
-  },
-  {
-    "full_name": "astral-sh/rye",
-    "description": "a Hassle-Free Python Experience",
-    "url": "https://github.com/astral-sh/rye",
-    "stars": 14112,
-    "license": "MIT",
-    "topics": "python,packaging,virtualenv,cargo",
-    "pushed_at": "2026-02-05T00:39:05Z",
-    "fork": false,
-    "archived": true,
-    "has_issues": true,
-    "latest_tag": "0.44.0",
-    "released_at": "2025-02-26T23:56:38Z",
-    "platforms": "windows,linux,macos",
-    "assets": [
-      {
-        "name": "MANIFEST.json",
-        "size": 622,
-        "browser_download_url": "https://github.com/astral-sh/rye/releases/download/0.44.0/MANIFEST.json",
-        "digest": ""
-      },
-      {
-        "name": "rye-aarch64-linux.gz",
-        "size": 7793928,
-        "browser_download_url": "https://github.com/astral-sh/rye/releases/download/0.44.0/rye-aarch64-linux.gz",
-        "digest": ""
-      },
-      {
-        "name": "rye-aarch64-linux.gz.sha256",
-        "size": 65,
-        "browser_download_url": "https://github.com/astral-sh/rye/releases/download/0.44.0/rye-aarch64-linux.gz.sha256",
-        "digest": ""
-      },
-      {
-        "name": "rye-aarch64-macos.gz",
-        "size": 5138494,
-        "browser_download_url": "https://github.com/astral-sh/rye/releases/download/0.44.0/rye-aarch64-macos.gz",
-        "digest": ""
-      },
-      {
-        "name": "rye-aarch64-macos.gz.sha256",
-        "size": 65,
-        "browser_download_url": "https://github.com/astral-sh/rye/releases/download/0.44.0/rye-aarch64-macos.gz.sha256",
-        "digest": ""
-      },
-      {
-        "name": "rye-x86-windows.exe",
-        "size": 12265472,
-        "browser_download_url": "https://github.com/astral-sh/rye/releases/download/0.44.0/rye-x86-windows.exe",
-        "digest": ""
-      },
-      {
-        "name": "rye-x86-windows.exe.sha256",
-        "size": 66,
-        "browser_download_url": "https://github.com/astral-sh/rye/releases/download/0.44.0/rye-x86-windows.exe.sha256",
-        "digest": ""
-      },
-      {
-        "name": "rye-x86_64-linux.gz",
-        "size": 7751325,
-        "browser_download_url": "https://github.com/astral-sh/rye/releases/download/0.44.0/rye-x86_64-linux.gz",
-        "digest": ""
-      },
-      {
-        "name": "rye-x86_64-linux.gz.sha256",
-        "size": 65,
-        "browser_download_url": "https://github.com/astral-sh/rye/releases/download/0.44.0/rye-x86_64-linux.gz.sha256",
-        "digest": ""
-      },
-      {
-        "name": "rye-x86_64-macos.gz",
-        "size": 5345730,
-        "browser_download_url": "https://github.com/astral-sh/rye/releases/download/0.44.0/rye-x86_64-macos.gz",
-        "digest": ""
-      },
-      {
-        "name": "rye-x86_64-macos.gz.sha256",
-        "size": 65,
-        "browser_download_url": "https://github.com/astral-sh/rye/releases/download/0.44.0/rye-x86_64-macos.gz.sha256",
-        "digest": ""
-      },
-      {
-        "name": "rye-x86_64-windows.exe",
-        "size": 14453248,
-        "browser_download_url": "https://github.com/astral-sh/rye/releases/download/0.44.0/rye-x86_64-windows.exe",
-        "digest": ""
-      },
-      {
-        "name": "rye-x86_64-windows.exe.sha256",
-        "size": 66,
-        "browser_download_url": "https://github.com/astral-sh/rye/releases/download/0.44.0/rye-x86_64-windows.exe.sha256",
-        "digest": ""
-      }
-    ],
-    "kind": "tool",
-    "category": "cli,python",
-    "tags": "python,packaging,virtualenv,cargo",
-    "summary": "Gerenciador moderno de ambientes e empacotamento de projetos Python construído em Rust.",
-    "language": "Rust",
-    "trust_score": 82,
-    "trust_level": "🟢 CONFIÁVEL",
-    "trust_notes": [
-      "🟢 Repositório oficial consolidado no GitHub",
-      "🟢 Projeto altamente ativo (14112 estrelas)",
-      "🟢 Código aberto com licença MIT",
-      "🟢 Escrito nativamente em Rust de alta performance"
-    ],
-    "attestation": "",
-    "installed": null
-  },
-  {
     "full_name": "sharkdp/diskus",
     "description": "A minimal, fast alternative to 'du -sh'",
     "url": "https://github.com/sharkdp/diskus",
     "stars": 1268,
     "license": "Apache-2.0",
     "topics": "disk,usage,du,fast",
+    "language": "Rust",
+    "created_at": "",
     "pushed_at": "2026-02-14T12:04:30Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
     "latest_tag": "v0.9.0",
     "released_at": "2025-12-06T23:56:22Z",
-    "platforms": "windows,linux,macos",
+    "platforms": "linux,windows",
     "assets": [
       {
         "name": "diskus-musl_0.9.0_amd64.deb",
@@ -13756,7 +13296,6 @@
     "category": "cli,disk",
     "tags": "disk,usage,du,fast",
     "summary": "Utilitário minimalista e extremamente rápido para calcular o tamanho total de pastas no disco.",
-    "language": "Rust",
     "trust_score": 75,
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
@@ -13765,38 +13304,43 @@
       "🟢 Código aberto com licença Apache-2.0",
       "🟢 Escrito nativamente em Rust de alta performance"
     ],
-    "attestation": "",
-    "installed": null
+    "attestation": ""
   },
   {
-    "full_name": "cloudflare/boringtun",
-    "description": "Userspace WireGuard® Implementation in Rust",
-    "url": "https://github.com/cloudflare/boringtun",
-    "stars": 7252,
-    "license": "BSD-3-Clause",
-    "topics": "wireguard,vpn,network,crypto",
-    "pushed_at": "2026-06-29T06:18:56Z",
+    "full_name": "The-Ur-Quan-Masters/uqm",
+    "description": "The Ur-Quan Masters: HD modern port of the classic space adventure Star Control II",
+    "url": "https://github.com/The-Ur-Quan-Masters/uqm",
+    "stars": 1200,
+    "license": "GPL-2.0",
+    "topics": "adventure,c,classic,open-source,rpg,space,star-control",
+    "language": "C",
+    "created_at": "2013-02-10T12:00:00Z",
+    "pushed_at": "2026-10-15T14:00:00Z",
     "fork": false,
     "archived": false,
     "has_issues": true,
-    "latest_tag": "boringtun-cli-0.5.2",
-    "released_at": "2022-07-20T17:04:19Z",
-    "platforms": "windows,linux,macos",
-    "assets": [],
-    "kind": "tool",
-    "category": "network,security",
-    "tags": "wireguard,vpn,network,crypto",
-    "summary": "Implementação de alta performance em espaço de usuário do protocolo WireGuard em Rust.",
-    "language": "Rust",
-    "trust_score": 78,
+    "latest_tag": "v0.8.0",
+    "released_at": "2026-06-10T18:00:00Z",
+    "platforms": "windows",
+    "assets": [
+      {
+        "name": "uqm-0.8.0-installer.exe",
+        "size": 28400120,
+        "browser_download_url": "https://github.com/The-Ur-Quan-Masters/uqm/releases/download/v0.8.0/uqm-0.8.0-installer.exe",
+        "digest": ""
+      }
+    ],
+    "kind": "game",
+    "category": "Espacial • Clássico Remasterizado",
+    "tags": "game,space,adventure,sci-fi,retro,classic",
+    "summary": "Port oficial de código aberto da lendária ópera espacial Star Control II com áudio orquestrado, gráficos em alta resolução e diálogos dublados.",
+    "trust_score": 98,
     "trust_level": "🟢 CONFIÁVEL",
     "trust_notes": [
-      "🟢 Repositório oficial consolidado no GitHub",
-      "🟢 Projeto altamente ativo (7252 estrelas)",
-      "🟢 Código aberto com licença BSD-3-Clause",
-      "🟢 Escrito nativamente em Rust de alta performance"
+      "🟢 Autorizado pelos criadores originais do jogo",
+      "🟢 Código aberto em C",
+      "🟢 Instalador oficial e seguro para Windows"
     ],
-    "attestation": "",
-    "installed": null
+    "attestation": ""
   }
 ]

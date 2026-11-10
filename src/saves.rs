@@ -40,10 +40,12 @@ pub fn list_backups(base_dir: &Path, full_name: &str) -> Vec<PathBuf> {
     list
 }
 
+#[cfg(target_os = "windows")]
 fn ps_quote(p: &Path) -> String {
     p.to_string_lossy().replace('\'', "''")
 }
 
+#[cfg(target_os = "windows")]
 fn run_powershell(script: &str) -> Result<()> {
     let out = std::process::Command::new("powershell")
         .args(["-NoProfile", "-NonInteractive", "-WindowStyle", "Hidden", "-Command", script])
@@ -51,6 +53,61 @@ fn run_powershell(script: &str) -> Result<()> {
         .context("não foi possível executar o PowerShell")?;
     if !out.status.success() {
         bail!("{}", String::from_utf8_lossy(&out.stderr).trim());
+    }
+    Ok(())
+}
+
+fn run_compress(source_dir: &Path, zip_file: &Path) -> Result<()> {
+    #[cfg(target_os = "windows")]
+    {
+        let source = source_dir.join("*");
+        run_powershell(&format!(
+            "Compress-Archive -Path '{}' -DestinationPath '{}' -CompressionLevel Optimal",
+            ps_quote(&source),
+            ps_quote(zip_file)
+        ))
+        .context("falha ao compactar os saves")?;
+    }
+    #[cfg(not(target_os = "windows"))]
+    {
+        let status = std::process::Command::new("zip")
+            .arg("-r")
+            .arg("-q")
+            .arg(zip_file)
+            .arg(".")
+            .current_dir(source_dir)
+            .status()
+            .context("falha ao executar 'zip' (verifique se está instalado no sistema)")?;
+        if !status.success() {
+            bail!("comando 'zip' terminou com erro: {:?}", status.code());
+        }
+    }
+    Ok(())
+}
+
+fn run_extract(zip_file: &Path, dest_dir: &Path) -> Result<()> {
+    #[cfg(target_os = "windows")]
+    {
+        run_powershell(&format!(
+            "Expand-Archive -LiteralPath '{}' -DestinationPath '{}' -Force",
+            ps_quote(zip_file),
+            ps_quote(dest_dir)
+        ))
+        .context("falha ao restaurar o backup")?;
+    }
+    #[cfg(not(target_os = "windows"))]
+    {
+        let status = std::process::Command::new("unzip")
+            .arg("-o")
+            .arg("-q")
+            .arg(zip_file)
+            .arg("-d")
+            .arg(dest_dir)
+            .status()
+            .context("falha ao executar 'unzip' (verifique se está instalado no sistema)")?;
+        if !status.success() {
+            bail!("comando 'unzip' terminou com erro: {:?}", status.code());
+        }
     }
     Ok(())
 }
@@ -71,13 +128,7 @@ pub fn backup(base_dir: &Path, full_name: &str, save_dir: &Path, label: Option<&
         None => format!("{stamp}.zip"),
     };
     let zip = dir.join(name);
-    let source = save_dir.join("*");
-    run_powershell(&format!(
-        "Compress-Archive -Path '{}' -DestinationPath '{}' -CompressionLevel Optimal",
-        ps_quote(&source),
-        ps_quote(&zip)
-    ))
-    .context("falha ao compactar os saves")?;
+    run_compress(save_dir, &zip)?;
     Ok(zip)
 }
 
@@ -92,16 +143,11 @@ pub fn restore(base_dir: &Path, full_name: &str, zip: &Path, save_dir: &Path) ->
         Err(_) if std::fs::read_dir(save_dir)?.next().is_none() => None,
         Err(e) => return Err(e.context("restauração cancelada: não deu para guardar os saves atuais")),
     };
-    run_powershell(&format!(
-        "Expand-Archive -LiteralPath '{}' -DestinationPath '{}' -Force",
-        ps_quote(zip),
-        ps_quote(save_dir)
-    ))
-    .context("falha ao restaurar o backup")?;
+    run_extract(zip, save_dir)?;
     Ok(safety)
 }
 
-#[cfg(all(test, target_os = "windows"))]
+#[cfg(test)]
 mod tests {
     use super::*;
 

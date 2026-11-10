@@ -410,7 +410,7 @@ pub fn launch_installed_app(path: &str) -> Result<Option<std::process::Child>> {
             return Ok(Some(child));
         }
         shell_open(p.as_os_str(), Some(&working_dir))?;
-        return Ok(None);
+        Ok(None)
     }
 
     #[cfg(target_os = "linux")]
@@ -657,9 +657,15 @@ pub fn open_store_uri(uri: &str) -> Result<()> {
     {
         shell_open(std::ffi::OsStr::new(uri), None)
     }
-    #[cfg(not(target_os = "windows"))]
+    #[cfg(target_os = "macos")]
     {
-        bail!("abrir jogos de outras lojas só é suportado no Windows: {uri}")
+        std::process::Command::new("open").arg(uri).spawn()?;
+        Ok(())
+    }
+    #[cfg(target_os = "linux")]
+    {
+        std::process::Command::new("xdg-open").arg(uri).spawn()?;
+        Ok(())
     }
 }
 
